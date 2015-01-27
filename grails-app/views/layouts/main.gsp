@@ -28,17 +28,14 @@
                 <g:layoutBody/>
                 <div class="right-banner-wrapper">
                     <div class="google-ad">
-
-                        <script type="text/javascript"><!--
-                        google_ad_client = "ca-pub-8103607814406874";
-                        /* okjspad_160x600 */
-                        google_ad_slot = "6573675943";
-                        google_ad_width = 160;
-                        google_ad_height = 600;
-                        //-->
-                        </script>
-                        <script type="text/javascript"
-                                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- okjspad_160x600 -->
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:160px;height:600px"
+                             data-ad-client="ca-pub-8103607814406874"
+                             data-ad-slot="6573675943"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
                         </script>
                     </div>
                 </div>
