@@ -1,0 +1,14 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+.idea
+/target
+/mem
+*.iml
+*.log
+Config.groovy
+*.db
