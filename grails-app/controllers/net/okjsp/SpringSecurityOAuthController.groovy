@@ -203,9 +203,7 @@ class SpringSecurityOAuthController {
 
                 try {
 
-//                    def reCaptchaVerified = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
-
-                    def reCaptchaVerified = true
+                    def reCaptchaVerified = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
 
                     user.createIp = request.remoteAddr
 
