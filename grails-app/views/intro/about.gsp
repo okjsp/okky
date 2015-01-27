@@ -40,14 +40,14 @@
     <div class="about-wrapper">
         <h3 class="content-header">Member</h3>
         <div class="about-list clearfix">
-            <div class="about-list-head">CEO</div>
+            <div class="about-list-head">공동대포</div>
             <div class="about-list-body">
                 <div class="about-member">
-                    <p class="about-member-pos">대표 / sbroh</p>
+                    <p class="about-member-pos">sbroh</p>
                     <p class="about-member-name">노상범</p>
                 </div>
                 <div class="about-member">
-                    <p class="about-member-pos">공동대포 / kenu</p>
+                    <p class="about-member-pos">kenu</p>
                     <p class="about-member-name">허광남</p>
                 </div>
             </div>
@@ -74,11 +74,11 @@
             <div class="about-list-body">
                 <div class="clearfix">
                     <div class="about-member">
-                        <p class="about-member-pos">Manager / 믿음</p>
+                        <p class="about-member-pos">믿음</p>
                         <p class="about-member-name">정재우</p>
                     </div>
                     <div class="about-member">
-                        <p class="about-member-pos">Contributor / 랑겔한스</p>
+                        <p class="about-member-pos">랑겔한스</p>
                         <p class="about-member-name">정병태</p>
                     </div>
                 </div>
