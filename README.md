@@ -1,4 +1,4 @@
-okmakeover
+OKKY
 ==========
 
 ## 개발 환경
