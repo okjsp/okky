@@ -40,7 +40,7 @@
     <div class="about-wrapper">
         <h3 class="content-header">Member</h3>
         <div class="about-list clearfix">
-            <div class="about-list-head">공동대포</div>
+            <div class="about-list-head">공동대표</div>
             <div class="about-list-body">
                 <div class="about-member">
                     <p class="about-member-pos">sbroh</p>

@@ -7,7 +7,7 @@
 	<body>
     <g:sidebar/>
     <div class="main-banner-wrapper">
-        <div class="main-banner"><a href="${request.contextPath}/article/270896"><img src="${resource(dir: 'images', file: 'main-banner.jpg')}" /></a></div>
+        <div class="main-banner"><a href="${request.contextPath}/article/270962"><img src="${resource(dir: 'images', file: 'main-banner.jpg')}" /></a></div>
     </div>
     <div id="index" class="content scaffold-list clearfix" role="main">
         <div class="col-sm-12 main-block-all">
