@@ -7,6 +7,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 class ArticleTagLib {
 
     SpringSecurityService springSecurityService
+    ArticleService articleService
 
     /**
      * view Author
@@ -152,7 +153,7 @@ class ArticleTagLib {
      */
     def filterHtml = { attrs, body ->
         def text = attrs.text ?: body()
-        out << text.replaceAll("<script(.*?)>(.*?)</script>", '');
+        out << text;
     }
 
     /**

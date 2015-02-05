@@ -4,7 +4,7 @@ import grails.transaction.Transactional
 import sun.security.x509.AVA
 
 class Content {
-    transient springSecurityService
+    transient sanitizeService
 
     ContentType type = ContentType.ARTICLE
     ContentTextType textType = ContentTextType.MD
@@ -60,6 +60,18 @@ class Content {
     def getAttachedFiles() {
         this.files.findAll {
             it.attachType == FileAttachType.ATTACHED
+        }
+    }
+
+    def beforeInsert() {
+        if(text) {
+            text = sanitizeService.sanitize(text)
+        }
+    }
+
+    def beforeUpdate() {
+        if(isDirty("text")) {
+            text = sanitizeService.sanitize(text)
         }
     }
 
