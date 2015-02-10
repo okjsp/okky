@@ -157,7 +157,7 @@ environments {
 
 grails.plugin.springsecurity.rememberMe.parameter = "remember_me"
 grails.plugin.springsecurity.rememberMe.cookieName = "os"
-grails.plugin.springsecurity.rememberMe.key = ""
+grails.plugin.springsecurity.rememberMe.key = "rememberme"
 
 grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
 grails.plugin.springsecurity.interceptUrlMap = [
@@ -259,6 +259,13 @@ environments {
         }
     }
 }
+
+grails.mail.disabled = true
+grails.mail.host = "localhost"
+grails.mail.username = "youracount"
+grails.mail.password = "yourpassword"
+grails.mail.poolSize = 50
+grails.mail.default.from="OKKY <no-reply@okky.kr>"
 
 quartz {
     autoStartup = true
