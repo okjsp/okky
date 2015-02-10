@@ -572,6 +572,7 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 }
 
 .nav-user .avatar {
+    margin-left: -5px;
     margin-bottom: 10px;
     float: left;
 }
