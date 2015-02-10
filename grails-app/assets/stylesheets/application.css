@@ -643,6 +643,11 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     border: none;
 }
 
+.nav-user.nav-sidebar {
+    margin-right: -17px;
+    margin-left: -15px;
+}
+
 .nav-user .link {
     font-size: 12px;
     font-weight: normal;
@@ -655,13 +660,7 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     font-size: 14px;
 }
 
-.nav-user li:nth-child(1) {
-    padding-left: 10px;
-    border-left: 1px solid #00519c;
-}
-
 .nav-user li:nth-child(2) {
-    padding-right: 10px;
     border-left: 1px solid #00519c;
 }
 
