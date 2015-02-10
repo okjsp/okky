@@ -12,6 +12,8 @@ class NotificationJob {
     NotificationService notificationService
     static Date lastSend = new Date()
 
+    def concurrent = false
+
     static triggers = {
         simple name: 'notificationTrigger', repeatInterval: 60000
     }
