@@ -23,7 +23,7 @@ class BootStrap {
                         person: new Person(fullName: '관리자', email: 'admin@okky.kr'),
                         avatar: new Avatar(nickname: '관리자')
                     )
-
+                    adminUser.enabled = true
                     adminUser.createIp = '0.0.0.0'
                     userService.saveUser adminUser
                     UserRole.create(adminUser, adminRole, true)
@@ -39,6 +39,7 @@ class BootStrap {
                         avatar: new Avatar(nickname: '테스트사용자')
                     )
 
+                    testUser.enabled = true
                     testUser.createIp = '0.0.0.0'
                     userService.saveUser testUser
                     UserRole.create(testUser, userRole, true)

@@ -31,6 +31,7 @@ class CustomSecurityEventListener implements ApplicationListener<AuthenticationS
         // Login Log 저장
         new LoggedIn(user: userInstance, remoteAddr: event.authentication.details.remoteAddress).save(flush: true)
 
+        /*
         def rememberMeConfig = SpringSecurityUtils.securityConfig.rememberMe
         def params = WebUtils.retrieveGrailsWebRequest().params
 
@@ -53,6 +54,6 @@ class CustomSecurityEventListener implements ApplicationListener<AuthenticationS
 
                 cookieService.setCookie(cookieName, rememberMe, expirationTime)
             }
-        }
+        }*/
     }
 }

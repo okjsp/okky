@@ -153,12 +153,20 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     font-weight: bold;
 }
 
+.alert ul {
+    padding-left: 15px;
+}
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
  */
 .navbar-fixed-top {
     border: 0;
+}
+
+.panel-body-content {
+    padding: 30px 50px;
 }
 
 

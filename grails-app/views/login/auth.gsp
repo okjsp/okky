@@ -17,7 +17,11 @@
 
             <form action='${postUrl}' class="form-signin form-user panel-body panel-margin" method='POST' id='loginForm' autocomplete='off'>
                 <g:if test='${flash.message}'>
-                    <div class='login_message'>${flash.message}</div>
+                    <div  class="alert alert-warning" role="alert">
+                        <ul>
+                            <li>${flash.message}</li>
+                        </ul>
+                    </div>
                 </g:if>
                 <g:if test="${params.redirectUrl}">
                     <input type="hidden" name="redirectUrl" value="${params.redirectUrl}" />
@@ -31,7 +35,7 @@
                 </div>
                 <button class="btn btn-primary btn-block" type="submit"><g:message code="springSecurity.login.button"/></button>
                 <div class="signup-block">
-                    <a href="#">계정 찾기</a> <span class="inline-saperator">/</span> <g:link controller="user" action="register">회원 가입</g:link>
+                    <g:link controller="findUser">계정 찾기</g:link> <span class="inline-saperator">/</span> <g:link controller="user" action="register">회원 가입</g:link>
                 </div>
             </form>
         </div>

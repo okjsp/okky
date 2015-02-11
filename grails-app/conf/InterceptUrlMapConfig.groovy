@@ -19,18 +19,12 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
     '/content/**':              ['ROLE_USER'],
 
+    '/user/**':                 ['permitAll'],
+
     '/user/edit':               ['ROLE_USER'],
     '/user/update':             ['ROLE_USER'],
 
-
-    '/user/info/*':             ['permitAll'],
-
-    '/user/register':           ['permitAll'],
-    '/user/save':               ['permitAll'],
-    '/user/confirm':            ['permitAll'],
-    '/user/complete':           ['permitAll'],
-    '/user/find':               ['permitAll'],
-    '/user/findComplete':       ['permitAll'],
+    '/find/user/**':             ['permitAll'],
 
     '/notification':            ['ROLE_USER'],
     '/notification.*':          ['ROLE_USER'],

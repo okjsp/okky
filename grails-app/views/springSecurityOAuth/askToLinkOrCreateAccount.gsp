@@ -18,7 +18,7 @@
                 </div>
                 <g:form action="createAccount" class="form-signup form-user panel-body" method='POST' id='loginForm' autocomplete='off'>
                     <g:hasErrors model="[userInstance: userInstance, avatarInstance: userInstance.avatar, personInstance: userInstance.person]">
-                        <div  class="alert alert-danger alert-dismissible" role="alert">
+                        <div  class="alert alert-danger" role="alert">
                             <ul>
                                 <g:eachError bean="${userInstance}" var="error">
                                     <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
