@@ -185,12 +185,16 @@ grails.plugin.springsecurity.interceptUrlMap = [
     '/user/edit':               ['ROLE_USER'],
     '/user/update':             ['ROLE_USER'],
     '/user/info/*':             ['permitAll'],
+    '/user/confirm':            ['permitAll'],
+    '/user/complete':           ['permitAll'],
 
     '/notification':            ['ROLE_USER'],
     '/notification.*':          ['ROLE_USER'],
     '/notification/*/**':       ['ROLE_USER'],
 
     '/oauth/**':                ['permitAll'],
+
+    '/intro/**':                ['permitAll'],
 
     '/_admin/**':               ['ROLE_ADMIN']
 ]
@@ -266,6 +270,7 @@ grails.mail.username = "youracount"
 grails.mail.password = "yourpassword"
 grails.mail.poolSize = 50
 grails.mail.default.from="OKKY <no-reply@okky.kr>"
+grails.mail.key = "key"
 
 quartz {
     autoStartup = true
