@@ -1,4 +1,4 @@
-package okmakeover
+package net.okjsp
 
 import grails.test.mixin.TestFor
 import net.okjsp.SpringSecurityOAuthController

@@ -153,12 +153,20 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     font-weight: bold;
 }
 
+.alert ul {
+    padding-left: 15px;
+}
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
  */
 .navbar-fixed-top {
     border: 0;
+}
+
+.panel-body-content {
+    padding: 30px 50px;
 }
 
 
@@ -500,6 +508,11 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     }
 
     #footer {
+        border-top: 1px solid #ddd;
+        width: 805px;
+    }
+
+    /*#footer {
         position: fixed;
         bottom: 0;
         left: 0;
@@ -510,16 +523,16 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
         height: auto;
         padding: 10px;
         text-align: right;
-        /*background-color: #2a2a2a;*/
-    }
+        *//*background-color: #2a2a2a;*//*
+    }*/
 
-    #footer a,
+    /*#footer a,
     #footer a:active,
     #footer a:hover,
     #footer a:visited {
         color: #c1d2ec;
         text-decoration: underline;
-    }
+    }*/
 
 }
 
@@ -567,6 +580,7 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 }
 
 .nav-user .avatar {
+    margin-left: -5px;
     margin-bottom: 10px;
     float: left;
 }
@@ -638,8 +652,13 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     border: none;
 }
 
+.nav-user.nav-sidebar {
+    margin-right: -17px;
+    margin-left: -15px;
+}
+
 .nav-user .link {
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     margin-bottom: 0;
     padding: 10px 20px !important;

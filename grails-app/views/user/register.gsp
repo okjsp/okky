@@ -16,8 +16,8 @@
                     <h5 class="panel-header">이메일로 가입하기</h5>
                 </div>
                 <g:form url="[resource:user, action:'save']" class="form-signup form-user panel-body" method='POST' id='loginForm' autocomplete='off'>
-                    <g:hasErrors>
-                        <div  class="alert alert-danger alert-dismissible" role="alert">
+                    <g:hasErrors model="[user:user, userAvatar:user.avatar, userPerson:user.person]">
+                        <div  class="alert alert-danger" role="alert">
                             <ul>
                                 <g:eachError bean="${user}" var="error">
                                     <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>

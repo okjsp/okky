@@ -126,6 +126,11 @@ class ArticleController {
 
         Article article = Article.get(id)
 
+        if(article == null) {
+            notFound()
+            return
+        }
+
         if(article.authorId != springSecurityService.principal.avatarId) {
             notAcceptable()
             return

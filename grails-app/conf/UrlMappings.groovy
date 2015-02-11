@@ -13,6 +13,8 @@ class UrlMappings {
         "/user/$action"(controller: "user")
         "/user/info/$id"(controller: "user", action: "index")
 
+        "/find/user?/$action"(controller: "findUser")
+
         "/articles/$code/$action?(.$format)?"(controller: "article")
 
         "/article/$id(.$format)?"(controller: "article", action: "show")

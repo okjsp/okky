@@ -7,6 +7,8 @@ import org.quartz.TriggerKey
  */
 class MainArticlesJob {
 
+    def concurrent = false
+
     def grailsCacheAdminService
 
     static triggers = {

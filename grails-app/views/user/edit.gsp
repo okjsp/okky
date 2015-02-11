@@ -15,7 +15,7 @@
             </div>
             <g:form url="[resource:user, action:'update']" class="form-signup form-user panel-body" method='PUT' id='loginForm' autocomplete='off'>
                 <g:hasErrors>
-                    <div  class="alert alert-danger alert-dismissible" role="alert">
+                    <div  class="alert alert-danger" role="alert">
                         <ul>
                             <g:eachError bean="${user}" var="error">
                                 <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
@@ -40,7 +40,7 @@
 
                     <div class="checkbox">
                         <label>
-                            <g:checkBox name="person.dmAllow" value="${user?.person?.dmAllowed}"  /> <g:message code="person.dm.allow.label" default="이메일 수신 동의"/>
+                            <g:checkBox name="person.dmAllowed" value="${user?.person?.dmAllowed}"  /> <g:message code="person.dm.allow.label" default="이메일 수신 동의"/>
                         </label>
                     </div>
                 </fieldset>

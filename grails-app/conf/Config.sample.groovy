@@ -11,6 +11,8 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+grails.config.locations = [InterceptUrlMapConfig]
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
@@ -157,43 +159,9 @@ environments {
 
 grails.plugin.springsecurity.rememberMe.parameter = "remember_me"
 grails.plugin.springsecurity.rememberMe.cookieName = "os"
-grails.plugin.springsecurity.rememberMe.key = ""
+grails.plugin.springsecurity.rememberMe.key = "rememberme"
 
 grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
-grails.plugin.springsecurity.interceptUrlMap = [
-    '/':                        ['permitAll'],
-    '/index':                   ['permitAll'],
-    '/index.*':                 ['permitAll'],
-    '/**/assets/**':            ['permitAll'],
-    '/**/favicon.ico':          ['permitAll'],
-    '/login/**':                ['permitAll'],
-    '/logout/**':               ['permitAll'],
-    '/dbconsole/**':            ['permitAll'],
-    '/dbdoc/**':                ['permitAll'],
-
-    '/articles/*':              ['permitAll'],
-    '/articles/*/create':       ['ROLE_USER'],
-    '/articles/*/save':         ['ROLE_USER'],
-
-    '/article/*':               ['permitAll'],
-    '/article/*/**':            ['ROLE_USER'],
-
-    '/content/**':              ['ROLE_USER'],
-
-    '/user/register':           ['permitAll'],
-    '/user/save':               ['permitAll'],
-    '/user/edit':               ['ROLE_USER'],
-    '/user/update':             ['ROLE_USER'],
-    '/user/info/*':             ['permitAll'],
-
-    '/notification':            ['ROLE_USER'],
-    '/notification.*':          ['ROLE_USER'],
-    '/notification/*/**':       ['ROLE_USER'],
-
-    '/oauth/**':                ['permitAll'],
-
-    '/_admin/**':               ['ROLE_ADMIN']
-]
 
 // Added by the Recaptcha plugin:
 recaptcha.active = true
@@ -259,6 +227,14 @@ environments {
         }
     }
 }
+
+grails.mail.disabled = true
+grails.mail.host = "localhost"
+grails.mail.username = "youracount"
+grails.mail.password = "yourpassword"
+grails.mail.poolSize = 50
+grails.mail.default.from="OKKY <no-reply@okky.kr>"
+grails.mail.key = "key"
 
 quartz {
     autoStartup = true

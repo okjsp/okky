@@ -59,6 +59,7 @@ grails.project.dependency.resolution = {
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
 
         compile "org.springframework:spring-orm:$springVersion"
+        compile "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239"
     }
 
     plugins {
@@ -82,6 +83,8 @@ grails.project.dependency.resolution = {
         compile ":spring-security-oauth:2.1.0-RC4"
         compile ":spring-security-oauth-facebook:0.2"
         compile ":spring-security-oauth-google:0.3.1"
+
+        compile ":mail:1.0.7"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.5.4" // or ":hibernate:3.6.10.15"

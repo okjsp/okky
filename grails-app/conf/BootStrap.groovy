@@ -15,20 +15,34 @@ class BootStrap {
         environments {
             development {
                 if(!User.findByUsername('admin')) {
-                    // 테스트 User 생성
 
+                    // 테스트 User 생성
                     def adminUser = new User(
                         username: 'admin',
                         password: 'password11',
-                        person: new Person(fullName: '관리자', email: 'admin@okjsp.net'),
+                        person: new Person(fullName: '관리자', email: 'admin@okky.kr'),
                         avatar: new Avatar(nickname: '관리자')
                     )
-
+                    adminUser.enabled = true
                     adminUser.createIp = '0.0.0.0'
-
                     userService.saveUser adminUser
-
                     UserRole.create(adminUser, adminRole, true)
+                }
+
+                if(!User.findByUsername('testuser')) {
+
+                    // 테스트 User 생성
+                    def testUser = new User(
+                        username: 'testuser',
+                        password: 'password11',
+                        person: new Person(fullName: '테스트사용자', email: 'test@okky.kr'),
+                        avatar: new Avatar(nickname: '테스트사용자')
+                    )
+
+                    testUser.enabled = true
+                    testUser.createIp = '0.0.0.0'
+                    userService.saveUser testUser
+                    UserRole.create(testUser, userRole, true)
                 }
             }
         }
