@@ -9,6 +9,7 @@
     <br/> @ 2015 <a href="http://www.ebrain.kr" target="_blank">eBrain Management</a>
 </div>
 <div style="position:absolute;top:15px;right:0;" >
+    <a href="http://www.80port.com/community/" target="_blank"><asset:image src="spb_hb2.png"/></a>
     <a href="http://www.80port.com/community/" target="_blank"><asset:image src="spb_alert.png"/></a>
     <a href="http://www.80port.com/community/" target="_blank"><asset:image src="spb_port80.png"/></a>
 </div>
