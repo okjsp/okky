@@ -391,7 +391,7 @@ class ArticleController {
         withFormat {
             html {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
-                redirect action: "index", method: "GET"
+                redirect uri: '/'
             }
             json { render status: NOT_FOUND }
         }
@@ -402,7 +402,7 @@ class ArticleController {
         withFormat {
             html {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
-                redirect action: "index", method: "GET"
+                redirect uri: '/'
             }
             json { render status: NOT_ACCEPTABLE }
         }
