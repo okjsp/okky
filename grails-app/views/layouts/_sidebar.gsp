@@ -89,6 +89,8 @@
 </ul>
 </div>
 </g:if>
-<div class="sidebar-footer">
-
+<div class="sidebar-footer ${isSub ? 'sidebar-footer-category' : ''}">
+    <div class="sponsor-banner"><a href="http://www.80port.com/community" target="_blank"><asset:image src="spb_port80.png" alt="PORT 80" title="PORT 80" /></a></div>
+    <div class="sponsor-banner"><a href="http://alert.cidow.com/" target="_blank"><asset:image src="spb_alert.png" alt="Alert" title="Alert" /></a></div>
+    <div class="sponsor-banner"><a href="http://www.hanbit.co.kr" target="_blank"><asset:image src="spb_hb.png" alt="한빛미디어" title="한빛미디어" /></a></div>
 </div>

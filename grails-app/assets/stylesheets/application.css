@@ -346,12 +346,42 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     background-color: #fa7f3c;
 }
 
+.sidebar-footer {
+    background-color: #004c92;
+    position: fixed;
+    z-index: 10000;
+    width: 210px;
+    left: 0;
+    bottom: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+.sidebar-footer.sidebar-footer-category {
+    width: 150px;
+    left: 60px;
+}
+
+.sidebar-footer h6 {
+    margin-top: 0 !important;
+    color: #5077bb;
+    font-size: 10px;
+}
+
+.sponsor-banner {
+    width: 100%;
+    height: 28px;
+    
+}
+
 .main-block-all,
 .main-block-left,
 .main-block-right {
     padding-left: 0;
     padding-right: 0;
 }
+
+
 
 #footer {
     color: #999;
