@@ -205,7 +205,8 @@ class UserController {
         render view: 'password', model: [key: key]
 
     }
-
+    
+    @Transactional
     def updatePassword(String password, String passwordConfirm, String key) {
 
         if(springSecurityService.isLoggedIn()) {
@@ -233,6 +234,7 @@ class UserController {
         def user = confirmEmail.user
 
         user.password = password
+        user.enabled = true
         user.save()
 
         if(user.hasErrors()) {
