@@ -90,7 +90,7 @@ class ArticleController {
     }
 
     @Transactional
-    def save() {
+    def save(String code) {
 
         Article article = new Article(params)
 
@@ -111,14 +111,16 @@ class ArticleController {
                     json { respond article, [status: CREATED] }
                 }
             }.invalidToken {
-                redirect uri: "/articles/${category.code}", method:"GET"
+                redirect uri: "/articles/${code}", method:"GET"
             }
 
         } catch (ValidationException e) {
 
+            category = Category.get(code)
+
             def categories = category.children ?: category.parent?.children ?: [category]
 
-            respond article.errors, view: 'create', model: [categories: categories]
+            respond article.errors, view: 'create', model: [categories: categories, category: category]
         }
     }
 
