@@ -253,7 +253,7 @@ class UserController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect view: "index", method: "GET"
+                redirect uri: '/'
             }
             '*'{ render status: NOT_FOUND }
         }
