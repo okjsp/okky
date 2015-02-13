@@ -27,10 +27,24 @@ class ArticleController {
             notFound()
             return
         }
+        
+        def managedUsers = ManagedUser.findAll().user
+        
+        if(springSecurityService.loggedIn) {
+            managedUsers.remove(springSecurityService.currentUser)
+        }
 
         def categories = category.children ?: [category]
 
-        def articlesQuery = Article.where { category in categories && enabled }
+        def articlesQuery = Article.where {
+            and {
+                category in categories
+                enabled
+                not {
+                    author in managedUsers*.avatar
+                }
+            }
+        }
 
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
     }
@@ -391,7 +405,7 @@ class ArticleController {
         withFormat {
             html {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
-                redirect action: "index", method: "GET"
+                redirect uri: '/'
             }
             json { render status: NOT_FOUND }
         }
@@ -402,7 +416,7 @@ class ArticleController {
         withFormat {
             html {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
-                redirect action: "index", method: "GET"
+                redirect uri: '/'
             }
             json { render status: NOT_ACCEPTABLE }
         }
