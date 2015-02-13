@@ -42,6 +42,14 @@ class Content {
         type bindable: false
         article nullable: true
         aNickName nullable: true
+        text validator: { val ->
+            def spam = SpamWord.findAll().find { word ->
+                println "word.text : ${word.text} = ${val.contains(word.text)}"
+                val.contains(word.text)
+            }
+
+            if(spam) return ["default.invalid.word.message"]
+        }
     }
 
     def getDisplayAuthor() {
