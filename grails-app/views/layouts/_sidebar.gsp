@@ -89,7 +89,3 @@
 </ul>
 </div>
 </g:if>
-<div class="sidebar-footer ${isSub ? 'sidebar-footer-category' : ''}">
-    <h6>Sponsored by</h6>
-    <div class="sponsor-banner"><a href="http://www.hanbit.co.kr" target="_blank"><asset:image src="spb_hb.png" alt="한빛미디어" title="한빛미디어" /></a></div>
-</div>

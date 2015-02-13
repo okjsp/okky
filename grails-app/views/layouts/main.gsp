@@ -27,6 +27,7 @@
             <div class="main ${isIndex ? 'index' : ''}">
                 <g:layoutBody/>
                 <div class="right-banner-wrapper">
+                
                     <div class="google-ad">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- okjspad_160x600 -->
