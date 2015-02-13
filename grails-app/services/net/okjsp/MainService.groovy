@@ -10,7 +10,7 @@ class MainService {
     @Cacheable(value="choiceArticlesCache")
     def getChoiceArticles() {
         Article.where {
-            choice == true || category == Category.get('notice')
+            choice
         }.list(max: 5, sort: 'id', order: 'desc')
     }
 
