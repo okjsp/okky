@@ -27,11 +27,11 @@ class ArticleController {
             notFound()
             return
         }
-        
-        def managedUsers = ManagedUser.findAll().user
-        
+
+        def managedAvatar = ManagedUser.findAll()*.user*.avatar
+
         if(springSecurityService.loggedIn) {
-            managedUsers.remove(springSecurityService.currentUser)
+            managedAvatar.remove(springSecurityService.currentUser.avatar)
         }
 
         def categories = category.children ?: [category]
@@ -41,7 +41,7 @@ class ArticleController {
                 category in categories
                 enabled
                 not {
-                    author in managedUsers*.avatar
+                    author in managedAvatar
                 }
             }
         }
