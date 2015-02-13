@@ -305,6 +305,10 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     color: #0059ab;
 }
 
+.sidebar-footer {
+    display: none;
+}
+
 .logo {
     height: 40px;
 }
@@ -352,6 +356,8 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     padding-left: 0;
     padding-right: 0;
 }
+
+
 
 #footer {
     color: #999;
@@ -461,6 +467,34 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     .sidebar-category-nav .nav > li > a:hover > .nav-indicator,
     .sidebar-category-nav .nav > li > a:focus > .nav-indicator {
         display: inline-block;
+    }
+
+    .sidebar-footer {
+        display: block;
+        background-color: #004c92;
+        position: fixed;
+        z-index: 1001;
+        width: 210px;
+        left: 0;
+        bottom: 0;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .sidebar-footer.sidebar-footer-category {
+        width: 150px;
+        left: 60px;
+    }
+
+    .sidebar-footer h6 {
+        margin-top: 0 !important;
+        color: #5077bb;
+        font-size: 10px;
+    }
+
+    .sponsor-banner {
+        width: 100%;
+        height: 28px;
     }
 
     .list-group-item-heading {

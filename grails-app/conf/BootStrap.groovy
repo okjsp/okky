@@ -71,9 +71,24 @@ class BootStrap {
         def evalcomCategory = Category.get('evalcom') ?: new Category(code: 'evalcom', parent: jobsCategory, labelCode: 'gathering.label', defaultLabel: '좋은회사/나쁜회사', iconCssNames: 'fa fa-group', sortOrder: 0, useNote: true, useOpinion: false, useEvaluate: false, useTag: false).save(flush: true)
         def recruitCategory = Category.get('recruit') ?: new Category(code: 'recruit', parent: jobsCategory, labelCode: 'recruit.label', defaultLabel: '구인', iconCssNames: 'fa fa-group', sortOrder: 1, useNote: true, useOpinion: false, useEvaluate: false, useTag: true).save(flush: true)
         def resumesCategory = Category.get('resumes') ?: new Category(code: 'resumes', parent: jobsCategory, labelCode: 'resumes.label', defaultLabel: '구직', iconCssNames: 'fa fa-group', sortOrder: 2, isURL: true, url: '/resumes').save(flush: true)
+        
+        /** 
+         * Managed User
+         */
+        
+        [26163, 26660, 22488, 25959, 26838, 21356,
+         
+         27039, 27430, 28983, 30983,
 
-
-
+         27238, 27183, 27354, 24552, 27453, 23889,
+         28300, 26069, 28213, 27251, 28262, 28541,
+         28752, 28828, 28837, 28838, 28654, 28272,
+         29080, 8417, 27660, 8933, 21996, 26609,
+         29972, 29982, 30361, 30362, 29897
+        ].each {
+            def user = User.get(it)
+            if(user) ManagedUser.findOrSaveByUser(user)
+        }
 
         /**
          * Register Custom Object Marshaller
