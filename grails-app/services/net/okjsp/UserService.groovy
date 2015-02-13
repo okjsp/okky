@@ -41,4 +41,15 @@ class UserService {
         return secured
 
     }
+    
+    def getManaedAvatars(def user = null) {
+
+        def managedAvatar = ManagedUser.findAll()*.user*.avatar
+
+        if(user) {
+            managedAvatar.remove(user.avatar)
+        }
+
+        managedAvatar
+    }
 }

@@ -3,29 +3,25 @@ package net.okjsp
 class MainController {
 
     def mainService
+    def userService
     def springSecurityService
 
     def index() {
 
-        def managedAvatar = ManagedUser.findAll()*.user*.avatar
-
-        if(springSecurityService.loggedIn) {
-            managedAvatar.remove(springSecurityService.currentUser.avatar)
-        }
+        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         
-        def excludeManagedAvatar = {
+        def excludeManagedAvatarClosure = {
             !managedAvatar.contains(it.author)
         }
         
         return [
             isIndex: true,
             choiceArticles: mainService.getChoiceArticles(),
-            managedUsers: managedUsers,
             articleBlocks: [
-                [category: Category.get('questions'), articles: mainService.getQnaArticles().findAll(excludeManagedAvatar)],
-                [category: Category.get('tech'), articles: mainService.getTechArticles().findAll(excludeManagedAvatar)],
-                [category: Category.get('community'), articles: mainService.getCommunityArticles().findAll(excludeManagedAvatar)],
-                [category: Category.get('columns'), articles: mainService.getColumnsArticles().findAll(excludeManagedAvatar)],
+                [category: Category.get('questions'), articles: mainService.getQnaArticles().findAll(excludeManagedAvatarClosure)],
+                [category: Category.get('tech'), articles: mainService.getTechArticles().findAll(excludeManagedAvatarClosure)],
+                [category: Category.get('community'), articles: mainService.getCommunityArticles().findAll(excludeManagedAvatarClosure)],
+                [category: Category.get('columns'), articles: mainService.getColumnsArticles().findAll(excludeManagedAvatarClosure)],
             ]
         ]
     }

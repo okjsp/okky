@@ -12,6 +12,7 @@ class ArticleController {
 
     ArticleService articleService
     SpringSecurityService springSecurityService
+    UserService userService
 
     static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: ["DELETE","POST"], scrap: "POST",
                              addNote: "POST", assent: ["PUT","POST"], dissent: ["PUT","POST"]]
@@ -28,11 +29,7 @@ class ArticleController {
             return
         }
 
-        def managedAvatar = ManagedUser.findAll()*.user*.avatar
-
-        if(springSecurityService.loggedIn) {
-            managedAvatar.remove(springSecurityService.currentUser.avatar)
-        }
+        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
 
         def categories = category.children ?: [category]
 

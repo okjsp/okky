@@ -13,14 +13,14 @@ class MainService {
     @Cacheable(value="choiceArticlesCache")
     def getChoiceArticles() {
         Article.where {
-            choice && enabled
+            choice == true && enabled == true
         }.list(max: 5, sort: 'id', order: 'desc')
     }
 
     @Cacheable("techArticlesCache")
     def getTechArticles() {
         Article.where {
-            category in Category.get('tech').children && enabled
+            category in Category.get('tech').children && enabled == true
         }.list(max: 10, sort: 'id', order: 'desc')
     }
 
@@ -28,21 +28,21 @@ class MainService {
     def getQnaArticles() {
         
         Article.where {
-            category in Category.get('questions') && enabled
+            category in Category.get('questions') && enabled == true
         }.list(max: 10, sort: 'id', order: 'desc')
     }
 
     @Cacheable("communityArticlesCache")
     def getCommunityArticles() {
         Article.where {
-            category in Category.get('community').children && enabled
+            category in Category.get('community').children && enabled == true
         }.list(max: 10, sort: 'id', order: 'desc')
     }
 
     @Cacheable("columnsArticlesCache")
     def getColumnsArticles() {
         Article.where {
-            category in Category.get('columns') && enabled
+            category in Category.get('columns') && enabled == true
         }.list(max: 10, sort: 'id', order: 'desc')
     }
 
