@@ -1,6 +1,7 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.SpringSecurityUtils
 import org.ocpsoft.prettytime.PrettyTime
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -52,17 +53,28 @@ class ArticleTagLib {
         }
 
         out << "<div class='avatar avatar-${size} clearfix ${cssClass}'>"
-        out << "<a href='${request.contextPath}/user/info/${avatar.id}' class='avatar-photo'><img src='${url}'/></a> "
+        
+        if(avatar.id)
+            out << "<a href='${request.contextPath}/user/info/${avatar.id}' class='avatar-photo'><img src='${url}'/></a> "
+        else
+            out << "<span class='avatar-photo'><img src='${url}'/></span>"
 
         if (attrs.pictureOnly != 'true') {
             out << """<div class="avatar-info">"""
-            out << """<a class="nickname" href="${request.contextPath}/user/info/${avatar.id}">${avatar.nickname}</a> """
+            
+            if(avatar.id)
+                out << """<a class="nickname" href="${request.contextPath}/user/info/${avatar.id}">${avatar.nickname}</a> """
+            else
+                out << """<span class="nickname"><strong>${avatar.nickname}</strong></span> """
 
             if (attrs.dateCreated != null) {
-                out << """<div class="activity"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
+                if(avatar.id)
+                    out << """<div class="activity"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
+                
                 out << """<div class="date-created timeago" title="${attrs.dateCreated}">${attrs.dateCreated}</div>"""
             } else {
-                out << """<div class="activity ${size == 'medium' ? 'block' : ''}"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
+                if(avatar.id)
+                    out << """<div class="activity ${size == 'medium' ? 'block' : ''}"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
             }
 
             out << "</div>"
@@ -124,6 +136,17 @@ class ArticleTagLib {
      */
     def isAuthor = { attrs, body ->
         if(springSecurityService.isLoggedIn() && attrs.author && springSecurityService.principal.avatarId == attrs.author.id) {
+            out << body()
+        }
+    }
+
+    /**
+     * Current user is Author
+     * @attr author Author REQUIRED
+     */
+    def isAuthorOrAdmin = { attrs, body ->
+        if((springSecurityService.isLoggedIn() && attrs.author && springSecurityService.principal.avatarId == attrs.author.id)
+            || SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
             out << body()
         }
     }

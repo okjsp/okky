@@ -11,7 +11,7 @@ class MainController {
         def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         
         def excludeManagedAvatarClosure = {
-            !managedAvatar.contains(it.author)
+            it
         }
         
         return [

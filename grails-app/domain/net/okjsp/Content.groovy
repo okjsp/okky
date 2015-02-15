@@ -44,7 +44,6 @@ class Content {
         aNickName nullable: true
         text validator: { val ->
             def spam = SpamWord.findAll().find { word ->
-                println "word.text : ${word.text} = ${val.contains(word.text)}"
                 val.contains(word.text)
             }
 

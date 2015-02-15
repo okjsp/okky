@@ -30,6 +30,8 @@ class UrlMappings {
         "/notification(.$format)?"(controller: "notification", action: "index")
 
         "/notification/$action/$id?(.$format)?"(controller: "notification")
+        
+        "/seq/$id"(controller: "article", action: "seq")
 
         "/"(controller: "main", action: 'index')
 

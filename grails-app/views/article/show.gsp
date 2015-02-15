@@ -1,6 +1,7 @@
 <%@ page import="net.okjsp.Article" %>
 <%@ page import="net.okjsp.Content" %>
 <%@ page import="net.okjsp.ContentTextType" %>
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -73,24 +74,24 @@
                             </ul>--}%
                         </div>
 
-                        <g:isAuthor author="${article.author}">
+                        <g:isAuthorOrAdmin author="${article.author}">
                         <div class="dropdown">
                             <g:form url="[resource:article, action:'delete']" name="article-delete-form" method="DELETE">
                                 <div class="dropdown">
                                     <a href="javascript://" data-toggle="dropdown"><i class="fa fa-cog" data-toggle="tooltip" data-placement="left" title="게시물 설정"></i></a>
                                     <ul class="dropdown-menu" role="menu">
-                                        <li><g:link class="edit" action="edit" resource="${article}"><i class="fa fa-edit fa-fw"></i> <g:message code="default.button.edit.label" default="Edit" /></g:link></li>
+                                        <li><g:link class="edit" action="edit" resource="${article}"><i class="fa fa-edit fa-fw"></i> <g:message code="default.button.edit.label" default="Edit" /> <sec:ifAllGranted roles="ROLE_ADMIN"><span style="color:red;">(관리자권한)</span></sec:ifAllGranted></g:link></li>
                                         <g:if test="${notes.size() > 0}">
-                                            <li><a href="javascript://" onclick="alert('댓글이 있는 글은 삭제하실 수 없습니다.');"><i class="fa fa-trash-o fa-fw"></i> ${message(code: 'default.button.delete.label', default: 'Delete')}</a></li>
+                                            <li><a href="javascript://" onclick="alert('댓글이 있는 글은 삭제하실 수 없습니다.');"><i class="fa fa-trash-o fa-fw"></i> ${message(code: 'default.button.delete.label', default: 'Delete')} <sec:ifAllGranted roles="ROLE_ADMIN"><span style="color:red;">(관리자권한)</span></sec:ifAllGranted></a></li>
                                         </g:if>
                                         <g:else>
-                                            <li><a href="javascript://" id="article-delete-btn"><i class="fa fa-trash-o fa-fw"></i> ${message(code: 'default.button.delete.label', default: 'Delete')}</a></li>
+                                            <li><a href="javascript://" id="article-delete-btn"><i class="fa fa-trash-o fa-fw"></i> ${message(code: 'default.button.delete.label', default: 'Delete')} <sec:ifAllGranted roles="ROLE_ADMIN"><span style="color:red;">(관리자권한)</span></sec:ifAllGranted></a></li>
                                         </g:else>
                                     </ul>
                                 </div>
                             </g:form>
                         </div>
-                        </g:isAuthor>
+                        </g:isAuthorOrAdmin>
                     </div>
                 </div>
             </div>
@@ -167,13 +168,13 @@
                                     </div>
                                 </div>
 
-                                <g:isAuthor author="${note.author}">
+                                <g:isAuthorOrAdmin author="${note.author}">
                                 <div id="content-function-cog-${note.id}" class="content-function-cog">
                                     <div class="dropdown">
                                         <a href="javascript://" data-toggle="dropdown"><i class="fa fa-cog" data-toggle="tooltip" data-placement="left" title="게시물 설정"></i></a>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="javascript://" class="note-edit-btn" data-id="${note.id}"><i class="fa fa-edit fa-fw"></i> <g:message code="default.button.edit.label" default="Edit" /></a></li>
-                                            <li><a href="javascript://" class="note-delete-btn" data-id="${note.id}"><i class="fa fa-trash-o fa-fw"></i> ${message(code: 'default.button.delete.label', default: 'Delete')}</a></li>
+                                            <li><a href="javascript://" class="note-edit-btn" data-id="${note.id}"><i class="fa fa-edit fa-fw"></i> <g:message code="default.button.edit.label" default="Edit" /></a><sec:ifAllGranted roles="ROLE_ADMIN"><span style="color:red;">(관리자권한)</span></sec:ifAllGranted></li>
+                                            <li><a href="javascript://" class="note-delete-btn" data-id="${note.id}"><i class="fa fa-trash-o fa-fw"></i> ${message(code: 'default.button.delete.label', default: 'Delete')}</a><sec:ifAllGranted roles="ROLE_ADMIN"><span style="color:red;">(관리자권한)</span></sec:ifAllGranted></li>
                                         </ul>
                                     </div>
                                     <div class="buttons" style="display: none;">
@@ -181,7 +182,7 @@
                                         <p><g:submitButton name="create" class="btn btn-success btn-wide" value="${message(code: 'note.button.edit.label', default: '저장')}" /></p>
                                     </div>
                                 </div>
-                                </g:isAuthor>
+                                </g:isAuthorOrAdmin>
                             </g:form>
 
                             <g:form url="[resource:note, action:'delete']" id="note-delete-form-${note.id}" method="DELETE">

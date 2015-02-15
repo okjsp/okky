@@ -19,7 +19,7 @@
                     <g:avatar size="big" avatar="${avatar}" pictureOnly="true" class="col-sm-3 text-center" />
                     <div class="user-info col-sm-9">
                         <div class="clearfix">
-                            <h2 class="pull-left">${avatar.nickname} <small>${user.username}</small></h2>
+                            <h2 class="pull-left">${avatar.nickname}</h2>
                             <button class="btn btn-success pull-right btn-wide disabled"><i class="fa fa-plus"></i> 팔로우</button>
                         </div>
                         <div class="user-points">

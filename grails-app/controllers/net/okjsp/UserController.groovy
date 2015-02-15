@@ -21,7 +21,7 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update']]
+    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index']]
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
@@ -36,22 +36,22 @@ class UserController {
         params.sort = params.sort ?: 'id'
         params.order = params.order ?: 'desc'
 
-        Avatar avatar = Avatar.get(id)
-        User user = User.findByAvatar(avatar)
+        Avatar currentAvatar = Avatar.get(id)
+        User user = User.findByAvatar(currentAvatar)
 
         def activitiesQuery = Activity.where {
-            avatar == avatar
+            avatar == currentAvatar
         }
 
         def counts = [
-            postedCount: Activity.countByAvatarAndType(avatar, ActivityType.POSTED),
-            solvedCount: Activity.countByAvatarAndType(avatar, ActivityType.SOLVED),
-            followerCount : Follow.countByFollowing(avatar),
-            followingCount : Follow.countByFollower(avatar),
-            scrappedCount : Scrap.countByAvatar(avatar)
+            postedCount: Activity.countByAvatarAndType(currentAvatar, ActivityType.POSTED),
+            solvedCount: Activity.countByAvatarAndType(currentAvatar, ActivityType.SOLVED),
+            followerCount : Follow.countByFollowing(currentAvatar),
+            followingCount : Follow.countByFollower(currentAvatar),
+            scrappedCount : Scrap.countByAvatar(currentAvatar)
         ]
 
-        respond user, model: [avatar: avatar, activities: activitiesQuery.list(params), activitiesCount: activitiesQuery.count(), counts: counts]
+        respond user, model: [avatar: currentAvatar, activities: activitiesQuery.list(params), activitiesCount: activitiesQuery.count(), counts: counts]
     }
 
     def register() {

@@ -1,6 +1,7 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.validation.ValidationException
 import org.springframework.http.HttpStatus
 
@@ -30,20 +31,19 @@ class ArticleController {
         }
 
         def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
-
         def categories = category.children ?: [category]
 
         def articlesQuery = Article.where {
-            and {
-                category in categories
-                enabled
-                not {
-                    author in managedAvatar
-                }
-            }
+            category in categories &&
+            enabled == true
         }
 
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
+    }
+    
+    def seq(Long id) {
+        
+        redirect uri:"/article/${id}"
     }
 
     @Transactional
@@ -95,7 +95,14 @@ class ArticleController {
             return
         }
 
-        def categories = category.children ?: category.parent?.children ?: [category]
+        def categories
+        
+        if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
+            categories = Category.findAllByWritableAndEnabled(true, true)
+        } else {
+            categories = category.children ?: category.parent?.children ?: [category]
+        }
+
 
         respond new Article(params), model: [categories: categories, category: category]
     }
@@ -111,6 +118,12 @@ class ArticleController {
 
             withForm {
                 Avatar author = Avatar.get(springSecurityService.principal.avatarId)
+
+                if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
+
+                    article.choice = params.choice?:false
+
+                }
 
                 articleService.save(article, author, category)
 
@@ -144,21 +157,32 @@ class ArticleController {
             return
         }
 
-        if(article.authorId != springSecurityService.principal.avatarId) {
-            notAcceptable()
-            return
+        if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
+            if (article.authorId != springSecurityService.principal.avatarId) {
+                notAcceptable()
+                return
+            }
         }
 
-        def categories = article.category.children ?: article.category.parent?.children ?: [article.category]
+        def categories
+
+        if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
+            categories = Category.findAllByWritableAndEnabled(true, true)
+        } else {
+            categories = article.category.children ?: article.category.parent?.children ?: [article.category]
+        }
+        
         respond article, model: [categories: categories]
     }
 
     @Transactional
     def update(Article article) {
 
-        if(article.authorId != springSecurityService.principal.avatarId) {
-            notAcceptable()
-            return
+        if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
+            if (article.authorId != springSecurityService.principal.avatarId) {
+                notAcceptable()
+                return
+            }
         }
 
         try {
@@ -168,6 +192,12 @@ class ArticleController {
                 Avatar editor = Avatar.get(springSecurityService.principal.avatarId)
 
                 Category category = Category.get(params.categoryCode)
+                
+                if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
+                    
+                    article.choice = params.choice?:false
+                    
+                }
 
                 articleService.update(article, editor, category)
 
@@ -200,9 +230,11 @@ class ArticleController {
             return
         }
 
-        if(article.authorId != springSecurityService.principal.avatarId) {
-            notAcceptable()
-            return
+        if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
+            if (article.authorId != springSecurityService.principal.avatarId) {
+                notAcceptable()
+                return
+            }
         }
 
         articleService.delete(article)

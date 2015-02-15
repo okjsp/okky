@@ -3,21 +3,46 @@
 <%@ page import="net.okjsp.ContentTextType" %>
 
 
-<g:if test="${categories.size() > 1}">
-<div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
-    <div>
-        <select id="category" name="categoryCode" class="form-control">
-            <option value="">게시판을 선택해 주세요.</option>
-            <g:each in="${categories}" var="category">
-                <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
-            </g:each>
-        </select>
+<sec:ifAllGranted roles="ROLE_ADMIN">
+
+    <div class="form-group ${hasErrors(bean: article, field: 'choice', 'has-error')} has-feedback">
+        <div class="checkbox">
+            <label>
+                <g:checkBox name="choice" value="${article?.choice}"  />
+                <g:message code="article.choice.label" default="Editor`s Choice" />
+            </label>
+        </div>
     </div>
-</div>
-</g:if>
-<g:else>
-    <g:hiddenField name="categoryCode" value="${categories?.getAt(0).code}" />
-</g:else>
+    
+    <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
+        <div>
+            <select id="category" name="categoryCode" class="form-control">
+                <option value="">게시판을 선택해 주세요.</option>
+                <g:each in="${categories}" var="category">
+                    <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
+                </g:each>
+            </select>
+        </div>
+    </div>
+</sec:ifAllGranted>
+
+<sec:ifNotGranted roles="ROLE_ADMIN">
+    <g:if test="${categories.size() > 1}">
+    <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
+        <div>
+            <select id="category" name="categoryCode" class="form-control">
+                <option value="">게시판을 선택해 주세요.</option>
+                <g:each in="${categories}" var="category">
+                    <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
+                </g:each>
+            </select>
+        </div>
+    </div>
+    </g:if>
+    <g:else>
+        <g:hiddenField name="categoryCode" value="${categories?.getAt(0).code}" />
+    </g:else>
+</sec:ifNotGranted>
 
 %{--<div class="form-group ${hasErrors(bean: article, field: 'title', 'error')} has-feedback">
     <div class="col-sm-offset-2 col-sm-10">
