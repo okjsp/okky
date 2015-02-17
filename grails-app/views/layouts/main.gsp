@@ -27,7 +27,11 @@
             <div class="main ${isIndex ? 'index' : ''}">
                 <g:layoutBody/>
                 <div class="right-banner-wrapper">
-                
+                    <g:if test="${isIndex}">
+                        <div class="right-banner">
+                            <a href="http://www.devlec.com/?_pageVariable=OKJSP"><img src="http://www.devlec.com/images/devlec_okjsp_160230.gif" style="width:160px;"/></a>
+                        </div>
+                    </g:if>
                     <div class="google-ad">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- okjspad_160x600 -->

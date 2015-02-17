@@ -372,6 +372,11 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     text-decoration: underline;
 }
 
+.sponsor-banner {
+    margin-top: 10px;
+    text-align: right;
+}
+
 /* Sidebar navigation */
 .nav-sidebar {
     margin-right: -21px; /* 20px padding + 1px border */
@@ -458,7 +463,12 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 }
 
 .right-banner-wrapper {
-    display: none;
+    width: 100%;
+}
+
+.right-banner {
+    width: 160px;
+    margin: auto;
 }
 
 .job-ad {
@@ -468,6 +478,7 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 }
 
 .google-ad {
+    display: none;
     width: 160px;
 }
 
@@ -1412,7 +1423,7 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 
     .content {
         width: 805px;
-        min-height: 600px;
+        min-height: 800px;
     }
 
     .sidebar {
@@ -1504,8 +1515,8 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     }
 
     .sponsor-banner {
-        width: 100%;
-        height: 25px;
+        margin-top: -8px;
+        text-align: right;
     }
 
     .list-group-item-heading {
@@ -1534,18 +1545,22 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
         width: 473px !important;
     }
 
-    .google-ad {
-        width: 160px !important;
-        margin: auto;
-    }
-
     .right-banner-wrapper {
-        display: block !important;
         position: absolute;
         top: 65px;
         width: 180px;
         height: 550px;
         right: -10px;
+    }
+
+    .google-ad {
+        display: block !important;
+        width: 160px !important;
+        margin: auto;
+    }
+    
+    .right-banner {
+        margin-bottom: 10px;
     }
 
     .index .right-banner-wrapper {
