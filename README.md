@@ -16,8 +16,9 @@ OKKY
 		- [참고 동영상](http://www.grailsexample.net/installing-a-grails-development-environment-on-windows/)
 	- Mac
 		- [참고 동영상](http://www.grailsexample.net/installing-a-grails-development-environment-on-os-x/)
-
-## Config.groovy 생성
+		
+## 기본 설정
+### Config.groovy 생성
 Clone 받은 소스를 실행하기 전에 `/grails-app/conf/Config.sample.groovy` 파일을 복사하여 `/grails-app/conf/Config.groovy` 를 생성해 주어야 합니다.
 
 
