@@ -5,7 +5,7 @@
     <g:if test="${isSub}">
         <h1><g:link uri="/"><div class="logo"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></div></g:link></h1>
         <ul class="nav nav-sidebar">
-            <li><label class="link"><i class="fa fa-search"></i></label></li>
+            <li class="nav-sidebar-search"><a class="link"><i class="fa fa-search"></i></a></li>
         </ul>
     </g:if>
     <g:else>
