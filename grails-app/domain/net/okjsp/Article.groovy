@@ -88,7 +88,7 @@ class Article {
 
     void updateTag() {
 
-        List<Tag> removedTags = tags ?: []
+        def removedTags = tags ?: []
 
         if(tagString) {
             def tagNames = tagString.split(/[,\s]+/).toList().unique().findAll { !it.isEmpty() }
@@ -112,7 +112,7 @@ class Article {
             tagString = tagNames.join(',')
         }
 
-        removedTags.each {tag ->
+        removedTags.each { tag ->
             removeFromTags(tag)
             tag.taggedCount--
             tag.save()

@@ -12,14 +12,16 @@
 		<div id="list-article" class="content scaffold-list" role="main">
             <div class="nav" role="navigation">
                 <g:link class="create btn btn-success btn-wide pull-right" uri="/articles/${params.code}/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
-
-                <ul class="list-sort pull-left">
+                
+                <h4><g:message code="${category.labelCode}" default="${category.defaultLabel}" /></h4>
+                
+                %{--<ul class="list-sort pull-left">
                     <li><g:link uri="/articles/${category.code}" params="[sort:'id', order:'desc']"  class="${params.sort == 'id' ? 'active':''}">최신순</g:link></li>
                     <li><g:link uri="/articles/${category.code}" params="[sort:'voteCount', order:'desc']"  class="${params.sort == 'voteCount' ? 'active':''}">추천순</g:link></li>
                     <li><g:link uri="/articles/${category.code}" params="[sort:'noteCount', order:'desc']"  class="${params.sort == 'noteCount' ? 'active':''}">댓글순</g:link></li>
                     <li><g:link uri="/articles/${category.code}" params="[sort:'scrapCount', order:'desc']"  class="${params.sort == 'scrapCount' ? 'active':''}">스크랩순</g:link></li>
                     <li><g:link uri="/articles/${category.code}" params="[sort:'viewCount', order:'desc']"  class="${params.sort == 'viewCount' ? 'active':''}">조회순</g:link></li>
-                </ul>
+                </ul>--}%
 
             </div>
             <div class="panel panel-default">

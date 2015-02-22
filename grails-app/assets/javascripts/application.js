@@ -38,6 +38,24 @@ if (typeof jQuery !== 'undefined') {
                 }
             }
         });
+        
+        $('.sidebar-header').click(function() {
+            if($('.sidebar').is('.open')) {
+                $('.sidebar').removeClass('open');
+                $('.sidebar-category-nav').removeClass('open');
+            } else {
+                $('.sidebar').addClass('open');
+                $('.sidebar-category-nav').addClass('open');
+            }
+        });
+        
+        $('html, body').click(function(e) {
+            console.log($(e.target));
+            if(!$(e.target).is('.sidebar-header  *, .nav-main *, .sidebar-category-nav *')) {
+                $('.sidebar').removeClass('open');
+                $('.sidebar-category-nav').removeClass('open');
+            }
+        });
 
         $.extend($.summernote.options, {toolbar :  [
             ['style', ['style']],
