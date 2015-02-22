@@ -8,13 +8,13 @@
     </a>
     
     <g:if test="${isSub}">
-        <h1><g:link uri="/"><div class="logo"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></div></g:link></h1>
+        <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
         <ul class="nav nav-sidebar nav-sidebar-search-wrapper">
             <li class="nav-sidebar-search"><a class="link"><i class="fa fa-search"></i></a></li>
         </ul>
     </g:if>
     <g:else>
-        <h1><g:link uri="/"><div class="logo"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></div></g:link></h1>
+        <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
 
         <form name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.query.value;">
             <div class="input-group">
