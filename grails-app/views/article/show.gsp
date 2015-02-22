@@ -21,6 +21,8 @@
         <div id="article" class="content" role="main">
             <div class="nav" role="navigation">
                 <g:link class="create btn btn-success btn-wide pull-right" uri="/articles/${article.category.code}/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
+
+                <h4><g:message code="${category.labelCode}" default="${category.defaultLabel}" /></h4>
             </div>
 
             <div class="panel panel-default clearfix">

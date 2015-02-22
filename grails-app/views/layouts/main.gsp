@@ -15,9 +15,11 @@
 		<link rel="apple-touch-icon" href="${assetPath(src: 'icon_57x57.png')}">
 		<link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'icon_114x114.png')}">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-  		<asset:stylesheet src="application.css"/>
+        
+        <asset:stylesheet src="application.css"/>
+
         <!--[if lt IE 9]>
-            <asset:javascript src="html5.js" />
+            <asset:javascript src="libs/html5.js" />
         <![endif]-->
 
         <g:layoutHead/>

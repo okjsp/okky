@@ -15,7 +15,7 @@ $(function() {
             success : function(data) {
                 var notificationsHtml = '';
 
-                $('#notification-count').hide();
+                $('#user-notification-count').hide();
                 $('#user-func-icon').show();
 
                 $(data.notifications).each(function(i, notification) {
@@ -54,6 +54,7 @@ $(function() {
     $('#user-func').popover({
         container: 'body',
         title: '설정',
+        placement: whereToPlacePopover,
         template: $('#setting-template').html(),
         html: true
     });
@@ -61,9 +62,15 @@ $(function() {
     $('#user-notification').popover({
         container: 'body',
         title: '알림',
+        placement: whereToPlacePopover,
         template: $('#notification-template').html(),
         html: true
     });
+
+    function whereToPlacePopover(){
+        if ($(window).width()<768) return 'bottom';
+        return 'right';
+    }
 
     $(document).delegate('#notification-popover .notification-link', 'click' , function(e) {
         var data = $(this).data();

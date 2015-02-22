@@ -10,6 +10,8 @@ grails.plugin.springsecurity.interceptUrlMap = [
     '/dbconsole/**':            ['permitAll'],
     '/dbdoc/**':                ['permitAll'],
     '/*.html':                  ['permitAll'],
+    '/css/*':                   ['permitAll'],
+    '/js/*':                    ['permitAll'],
 
     '/articles/*':              ['permitAll'],
     '/articles/*/create':       ['ROLE_USER'],
