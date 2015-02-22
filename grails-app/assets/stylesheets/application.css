@@ -659,9 +659,9 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 }
 
 .nav-user > ul > li > .link,
-.nav-user > ul > li > .link:hover,
-.nav-user > ul > li > .link:active,
-.nav-user > ul > li > .link:visited {
+.nav-user > ul > li:not(.active) > .link:hover,
+.nav-user > ul > li:not(.active) > .link:active,
+.nav-user > ul > li:not(.active) > .link:visited {
     font-size: 12px;
     font-weight: normal;
     margin-bottom: 0;
@@ -670,10 +670,10 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     background:none;
 }
 
-.sidebar-category .nav-user .link,
-.sidebar-category .nav-user .link:hover,
-.sidebar-category .nav-user .link:active,
-.sidebar-category .nav-user .link:visited {
+.sidebar-category .nav-user > ul > li > .link,
+.sidebar-category .nav-user > ul > li:not(.active) >  .link:hover,
+.sidebar-category .nav-user > ul > li:not(.active) >  .link:active,
+.sidebar-category .nav-user > ul > li:not(.active) >  .link:visited {
     font-size: 14px;
 }
 
