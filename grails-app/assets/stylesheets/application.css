@@ -477,11 +477,13 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 }
 
 .main-block-left {
+    padding-left: 0;
     padding-right: 15px;
 }
 
 .main-block-right {
     padding-left: 15px;
+    padding-right: 0;
 }
 
 #footer {
@@ -513,9 +515,9 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     margin-left: -20px;
 }
 
-.nav-sidebar > li > .link,
-.nav-sidebar > li:not(.active) > .link:hover,
-.nav-sidebar > li:not(.active) > .link:focus  {
+.nav-main > li > .link,
+.nav-main > li:not(.active) > .link:hover,
+.nav-main > li:not(.active) > .link:focus  {
     display: block;
     position: relative;
     padding: 20px 20px;
@@ -644,12 +646,16 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     margin-left: -15px;
 }
 
-.nav-user > ul > li > .link {
+.nav-user > ul > li > .link,
+.nav-user > ul > li > .link:hover,
+.nav-user > ul > li > .link:active,
+.nav-user > ul > li > .link:visited {
     font-size: 12px;
     font-weight: normal;
     margin-bottom: 0;
     padding: 10px 20px;
     box-sizing: border-box;
+    background:none;
 }
 
 .sidebar-category .nav-user .link {
