@@ -515,6 +515,18 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     margin-left: -20px;
 }
 
+.nav-sidebar > li > .link,
+.nav-sidebar > li:not(.active) > .link:hover,
+.nav-sidebar > li:not(.active) > .link:visited,
+.nav-sidebar > li:not(.active) > .link:focus  {
+    display: block;
+    position: relative;
+    color: #fff;
+    padding: 20px 20px;
+    cursor: pointer;
+    background:none;
+}
+
 .nav-main > li > .link,
 .nav-main > li:not(.active) > .link:hover,
 .nav-main > li:not(.active) > .link:focus  {
@@ -658,7 +670,10 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     background:none;
 }
 
-.sidebar-category .nav-user .link {
+.sidebar-category .nav-user .link,
+.sidebar-category .nav-user .link:hover,
+.sidebar-category .nav-user .link:active,
+.sidebar-category .nav-user .link:visited {
     font-size: 14px;
 }
 
