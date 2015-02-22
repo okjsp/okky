@@ -361,6 +361,44 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     color: #0059ab;
 }
 
+.sidebar-header {
+    display: none;
+}
+
+.nav-bottom {
+    font-size: 10px;
+    /*background-color: #0b61ae;*/
+    border-left: 4px solid #727F99;
+}
+
+.nav-bottom .link {
+    padding: 10px 10px !important;
+}
+
+.nav-bottom .fa {
+    font-size: 12px;
+    margin-left: 3px;
+    margin-right: 5px;
+}
+
+.nav-bottom.nav-sidebar {
+    margin: 40px 0 0 0;
+}
+
+.sidebar-category .nav-bottom {
+    margin-top: 40px;
+    margin-right: -21px;
+    margin-left: -20px;
+    border-left: none;
+}
+
+.nav-bottom .link,
+.nav-bottom .link:active,
+.nav-bottom .link:hover,
+.nav-bottom .link:visited {
+    color: #9fb0c9;
+}
+
 .sidebar-footer {
     display: block;
     background-color: #004c92;
@@ -606,11 +644,11 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     margin-left: -15px;
 }
 
-.nav-user .link {
+.nav-user > ul > li > .link {
     font-size: 12px;
     font-weight: normal;
     margin-bottom: 0;
-    padding: 10px 20px !important;
+    padding: 10px 20px;
     box-sizing: border-box;
 }
 
@@ -1535,10 +1573,114 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
         bottom: auto;
         width: 100%;
         height: 40px;
+        padding: 0;
+    }
+    
+    .sidebar.open {
+        height: 260px;
+    }
+    
+    .nav-main {
+        margin: 0;
     }
 
     .sidebar h1 {
         margin-top: 0;
+    }
+
+    .sidebar .logo img {
+        width: 70px;
+    }
+
+    .sidebar-header-icon {
+        font-size: 20px;
+    }
+    
+    .sidebar-header,
+    .sidebar-header:hover,
+    .sidebar-header:focus,
+    .sidebar-header:visited {
+        display: block;
+        position: fixed;
+        color: #fff !important;
+        margin: 10px;
+    }
+
+    .nav-main {
+        margin: 0;
+    }
+    
+    .sidebar-category .nav-main {
+        width: 50%;
+    }
+
+    .nav-user .nav-sidebar-label {
+        display: none;
+    }
+    
+    .nav-user,
+    .sidebar-category .nav-user {
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 0;
+        width: 70px;
+        height: auto;
+        margin: 0;
+    }
+    
+    .nav-user .nav-sidebar, 
+    .nav-user.nav-sidebar {
+        margin: 0;
+    }
+
+    .nav-user > ul > li > .link,
+    .nav-user > ul > li > .link:hover,
+    .nav-user > ul > li > .link:focus {
+        font-size: 14px;
+    }
+
+    .nav-sidebar > li > .link, 
+    .nav-sidebar > li:not(.active) > .link:hover, 
+    .nav-sidebar > li:not(.active) > .link:focus {
+        padding: 10px !important;
+    }
+
+    .nav-user li,
+    .sidebar-category .nav-user li {
+        border: 0 !important;
+    }
+    
+    .nav-user .avatar {
+        display: none;
+    }
+    
+    .nav-user-action {
+        width: 70px;
+    }
+
+    .sidebar-category .nav-main li {
+        text-align: left;
+    }
+
+    .sidebar-category .nav-main .nav-sidebar-label {
+        display: inline;
+    }
+
+    .sidebar-category .nav-user li {
+        width: 50%;
+        float: left;
+    }
+    
+    .nav-user-action .nav-user-func {
+        width: 50%;
+        float: left;
+        padding: 10px;
+    }
+    
+    .nav-sidebar-form,
+    .nav-sidebar-search-wrapper {
+        display: none;
     }
 
     .sidebar-category {
@@ -1549,14 +1691,27 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
         width: auto;
     }
 
-    .sidebar-category .nav-sidebar-label {
-        display: block;
+    .sidebar-category h1 {
+        margin-bottom: 0;
     }
-
-    .sidebar-category h1 {}
 
     .sidebar-category-nav {
         display: none;
+        bottom: inherit;
+        top: 40px;
+        left: 50%;
+        width: 50%;
+        height: 220px;
+        z-index: 10001;
+    }
+
+    .sidebar-category-nav.open {
+        display: block;
+    }
+
+    .sidebar-category-nav .nav {
+        margin-top: 10px;
+        
     }
 
     .sidebar-footer {
@@ -1566,6 +1721,14 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
     .sidebar-footer.sidebar-footer-category {
         width: 150px;
         left: 60px;
+    }
+    
+    .sub-title {
+        font-size: 20px;
+    }
+    
+    .nav-bottom {
+        display: none;
     }
 
     .sponsor-banner {
