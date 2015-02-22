@@ -82,6 +82,10 @@
             <li <g:if test="${category.code == parentCategory?.code}">class="active"</g:if> <g:if test="${isSub}">data-toggle="tooltip" data-placement="right" data-container="body" title="<g:message code="${category.labelCode}" default="${category.defaultLabel}" />"</g:if>><g:link uri="/articles/${category.code}" class="link"><i class="nav-icon ${category.iconCssNames}"></i> <span class="nav-sidebar-label nav-sidebar-category-label"><g:message code="${category.labelCode}" default="${category.defaultLabel}" /></span></g:link></li>
         </g:each>
     </ul>
+
+    <ul class="nav nav-sidebar nav-bottom">
+        <li <g:if test="${isSub}">data-toggle="tooltip" data-placement="right" data-container="body" title="Github Issues"</g:if>><g:link url="https://github.com/okjsp/okky/issues" class="link" target="_blank"><i class="fa fa-github"></i> <span class="nav-sidebar-label nav-sidebar-category-label">Github Issues</span></g:link></li>
+    </ul>
 </div>
 <g:if test="${isSub}">
 <g:set var="subCategories" value="${category.children ?: category.parent?.children}"/>
