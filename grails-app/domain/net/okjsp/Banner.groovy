@@ -6,6 +6,7 @@ class Banner {
     String name
     String image
     String url
+    String target
     int clickCount = 0
     boolean visible = true
 
@@ -13,6 +14,7 @@ class Banner {
     Date lastUpdated
 
     static constraints = {
+        target nullable: true
     }
 
     static mapping = {

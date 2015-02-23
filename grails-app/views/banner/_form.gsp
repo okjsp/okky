@@ -2,6 +2,15 @@
 
 
 
+<div class="fieldcontain ${hasErrors(bean: banner, field: 'target', 'error')} ">
+	<label for="target">
+		<g:message code="banner.target.label" default="Target" />
+		
+	</label>
+	<g:textField name="target" value="${banner?.target}"/>
+
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: banner, field: 'clickCount', 'error')} required">
 	<label for="clickCount">
 		<g:message code="banner.clickCount.label" default="Click Count" />
@@ -44,6 +53,15 @@
 		<span class="required-indicator">*</span>
 	</label>
 	<g:textField name="url" required="" value="${banner?.url}"/>
+
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: banner, field: 'visible', 'error')} ">
+	<label for="visible">
+		<g:message code="banner.visible.label" default="Visible" />
+		
+	</label>
+	<g:checkBox name="visible" value="${banner?.visible}" />
 
 </div>
 

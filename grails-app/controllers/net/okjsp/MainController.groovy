@@ -5,6 +5,7 @@ class MainController {
     def mainService
     def userService
     def springSecurityService
+    def randomService
 
     def index() {
 
@@ -14,9 +15,16 @@ class MainController {
             it
         }
         
+        def mainBanners = Banner.where {
+            type == BannerType.MAIN && visible == true            
+        }.list()
+
+        def mainBanner = mainBanners ? randomService.draw(mainBanners) : null
+        
         return [
             isIndex: true,
             choiceArticles: mainService.getChoiceArticles(),
+            mainBanner : mainBanner,
             articleBlocks: [
                 [category: Category.get('questions'), articles: mainService.getQnaArticles().findAll(excludeManagedAvatarClosure)],
                 [category: Category.get('tech'), articles: mainService.getTechArticles().findAll(excludeManagedAvatarClosure)],

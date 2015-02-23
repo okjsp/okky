@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'banner.label', default: 'Banner')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
@@ -22,6 +22,15 @@
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 			<ol class="property-list banner">
+			
+				<g:if test="${banner?.target}">
+				<li class="fieldcontain">
+					<span id="target-label" class="property-label"><g:message code="banner.target.label" default="Target" /></span>
+					
+						<span class="property-value" aria-labelledby="target-label"><g:fieldValue bean="${banner}" field="target"/></span>
+					
+				</li>
+				</g:if>
 			
 				<g:if test="${banner?.clickCount}">
 				<li class="fieldcontain">
@@ -82,6 +91,15 @@
 					<span id="url-label" class="property-label"><g:message code="banner.url.label" default="Url" /></span>
 					
 						<span class="property-value" aria-labelledby="url-label"><g:fieldValue bean="${banner}" field="url"/></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${banner?.visible}">
+				<li class="fieldcontain">
+					<span id="visible-label" class="property-label"><g:message code="banner.visible.label" default="Visible" /></span>
+					
+						<span class="property-value" aria-labelledby="visible-label"><g:formatBoolean boolean="${banner?.visible}" /></span>
 					
 				</li>
 				</g:if>

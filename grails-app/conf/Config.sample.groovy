@@ -97,10 +97,12 @@ environments {
     development {
         grails.logging.jul.usebridge = true
         grails.serverURL = "http://localhost:8080/okky"
+        grails.fileURL = "http://file.okky.kr"
     }
     production {
         grails.logging.jul.usebridge = false
         grails.serverURL = "http://okky.kr"
+        grails.fileURL = "http://file.okky.kr"
         grails.app.context = "/"
         grails.assets.url = "http://okky.kr/assets/"
     }
