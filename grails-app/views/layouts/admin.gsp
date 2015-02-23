@@ -20,7 +20,7 @@
 		<div id="grailsLogo" role="banner"><h1 style="vertical-align: middle;"> <g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" style="vertical-align: middle;"/></g:link>| Administation Tools <g:if env="utest">(TEST SERVER)</g:if> </h1></div>
         <div class="nav" role="navigation">
             <ul>
-                <li class="controller"><g:link controller="User">베너</g:link></li>
+                <li class="controller"><g:link controller="banner">베너</g:link></li>
             </ul>
         </div>
 		<g:layoutBody/>
