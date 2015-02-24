@@ -9,7 +9,7 @@
     <g:sidebar/>
     <g:if test="${mainBanner}">
         <div class="main-banner-wrapper">
-            <div class="main-banner"><a href="${mainBanner.url}" <g:if test="${mainBanner.target}">target="${mainBanner.target}"</g:if>><img src="${grailsApplication.config.grails.fileURL}/banner/${mainBanner.image}" /></a></div>
+            <div class="main-banner"><a href="${mainBanner.url}" <g:if test="${mainBanner.target}">target="${mainBanner.target}"</g:if>><img src="${mainBanner.image}" /></a></div>
         </div>
     </g:if>
     <div id="index" class="content scaffold-list clearfix" role="main">
