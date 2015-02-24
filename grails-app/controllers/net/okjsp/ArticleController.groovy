@@ -1,5 +1,6 @@
 package net.okjsp
 
+import com.memetix.random.RandomService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.validation.ValidationException
@@ -14,6 +15,7 @@ class ArticleController {
     ArticleService articleService
     SpringSecurityService springSecurityService
     UserService userService
+    RandomService randomService
 
     static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: ["DELETE","POST"], scrap: "POST",
                              addNote: "POST", assent: ["PUT","POST"], dissent: ["PUT","POST"]]
@@ -83,7 +85,13 @@ class ArticleController {
             notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
         }
 
-        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped]
+        def contentBanners = Banner.where {
+            type == BannerType.CONTENT && visible == true
+        }.list()
+
+        def contentBanner = contentBanners ? randomService.draw(contentBanners) : null
+
+        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
     }
 
     def create(String code) {

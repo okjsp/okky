@@ -99,9 +99,11 @@
                 </div>
             </div>
 
-            <div class="sub-banner-wrapper">
-                <div class="sub-banner"><a href="http://www.devlec.com/?_pageVariable=OKJSP" target="_blank"><img src="http://www.devlec.com/images/devlec_okjsp.gif"/></a></div>
-            </div>
+            <g:if test="${contentBanner}">
+                <div class="sub-banner-wrapper">
+                    <div class="sub-banner"><a href="${contentBanner.url}" <g:if test="${contentBanner.target}">target="${contentBanner.target}"</g:if>><img src="${contentBanner.image}" /></a></div>
+                </div>
+            </g:if>
 
             <div class="panel panel-default clearfix">
                 <!-- List group -->
