@@ -3,6 +3,7 @@
 	<head>
 		<meta name="layout" content="main"/>
 		<title>All That Developer</title>
+        <meta name="google-site-verification" content="DkGncyJVqYFVekHithdbYnKgklkyKVwruPZ18WUDjr0" />
 	</head>
 	<body>
     <g:sidebar/>

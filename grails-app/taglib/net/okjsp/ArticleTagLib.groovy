@@ -193,7 +193,7 @@ class ArticleTagLib {
      *
      */
     def description = { attrs, body ->
-        def text = attrs.text ?: body()
+        String text = attrs.text ?: body()
         def length = attrs.length ?: 0
         text = text.replaceAll("<(style|script)(.*?)>(.*?)</(.*?)>", '');
         text = text.replaceAll("&(.*?);", ' ');
@@ -201,7 +201,7 @@ class ArticleTagLib {
         text = text.replaceAll("\n", ' ');
 
         if(length > 0 && length < text.size()) {
-            text =text.substring(0, length)
+            text = text.substring(0, length)
         }
 
         out << text
