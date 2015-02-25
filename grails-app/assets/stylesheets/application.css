@@ -31,6 +31,16 @@ a {
 
 pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 
+pre {
+    word-break: normal;
+    word-wrap: normal;
+    overflow-x: auto;
+}
+
+pre code {
+    white-space: inherit;
+}
+
 .form {
     margin-top: 20px;
 }
@@ -202,6 +212,7 @@ pre.prettyprint{padding:9.5px !important; border:1px solid #ccc !important}
 
 .main-banner  img {
     width: 100%;
+    max-height: 185px;
 }
 
 .sub-banner-wrapper {

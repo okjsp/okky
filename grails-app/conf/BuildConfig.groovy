@@ -84,6 +84,8 @@ grails.project.dependency.resolution = {
         compile ":spring-security-oauth-facebook:0.2"
         compile ":spring-security-oauth-google:0.3.1"
 
+        compile ":random:0.2"
+
         compile ":mail:1.0.7"
 
         // plugins needed at runtime but not for compilation

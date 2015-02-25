@@ -16,11 +16,10 @@
     <g:else>
         <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
 
-        <form name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.query.value;">
+        <form name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.qt.value;">
             <div class="input-group">
-                <input type="text" name="query" class="form-control input-sm" placeholder="Search" />
+                <input type="text" name="qt" class="form-control input-sm" placeholder="Search" />
                 <input type="hidden" name="q" />
-                <input type="hidden" name="ie" value="utf-8"/>
                 <span class="input-group-btn">
                     <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i></button>
                 </span>

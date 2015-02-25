@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=utf-8" %>
 <%@ page import="net.okjsp.Article" %>
 <%@ page import="net.okjsp.Content" %>
 <%@ page import="net.okjsp.ContentTextType" %>
@@ -12,7 +13,7 @@
         <meta property="og:site_name" content="OKKY">
         <meta property="og:url" content="${grailsApplication.config.grails.serverURL}/article/${article.id}">
         <meta property="og:image" content="${resource(dir: 'images', file: 'okky_logo_fb.png')}">
-        <meta property="og:description" content="${description(text:article.content?.text, size: 50)}">
+        <meta property="og:description" content="${description(text:article.content?.text, length: 200)}">
         <meta property="og:title" content="OKKY | ${article.title}">
     </head>
 	<body>
@@ -98,9 +99,11 @@
                 </div>
             </div>
 
-            <div class="sub-banner-wrapper">
-                <div class="sub-banner"><a href="http://www.devlec.com/?_pageVariable=OKJSP" target="_blank"><img src="http://www.devlec.com/images/devlec_okjsp.gif"/></a></div>
-            </div>
+            <g:if test="${contentBanner}">
+                <div class="sub-banner-wrapper">
+                    <div class="sub-banner"><a href="${contentBanner.url}" <g:if test="${contentBanner.target}">target="${contentBanner.target}"</g:if>><img src="${contentBanner.image}" /></a></div>
+                </div>
+            </g:if>
 
             <div class="panel panel-default clearfix">
                 <!-- List group -->

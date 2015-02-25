@@ -3,12 +3,15 @@
 	<head>
 		<meta name="layout" content="main"/>
 		<title>All That Developer</title>
+        <meta name="google-site-verification" content="DkGncyJVqYFVekHithdbYnKgklkyKVwruPZ18WUDjr0" />
 	</head>
 	<body>
     <g:sidebar/>
-    <div class="main-banner-wrapper">
-        <div class="main-banner"><a href="${request.contextPath}/article/272275"><img src="${resource(dir: 'images', file: 'main-banner.jpg')}" /></a></div>
-    </div>
+    <g:if test="${mainBanner}">
+        <div class="main-banner-wrapper">
+            <div class="main-banner"><a href="${mainBanner.url}" <g:if test="${mainBanner.target}">target="${mainBanner.target}"</g:if>><img src="${mainBanner.image}" /></a></div>
+        </div>
+    </g:if>
     <div id="index" class="content scaffold-list clearfix" role="main">
         <div class="col-sm-12 main-block-all">
             <h4 class="main-header"><i class="fa fa-flag"></i> Editor's Choice</h4>

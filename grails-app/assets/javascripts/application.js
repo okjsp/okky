@@ -50,7 +50,6 @@ if (typeof jQuery !== 'undefined') {
         });
         
         $('html, body').click(function(e) {
-            console.log($(e.target));
             if(!$(e.target).is('.sidebar-header  *, .nav-main *, .sidebar-category-nav *')) {
                 $('.sidebar').removeClass('open');
                 $('.sidebar-category-nav').removeClass('open');

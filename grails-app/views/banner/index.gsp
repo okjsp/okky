@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="admin">
 		<g:set var="entityName" value="${message(code: 'banner.label', default: 'Banner')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
@@ -23,18 +23,16 @@
 			<table>
 			<thead>
 					<tr>
+
+                        <g:sortableColumn property="name" title="${message(code: 'banner.name.label', default: 'Name')}" />
+					
+						<g:sortableColumn property="target" title="${message(code: 'banner.target.label', default: 'Target')}" />
 					
 						<g:sortableColumn property="clickCount" title="${message(code: 'banner.clickCount.label', default: 'Click Count')}" />
-					
-						<g:sortableColumn property="dateCreated" title="${message(code: 'banner.dateCreated.label', default: 'Date Created')}" />
-					
-						<g:sortableColumn property="image" title="${message(code: 'banner.image.label', default: 'Image')}" />
+
+                        <g:sortableColumn property="dateCreated" title="${message(code: 'banner.dateCreated.label', default: 'Date Created')}" />
 					
 						<g:sortableColumn property="lastUpdated" title="${message(code: 'banner.lastUpdated.label', default: 'Last Updated')}" />
-					
-						<g:sortableColumn property="name" title="${message(code: 'banner.name.label', default: 'Name')}" />
-					
-						<g:sortableColumn property="type" title="${message(code: 'banner.type.label', default: 'Type')}" />
 					
 					</tr>
 				</thead>
@@ -42,17 +40,15 @@
 				<g:each in="${bannerList}" status="i" var="banner">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="show" id="${banner.id}">${fieldValue(bean: banner, field: "clickCount")}</g:link></td>
+						<td><g:link action="show" id="${banner.id}">${fieldValue(bean: banner, field: "name")}</g:link></td>
+
+                        <td>${fieldValue(bean: banner, field: "target")}</td>
+					
+						<td>${fieldValue(bean: banner, field: "clickCount")}</td>
 					
 						<td><g:formatDate date="${banner.dateCreated}" /></td>
 					
-						<td>${fieldValue(bean: banner, field: "image")}</td>
-					
 						<td><g:formatDate date="${banner.lastUpdated}" /></td>
-					
-						<td>${fieldValue(bean: banner, field: "name")}</td>
-					
-						<td>${fieldValue(bean: banner, field: "type")}</td>
 					
 					</tr>
 				</g:each>

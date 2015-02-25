@@ -1,5 +1,6 @@
 package net.okjsp
 
+import com.memetix.random.RandomService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.validation.ValidationException
@@ -14,9 +15,16 @@ class ArticleController {
     ArticleService articleService
     SpringSecurityService springSecurityService
     UserService userService
+    RandomService randomService
+
+    static responseFormats = ['html', 'json']
 
     static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: ["DELETE","POST"], scrap: "POST",
                              addNote: "POST", assent: ["PUT","POST"], dissent: ["PUT","POST"]]
+    
+    def beforeInterceptor = {
+        response.characterEncoding = 'UTF-8' //workaround for https://jira.grails.org/browse/GRAILS-11830
+    }
 
     def index(String code, Integer max) {
         params.max = Math.min(max ?: 20, 100)
@@ -83,7 +91,13 @@ class ArticleController {
             notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
         }
 
-        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped]
+        def contentBanners = Banner.where {
+            type == BannerType.CONTENT && visible == true
+        }.list()
+
+        def contentBanner = contentBanners ? randomService.draw(contentBanners) : null
+
+        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
     }
 
     def create(String code) {
