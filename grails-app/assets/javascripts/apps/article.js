@@ -2,7 +2,9 @@
 //= require apps/note
 //= require apps/vote
 //= require apps/scrap
+//= require apps/utils
 //= require_self
+
 $(function() {
     $('#article-delete-btn').click(function () {
         if (confirm('정말로 삭제하시겠습니까?')) {
@@ -18,5 +20,9 @@ $(function() {
 
         window.open(this.href, 'fbshare_pop',"width="+w+",height="+h+",left="+left+",top="+top+",scrollbars=no,resizable=no");
         e.preventDefault();
+    });
+    
+    $('article.content-text, article.note-text').each(function() {
+        autoLinker(this);
     });
 });
