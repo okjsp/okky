@@ -168,8 +168,8 @@ grails.plugin.springsecurity.securityConfigType = "InterceptUrlMap"
 // Added by the Recaptcha plugin:
 recaptcha.active = true
 recaptcha.enabled = true
-recaptcha.publicKey = ""
-recaptcha.privateKey = ""
+recaptcha.publicKey = "6Lf6sgITAAAAAAdxqNe-5zjdxJyXP8TkSuDhWmsC"
+recaptcha.privateKey = "6Lf6sgITAAAAAHkTEMQaS-smRk42JYu43SuJi1mS"
 recaptcha.includeNoScript = true
 recaptcha.forceLanguageInURL = false
 recaptcha.useSecureAPI = true
@@ -185,8 +185,8 @@ environments {
             debug = false
             providers {
                 facebook {
-                    key = '1539685662974940'
-                    secret = '0c5a89652494fd7d11c217b4a4a3fb36'
+                    key = '892426937476416'
+                    secret = '3a607e0138aa2251156702c5234f31d7'
                     successUri = '/oauth/facebook/success'
                     failureUri = '/oauth/facebook/failure'
                     callback = "${baseURL}/oauth/facebook/callback"
