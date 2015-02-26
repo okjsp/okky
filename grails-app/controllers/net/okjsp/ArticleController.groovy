@@ -17,8 +17,14 @@ class ArticleController {
     UserService userService
     RandomService randomService
 
+    static responseFormats = ['html', 'json']
+
     static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: ["DELETE","POST"], scrap: "POST",
                              addNote: "POST", assent: ["PUT","POST"], dissent: ["PUT","POST"]]
+    
+    def beforeInterceptor = {
+        response.characterEncoding = 'UTF-8' //workaround for https://jira.grails.org/browse/GRAILS-11830
+    }
 
     def index(String code, Integer max) {
         params.max = Math.min(max ?: 20, 100)
