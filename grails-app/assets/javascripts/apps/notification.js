@@ -16,7 +16,7 @@ $(function() {
                 var notificationsHtml = '';
 
                 $('#user-notification-count').hide();
-                $('#user-func-icon').show();
+                $('#user-notification-icon').show();
 
                 $(data.notifications).each(function(i, notification) {
                     var senders = '', date, text = Mustache.render(notificationText[notification.type], notification);
