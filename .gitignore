@@ -12,3 +12,8 @@
 *.log
 Config.groovy
 *.db
+
+.classpath
+.project
+.settings
+target-eclipse
