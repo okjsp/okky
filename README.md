@@ -22,7 +22,9 @@ OKKY
 Clone 받은 소스를 실행하기 전에 `/grails-app/conf/Config.sample.groovy` 파일을 복사하여 `/grails-app/conf/Config.groovy` 를 생성해 주어야 합니다.
 
 ## 참고 자료
-- @kenu 님의 ['okky.kr 소스 실행하기'](http://okky.kr/article/272699) 강좌
 
+### 개발 환경 설정
 
+  * [Windows7 에서 OKKY 소스 실행하기](http://okky.kr/article/272699) @kenu 님의 동영상 강좌
+  * [OS X 에서 OKKY 개발 시작하기](BUILDING_OSX.md)
 
