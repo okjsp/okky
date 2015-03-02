@@ -1630,7 +1630,7 @@ pre code {
     }
     
     .sidebar.open {
-        height: 260px;
+        height: 350px;
     }
     
     .nav-main {
@@ -1712,11 +1712,13 @@ pre code {
         width: 70px;
     }
 
-    .sidebar-category .nav-main li {
+    .sidebar-category .nav-main li,
+    .sidebar-category .nav-bottom li{
         text-align: left;
     }
 
-    .sidebar-category .nav-main .nav-sidebar-label {
+    .sidebar-category .nav-main .nav-sidebar-label,
+    .sidebar-category .nav-bottom .nav-sidebar-label {
         display: inline;
     }
 
@@ -1731,9 +1733,8 @@ pre code {
         padding: 10px;
     }
     
-    .nav-sidebar-form,
-    .nav-sidebar-search-wrapper {
-        display: none;
+    .nav-sidebar-form{
+        padding: 10px;
     }
 
     .sidebar-category {
@@ -1751,10 +1752,10 @@ pre code {
     .sidebar-category-nav {
         display: none;
         bottom: inherit;
-        top: 40px;
+        top: 85px;
         left: 50%;
         width: 50%;
-        height: 220px;
+        height: 265px;
         z-index: 10001;
     }
 
@@ -1779,9 +1780,24 @@ pre code {
     .sub-title {
         font-size: 20px;
     }
-    
-    .nav-bottom {
+
+    .nav-sidebar.nav-bottom {
+        margin: 10px 0 0 10px;
+        width: 50%;
+        float: left;
+    }
+
+    .sidebar-category .nav-bottom {
+        display: block;
+        border-left: 4px solid #9fb0c9;
+    }
+
+    .sidebar-category #search-google-icon {
         display: none;
+    }
+
+    .sidebar-category #search-google-form {
+        display: block;
     }
 
     .sponsor-banner {

@@ -51,7 +51,7 @@ if (typeof jQuery !== 'undefined') {
         });
         
         $('html, body').click(function(e) {
-            if(!$(e.target).is('.sidebar-header  *, .nav-main *, .sidebar-category-nav *')) {
+            if(!$(e.target).is('.sidebar-header  *, .nav-main *, .sidebar-category-nav *, #search-google-form *')) {
                 $('.sidebar').removeClass('open');
                 $('.sidebar-category-nav').removeClass('open');
             }
