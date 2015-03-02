@@ -67,11 +67,6 @@ $(function() {
         html: true
     });
 
-    function whereToPlacePopover(){
-        if ($(window).width()<768) return 'bottom';
-        return 'right';
-    }
-
     $(document).delegate('#notification-popover .notification-link', 'click' , function(e) {
         var data = $(this).data();
         location.href = contextPath+'/article/'+data.article+'?note='+data.content;

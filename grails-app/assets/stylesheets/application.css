@@ -301,9 +301,26 @@ pre code {
     text-align: center;
 }
 
+#search-google-icon {
+    display: none;
+}
+
+.sidebar-category #search-google-icon {
+    display: block;
+}
+
+#search-google-form {
+    display: block;
+}
+
+.sidebar-category #search-google-form {
+    display: none;
+}
+
 .nav-sidebar-search {
     margin-bottom: 5px;
 }
+
 
 .sidebar-category-nav {
     display: block;
@@ -692,9 +709,13 @@ pre code {
     border-left: 1px solid #00519c;
 }
 
-.popover-notification {
+.popover-fixed {
     position: fixed !important;
     max-width: 400px;
+}
+
+#search-google-popover {
+    padding: 0;
 }
 
 #notification-popover {

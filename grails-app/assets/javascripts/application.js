@@ -16,6 +16,7 @@
 //= require libs/mustache
 //= require libs/jquery.timeago
 //= require libs/jquery.timeago-ko-KR
+//= require apps/utils
 //= require_self
 
 
@@ -53,6 +54,10 @@ if (typeof jQuery !== 'undefined') {
             if(!$(e.target).is('.sidebar-header  *, .nav-main *, .sidebar-category-nav *')) {
                 $('.sidebar').removeClass('open');
                 $('.sidebar-category-nav').removeClass('open');
+            }
+            
+            if(!$(e.target).is('#search-google *, #search-google-popover *')) {
+                $('#search-google').popover('hide');
             }
         });
 
