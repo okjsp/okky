@@ -62,7 +62,7 @@ class ArticleController {
     @Transactional
     def show(Long id) {
 
-        def contentVotes = [], notes, scrapped
+        def contentVotes = [], scrapped
 
         Article article = Article.get(id)
 
@@ -79,22 +79,7 @@ class ArticleController {
             scrapped = Scrap.findByArticleAndAvatar(article, avatar)
         }
 
-        if(article.category.useEvaluate) {
-            def notesCriteria = Content.createCriteria()
-            notes = notesCriteria {
-                and {
-                    eq("article", article)
-                    eq("type", ContentType.NOTE)
-                }
-                and {
-                    order("selected", "desc")
-                    order("voteCount", "desc")
-                    order("id", "asc")
-                }
-            }
-        } else {
-            notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
-        }
+        def notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
 
         def contentBanners = Banner.where {
             type == BannerType.CONTENT && visible == true
