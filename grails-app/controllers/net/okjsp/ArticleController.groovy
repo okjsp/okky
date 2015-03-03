@@ -38,8 +38,6 @@ class ArticleController {
             notFound()
             return
         }
-        
-        println "query : ${params.query} :"
 
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]

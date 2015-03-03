@@ -27,14 +27,14 @@ class NotificationJob {
         def notes = Content.findAll {
             and {
                 eq('type', ContentType.NOTE)
-                ge('dateCreated', lastSend)
+                gt('dateCreated', lastSend)
             }
         }
 
         def votes = ContentVote.findAll {
             and {
                 gt('point', 0)
-                ge('dateCreated', lastSend)
+                gt('dateCreated', lastSend)
             }
         }
 
