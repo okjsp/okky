@@ -357,6 +357,10 @@
                 }
 
                 switch (event.which) {
+                    // Enter
+                    case 13:
+                        event.preventDefault();
+                        break;
                     // BACKSPACE
                     case 8:
                         if (doGetCaretPosition($input[0]) === 0) {
@@ -409,12 +413,7 @@
             self.$container.on('keyup', 'input', $.proxy(function(event) {
                 var $input = $(event.target);
 
-                if (self.$element.attr('disabled')) {
-                    self.$input.attr('disabled', 'disabled');
-                    return;
-                }
-
-                var text = $input.val().substr(0, $input.val().length-1),
+                var text = $input.val().substr(0, $input.val().length),
                     maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
                 if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
                     self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
