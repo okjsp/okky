@@ -1256,6 +1256,10 @@ pre code {
     behavior: url(/css/PIE.htc);
 }
 
+.has-error .bootstrap-tagsinput {
+    border-color: #a94442;
+}
+
 .table td {
     padding: 8px 15px !important;
 }
