@@ -45,8 +45,12 @@ class Article {
         voteCount bindable: false
         noteCount bindable: false
         scrapCount bindable: false
-        tags nullable: true, maxSize: 5
-        tagString nullable: true
+        tags maxSize: 5, nullable: true
+        tagString nullable: true, validator: { val, obj ->
+            if(obj.category?.requireTag) {
+                if(!val) return ["default.null.message"]
+            }
+        }
         notes bindable: false
         enabled bindable: false
         selectedNote nullable: true, bindable: false

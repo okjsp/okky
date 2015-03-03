@@ -27,6 +27,19 @@ class UserService {
 
         result
     }
+    
+    def updateUser(User userInstance) {
+
+        userInstance.avatar.setPictureBySns(userInstance)
+
+        // 유저 연관 정보 선 저장
+        userInstance.person.save(failOnError: true)
+        userInstance.avatar.save(failOnError: true)
+
+        def result = userInstance.save(failOnError: true)
+
+        result
+    }
 
     def createConfirmEmail(User userInstance) {
 

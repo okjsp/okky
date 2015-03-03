@@ -63,7 +63,7 @@
 
 <div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
     <div>
-        <g:textField name="tagString" value="${article?.tagString}" placeholder="Tags, (Optional)" data-role="tagsinput" class="form-control"/>
+        <g:textField name="tagString" value="${article?.tagString}" placeholder="Tags," data-role="tagsinput" class="form-control"/>
     </div>
 </div>
 

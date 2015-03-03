@@ -14,7 +14,7 @@
                 <g:avatar avatar="${user.avatar}" size="medium" />
             </div>
             <g:form url="[resource:user, action:'update']" class="form-signup form-user panel-body" method='PUT' id='loginForm' autocomplete='off'>
-                <g:hasErrors>
+                <g:hasErrors model="[user:user, userAvatar:user.avatar, userPerson:user.person]">
                     <div  class="alert alert-danger" role="alert">
                         <ul>
                             <g:eachError bean="${user}" var="error">

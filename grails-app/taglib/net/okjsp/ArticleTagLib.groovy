@@ -238,12 +238,14 @@ class ArticleTagLib {
     private def shortenNumber(def orgNumber) {
 
         def unit = ['','k','m','b','t']
-        int count = 0;
-        int number = orgNumber
+        int count = 0
+        int number = orgNumber > 0 ? orgNumber : orgNumber*-1
         while (number >= 1000) {
-            number /= 1000;
-            count++;
+            number /= 1000
+            count++
         }
+        
+        if(orgNumber < 0) number *= -1
 
         "${number}${unit[count]}"
     }

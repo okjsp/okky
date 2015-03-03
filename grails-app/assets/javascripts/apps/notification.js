@@ -16,7 +16,7 @@ $(function() {
                 var notificationsHtml = '';
 
                 $('#user-notification-count').hide();
-                $('#user-func-icon').show();
+                $('#user-notification-icon').show();
 
                 $(data.notifications).each(function(i, notification) {
                     var senders = '', date, text = Mustache.render(notificationText[notification.type], notification);
@@ -66,11 +66,6 @@ $(function() {
         template: $('#notification-template').html(),
         html: true
     });
-
-    function whereToPlacePopover(){
-        if ($(window).width()<768) return 'bottom';
-        return 'right';
-    }
 
     $(document).delegate('#notification-popover .notification-link', 'click' , function(e) {
         var data = $(this).data();

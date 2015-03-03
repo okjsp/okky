@@ -30,6 +30,7 @@ class ArticleController {
         params.max = Math.min(max ?: 20, 100)
         params.sort = params.sort ?: 'id'
         params.order = params.order ?: 'desc'
+        params.query = params.query?.trim()
 
         def category = Category.get(code)
 
@@ -38,12 +39,14 @@ class ArticleController {
             return
         }
 
-        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
+//        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
 
         def articlesQuery = Article.where {
-            category in categories &&
-            enabled == true
+            category in categories && enabled == true
+            if(params.query && params.query != '')
+                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+
         }
 
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
@@ -57,7 +60,7 @@ class ArticleController {
     @Transactional
     def show(Long id) {
 
-        def contentVotes = [], notes, scrapped
+        def contentVotes = [], scrapped
 
         Article article = Article.get(id)
 
@@ -74,22 +77,7 @@ class ArticleController {
             scrapped = Scrap.findByArticleAndAvatar(article, avatar)
         }
 
-        if(article.category.useEvaluate) {
-            def notesCriteria = Content.createCriteria()
-            notes = notesCriteria {
-                and {
-                    eq("article", article)
-                    eq("type", ContentType.NOTE)
-                }
-                and {
-                    order("selected", "desc")
-                    order("voteCount", "desc")
-                    order("id", "asc")
-                }
-            }
-        } else {
-            notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
-        }
+        def notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
 
         def contentBanners = Banner.where {
             type == BannerType.CONTENT && visible == true
