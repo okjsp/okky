@@ -20,6 +20,7 @@ class Category implements Serializable {
     boolean useEvaluate
     boolean useNote
     boolean useOpinion
+    boolean requireTag = false
 
     static belongsTo = [parent: Category]
 

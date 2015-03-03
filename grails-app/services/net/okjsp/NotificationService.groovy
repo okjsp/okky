@@ -17,8 +17,6 @@ class NotificationService {
 
             notification.save(failOnError: true)
 
-            println "Note Notification : ${notification}"
-
         }
 
         // 이전 댓글 작성자 3명 에게 노티 보냄
@@ -32,8 +30,6 @@ class NotificationService {
 
         def uniqAuthors = latestNotes.collect { it.author }.unique()
 
-        println uniqAuthors
-
         uniqAuthors.each { noteAuthor ->
             println "Note Authors ${noteAuthor} / ${content.author} / ${content.article.author} : ${noteAuthor != content.author}"
             if(noteAuthor != content.article.author &&
@@ -46,8 +42,6 @@ class NotificationService {
                 notificationAfter.content = content
 
                 notificationAfter.save(flush: true)
-
-                println "Note Notification After : ${notificationAfter}"
 
             }
         }

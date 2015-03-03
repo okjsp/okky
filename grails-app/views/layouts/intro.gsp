@@ -37,6 +37,7 @@
             var contextPath = "${request.contextPath}", encodedURL = "${encodedURL()}";
         </script>
         <asset:javascript src="application.js" />
+        <asset:javascript src="apps/search.js" />
         <sec:ifLoggedIn>
             <asset:javascript src="apps/notification.js" />
         </sec:ifLoggedIn>

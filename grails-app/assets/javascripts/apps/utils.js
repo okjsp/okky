@@ -14,3 +14,8 @@ var autoLinker = function(node) {
         }
     });
 };
+
+var whereToPlacePopover = function(){
+    if ($(window).width()<768) return 'bottom';
+    return 'right';
+}

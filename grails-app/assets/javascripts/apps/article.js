@@ -2,7 +2,6 @@
 //= require apps/note
 //= require apps/vote
 //= require apps/scrap
-//= require apps/utils
 //= require_self
 
 $(function() {

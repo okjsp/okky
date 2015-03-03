@@ -7,25 +7,21 @@
         <i class="fa fa-bars sidebar-header-icon"></i>
     </a>
     
-    <g:if test="${isSub}">
-        <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
-        <ul class="nav nav-sidebar nav-sidebar-search-wrapper">
-            <li class="nav-sidebar-search"><a class="link"><i class="fa fa-search"></i></a></li>
-        </ul>
-    </g:if>
-    <g:else>
-        <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
+    <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
 
-        <form name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.qt.value;">
-            <div class="input-group">
-                <input type="text" name="qt" class="form-control input-sm" placeholder="Search" />
-                <input type="hidden" name="q" />
-                <span class="input-group-btn">
-                    <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i></button>
-                </span>
-            </div>
-        </form>
-    </g:else>
+    <ul id="search-google-icon" class="nav nav-sidebar nav-sidebar-search-wrapper">
+        <li class="nav-sidebar-search"><a href="javascript://" class="link" id="search-google" data-toggle="popover" data-trigger="click"><i class="fa fa-search"></i></a></li>
+    </ul>
+
+    <form id="search-google-form" name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search">
+        <div class="input-group">
+            <input type="text" name="qt" class="form-control input-sm" placeholder="Google 검색" />
+            <input type="hidden" name="q" />
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </form>
 
     <div class="nav-user nav-sidebar">
         <sec:ifLoggedIn>
@@ -51,21 +47,39 @@
             <g:form controller="logout" method="post" style="display:none;"><g:submitButton name="logoutButton" /></g:form>
 
             <script id="setting-template" type="text/template">
-            <div class="popover popover-notification" role="tooltip"><div class="arrow"></div>
-                <h3 class="popover-title"></h3>
-                <div class="popover-footer clearfix" id="user-func-popover">
-                    <label href="" for="logoutButton" class="popover-btn"><i class="fa fa-sign-out"></i> 로그아웃</label>
-                    <g:link uri="/user/edit" class="popover-btn"><i class="fa fa-user"></i> 정보수정</g:link>
+                <div class="popover popover-fixed" role="tooltip"><div class="arrow"></div>
+                    <h3 class="popover-title"></h3>
+                    <div class="popover-footer clearfix" id="user-func-popover">
+                        <label href="" for="logoutButton" class="popover-btn"><i class="fa fa-sign-out"></i> 로그아웃</label>
+                        <g:link uri="/user/edit" class="popover-btn"><i class="fa fa-user"></i> 정보수정</g:link>
+                    </div>
                 </div>
-            </div>
             </script>
 
             <script id="notification-template" type="text/template">
-            <div class="popover popover-notification" role="tooltip"><div class="arrow"></div>
-                <h3 class="popover-title"></h3>
-                <div class="popover-content" id="notification-popover"></div>
-            </div>
+                <div class="popover popover-fixed" role="tooltip"><div class="arrow"></div>
+                    <h3 class="popover-title"></h3>
+                    <div class="popover-content" id="notification-popover"></div>
+                </div>
             </script>
+            
+            <script id="search-google-template" type="text/template">
+                <div class="popover popover-fixed" role="tooltip"><div class="arrow"></div>
+                    <h3 class="popover-title">Google 검색</h3>
+                    <div class="popover-content" id="search-google-popover">
+                        <form id="search-google-form" name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.qt.value;">
+                            <div class="input-group">
+                                <input type="text" name="qt" class="form-control input-sm" placeholder="Google 검색" />
+                                <input type="hidden" name="q" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </script>
+            
         </sec:ifLoggedIn>
         <sec:ifNotLoggedIn>
             <g:set var="redirectUrl" value="${request.forwardURI.substring(request.contextPath.length())}" />

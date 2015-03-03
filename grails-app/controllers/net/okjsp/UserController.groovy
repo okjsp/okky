@@ -172,15 +172,22 @@ class UserController {
             respond user.errors, view:'edit'
             return
         }
+        
+        try {
 
-        user.save flush:true
+            userService.updateUser user
 
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), user.id])
-                redirect action: 'edit'
+            request.withFormat {
+                form multipartForm {
+                    flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), user.id])
+                    redirect action: 'edit'
+                }
+                '*'{ respond user, [status: OK] }
             }
-            '*'{ respond user, [status: OK] }
+
+        } catch (ValidationException e) {
+            user.oAuthIDs = OAuthID.findAllByUser(user)
+            respond user.errors, view: 'edit'
         }
     }
 

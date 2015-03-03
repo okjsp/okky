@@ -301,9 +301,26 @@ pre code {
     text-align: center;
 }
 
+#search-google-icon {
+    display: none;
+}
+
+.sidebar-category #search-google-icon {
+    display: block;
+}
+
+#search-google-form {
+    display: block;
+}
+
+.sidebar-category #search-google-form {
+    display: none;
+}
+
 .nav-sidebar-search {
     margin-bottom: 5px;
 }
+
 
 .sidebar-category-nav {
     display: block;
@@ -692,9 +709,13 @@ pre code {
     border-left: 1px solid #00519c;
 }
 
-.popover-notification {
+.popover-fixed {
     position: fixed !important;
     max-width: 400px;
+}
+
+#search-google-popover {
+    padding: 0;
 }
 
 #notification-popover {
@@ -897,6 +918,16 @@ pre code {
     color: #999;
 }
 
+
+.category-filter-wrapper {
+    margin-top: 20px;
+    
+}
+
+.category-filter-query {
+    width: 50%;
+}
+
 .list-sort {
     float: left;
     list-style: none;
@@ -917,6 +948,7 @@ pre code {
 .list-sort li > a.active {
     color: #555;
     font-weight: bold;
+    text-decoration: underline;
 }
 
 .list-filter-form {
@@ -1222,6 +1254,10 @@ pre code {
     vertical-align: top;
     margin-right: 20px;
     behavior: url(/css/PIE.htc);
+}
+
+.has-error .bootstrap-tagsinput {
+    border-color: #a94442;
 }
 
 .table td {
@@ -1609,7 +1645,7 @@ pre code {
     }
     
     .sidebar.open {
-        height: 260px;
+        height: 350px;
     }
     
     .nav-main {
@@ -1691,11 +1727,13 @@ pre code {
         width: 70px;
     }
 
-    .sidebar-category .nav-main li {
+    .sidebar-category .nav-main li,
+    .sidebar-category .nav-bottom li{
         text-align: left;
     }
 
-    .sidebar-category .nav-main .nav-sidebar-label {
+    .sidebar-category .nav-main .nav-sidebar-label,
+    .sidebar-category .nav-bottom .nav-sidebar-label {
         display: inline;
     }
 
@@ -1710,9 +1748,8 @@ pre code {
         padding: 10px;
     }
     
-    .nav-sidebar-form,
-    .nav-sidebar-search-wrapper {
-        display: none;
+    .nav-sidebar-form{
+        padding: 10px;
     }
 
     .sidebar-category {
@@ -1730,10 +1767,10 @@ pre code {
     .sidebar-category-nav {
         display: none;
         bottom: inherit;
-        top: 40px;
+        top: 85px;
         left: 50%;
         width: 50%;
-        height: 220px;
+        height: 265px;
         z-index: 10001;
     }
 
@@ -1758,9 +1795,24 @@ pre code {
     .sub-title {
         font-size: 20px;
     }
-    
-    .nav-bottom {
+
+    .nav-sidebar.nav-bottom {
+        margin: 10px 0 0 10px;
+        width: 50%;
+        float: left;
+    }
+
+    .sidebar-category .nav-bottom {
+        display: block;
+        border-left: 4px solid #9fb0c9;
+    }
+
+    .sidebar-category #search-google-icon {
         display: none;
+    }
+
+    .sidebar-category #search-google-form {
+        display: block;
     }
 
     .sponsor-banner {
@@ -1787,6 +1839,10 @@ pre code {
     }
 
     .content-function {
+        width: 100%;
+    }
+
+    .category-filter-query {
         width: 100%;
     }
 
