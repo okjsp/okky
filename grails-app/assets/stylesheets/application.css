@@ -918,6 +918,16 @@ pre code {
     color: #999;
 }
 
+
+.category-filter-wrapper {
+    margin-top: 20px;
+    
+}
+
+.category-filter-query {
+    width: 50%;
+}
+
 .list-sort {
     float: left;
     list-style: none;
@@ -938,6 +948,7 @@ pre code {
 .list-sort li > a.active {
     color: #555;
     font-weight: bold;
+    text-decoration: underline;
 }
 
 .list-filter-form {
@@ -1824,6 +1835,10 @@ pre code {
     }
 
     .content-function {
+        width: 100%;
+    }
+
+    .category-filter-query {
         width: 100%;
     }
 

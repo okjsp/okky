@@ -30,6 +30,7 @@ class ArticleController {
         params.max = Math.min(max ?: 20, 100)
         params.sort = params.sort ?: 'id'
         params.order = params.order ?: 'desc'
+        params.query = params.query?.trim()
 
         def category = Category.get(code)
 
@@ -37,13 +38,17 @@ class ArticleController {
             notFound()
             return
         }
+        
+        println "query : ${params.query} :"
 
-        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
+//        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
 
         def articlesQuery = Article.where {
-            category in categories &&
-            enabled == true
+            category in categories && enabled == true
+            if(params.query && params.query != '')
+                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+
         }
 
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
