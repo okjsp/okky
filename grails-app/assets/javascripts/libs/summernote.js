@@ -3994,7 +3994,7 @@
                         '</label>' +
                         '</div>' : ''
                         );
-                var footer = '<button javascript://" class="btn btn-primary note-link-btn disabled" disabled>' + lang.link.insert + '</button>';
+                var footer = '<button href="javascript://" class="btn btn-primary note-link-btn disabled" disabled>' + lang.link.insert + '</button>';
                 return tplDialog('note-link-dialog', lang.link.insert, body, footer);
             };
 
