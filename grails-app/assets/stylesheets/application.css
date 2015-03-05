@@ -1046,6 +1046,7 @@ pre code {
     font-weight: bold;
     margin-top: 3px;
     margin-bottom: 3px;
+    word-break: break-all;
 }
 
 .list-group-item-summary {
@@ -1267,6 +1268,7 @@ pre code {
 #article h2 {
     font-size: 26px;
     margin-top: 0;
+    word-break: break-all;
 }
 
 #article .article-id {
@@ -1300,6 +1302,7 @@ pre code {
     overflow-x: auto;
     min-height: 180px;
     margin: 30px 0;
+    word-break: break-all;
 }
 
 .content-tags {
@@ -1406,6 +1409,7 @@ pre code {
 .note-text {
     min-height: 50px;
     overflow-x: auto;
+    word-break: break-all;
 }
 
 .note-title {
