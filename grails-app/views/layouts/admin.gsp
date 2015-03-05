@@ -21,6 +21,7 @@
         <div class="nav" role="navigation">
             <ul>
                 <li class="controller"><g:link controller="banner">베너</g:link></li>
+                <li class="controller"><g:link controller="spamWord">스팸문구</g:link></li>
             </ul>
         </div>
 		<g:layoutBody/>
