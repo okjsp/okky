@@ -1155,6 +1155,7 @@ pre code {
 
 .avatar-photo img {
     display: block;
+    width:100%;
 }
 
 .avatar-x-small .avatar-photo {
