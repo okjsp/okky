@@ -99,11 +99,7 @@
                 </div>
             </div>
 
-            <g:if test="${contentBanner}">
-                <div class="sub-banner-wrapper">
-                    <div class="sub-banner"><a href="${contentBanner.url}" <g:if test="${contentBanner.target}">target="${contentBanner.target}"</g:if>><img src="${contentBanner.image}" /></a></div>
-                </div>
-            </g:if>
+            <g:banner type="CONTENT" />
 
             <div class="panel panel-default clearfix">
                 <!-- List group -->
