@@ -71,7 +71,7 @@ class UserController {
                 return
             }
 
-            user.createIp = request.remoteAddr
+            user.createIp = userService.getRealIp(request)
 
             userService.saveUser user
 

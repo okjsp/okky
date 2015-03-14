@@ -32,6 +32,9 @@ class ArticleTagLib {
             case "small":
                 s = '15'
                 break
+            case "list":
+                s = '30'
+                break
             case "medium":
                 s = '40'
                 break
@@ -83,6 +86,53 @@ class ArticleTagLib {
         out << "</div>"
     }
 
+    /**
+     * profile image url
+     * @attr size REQUIRED
+     * @attr avatar
+     */
+    def profileImage = { attrs, body ->
+        def url, s
+        def size = attrs.size
+
+        Avatar avatar = attrs.avatar ?: Avatar.get(springSecurityService.principal.avatarId)
+
+        switch (size) {
+            case "x-small":
+                s = '10'
+                break
+            case "small":
+                s = '15'
+                break
+            case "list":
+                s = '30'
+                break
+            case "medium":
+                s = '40'
+                break
+            case "big":
+                s = '150'
+                break
+            case "fb":
+                s = '200'
+                break
+        }
+
+        switch (avatar.pictureType) {
+            case AvatarPictureType.FACEBOOK:
+                url = "//graph.facebook.com/${avatar.picture}/picture?width=${s}&height=${s}"
+                break
+            case AvatarPictureType.ANONYMOUSE:
+                url = "//www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=${s}"
+                break
+            case AvatarPictureType.GRAVATAR:
+                url = "//www.gravatar.com/avatar/${avatar.picture}?d=identicon&s=${s}"
+                break
+        }
+
+        out << url
+    }
+    
     /**
      * Article Vote Buttons
      * @attr content REQUIRED content
@@ -199,9 +249,9 @@ class ArticleTagLib {
     def description = { attrs, body ->
         String text = attrs.text ?: body()
         def length = attrs.length ?: 0
-        text = text.replaceAll("<(style|script)(.*?)>(.*?)</(.*?)>", '');
+        text = text.replaceAll("<(style|script)(.*?)>(.*?)</(.*?)>", ' ');
         text = text.replaceAll("&(.*?);", ' ');
-        text = text.replaceAll("<(.*?)>", '');
+        text = text.replaceAll("<(.*?)>", ' ');
         text = text.replaceAll("\n", ' ');
 
         if(length > 0 && length < text.size()) {
@@ -223,9 +273,12 @@ class ArticleTagLib {
 
         if(tags instanceof String)
             tags = tags.split(',')
-
-        tags?.each {
-            out << """<a href="${request.contextPath}/articles/tagged/${it}" class="list-group-item-text item-tag label ${classNames}">${it}</a> """
+        
+        def limit = attrs.limit ?: tags?.length ?: 0
+        
+        for(int i = 0; i < limit; i++) {
+            def tag = tags[i]
+            out << """<a href="${request.contextPath}/articles/tagged/${tag}" class="list-group-item-text item-tag label ${classNames}">${tag}</a> """
         }
     }
 

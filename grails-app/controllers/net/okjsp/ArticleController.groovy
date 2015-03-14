@@ -41,6 +41,9 @@ class ArticleController {
 
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
+        
+        if(category.code == 'community') 
+            categories = categories.findAll { it.code != 'promote' }
 
         def articlesQuery = Article.where {
             category in categories && enabled == true
@@ -150,6 +153,8 @@ class ArticleController {
 
                 }
 
+                article.createIp = userService.getRealIp(request)
+                
                 articleService.save(article, author, category)
 
                 withFormat {

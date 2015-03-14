@@ -23,9 +23,13 @@ class Article {
     String aNickName
 
     Content selectedNote
+    
+    String createIp = ""
 
     Date dateCreated
     Date lastUpdated
+    
+    Integer best = 0
 
     static belongsTo = [content: Content]
 
@@ -34,6 +38,7 @@ class Article {
     static mapping = {
         notes sort: 'id', order: 'asc'
         sort id: 'desc'
+        best formula: "view_count + vote_count * 5"
     }
 
     static constraints = {
@@ -52,6 +57,7 @@ class Article {
         selectedNote nullable: true, bindable: false
         content nullable: true
         choice bindable: false, nullable: true
+        createIp bindable: false, nullable: true
     }
 
     def getDisplayAuthor() {

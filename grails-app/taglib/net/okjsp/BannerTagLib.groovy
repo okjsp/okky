@@ -18,8 +18,6 @@ class BannerTagLib {
         }.list()
 
         def banner = banners ? randomService.draw(banners) : null
-        
-        println "banner = ${banner}"
 
         if(banner) {
             def bannerHTML = ""

@@ -4,6 +4,7 @@ import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
+import groovy.time.TimeCategory
 
 @Transactional(readOnly = true)
 class MainService {
@@ -17,33 +18,72 @@ class MainService {
         }.list(max: 5, sort: 'id', order: 'desc')
     }
 
+    @Cacheable(value="weeklyArticlesCache")
+    def getWeeklyArticles() {
+
+        Integer.metaClass.mixin TimeCategory
+        Date.metaClass.mixin TimeCategory
+
+        def diff = new Date() - 7.days
+        
+        Article.where {
+            enabled == true
+            category != Category.get('promote') && category != Category.get('recruit')
+            dateCreated > diff
+        }.list {
+            order("best", "desc")
+        }
+    }
+
     @Cacheable("techArticlesCache")
-    def getTechArticles() {
+    def getTechArticle() {
         Article.where {
             category in Category.get('tech').children && enabled == true
-        }.list(max: 10, sort: 'id', order: 'desc')
+        }.get {
+            order("id", "desc")
+        }
     }
 
     @Cacheable("qnaArticlesCache")
     def getQnaArticles() {
         
         Article.where {
-            category in Category.get('questions') && enabled == true
+            category == Category.get('questions') && enabled == true
         }.list(max: 10, sort: 'id', order: 'desc')
     }
 
     @Cacheable("communityArticlesCache")
     def getCommunityArticles() {
+        
+        def categories = Category.get('community').children.findAll { it.code != 'promote' }
+        
         Article.where {
-            category in Category.get('community').children && enabled == true
+            category in categories && enabled == true
         }.list(max: 10, sort: 'id', order: 'desc')
     }
 
     @Cacheable("columnsArticlesCache")
-    def getColumnsArticles() {
+    def getColumnArticle() {
         Article.where {
-            category in Category.get('columns') && enabled == true
-        }.list(max: 10, sort: 'id', order: 'desc')
+            category == Category.get('columns') && enabled == true
+        }.get {
+            order("id", "desc")
+        }
+    }
+    
+    @Cacheable("promoteArticlesCache")
+    def getPromoteArticles() {
+
+        Integer.metaClass.mixin TimeCategory
+        Date.metaClass.mixin TimeCategory
+
+        def diff = new Date() - 7.days
+        
+        def category = Category.get('promote')
+
+        def articles = Article.executeQuery(" from Article where category = :category and enabled = true and dateCreated > :diff order by rand()", [category: category, diff: diff])
+
+        articles
     }
 
 }

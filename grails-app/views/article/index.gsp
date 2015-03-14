@@ -67,13 +67,19 @@
 
                         <li class="list-group-item ${category?.useEvaluate ? 'list-group-item-question':''} list-group-${evaluateClass} clearfix">
 
-                            <div class="list-summary-wrapper clearfix">
-                                <div class="list-tag pull-left clearfix">
+                            <div class="list-title-wrapper clearfix">
+                                <div class="list-tag clearfix">
                                     <span class="list-group-item-text article-id">#${article.id}</span>
                                     <g:categoryLabel category="${article.category}" />
                                     <g:tags tags="${article.tagString}" />
                                 </div>
 
+                                <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''}">
+                                    <g:link controller="article" action="show" id="${article.id}">${fieldValue(bean: article, field: "title")}</g:link>
+                                </h5>
+                            </div>
+                            
+                            <div class="list-summary-wrapper clearfix">
                                 <g:if test="${category?.useEvaluate}">
                                     <div class="item-evaluate-wrapper pull-right clearfix">
                                         <div class="item-evaluate">
@@ -103,24 +109,18 @@
                                     </div>
                                 </g:if>
                                 <g:else>
-                                    <div class="list-group-item-summary pull-right text-right clearfix">
+                                    <div class="list-group-item-summary clearfix">
                                         <ul>
-                                            <li><i class="item-icon fa fa-comment"></i> <g:shorten number="${article.noteCount}" /></li>
-                                            <li><i class="item-icon fa fa-thumbs-up"></i> <g:shorten number="${article.voteCount}" /></li>
-                                            <li><i class="item-icon fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></li>
+                                            <li class="${article.noteCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-comment "></i> <g:shorten number="${article.noteCount}" /></li>
+                                            <li class="${article.voteCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-thumbs-up"></i> <g:shorten number="${article.voteCount}" /></li>
+                                            <li class="${article.viewCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></li>
                                         </ul>
                                     </div>
                                 </g:else>
                             </div>
-                            <div class="list-title-wrapper clearfix">
 
-                                <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''}">
-                                    <g:link controller="article" action="show" id="${article.id}">${fieldValue(bean: article, field: "title")}</g:link>
-                                    <div class="list-group-item-author pull-right clearfix">
-                                        <g:avatar avatar="${article.displayAuthor}" size="small" dateCreated="${article.dateCreated}" />
-                                    </div>
-                                </h5>
-
+                            <div class="list-group-item-author clearfix">
+                                <g:avatar avatar="${article.displayAuthor}" size="list" dateCreated="${article.dateCreated}" />
                             </div>
                         </li>
                     </g:each>

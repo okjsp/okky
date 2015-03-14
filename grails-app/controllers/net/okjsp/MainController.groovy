@@ -8,12 +8,6 @@ class MainController {
     def randomService
 
     def index() {
-
-        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
-        
-        def excludeManagedAvatarClosure = {
-            it
-        }
         
         def mainBanners = Banner.where {
             type == BannerType.MAIN && visible == true            
@@ -21,16 +15,22 @@ class MainController {
 
         def mainBanner = mainBanners ? randomService.draw(mainBanners) : null
         
+        def promoteArticles = mainService.getPromoteArticles().unique { a, b -> a.author <=> b.author }.sort { Math.random() }
+
+//        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
+
+        if(promoteArticles?.size() > 3) promoteArticles = promoteArticles.subList(0, 2)
+        
         return [
             isIndex: true,
             choiceArticles: mainService.getChoiceArticles(),
-            mainBanner : mainBanner,
-            articleBlocks: [
-                [category: Category.get('questions'), articles: mainService.getQnaArticles().findAll(excludeManagedAvatarClosure)],
-                [category: Category.get('tech'), articles: mainService.getTechArticles().findAll(excludeManagedAvatarClosure)],
-                [category: Category.get('community'), articles: mainService.getCommunityArticles().findAll(excludeManagedAvatarClosure)],
-                [category: Category.get('columns'), articles: mainService.getColumnsArticles().findAll(excludeManagedAvatarClosure)],
-            ]
+            questionsArticles: mainService.getQnaArticles(),
+            communityArticles: mainService.getCommunityArticles(),
+            columnArticle: mainService.getColumnArticle(),
+            techArticle: mainService.getTechArticle(),
+            weeklyArticles: mainService.getWeeklyArticles(),
+            promoteArticles: promoteArticles,
+            mainBanner : mainBanner
         ]
     }
 }
