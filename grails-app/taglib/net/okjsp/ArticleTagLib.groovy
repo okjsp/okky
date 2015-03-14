@@ -276,6 +276,8 @@ class ArticleTagLib {
         
         def limit = attrs.limit ?: tags?.length ?: 0
         
+        limit = limit > tags?.length ? tags?.length : limit
+        
         for(int i = 0; i < limit; i++) {
             def tag = tags[i]
             out << """<a href="${request.contextPath}/articles/tagged/${tag}" class="list-group-item-text item-tag label ${classNames}">${tag}</a> """

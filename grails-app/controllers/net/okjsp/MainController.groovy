@@ -7,6 +7,8 @@ class MainController {
     def springSecurityService
     def randomService
 
+    def grailsCacheAdminService
+
     def index() {
         
         def mainBanners = Banner.where {
@@ -32,5 +34,9 @@ class MainController {
             promoteArticles: promoteArticles,
             mainBanner : mainBanner
         ]
+    }
+    
+    def flush() {
+        grailsCacheAdminService.clearAllCaches();
     }
 }

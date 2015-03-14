@@ -36,6 +36,8 @@ class UrlMappings {
         "/seq/$id"(controller: "article", action: "seq")
 
         "/"(controller: "main", action: 'index')
+
+        "/flush"(controller: "main", action: 'flush')
         
         "/bbs"(redirect: "/")
 

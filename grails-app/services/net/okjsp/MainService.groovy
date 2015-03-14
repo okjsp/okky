@@ -37,10 +37,11 @@ class MainService {
 
     @Cacheable("techArticlesCache")
     def getTechArticle() {
-        Article.where {
-            category in Category.get('tech').children && enabled == true
-        }.get {
-            order("id", "desc")
+        Article.createCriteria().get {
+            'in'('category', Category.get('tech').children)
+            eq('enabled', true)
+            order('id', 'desc')
+            maxResults(1)
         }
     }
 
@@ -64,10 +65,11 @@ class MainService {
 
     @Cacheable("columnsArticlesCache")
     def getColumnArticle() {
-        Article.where {
-            category == Category.get('columns') && enabled == true
-        }.get {
-            order("id", "desc")
+        Article.createCriteria().get {
+            eq('category', Category.get('columns'))
+            eq('enabled', true)
+            order('id', 'desc')
+            maxResults(1)
         }
     }
     
