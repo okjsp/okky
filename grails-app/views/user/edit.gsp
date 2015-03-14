@@ -8,8 +8,8 @@
 <g:sidebar/>
 <div id="create-user" class="content" role="main">
     <h3 class="content-header">회원 정보 수정</h3>
-    <div class="col-md-6">
-        <div class="panel panel-default panel-margin-10">
+    <div class="col-md-6 main-block-left">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <g:avatar avatar="${user.avatar}" size="medium" />
             </div>
@@ -31,25 +31,29 @@
                 </g:hasErrors>
 
                 <fieldset>
-
-                    <g:textField name="person.email" class="form-control input-sm" placeholder="${message(code: "person.email.label", default: '이메일')}" required="" value="${user?.person?.email}"/>
-
-                    <g:textField name="person.fullName" class="form-control input-sm" placeholder="${message(code: "person.fullName.label", default: '이름')}" required="" value="${user?.person?.fullName}"/>
-
-                    <g:textField name="avatar.nickname" class="form-control input-sm" placeholder="${message(code: "person.nickname.label", default: '닉네임')}" required="" value="${user?.avatar?.nickname}"/>
-
+                    <div class="form-group">
+                        <label class="control-label" for="person.email">이메일 주소</label>
+                        <g:textField name="person.email" class="form-control input-sm" placeholder="${message(code: "person.email.label", default: '이메일')}" required="" value="${user?.person?.email}"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="person.fullName">이름</label>
+                        <g:textField name="person.fullName" class="form-control input-sm" placeholder="${message(code: "person.fullName.label", default: '이름')}" required="" value="${user?.person?.fullName}"/>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="avatar.nickname">닉네임</label>
+                        <g:textField name="avatar.nickname" class="form-control input-sm" placeholder="${message(code: "person.nickname.label", default: '닉네임')}" required="" value="${user?.avatar?.nickname}"/>
+                    </div>
                     <div class="checkbox">
                         <label>
                             <g:checkBox name="person.dmAllowed" value="${user?.person?.dmAllowed}"  /> <g:message code="person.dm.allow.label" default="이메일 수신 동의"/>
                         </label>
                     </div>
                 </fieldset>
-
                 <button class="btn btn-primary btn-block" type="submit"><g:message code="user.button.edit.label" default="정보 수정"/></button>
             </g:form>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 main-block-right">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h5 class="panel-header">SNS 연결</h5>

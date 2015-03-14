@@ -10,8 +10,8 @@
 
     <div id="create-user" class="content" role="main">
         <h3 class="content-header">회원가입</h3>
-        <div class="col-md-6">
-            <div class="panel panel-default panel-margin-10">
+        <div class="col-md-6 main-block-left">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h5 class="panel-header">이메일로 가입하기</h5>
                 </div>
@@ -74,7 +74,7 @@
                 </g:form>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 main-block-right">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h5 class="panel-header">SNS로 가입하기</h5>

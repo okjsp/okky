@@ -9,7 +9,7 @@
 
 <div id="edit-user" class="content" role="main">
     <h3 class="content-header">로그인</h3>
-    <div class="col-md-6">
+    <div class="col-md-6 main-block-left">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h5 class="panel-header">아이디 로그인</h5>
@@ -40,7 +40,7 @@
             </form>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 main-block-right">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h5 class="panel-header">SNS 로그인</h5>

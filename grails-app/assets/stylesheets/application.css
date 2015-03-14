@@ -471,10 +471,8 @@ pre code {
 .recaptcha-wrapper {
     min-height: 108px;
     padding-top: 10px;
-}
-
-.g-recaptcha {
-    margin: 10px;
+    width: 310px;
+    margin: auto;
 }
 
 .nav-indicator {
