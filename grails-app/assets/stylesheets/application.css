@@ -1322,7 +1322,7 @@ blockquote {
 .avatar-list .nickname {
     font-size: 12px;
     display: inline-block;
-    max-width: 80px;
+    max-width: 75px;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: keep-all;
