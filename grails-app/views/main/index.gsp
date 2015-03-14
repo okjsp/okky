@@ -49,7 +49,8 @@
                 </div>
                 <div class="main-block">
                     <h4 class="main-header"><i class="fa fa-code"></i> Tech <a href="${request.contextPath}/articles/tech" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
-                    <g:if test="${techArticle}">
+                    <g:if test="${techArticles}">
+                        <g:each in="${techArticles}" var="techArticle">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="list-tag clearfix">
@@ -57,9 +58,10 @@
                                     <g:tags tags="${techArticle.tagString}" limit="${1}" />
                                 </div>
                                 <h5><g:link controller="article" action="show" id="${techArticle.id}">${fieldValue(bean: techArticle, field: "title")}</g:link></h5>
-                                <a href=""><p class="main-block-desc">&nbsp;<g:link controller="article" action="show" id="${techArticle.id}">${description(text:techArticle.content?.text, length: 100)}...</g:link></p>
+                                <a href=""><p class="main-block-desc">&nbsp;<g:link controller="article" action="show" id="${techArticle.id}">${description(text:techArticle.content?.text, length: 50)}...</g:link></p>
                             </div>
                         </div>
+                        </g:each>
                     </g:if>
                 </div>
                 <div class="main-block">

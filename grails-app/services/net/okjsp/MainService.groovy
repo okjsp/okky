@@ -31,13 +31,14 @@ class MainService {
     }
 
     @Cacheable("techArticlesCache")
-    def getTechArticle() {
-        Article.createCriteria().get {
-            'in'('category', Category.get('tech').children)
-            eq('enabled', true)
-            order('id', 'desc')
-            maxResults(1)
-        }
+    def getTechArticles() {
+
+        def diff = new Date() - 30
+        
+        Article.where {
+            category in Category.get('tech').children && enabled == true
+            dateCreated > diff
+        }.list(max: 10, sort: 'id', order: 'desc')
     }
 
     @Cacheable("qnaArticlesCache")
