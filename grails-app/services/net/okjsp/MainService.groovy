@@ -30,9 +30,7 @@ class MainService {
             enabled == true
             category != Category.get('promote') && category != Category.get('recruit')
             dateCreated > diff
-        }.list {
-            order("best", "desc")
-        }
+        }.list(max: 5, sort: 'best', order: 'desc')
     }
 
     @Cacheable("techArticlesCache")
@@ -60,7 +58,7 @@ class MainService {
         
         Article.where {
             category in categories && enabled == true
-        }.list(max: 10, sort: 'id', order: 'desc')
+        }.list(max: 20, sort: 'id', order: 'desc')
     }
 
     @Cacheable("columnsArticlesCache")
@@ -83,9 +81,7 @@ class MainService {
         
         def category = Category.get('promote')
 
-        def articles = Article.executeQuery(" from Article where category = :category and enabled = true and dateCreated > :diff order by rand()", [category: category, diff: diff])
-
-        articles
+        Article.executeQuery(" from Article where category = :category and enabled = true and dateCreated > :diff order by rand()", [category: category, diff: diff])
     }
 
 }
