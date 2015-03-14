@@ -1298,6 +1298,12 @@ pre code {
     text-align: right;
 }
 
+.content-identity-count {
+    float: left;
+    width: 50px;
+    text-align: right;
+}
+
 .content-text {
     width: 662px;
     overflow-x: auto;
@@ -1750,9 +1756,13 @@ pre code {
     .nav-user-action .nav-user-func {
         width: 50%;
         float: left;
+    }
+
+    .nav-user-action .nav-user-func a {
+        display: block;
         padding: 10px;
     }
-    
+
     .nav-sidebar-form{
         padding: 10px;
     }
@@ -1845,6 +1855,7 @@ pre code {
 
     .content-function {
         width: 100%;
+        padding: 0 10px;
     }
 
     .category-filter-query {
@@ -1863,6 +1874,48 @@ pre code {
 
     .google-ad {
         display: none;
+    }
+    
+    .note-evaluate-wrapper {
+        padding : 0 20px;
+        
+    }
+
+    .note-evaluate-wrapper .content-eval-count {
+        font-size: 20px;
+        line-height: 25px;
+    }
+
+    .note-evaluate-wrapper .note-vote-btn i {
+        font-size: 30px;
+        line-height: 10px;
+    }
+    
+    .article-scrap-wrapper {
+        vertical-align: middle;
+    }
+
+    .note-submit-buttons {
+        position: static;
+        width: 100%;
+        padding: 0 10px;
+        text-align: left;
+    }
+    
+    .note-submit-buttons > p {
+        float: left;
+    }
+    
+    .note-submit-buttons #btn-create-btn {
+        float: right;
+    }
+    
+    .share-btn-wrapper {
+        margin-bottom: 0;
+    }
+    
+    .article-form {
+        width: 100%;
     }
 
     #footer {

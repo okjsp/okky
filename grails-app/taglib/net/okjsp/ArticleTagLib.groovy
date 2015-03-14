@@ -97,6 +97,8 @@ class ArticleTagLib {
         def vote = attrs.votes.find { it.content.id == content.id}
 
         if(category.useEvaluate) {
+            
+            out << """<div class="note-evaluate-wrapper">"""
 
             def assentVotedClass = vote ? (vote?.point > 0 ? 'unvote' : 'disable') : 'assent'
             def dissentVotedClass = vote ? (vote?.point < 0 ? 'unvote' : 'disable') : 'dissent'
@@ -119,6 +121,8 @@ class ArticleTagLib {
                 out << """<i id="note-evaluate-dissent-${content.id}" class="fa fa-angle-down note-evaluate-dissent-disabled"></i></a>"""
 
             }
+            
+            out << """</div>"""
 
         } else {
 
