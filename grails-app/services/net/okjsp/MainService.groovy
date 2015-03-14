@@ -21,10 +21,7 @@ class MainService {
     @Cacheable(value="weeklyArticlesCache")
     def getWeeklyArticles() {
 
-        Integer.metaClass.mixin TimeCategory
-        Date.metaClass.mixin TimeCategory
-
-        def diff = new Date() - 7.days
+        def diff = new Date() - 7
         
         Article.where {
             enabled == true
@@ -74,10 +71,7 @@ class MainService {
     @Cacheable("promoteArticlesCache")
     def getPromoteArticles() {
 
-        Integer.metaClass.mixin TimeCategory
-        Date.metaClass.mixin TimeCategory
-
-        def diff = new Date() - 7.days
+        def diff = new Date() - 7
         
         def category = Category.get('promote')
 
