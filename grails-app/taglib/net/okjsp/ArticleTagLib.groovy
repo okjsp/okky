@@ -225,7 +225,7 @@ class ArticleTagLib {
             tags = tags.split(',')
 
         tags?.each {
-            out << """<span class="list-group-item-text item-tag label ${classNames}">${it}</span> """
+            out << """<a href="${request.contextPath}/articles/tagged/${it}" class="list-group-item-text item-tag label ${classNames}">${it}</a> """
         }
     }
 

@@ -22,6 +22,8 @@ class UrlMappings {
         "/article/$id(.$format)?"(controller: "article", action: "show")
         "/article/$action/$id(.$format)?"(controller: "article")
         "/article/$id/$action/$contentId(.$format)?"(controller: "article")
+        
+        "/articles/tagged/$tag(.$format)?"(controller: "article", action: "tagged")
 
 
         "/content/$id(.$format)?"(controller: "content", action: "show")

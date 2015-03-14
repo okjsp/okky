@@ -51,6 +51,29 @@ class ArticleController {
 
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
     }
+
+
+
+    def tagged(String tag, Integer max) {
+        params.max = Math.min(max ?: 20, 100)
+        params.sort = params.sort ?: 'id'
+        params.order = params.order ?: 'desc'
+        params.query = params.query?.trim()
+
+        if(tag == null) {
+            notFound()
+            return
+        }
+        
+        def articlesQuery = Article.where {
+            tagString =~ "%${tag}%"
+            if(params.query && params.query != '')
+                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+
+        }
+
+        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count()]
+    }
     
     def seq(Long id) {
         
