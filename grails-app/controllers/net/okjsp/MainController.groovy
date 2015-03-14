@@ -21,7 +21,7 @@ class MainController {
 
 //        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
 
-        if(promoteArticles?.size() > 3) promoteArticles = promoteArticles.subList(0, 10)
+        if(promoteArticles?.size() > 3) promoteArticles = promoteArticles.subList(0, 5)
         
         return [
             isIndex: true,
