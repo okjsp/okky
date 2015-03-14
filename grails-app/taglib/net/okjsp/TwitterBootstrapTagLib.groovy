@@ -59,6 +59,7 @@ class TwitterBootstrapTagLib {
         linkParams.max = max
         if (params.sort) linkParams.sort = params.sort
         if (params.order) linkParams.order = params.order
+        if (params.query) linkParams.query = params.query
 
         def linkTagAttrs = [action:action]
         if (attrs.namespace) {

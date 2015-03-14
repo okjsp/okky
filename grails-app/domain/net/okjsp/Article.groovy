@@ -46,11 +46,7 @@ class Article {
         noteCount bindable: false
         scrapCount bindable: false
         tags maxSize: 5, nullable: true
-        tagString nullable: true, validator: { val, obj ->
-            if(obj.category?.requireTag) {
-                if(!val) return ["default.null.message"]
-            }
-        }
+        tagString nullable: true
         notes bindable: false
         enabled bindable: false
         selectedNote nullable: true, bindable: false

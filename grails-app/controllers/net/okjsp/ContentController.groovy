@@ -1,6 +1,7 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.validation.ValidationException
 
 import static org.springframework.http.HttpStatus.*
@@ -24,9 +25,11 @@ class ContentController {
 
         Content content = Content.get(id)
 
-        if(content.authorId != springSecurityService.principal.avatarId) {
-            notAcceptable()
-            return
+        if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
+            if (content.authorId != springSecurityService.principal.avatarId) {
+                notAcceptable()
+                return
+            }
         }
 
         respond content
@@ -35,9 +38,11 @@ class ContentController {
     @Transactional
     def update(Content content) {
 
-        if(content.authorId != springSecurityService.principal.avatarId) {
-            notAcceptable()
-            return
+        if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
+            if (content.authorId != springSecurityService.principal.avatarId) {
+                notAcceptable()
+                return
+            }
         }
 
         if (content == null) {
@@ -68,9 +73,11 @@ class ContentController {
 
         Content content = Content.get(id)
 
-        if(content.authorId != springSecurityService.principal.avatarId) {
-            notAcceptable()
-            return
+        if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
+            if (content.authorId != springSecurityService.principal.avatarId) {
+                notAcceptable()
+                return
+            }
         }
 
         if (content == null) {
