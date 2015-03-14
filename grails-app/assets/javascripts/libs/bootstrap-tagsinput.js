@@ -413,7 +413,7 @@
             self.$container.on('keyup', 'input', $.proxy(function(event) {
                 var $input = $(event.target);
 
-                var text = $input.val().substr(0, $input.val().length),
+                var text = $input.val().substr(0, $input.val().length).trim(),
                     maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
                 if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
                     self.add(maxLengthReached ? text.substr(0, self.options.maxChars) : text);
