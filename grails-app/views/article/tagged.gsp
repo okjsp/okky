@@ -22,7 +22,7 @@
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                                     <g:if test="${params.query}">
-                                        <g:link uri="/articles/${category.code}" class="btn btn-warning"><i class="fa fa-times-circle"></i> clear</g:link>
+                                        <g:link uri="/articles/tagged/${params.tag}" class="btn btn-warning"><i class="fa fa-times-circle"></i> clear</g:link>
                                     </g:if>
                                 </span>
                             </div>
