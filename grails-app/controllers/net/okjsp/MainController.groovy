@@ -16,14 +16,14 @@ class MainController {
         }.list()
 
         def mainBanner = mainBanners ? randomService.draw(mainBanners) : null
-        
-        def promoteArticles = mainService.getPromoteArticles().unique { a, b -> a.author <=> b.author }.sort { Math.random() }
+
+        def promoteArticles = mainService.getPromoteArticles().clone().sort{ Math.random() }.unique{ a, b -> a.authorId <=> b.authorId }
 //        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
-        if(promoteArticles?.size() > 3) promoteArticles = promoteArticles.subList(0, 5)
-        
-        def techArticles = mainService.getTechArticles().sort { Math.random() }
+        if(promoteArticles?.size() > 6) promoteArticles = promoteArticles.subList(0, 5)
+
+        def techArticles = mainService.getTechArticles().clone().sort { Math.random() }
         if(techArticles?.size() > 2) techArticles = techArticles.subList(0, 2)
-        
+
         return [
             isIndex: true,
             choiceArticles: mainService.getChoiceArticles(),
@@ -31,6 +31,7 @@ class MainController {
             questionsArticles: mainService.getQnaArticles(),
             communityArticles: mainService.getCommunityArticles(),
             columnArticle: mainService.getColumnArticle(),
+//            techArticle: mainService.getTechArticle(),
             techArticles: techArticles,
             promoteArticles: promoteArticles,
             mainBanner : mainBanner
