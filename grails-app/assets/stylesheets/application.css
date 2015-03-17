@@ -1070,6 +1070,10 @@ blockquote {
     margin-right: 10px;
 }
 
+.list-group-item.list-group-body {
+    padding: 15px;
+}
+
 .list-group-item-small .list-title-wrapper {
     float: none;
     width: 100%;
