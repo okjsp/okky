@@ -5,6 +5,8 @@ import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
 import groovy.time.TimeCategory
+import org.hibernate.FetchMode
+import org.hibernate.criterion.CriteriaSpecification
 
 @Transactional(readOnly = true)
 class MainService {
@@ -13,9 +15,14 @@ class MainService {
 
     @Cacheable(value="choiceArticlesCache")
     def getChoiceArticles() {
-        Article.where {
-            choice == true && enabled == true
-        }.list(max: 5, sort: 'id', order: 'desc')
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            eq('choice', true)
+            eq('enabled', true)
+            order('id', 'desc')
+            maxResults(5)
+        }.findAll()
     }
 
     @Cacheable(value="weeklyArticlesCache")
@@ -23,60 +30,105 @@ class MainService {
 
         def diff = new Date() - 7
         
-        Article.where {
-            enabled == true
-            category != Category.get('promote') && category != Category.get('recruit')
-            dateCreated > diff
-        }.list(max: 5, sort: 'best', order: 'desc')
+//        Article.where {
+//            enabled == true
+//            category != Category.get('promote') && category != Category.get('recruit')
+//            dateCreated > diff
+//        }.list(max: 5, sort: 'best', order: 'desc')
+        
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            ne('category', Category.get('promote'))
+            ne('category', Category.get('recruit'))
+            eq('enabled', true)
+            gt('dateCreated', diff)
+            order('best', 'desc')
+            maxResults(5)
+        }.findAll()
     }
 
+    @Cacheable("techArticleCache")
+    def getTechArticle() {
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            'in'('category', Category.get('tech').children)
+            eq('enabled', true)
+            order('id', 'desc')
+            maxResults(1)
+        }.find()
+    }
     @Cacheable("techArticlesCache")
     def getTechArticles() {
 
         def diff = new Date() - 30
         
-        Article.where {
-            category in Category.get('tech').children && enabled == true
-            dateCreated > diff
-        }.list(max: 10, sort: 'id', order: 'desc')
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            'in'('category', Category.get('tech').children)
+            eq('enabled', true)
+            gt('dateCreated', diff)
+            order('id', 'desc')
+            maxResults(10)
+        }.findAll()
     }
 
     @Cacheable("qnaArticlesCache")
     def getQnaArticles() {
-        
-        Article.where {
-            category == Category.get('questions') && enabled == true
-        }.list(max: 10, sort: 'id', order: 'desc')
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            eq('category', Category.get('questions'))
+            eq('enabled', true)
+            order('id', 'desc')
+            maxResults(10)
+        }.findAll()
     }
 
     @Cacheable("communityArticlesCache")
     def getCommunityArticles() {
         
         def categories = Category.get('community').children.findAll { it.code != 'promote' }
-        
-        Article.where {
-            category in categories && enabled == true
-        }.list(max: 20, sort: 'id', order: 'desc')
+
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            'in'('category', categories)
+            eq('enabled', true)
+            order('id', 'desc')
+            maxResults(20)
+        }.findAll()
     }
 
     @Cacheable("columnsArticlesCache")
     def getColumnArticle() {
-        Article.createCriteria().get {
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
             eq('category', Category.get('columns'))
             eq('enabled', true)
             order('id', 'desc')
             maxResults(1)
-        }
+        }.find()
     }
     
     @Cacheable("promoteArticlesCache")
     def getPromoteArticles() {
 
         def diff = new Date() - 7
-        
-        def category = Category.get('promote')
 
-        Article.executeQuery(" from Article where category = :category and enabled = true and dateCreated > :diff order by rand()", [category: category, diff: diff])
+        Article.withCriteria() {
+            fetchMode 'content', FetchMode.JOIN
+            fetchMode 'author', FetchMode.JOIN
+            'in'('category', Category.get('promote'))
+            eq('enabled', true)
+            gt('dateCreated', diff)
+            order('id', 'desc')
+            maxResults(50)
+        }.findAll()
+
     }
 
 }
