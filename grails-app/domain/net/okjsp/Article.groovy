@@ -38,7 +38,7 @@ class Article {
     static mapping = {
         notes sort: 'id', order: 'asc'
         sort id: 'desc'
-        best formula: "view_count + vote_count * 5"
+        best formula: "view_count + vote_count * 50 + note_count * 50"
     }
 
     static constraints = {
