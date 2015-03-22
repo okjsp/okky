@@ -38,6 +38,8 @@ class UrlMappings {
         "/"(controller: "main", action: 'index')
 
         "/flush"(controller: "main", action: 'flush')
+            
+        "/file/image"(controller: "file", action: "image")
         
         "/bbs"(redirect: "/")
 

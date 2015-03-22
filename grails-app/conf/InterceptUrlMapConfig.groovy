@@ -49,5 +49,9 @@ grails.plugin.springsecurity.interceptUrlMap = [
     
     '/flush':                   ['ROLE_USER'],
 
+    '/file/image':              ['ROLE_USER'],
+
+    '/upload/*/**':             ['permitAll'],
+
     '/_admin/**':               ['ROLE_ADMIN']
 ]
