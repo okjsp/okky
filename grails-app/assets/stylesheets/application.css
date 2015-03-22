@@ -35,6 +35,7 @@ pre {
     word-break: normal;
     word-wrap: normal;
     overflow-x: auto;
+    font-size: 11px;
 }
 
 pre code {
