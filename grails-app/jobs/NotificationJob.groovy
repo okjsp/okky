@@ -22,8 +22,6 @@ class NotificationJob {
 
         Date now = new Date()
 
-        println "NotificationJob excuted by : ${lastSend} / now : ${now}"
-
         def notes = Content.findAll {
             and {
                 eq('type', ContentType.NOTE)
@@ -38,10 +36,6 @@ class NotificationJob {
             }
         }
 
-
-        println "NotificationJob Notes Count ${notes.size()}"
-        println "NotificationJob Votes Count ${votes.size()}"
-
         notes.each { note ->
             notificationService.createFromNote(note)
         }
@@ -50,7 +44,7 @@ class NotificationJob {
             notificationService.createFromAccent(vote)
         }
 
-        println "NotificationJob excution time ${new Date().time-now.time}ms"
+//        println "NotificationJob excution time ${new Date().time-now.time}ms"
 
         lastSend = now
     }

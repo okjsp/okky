@@ -56,7 +56,6 @@ class Avatar implements Comparable {
     }
 
     int compareTo(Object other) {
-        println "${id} == ${other.id}"
         id <=> other.id
     }
 

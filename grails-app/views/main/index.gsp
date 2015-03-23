@@ -6,97 +6,70 @@
         <meta name="google-site-verification" content="DkGncyJVqYFVekHithdbYnKgklkyKVwruPZ18WUDjr0" />
 	</head>
 	<body>
-    <g:sidebar/>
+        <g:sidebar/>
 
-    <g:banner type="MAIN" />
-    
-    <div id="index" class="content scaffold-list clearfix" role="main">
-        <div class="col-sm-12 main-block-all">
-            <h4 class="main-header"><i class="fa fa-flag"></i> Editor's Choice</h4>
-            <div class="panel panel-default">
+        <g:banner type="MAIN" />
 
-                <!-- Table -->
+        <div id="index" class="content scaffold-list clearfix" role="main">
+            <div class="col-sm-6 main-block-left">
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-flag"></i> Editor's Choice</h4>
+                    <g:render template="article_block" model="[articles:choiceArticles]" />
+                </div>
+            </div>
+            <div class="col-sm-6 main-block-right">
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-star"></i> Weekly Best</h4>
+                    <g:render template="article_block" model="[articles:weeklyArticles]" />
+                </div>
+            </div>
 
-                <ul class="list-group">
-                    <g:each in="${choiceArticles}" var="article">
-
-                        <g:set var="evaluateClass" value="no-note" />
-
-                        <g:if test="${article.selectedNote}">
-                            <g:set var="evaluateClass" value="success" />
-                        </g:if>
-                        <g:elseif test="${article.noteCount > 0}">
-                            <g:set var="evaluateClass" value="has-note" />
-                        </g:elseif>
-
-                        <li class="list-group-item ${category?.useEvaluate ? 'list-group-item-question':''} list-group-${evaluateClass} clearfix">
-
-                            <div class="list-summary-wrapper clearfix">
-                                <div class="pull-left clearfix">
-                                    <span class="list-group-item-text article-id">#${article.id}</span>
-                                    <g:categoryLabel category="${article.category}" />
-                                    <g:tags tags="${article.tagString}" />
-                                </div>
-
-                                <g:if test="${category?.useEvaluate}">
-                                    <div class="item-evaluate-wrapper pull-right clearfix">
-                                        <div class="item-evaluate">
-                                            <div class="item-evaluate-icon">
-                                                <i class="item-icon fa fa-thumbs-o-up"></i>
-                                            </div>
-                                            <div class="item-evaluate-count">
-                                                <span><g:shorten number="${article.voteCount}" />
-                                            </div>
-                                        </div>
-                                        <div class="item-evaluate item-evaluate-${evaluateClass}">
-                                            <div class="item-evaluate-icon">
-                                                <g:if test="${evaluateClass == 'no-note'}">
-                                                    <i class="item-icon fa fa-question-circle"></i>
-                                                </g:if>
-                                                <g:elseif test="${evaluateClass == 'has-note'}">
-                                                    <i class="item-icon fa fa-exclamation-circle"></i>
-                                                </g:elseif>
-                                                <g:elseif test="${evaluateClass == 'success'}">
-                                                    <i class="item-icon fa fa-check-circle"></i>
-                                                </g:elseif>
-                                            </div>
-                                            <div class="item-evaluate-count">
-                                                <g:shorten number="${article.noteCount}" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </g:if>
-                                <g:else>
-                                    <div class="list-group-item-summary pull-right text-right clearfix">
-                                        <ul>
-                                            <li><i class="item-icon fa fa-comment"></i> <g:shorten number="${article.noteCount}" /></li>
-                                            <li><i class="item-icon fa fa-thumbs-up"></i> <g:shorten number="${article.voteCount}" /></li>
-                                            <li><i class="item-icon fa fa-bookmark"></i> <g:shorten number="${article.scrapCount}" /></li>
-                                            <li><i class="item-icon fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></li>
-                                        </ul>
-                                    </div>
-                                </g:else>
+            <div class="col-sm-8 main-block-left">
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-database"></i> Q&A <a href="${request.contextPath}/articles/questions" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <g:render template="article_block" model="[articles:questionsArticles]" />
+                </div>
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-comment"></i> 커뮤니티 <a href="${request.contextPath}/articles/community" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <g:render template="article_block" model="[articles:communityArticles]" />
+                </div>
+            </div>
+            <div class="col-sm-4 main-block-right">
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-quote-left"></i> 칼럼 <a href="${request.contextPath}/articles/columns" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <g:if test="${columnArticle}">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <g:tags tags="${columnArticle.tagString}" limit="${1}" />
+                                <h5><g:link controller="article" action="show" id="${columnArticle.id}">${fieldValue(bean: columnArticle, field: "title")}</g:link></h5>
+                                <p class="main-block-desc">&nbsp;<g:link controller="article" action="show" id="${columnArticle.id}">${description(text:columnArticle.content?.text, length: 100)}...</g:link></p>
                             </div>
-                            <div class="list-title-wrapper">
-                                <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''} pull-left"><g:link controller="article" action="show" id="${article.id}">${fieldValue(bean: article, field: "title")}</g:link></h5>
-                                <div class="list-group-item-author pull-right clearfix">
-                                    <g:avatar avatar="${article.displayAuthor}" size="small" dateCreated="${article.dateCreated}" />
+                        </div>
+                    </g:if>
+                </div>
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-code"></i> Tech <a href="${request.contextPath}/articles/tech" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <g:if test="${techArticles}">
+                        <g:each in="${techArticles}" var="techArticle">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="list-tag clearfix">
+                                    <g:categoryLabel category="${techArticle.category}" />
+                                    <g:tags tags="${techArticle.tagString}" limit="${1}" />
                                 </div>
+                                <h5><g:link controller="article" action="show" id="${techArticle.id}">${fieldValue(bean: techArticle, field: "title")}</g:link></h5>
+                                <a href=""><p class="main-block-desc">&nbsp;<g:link controller="article" action="show" id="${techArticle.id}">${description(text:techArticle.content?.text, length: 50)}...</g:link></p>
                             </div>
-                        </li>
-                    </g:each>
-                </ul>
+                        </div>
+                        </g:each>
+                    </g:if>
+                </div>
+                <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-book"></i> 학원 <a href="${request.contextPath}/articles/promote" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <g:render template="article_block" model="[articles:promoteArticles]" />
+                </div>
             </div>
         </div>
 
-        <div class="col-sm-6 main-block-left">
-            <g:render template="article_block" model="[articleBlock:articleBlocks[0]]" />
-            <g:render template="article_block" model="[articleBlock:articleBlocks[2]]" />
-        </div>
-        <div class="col-sm-6 main-block-right">
-            <g:render template="article_block" model="[articleBlock:articleBlocks[1]]" />
-            <g:render template="article_block" model="[articleBlock:articleBlocks[3]]" />
-        </div>
-    </div>
 	</body>
 </html>

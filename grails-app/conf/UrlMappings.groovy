@@ -22,6 +22,8 @@ class UrlMappings {
         "/article/$id(.$format)?"(controller: "article", action: "show")
         "/article/$action/$id(.$format)?"(controller: "article")
         "/article/$id/$action/$contentId(.$format)?"(controller: "article")
+        
+        "/articles/tagged/$tag(.$format)?"(controller: "article", action: "tagged")
 
 
         "/content/$id(.$format)?"(controller: "content", action: "show")
@@ -34,6 +36,10 @@ class UrlMappings {
         "/seq/$id"(controller: "article", action: "seq")
 
         "/"(controller: "main", action: 'index')
+
+        "/flush"(controller: "main", action: 'flush')
+            
+        "/file/image"(controller: "file", action: "image")
         
         "/bbs"(redirect: "/")
 

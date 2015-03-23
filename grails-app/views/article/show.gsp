@@ -13,6 +13,7 @@
         <meta property="og:site_name" content="OKKY">
         <meta property="og:url" content="${grailsApplication.config.grails.serverURL}/article/${article.id}">
         <meta property="og:image" content="${resource(dir: 'images', file: 'okky_logo_fb.png')}">
+        %{--<meta property="og:image" content="${profileImage(size: 'fb', avatar: article.displayAuthor)}">--}%
         <meta property="og:description" content="${description(text:article.content?.text, length: 200)}">
         <meta property="og:title" content="OKKY | ${article.title}">
     </head>
@@ -30,7 +31,8 @@
                 <div class="panel-heading clearfix">
                     <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" class="pull-left" />
                     <div class="content-identity pull-right">
-                        <div><i class="fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></div>
+                    <div class="content-identity-count"><i class="fa fa-comment"></i> <g:shorten number="${article.noteCount}" /></div>
+                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></div>
                     </div>
                 </div>
                 <div class="content-container clearfix">
@@ -62,12 +64,12 @@
                         <div class="content-function-group">
                             <g:voteButtons content="${article.content}" votes="${contentVotes}" category="${article.category}" />
                         </div>
-                        <div class="content-function-group">
+                        <div class="content-function-group article-scrap-wrapper">
                             <a href="javascript://" id="article-scrap-btn" data-type="${scrapped ? 'unscrap' : 'scrap'}"><i class="fa fa-bookmark ${scrapped ? 'note-scrapped' : ''}" data-toggle="tooltip" data-placement="left" title="${scrapped ? '스크랩 취소' : '스크랩'}"></i></a>
                             <div id="article-scrap-count" class="content-count"><g:shorten number="${article.scrapCount}" /></div>
                         </div>
                     </div>
-                    <div class="content-function-cog">
+                    <div class="content-function-cog share-btn-wrapper">
                         <div class="dropdown">
                             <a href="http://www.facebook.com/sharer/sharer.php?app_id=${grailsApplication.config.oauth.providers.facebook.key}&sdk=joey&u=${encodedURL(withDomain: true)}&display=popup&ref=plugin" class="btn-facebook-share"><i class="fa fa-facebook-square fa-fw" data-toggle="tooltip" data-placement="left" title="페이스북 공유"></i></a>
                             %{--<a href="javascript://" data-toggle="dropdown" id="sns-share-btn"><i class="fa fa-share-alt" data-toggle="tooltip" data-placement="left" title="SNS 공유"></i></a>
@@ -210,7 +212,7 @@
                                         <g:textArea name="note.text" id="note-create" placeholder="댓글 쓰기" class="form-control" />
                                     </fieldset>
                                 </div>
-                                <div class="content-function-cog">
+                                <div class="content-function-cog note-submit-buttons clearfix">
                                     <p><a href="javascript://" id="note-create-cancel-btn" class="btn btn-default btn-wide" style="display: none;">취소</a></p>
                                     <g:submitButton name="create" id="btn-create-btn" class="btn btn-success btn-wide" disabled="disabled" value="${message(code: 'note.button.create.label', default: ' 등록')}" />
                                 </div>

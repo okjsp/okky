@@ -65,4 +65,16 @@ class UserService {
 
         managedAvatar
     }
+    
+    def getRealIp(def request) {
+        String ipAddress = request.getHeader("X-Fowarded-For")
+        
+        if (!ipAddress)
+            ipAddress = request.getHeader("X-Real-Ip")
+        
+        if (!ipAddress)
+            ipAddress = request.getRemoteAddr()
+
+        ipAddress
+    }
 }

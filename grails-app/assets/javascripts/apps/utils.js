@@ -18,4 +18,10 @@ var autoLinker = function(node) {
 var whereToPlacePopover = function(){
     if ($(window).width()<768) return 'bottom';
     return 'right';
+};
+
+if(!String.prototype.trim) {
+    String.prototype.trim = function() {
+        return this.replace(/^\s+|\s+$/gm,'');
+    }
 }

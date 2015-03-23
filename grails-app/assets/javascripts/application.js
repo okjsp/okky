@@ -10,6 +10,9 @@
 //= require libs/bootstrap-tagsinput
 //= require libs/summernote
 //= require libs/summernote-ko-KR
+//= require libs/summernote-ext-video
+//= require libs/summernote-ext-fontstyle
+//= require libs/summernote-ext-codeblock
 //= require libs/spin
 //= require libs/jquery.spin
 //= require libs/placeholder_polyfill.jquery
@@ -60,17 +63,44 @@ if (typeof jQuery !== 'undefined') {
                 $('#search-google').popover('hide');
             }
         });
+        
+        var onImagaUpload = function(files, editor, $editable) {
 
-        $.extend($.summernote.options, {toolbar :  [
-            ['style', ['style']],
-            ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol']],
-            ['table', ['table']],
-            ['insert', ['codeBlock', 'link', 'picture', 'video', 'hr']],
-            ['view', ['codeview']],
-            ['help', ['help']]
-        ]});
+            var $form = $('.note-image-dialog .note-modal-form');
+
+            $('<iframe src="about:blank"  style="display: none;" name="imageUploadHandlerFrame"></iframe>').appendTo('body');
+
+            $.imageUploaded = function(image) {
+                editor.insertImage($editable, image);
+            };
+
+            $form.attr({
+                enctype: 'multipart/form-data',
+                target: 'imageUploadHandlerFrame',
+                action: contextPath+'/file/image',
+                method: 'post'
+            });
+
+            $form[0].submit();
+        };
+
+        $.extend($.summernote.options, {
+            lang: 'ko-KR',
+            height: 300,                  // set editable area's height
+            tabsize: 2,                   // size of tab
+            placeholder: '내용을 입력해 주세요.', // set editable area's placeholder text
+            prettifyHtml: false,
+            // toolbar
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'table']],
+                ['insert', ['codeblock', 'link', 'picture', 'video', 'hr']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            onImageUpload : onImagaUpload
+        });
 
 	})(jQuery);
 }
