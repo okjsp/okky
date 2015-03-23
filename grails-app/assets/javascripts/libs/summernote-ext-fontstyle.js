@@ -86,16 +86,16 @@
      * @property {Function} events.fontSize apply font size to selected range
      */
     events: { // events
-      strikethrough: function (layoutInfo) {
+      strikethrough: function (e, el, layoutInfo) {
         editor.strikethrough(layoutInfo.editable());
       },
-      superscript: function (layoutInfo) {
+      superscript: function (e, el, layoutInfo) {
         editor.superscript(layoutInfo.editable());
       },
-      subscript: function (layoutInfo) {
+      subscript: function (e, el, layoutInfo) {
         editor.subscript(layoutInfo.editable());
       },
-      fontsize: function (layoutInfo, value) {
+      fontsize: function (e, el, layoutInfo, value) {
         editor.fontSize(layoutInfo.editable(), value);
       }
     },
