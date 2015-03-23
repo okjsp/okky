@@ -18,7 +18,7 @@ class Person {
     static constraints = {
         fullName blank: false, minSize: 2
         email blank: false, email: true, unique: true
-        homepageUrl nullable: true, url: true
+        homepageUrl nullable: true
         company nullable: true
         resume nullable: true
     }
