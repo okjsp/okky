@@ -93,7 +93,7 @@ if (typeof jQuery !== 'undefined') {
             // toolbar
             toolbar: [
                 ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'table']],
                 ['insert', ['codeblock', 'link', 'picture', 'video', 'hr']],
