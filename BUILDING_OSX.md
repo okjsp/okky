@@ -49,16 +49,17 @@
     secret 을 google 에서 발급 받은 내용으로 교체합니다.
   4. Email 설정:
     로컬 개발용으로 gmail 설정을 해 줍니다.
-    ```groovy
-      grails.mail.host="smtp.gmail.com"
-      grails.mail.port=587
-      grails.mail.username="yourUsernameHere"
-      grails.mail.password="yourPwdHere"
-      grails.mail.from="defaultMailFromHere"
-      grails.mail.props = ['mail.smtp.auth': "true",
-                           "mail.smtp.starttls.enable": "true",
-                           "mail.from":"defaultMailFromHere"]
-      grails.mail.javaMailProperties = ['mail.smtp.auth': "true",
-                                        "mail.smtp.starttls.enable": "true",
-                                        "mail.from":"defaultMailFromHere"]
-    ```
+    
+```groovy
+    grails.mail.host="smtp.gmail.com"
+    grails.mail.port=587
+    grails.mail.username="yourUsernameHere"
+    grails.mail.password="yourPwdHere"
+    grails.mail.from="defaultMailFromHere"
+    grails.mail.props = ['mail.smtp.auth': "true",
+                       "mail.smtp.starttls.enable": "true",
+                       "mail.from":"defaultMailFromHere"]
+    grails.mail.javaMailProperties = ['mail.smtp.auth': "true",
+                                    "mail.smtp.starttls.enable": "true",
+                                    "mail.from":"defaultMailFromHere"]
+```
