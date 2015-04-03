@@ -49,9 +49,6 @@ class SanitizeService {
                 .allowAttributes("class")
                 .onElements("img", "hr", "iframe", "table", "th", "tr", "td", "tbody", "col", "colgroup", "thead", "tfooter", "caption", "code", "pre")
 
-                .allowAttributes("target")
-                .onElements("a")
-
                 .allowAttributes("src").matching(new FilterUrlByProtocolAttributePolicy(["http", "https"]))
                 .onElements("img", "iframe")
 

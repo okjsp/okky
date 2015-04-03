@@ -98,6 +98,7 @@ if (typeof jQuery !== 'undefined') {
             tabsize: 2,                   // size of tab
             placeholder: '내용을 입력해 주세요.', // set editable area's placeholder text
             prettifyHtml: false,
+            disableLinkTarget: true,
             // toolbar
             toolbar: [
                 ['style', ['style']],
