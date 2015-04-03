@@ -59,8 +59,16 @@ if (typeof jQuery !== 'undefined') {
                 $('.sidebar-category-nav').removeClass('open');
             }
             
-            if(!$(e.target).is('#search-google *, #search-google-popover *')) {
+            if(!$(e.target).is('#search-google, #search-google *, #search-google-popover *')) {
                 $('#search-google').popover('hide');
+            }
+
+            if(!$(e.target).is('#user-func, #user-func  *, #user-func-popover *')) {
+                $('#user-func').popover('hide');
+            }
+
+            if(!$(e.target).is('#user-notification, #user-notification *, #notification-popover *')) {
+                $('#user-notification').popover('hide');
             }
         });
         

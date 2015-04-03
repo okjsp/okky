@@ -33,12 +33,12 @@
             </g:else>
             <div class="nav-user-action">
                 <div class="nav-user-func">
-                    <a href="javascript://" id="user-func" data-toggle="popover" data-trigger="focus" tabindex="0">
+                    <a href="javascript://" id="user-func" data-toggle="popover" data-trigger="click" tabindex="0">
                         <i id="user-func-icon" class="fa fa-cog"></i>
                     </a>
                 </div>
                 <div class="nav-user-func">
-                    <a href="javascript://" id="user-notification" data-toggle="popover" data-trigger="focus" tabindex="0">
+                    <a href="javascript://" id="user-notification" data-toggle="popover" data-trigger="click" tabindex="0">
                         <i id="user-notification-icon" class="fa fa-bell" <g:if test="${notificationCount > 0}">style="display:none;"</g:if>></i>
                         <span id="user-notification-count" class="badge notification" <g:if test="${notificationCount == 0}">style="display:none;"</g:if>>${notificationCount}</span>
                     </a>
