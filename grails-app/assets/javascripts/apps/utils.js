@@ -16,11 +16,12 @@ var autoLinker = function(node) {
             } else if($this.is('a[href][target!="_blank"]')) {
                 
                 var contents = $(this).contents();
-                console.log(contents);
                 
                 if(contents.length == 1 
-                    && contents[0].nodeType == this.TEXT_NODE) {
-                    
+                    && contents[0].nodeType == this.TEXT_NODE
+                    && !/^[#@]+/.test(contents[0].textContent)
+                    && $this.attr('href').indexOf('//'+location.hostname+'/') < 0) {
+
                     var prevNode = $('<div/>').append($(this).clone()).html();
 
                     $(this).replaceWith(prevNode + ' <a href="' + $this.attr('href') + '" target="_blank" title="새창으로 열기">' +

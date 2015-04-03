@@ -282,8 +282,11 @@ var urlize = (function () {
             url = urlescape(url);
             trimmed = htmlescape(trimmed, options);
           }
-          middle = '<a href="' + url + '"' + nofollow_attr + target_attr + '>' + trimmed + '</a>' +
-                    ' <a href="' + url + '" target="_blank" title="새창으로 열기"><i class="fa fa-external-link"></i></a>';
+          middle = '<a href="' + url + '"' + nofollow_attr + target_attr + '>' + trimmed + '</a>';
+          
+          if(url.indexOf('//'+location.hostname+'/') < 0)
+            middle += ' <a href="' + url + '" target="_blank" title="새창으로 열기"><i class="fa fa-external-link"></i></a>';
+          
           words[i] = lead + middle + trail;
         } else {
           if (safe_input) {
