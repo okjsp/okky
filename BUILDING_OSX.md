@@ -33,8 +33,7 @@
 
 1. 설정 파일 복사
   ```sh
-    cp grails-app/conf/Config.sample.groovy 
-    grails-app/conf/Config.groovy
+    cp grails-app/conf/Config.sample.groovy grails-app/conf/Config.groovy
   ```
 
 2. 기본 설정하기
