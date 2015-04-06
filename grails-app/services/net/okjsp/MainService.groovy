@@ -61,17 +61,13 @@ class MainService {
     }
     @Cacheable("techArticlesCache")
     def getTechArticles() {
-
-        def diff = new Date() - 30
-        
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
             'in'('category', Category.get('tech').children)
             eq('enabled', true)
-            gt('dateCreated', diff)
             order('id', 'desc')
-            maxResults(10)
+            maxResults(5)
         }.findAll()
     }
 

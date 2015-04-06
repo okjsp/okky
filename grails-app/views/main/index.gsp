@@ -36,6 +36,27 @@
             </div>
             <div class="col-sm-4 main-block-right">
                 <div class="main-block">
+                    <h4 class="main-header"><i class="fa fa-code"></i> Tech <a href="${request.contextPath}/articles/tech" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <g:if test="${techArticles}">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                            <g:each in="${techArticles}" var="techArticle">
+                                <div class="article-middle-block clearfix">
+                                    <div class="list-tag clearfix" style="">
+                                        <g:categoryLabel category="${techArticle.category}" />
+                                        <g:tags tags="${techArticle.tagString}" />
+                                    </div>
+                                    <h5><g:link controller="article" action="show" id="${techArticle.id}">${fieldValue(bean: techArticle, field: "title")}</g:link></h5>
+                                    <div class="list-group-item-author clearfix">
+                                        <g:avatar avatar="${techArticle.displayAuthor}" class="pull-right" size="x-small" dateCreated="${techArticle.dateCreated}" />
+                                    </div>
+                                </div>
+                            </g:each>
+                            </div>
+                        </div>
+                    </g:if>
+                </div>
+                <div class="main-block">
                     <h4 class="main-header"><i class="fa fa-quote-left"></i> 칼럼 <a href="${request.contextPath}/articles/columns" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
                     <g:if test="${columnArticle}">
                         <div class="panel panel-default">
@@ -45,23 +66,6 @@
                                 <p class="main-block-desc">&nbsp;<g:link controller="article" action="show" id="${columnArticle.id}">${description(text:columnArticle.content?.text, length: 100)}...</g:link></p>
                             </div>
                         </div>
-                    </g:if>
-                </div>
-                <div class="main-block">
-                    <h4 class="main-header"><i class="fa fa-code"></i> Tech <a href="${request.contextPath}/articles/tech" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
-                    <g:if test="${techArticles}">
-                        <g:each in="${techArticles}" var="techArticle">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="list-tag clearfix">
-                                    <g:categoryLabel category="${techArticle.category}" />
-                                    <g:tags tags="${techArticle.tagString}" limit="${1}" />
-                                </div>
-                                <h5><g:link controller="article" action="show" id="${techArticle.id}">${fieldValue(bean: techArticle, field: "title")}</g:link></h5>
-                                <a href=""><p class="main-block-desc">&nbsp;<g:link controller="article" action="show" id="${techArticle.id}">${description(text:techArticle.content?.text, length: 50)}...</g:link></p>
-                            </div>
-                        </div>
-                        </g:each>
                     </g:if>
                 </div>
                 <div class="main-block">

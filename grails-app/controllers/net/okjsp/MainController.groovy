@@ -21,8 +21,8 @@ class MainController {
 //        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
         if(promoteArticles?.size() > 6) promoteArticles = promoteArticles.subList(0, 5)
 
-        def techArticles = mainService.getTechArticles().clone().sort { Math.random() }
-        if(techArticles?.size() > 2) techArticles = techArticles.subList(0, 2)
+//        def techArticles = mainService.getTechArticles().clone().sort { Math.random() }
+//        if(techArticles?.size() > 2) techArticles = techArticles.subList(0, 2)
 
         return [
             isIndex: true,
@@ -32,7 +32,7 @@ class MainController {
             communityArticles: mainService.getCommunityArticles(),
             columnArticle: mainService.getColumnArticle(),
 //            techArticle: mainService.getTechArticle(),
-            techArticles: techArticles,
+            techArticles: mainService.getTechArticles(),
             promoteArticles: promoteArticles,
             mainBanner : mainBanner
         ]
