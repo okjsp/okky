@@ -30,18 +30,13 @@ class MainService {
 
         def diff = new Date() - 7
         
-//        Article.where {
-//            enabled == true
-//            category != Category.get('promote') && category != Category.get('recruit')
-//            dateCreated > diff
-//        }.list(max: 5, sort: 'best', order: 'desc')
-        
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
             ne('category', Category.get('promote'))
             ne('category', Category.get('recruit'))
             eq('enabled', true)
+            eq('choice', false)
             gt('dateCreated', diff)
             order('best', 'desc')
             maxResults(5)
