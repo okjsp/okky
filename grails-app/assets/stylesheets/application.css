@@ -359,6 +359,7 @@ blockquote {
     background-color: #004c92;
     color: #f8f8f8;
     width: 150px;
+    z-index: 1000;
 }
 
 .sidebar-category-nav .nav {
