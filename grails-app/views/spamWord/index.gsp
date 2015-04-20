@@ -24,27 +24,18 @@
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
-    <table>
-        <thead>
-        <tr>
-
-            <g:sortableColumn property="text" title="${message(code: 'spamWord.text.label', default: 'Text')}"/>
-
-        </tr>
-        </thead>
-        <tbody>
+    <div>
+        <ul class="spam-word-list clearfix">
         <g:each in="${spamWordList}" status="i" var="spamWord">
-            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 
-                <td><g:link action="show" id="${spamWord.id}">${fieldValue(bean: spamWord, field: "text")}</g:link></td>
+                <li><g:link action="show" id="${spamWord.id}">${fieldValue(bean: spamWord, field: "text")}</g:link></li>
 
-            </tr>
         </g:each>
-        </tbody>
-    </table>
+        </ul>
+    </div>
 
-    <div class="pagination">
-        <g:paginate total="${spamWordCount ?: 0}"/>
+    <div class="admin-pagination">
+        <g:paginate total="${spamWordCount ?: 0}" class="pagination-sm"/>
     </div>
 </div>
 </body>

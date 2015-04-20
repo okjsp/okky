@@ -54,8 +54,9 @@
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<g:paginate total="${bannerCount ?: 0}" />
+
+			<div class="admin-pagination">
+				<g:paginate total="${bannerCount ?: 0}" class="pagination-sm" />
 			</div>
 		</div>
 	</body>

@@ -48,6 +48,7 @@ class UrlMappings {
 
         "/_admin/banner/$action?/$id?(.$format)?"(controller: "banner")
         "/_admin/spamWord/$action?/$id?(.$format)?"(controller: "spamWord")
+        "/_admin"(controller: "statistic")
 
         "/intro/about"(view: "/intro/about")
 

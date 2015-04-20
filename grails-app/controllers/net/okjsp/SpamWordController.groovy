@@ -10,7 +10,9 @@ class SpamWordController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        params.sort = params.sort ?: 'id'
+        params.order = params.order ?: 'desc'
+        params.max = max ?: 100
         respond SpamWord.list(params), model: [spamWordCount: SpamWord.count()]
     }
 
