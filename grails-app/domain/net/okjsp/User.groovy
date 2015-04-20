@@ -1,5 +1,7 @@
 package net.okjsp
 
+import grails.util.Environment
+
 class User {
 
 	transient springSecurityService
@@ -21,6 +23,8 @@ class User {
 
     String createIp
     String lastUpdateIp
+
+	String dateJoined
 
     static hasMany = [loggedIns: LoggedIn, oAuthIDs: OAuthID]
 
@@ -45,6 +49,12 @@ class User {
 
 	static mapping = {
 		password column: '`password`'
+
+		if (Environment.current == Environment.DEVELOPMENT)
+			dateJoined formula: "FORMATDATETIME(date_created, 'yyyy-MM-dd')"
+
+		if (Environment.current == Environment.PRODUCTION)
+			dateJoined formula: "DATE_FORMAT(date_created, '%Y-%m-%d')"
 	}
 
 	Set<Role> getAuthorities() {
