@@ -21,23 +21,25 @@ class BannerTagLib {
 
         if(banner) {
             def bannerHTML = ""
+
+            def target = """target=\"${banner.target}\""""
             
             switch (bannerType) {
                 
                 case BannerType.MAIN_RIGHT :
                 case BannerType.SUB_RIGHT :
                     bannerHTML = """<div class="right-banner">
-                                        <a href="${banner.url}" ${banner.target ?: "target='${banner.target}'"}><img src="${banner.image}" style="width:160px;"/></a>
+                                        <a href="${banner.url}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
                                     </div>"""
                     break
                 case BannerType.MAIN : 
                     bannerHTML = """<div class="main-banner-wrapper">
-                                        <div class="main-banner"><a href="${banner.url}" ${banner.target ?: "target='${banner.target}'"}><img src="${banner.image}" /></a></div>
+                                        <div class="main-banner"><a href="${banner.url}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
                                     </div>"""
                     break
                 case BannerType.CONTENT :
                     bannerHTML = """<div class="sub-banner-wrapper">
-                                        <div class="sub-banner"><a href="${banner.url}" ${banner.target ?: "target='${banner.target}'"}><img src="${banner.image}" /></a></div>
+                                        <div class="sub-banner"><a href="${banner.url}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
                                     </div>"""
                     break
             }
