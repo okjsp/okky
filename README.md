@@ -4,7 +4,7 @@ OKKY
 ## 개발 환경
 
 - Java 8
-- Grails 2.4.3
+- Grails 2.4.5
 - Tomcat 8
 - MariaDB 10 (with TokuDB)
 
