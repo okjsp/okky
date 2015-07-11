@@ -10,7 +10,6 @@
 }(function ($) {
   // template, editor
   var tmpl = $.summernote.renderer.getTemplate();
-  var editor = $.summernote.eventHandler.getEditor();
 
   // core functions: range, dom
   var range = $.summernote.core.range;
@@ -202,7 +201,7 @@
      * @property {Function} events.showCodeblockDialog
      */
     events: {
-      showCodeblockDialog: function (e, el, layoutInfo) {
+      showCodeblockDialog: function (e, editor, layoutInfo) {
         var $dialog = layoutInfo.dialog(),
             $editable = layoutInfo.editable(),
             codeBlock = getCodeBlock($editable);

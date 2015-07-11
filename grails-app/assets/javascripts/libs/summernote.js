@@ -1,12 +1,12 @@
 /**
- * Super simple wysiwyg editor on Bootstrap v0.6.2
+ * Super simple wysiwyg editor on Bootstrap v0.6.10
  * http://summernote.org/
  *
  * summernote.js
  * Copyright 2013-2015 Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license./
  *
- * Date: 2015-04-03T07:29Z
+ * Date: 2015-07-11T10:42Z
  */
 (function (factory) {
   /* global define */
@@ -105,6 +105,8 @@
     return originalWidth !== width;
   };
 
+  var userAgent = navigator.userAgent;
+
   /**
    * @class core.agent
    *
@@ -117,9 +119,12 @@
     /** @property {Boolean} [isMac=false] true if this agent is Mac  */
     isMac: navigator.appVersion.indexOf('Mac') > -1,
     /** @property {Boolean} [isMSIE=false] true if this agent is a Internet Explorer  */
-    isMSIE: navigator.userAgent.indexOf('MSIE') > -1 || navigator.userAgent.indexOf('Trident') > -1,
+    isMSIE: /MSIE|Trident/i.test(userAgent),
     /** @property {Boolean} [isFF=false] true if this agent is a Firefox  */
-    isFF: navigator.userAgent.indexOf('Firefox') > -1,
+    isFF: /firefox/i.test(userAgent),
+    isWebkit: /webkit/i.test(userAgent),
+    /** @property {Boolean} [isSafari=false] true if this agent is a Safari  */
+    isSafari: /safari/i.test(userAgent),
     /** @property {String} jqueryVersion current jQuery version string  */
     jqueryVersion: parseFloat($.fn.jquery),
     isSupportAmd: isSupportAmd,
@@ -227,6 +232,18 @@
       return inverted;
     };
 
+    /**
+     * @param {String} namespace
+     * @param {String} [prefix]
+     * @return {String}
+     */
+    var namespaceToCamel = function (namespace, prefix) {
+      prefix = prefix || '';
+      return prefix + namespace.split('.').map(function (name) {
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
+      }).join('');
+    };
+
     return {
       eq: eq,
       eq2: eq2,
@@ -238,7 +255,8 @@
       and: and,
       uniqueId: uniqueId,
       rect2bnd: rect2bnd,
-      invertObject: invertObject
+      invertObject: invertObject,
+      namespaceToCamel: namespaceToCamel
     };
   })();
 
@@ -489,6 +507,7 @@
 
         return {
           editor: function () { return $editor; },
+          holder : function () { return $editor.data('holder'); },
           editable: function () { return $editor; },
           popover: makeFinder('#note-popover-'),
           handle: makeFinder('#note-handle-'),
@@ -497,11 +516,17 @@
 
         // frame mode
       } else {
-        makeFinder = function (sClassName) {
-          return function () { return $editor.find(sClassName); };
+        makeFinder = function (sClassName, sBaseElement) {
+          var $baseElement = sBaseElement ? $(sBaseElement) : $editor;
+          return function () { return $baseElement.find(sClassName); };
         };
+
+        var options = $editor.data('options');
+        var dialogHolder = (options && options.dialogsInBody) ? document.body : null;
+
         return {
           editor: function () { return $editor; },
+          holder : function () { return $editor.data('holder'); },
           dropzone: makeFinder('.note-dropzone'),
           toolbar: makeFinder('.note-toolbar'),
           editable: makeFinder('.note-editable'),
@@ -509,9 +534,33 @@
           statusbar: makeFinder('.note-statusbar'),
           popover: makeFinder('.note-popover'),
           handle: makeFinder('.note-handle'),
-          dialog: makeFinder('.note-dialog')
+          dialog: makeFinder('.note-dialog', dialogHolder)
         };
       }
+    };
+
+    /**
+     * returns makeLayoutInfo from editor's descendant node.
+     *
+     * @private
+     * @param {Node} descendant
+     * @return {Object}
+     */
+    var makeLayoutInfo = function (descendant) {
+      var $target = $(descendant).closest('.note-editor, .note-air-editor, .note-air-layout');
+
+      if (!$target.length) {
+        return null;
+      }
+
+      var $editor;
+      if ($target.is('.note-editor, .note-air-editor')) {
+        $editor = $target;
+      } else {
+        $editor = $('#note-editor-' + list.last($target.attr('id').split('-')));
+      }
+
+      return buildLayoutInfo($editor);
     };
 
     /**
@@ -643,6 +692,7 @@
 
     /**
      * blank HTML for cursor position
+     * - [workaround] for MSIE IE doesn't works with bogus br
      */
     var blankHTML = agent.isMSIE ? '&nbsp;' : '<br>';
 
@@ -672,8 +722,11 @@
 
       if (len === 0) {
         return true;
-      } else if (!dom.isText(node) && len === 1 && node.innerHTML === blankHTML) {
+      } else if (!isText(node) && len === 1 && node.innerHTML === blankHTML) {
         // ex) <p><br></p>, <span><br></span>
+        return true;
+      } else if (list.all(node.childNodes, isText) && node.innerHTML === '') {
+        // ex) <p></p>, <span></span>
         return true;
       }
 
@@ -938,6 +991,26 @@
     };
 
     /**
+     * returns whether point is left edge of ancestor or not.
+     * @param {BoundaryPoint} point
+     * @param {Node} ancestor
+     * @return {Boolean}
+     */
+    var isLeftEdgePointOf = function (point, ancestor) {
+      return isLeftEdgePoint(point) && isLeftEdgeOf(point.node, ancestor);
+    };
+
+    /**
+     * returns whether point is right edge of ancestor or not.
+     * @param {BoundaryPoint} point
+     * @param {Node} ancestor
+     * @return {Boolean}
+     */
+    var isRightEdgePointOf = function (point, ancestor) {
+      return isRightEdgePoint(point) && isRightEdgeOf(point.node, ancestor);
+    };
+
+    /**
      * returns offset from parent.
      *
      * @param {Node} node
@@ -1086,6 +1159,21 @@
     };
 
     /**
+     * returns whether point has character or not.
+     *
+     * @param {Point} point
+     * @return {Boolean}
+     */
+    var isCharPoint = function (point) {
+      if (!isText(point.node)) {
+        return false;
+      }
+
+      var ch = point.node.nodeValue.charAt(point.offset - 1);
+      return ch && (ch !== ' ' && ch !== NBSP_CHAR);
+    };
+
+    /**
      * @method walkPoint
      *
      * @param {BoundaryPoint} startPoint
@@ -1149,33 +1237,39 @@
      * split element or #text
      *
      * @param {BoundaryPoint} point
-     * @param {Boolean} [isSkipPaddingBlankHTML]
+     * @param {Object} [options]
+     * @param {Boolean} [options.isSkipPaddingBlankHTML] - default: false
+     * @param {Boolean} [options.isNotSplitEdgePoint] - default: false
      * @return {Node} right node of boundaryPoint
      */
-    var splitNode = function (point, isSkipPaddingBlankHTML) {
-      // split #text
-      if (isText(point.node)) {
-        // edge case
+    var splitNode = function (point, options) {
+      var isSkipPaddingBlankHTML = options && options.isSkipPaddingBlankHTML;
+      var isNotSplitEdgePoint = options && options.isNotSplitEdgePoint;
+
+      // edge case
+      if (isEdgePoint(point) && (isText(point.node) || isNotSplitEdgePoint)) {
         if (isLeftEdgePoint(point)) {
           return point.node;
         } else if (isRightEdgePoint(point)) {
           return point.node.nextSibling;
         }
+      }
 
+      // split #text
+      if (isText(point.node)) {
         return point.node.splitText(point.offset);
+      } else {
+        var childNode = point.node.childNodes[point.offset];
+        var clone = insertAfter(point.node.cloneNode(false), point.node);
+        appendChildNodes(clone, listNext(childNode));
+
+        if (!isSkipPaddingBlankHTML) {
+          paddingBlankHTML(point.node);
+          paddingBlankHTML(clone);
+        }
+
+        return clone;
       }
-
-      // split element
-      var childNode = point.node.childNodes[point.offset];
-      var clone = insertAfter(point.node.cloneNode(false), point.node);
-      appendChildNodes(clone, listNext(childNode));
-
-      if (!isSkipPaddingBlankHTML) {
-        paddingBlankHTML(point.node);
-        paddingBlankHTML(clone);
-      }
-
-      return clone;
     };
 
     /**
@@ -1185,33 +1279,30 @@
      *
      * @param {Node} root - split root
      * @param {BoundaryPoint} point
-     * @param {Boolean} [isSkipPaddingBlankHTML]
+     * @param {Object} [options]
+     * @param {Boolean} [options.isSkipPaddingBlankHTML] - default: false
+     * @param {Boolean} [options.isNotSplitEdgePoint] - default: false
      * @return {Node} right node of boundaryPoint
      */
-    var splitTree = function (root, point, isSkipPaddingBlankHTML) {
+    var splitTree = function (root, point, options) {
       // ex) [#text, <span>, <p>]
       var ancestors = listAncestor(point.node, func.eq(root));
 
       if (!ancestors.length) {
         return null;
       } else if (ancestors.length === 1) {
-        return splitNode(point, isSkipPaddingBlankHTML);
+        return splitNode(point, options);
       }
 
       return ancestors.reduce(function (node, parent) {
-        var clone = insertAfter(parent.cloneNode(false), parent);
-
         if (node === point.node) {
-          node = splitNode(point, isSkipPaddingBlankHTML);
+          node = splitNode(point, options);
         }
 
-        appendChildNodes(clone, listNext(node));
-
-        if (!isSkipPaddingBlankHTML) {
-          paddingBlankHTML(parent);
-          paddingBlankHTML(clone);
-        }
-        return clone;
+        return splitNode({
+          node: parent,
+          offset: node ? dom.position(node) : nodeLength(parent)
+        }, options);
       });
     };
 
@@ -1239,8 +1330,16 @@
         container = splitRoot.parentNode;
       }
 
-      // split with splitTree
-      var pivot = splitRoot && splitTree(splitRoot, point, isInline);
+      // if splitRoot is exists, split with splitTree
+      var pivot = splitRoot && splitTree(splitRoot, point, {
+        isSkipPaddingBlankHTML: isInline,
+        isNotSplitEdgePoint: isInline
+      });
+
+      // if container is point.node, find pivot with point.offset
+      if (!pivot && container === point.node) {
+        pivot = point.node.childNodes[point.offset];
+      }
 
       return {
         rightNode: pivot,
@@ -1332,6 +1431,18 @@
     var isTextarea = makePredByNodeName('TEXTAREA');
 
     /**
+     * @param {jQuery} $node
+     * @param {Boolean} [stripLinebreaks] - default: false
+     */
+    var value = function ($node, stripLinebreaks) {
+      var val = isTextarea($node[0]) ? $node.val() : $node.html();
+      if (stripLinebreaks) {
+        return val.replace(/[\n\r]/g, '');
+      }
+      return val;
+    };
+
+    /**
      * @method html
      *
      * get the HTML contents of node
@@ -1340,7 +1451,7 @@
      * @param {Boolean} [isNewlineOnBlock]
      */
     var html = function ($node, isNewlineOnBlock) {
-      var markup = isTextarea($node[0]) ? $node.val() : $node.html();
+      var markup = value($node);
 
       if (isNewlineOnBlock) {
         var regexTag = /<(\/?)(\b(?!!)[^>\s]*)(.*?)(\s*\/?>)/g;
@@ -1358,14 +1469,6 @@
       return markup;
     };
 
-    var value = function ($textarea, stripLinebreaks) {
-      var val = $textarea.val();
-      if (stripLinebreaks) {
-        return val.replace(/[\n\r]/g, '');
-      }
-      return val;
-    };
-
     return {
       /** @property {String} NBSP_CHAR */
       NBSP_CHAR: NBSP_CHAR,
@@ -1379,11 +1482,13 @@
       isEditable: isEditable,
       isControlSizing: isControlSizing,
       buildLayoutInfo: buildLayoutInfo,
+      makeLayoutInfo: makeLayoutInfo,
       isText: isText,
       isVoid: isVoid,
       isPara: isPara,
       isPurePara: isPurePara,
       isInline: isInline,
+      isBlock: func.not(isInline),
       isBodyInline: isBodyInline,
       isBody: isBody,
       isParaInline: isParaInline,
@@ -1416,12 +1521,15 @@
       isEdgePoint: isEdgePoint,
       isLeftEdgeOf: isLeftEdgeOf,
       isRightEdgeOf: isRightEdgeOf,
+      isLeftEdgePointOf: isLeftEdgePointOf,
+      isRightEdgePointOf: isRightEdgePointOf,
       prevPoint: prevPoint,
       nextPoint: nextPoint,
       isSamePoint: isSamePoint,
       isVisiblePoint: isVisiblePoint,
       prevPointUntil: prevPointUntil,
       nextPointUntil: nextPointUntil,
+      isCharPoint: isCharPoint,
       walkPoint: walkPoint,
       ancestor: ancestor,
       singleChildAncestor: singleChildAncestor,
@@ -1629,6 +1737,8 @@
         } else {
           nativeRng.select();
         }
+        
+        return this;
       };
 
       /**
@@ -1638,21 +1748,37 @@
 
         /**
          * @param {BoundaryPoint} point
+         * @param {Boolean} isLeftToRight
          * @return {BoundaryPoint}
          */
-        var getVisiblePoint = function (point) {
-          if (!dom.isVisiblePoint(point)) {
-            if (dom.isLeftEdgePoint(point)) {
-              point = dom.nextPointUntil(point, dom.isVisiblePoint);
-            } else {
-              point = dom.prevPointUntil(point, dom.isVisiblePoint);
-            }
+        var getVisiblePoint = function (point, isLeftToRight) {
+          if ((dom.isVisiblePoint(point) && !dom.isEdgePoint(point)) ||
+              (dom.isVisiblePoint(point) && dom.isRightEdgePoint(point) && !isLeftToRight) ||
+              (dom.isVisiblePoint(point) && dom.isLeftEdgePoint(point) && isLeftToRight) ||
+              (dom.isVisiblePoint(point) && dom.isBlock(point.node) && dom.isEmpty(point.node))) {
+            return point;
           }
-          return point;
+
+          // point on block's edge
+          var block = dom.ancestor(point.node, dom.isBlock);
+          if ((dom.isLeftEdgePointOf(point, block) && !isLeftToRight) ||
+              (dom.isRightEdgePointOf(point, block) && isLeftToRight)) {
+
+            // returns point already on visible point
+            if (dom.isVisiblePoint(point)) {
+              return point;
+            }
+            // reverse direction 
+            isLeftToRight = !isLeftToRight;
+          }
+
+          var nextPoint = isLeftToRight ? dom.nextPointUntil(dom.nextPoint(point), dom.isVisiblePoint) :
+                                          dom.prevPointUntil(dom.prevPoint(point), dom.isVisiblePoint);
+          return nextPoint || point;
         };
 
-        var startPoint = getVisiblePoint(this.getStartPoint());
-        var endPoint = getVisiblePoint(this.getEndPoint());
+        var endPoint = getVisiblePoint(this.getEndPoint(), false);
+        var startPoint = this.isCollapsed() ? endPoint : getVisiblePoint(this.getStartPoint(), true);
 
         return new WrappedRange(
           startPoint.node,
@@ -1886,20 +2012,26 @@
           return new WrappedRange(sc.firstChild, 0, sc.firstChild, 0);
         }
 
+        /**
+         * [workaround] firefox often create range on not visible point. so normalize here.
+         *  - firefox: |<p>text</p>|
+         *  - chrome: <p>|text|</p>
+         */
+        var rng = this.normalize();
         if (dom.isParaInline(sc) || dom.isPara(sc)) {
-          return this.normalize();
+          return rng;
         }
 
         // find inline top ancestor
         var topAncestor;
-        if (dom.isInline(sc)) {
-          var ancestors = dom.listAncestor(sc, func.not(dom.isInline));
+        if (dom.isInline(rng.sc)) {
+          var ancestors = dom.listAncestor(rng.sc, func.not(dom.isInline));
           topAncestor = list.last(ancestors);
           if (!dom.isInline(topAncestor)) {
-            topAncestor = ancestors[ancestors.length - 2] || sc.childNodes[so];
+            topAncestor = ancestors[ancestors.length - 2] || rng.sc.childNodes[rng.so];
           }
         } else {
-          topAncestor = sc.childNodes[so > 0 ? so - 1 : 0];
+          topAncestor = rng.sc.childNodes[rng.so > 0 ? rng.so - 1 : 0];
         }
 
         // siblings not in paragraph
@@ -1933,6 +2065,21 @@
 
         return node;
       };
+
+      /**
+       * insert html at current cursor
+       */
+      this.pasteHTML = function (markup) {
+        var self = this;
+        var contentsContainer = $('<div></div>').html(markup)[0];
+        var childNodes = list.from(contentsContainer.childNodes);
+
+        this.wrapBodyInlineWithPara().deleteContents();
+
+        return $.map(childNodes.reverse(), function (childNode) {
+          return self.insertNode(childNode);
+        }).reverse();
+      };
   
       /**
        * returns text in range
@@ -1942,6 +2089,37 @@
       this.toString = function () {
         var nativeRng = nativeRange();
         return agent.isW3CRangeSupport ? nativeRng.toString() : nativeRng.text;
+      };
+
+      /**
+       * returns range for word before cursor
+       *
+       * @param {Boolean} [findAfter] - find after cursor, default: false
+       * @return {WrappedRange}
+       */
+      this.getWordRange = function (findAfter) {
+        var endPoint = this.getEndPoint();
+
+        if (!dom.isCharPoint(endPoint)) {
+          return this;
+        }
+
+        var startPoint = dom.prevPointUntil(endPoint, function (point) {
+          return !dom.isCharPoint(point);
+        });
+
+        if (findAfter) {
+          endPoint = dom.nextPointUntil(endPoint, function (point) {
+            return !dom.isCharPoint(point);
+          });
+        }
+
+        return new WrappedRange(
+          startPoint.node,
+          startPoint.offset,
+          endPoint.node,
+          endPoint.offset
+        );
       };
   
       /**
@@ -2018,7 +2196,7 @@
         if (!arguments.length) { // from Browser Selection
           if (agent.isW3CRangeSupport) {
             var selection = document.getSelection();
-            if (selection.rangeCount === 0) {
+            if (!selection || selection.rangeCount === 0) {
               return null;
             } else if (dom.isBody(selection.anchorNode)) {
               // Firefox: returns entire body as range on initialization. We won't never need it.
@@ -2090,6 +2268,26 @@
       },
 
       /**
+       * create WrappedRange from node after position
+       *
+       * @param {Node} node
+       * @return {WrappedRange}
+       */
+      createFromNodeBefore: function (node) {
+        return this.createFromNode(node).collapse(true);
+      },
+
+      /**
+       * create WrappedRange from node after position
+       *
+       * @param {Node} node
+       * @return {WrappedRange}
+       */
+      createFromNodeAfter: function (node) {
+        return this.createFromNode(node).collapse();
+      },
+
+      /**
        * @method 
        * 
        * create WrappedRange from bookmark
@@ -2127,13 +2325,13 @@
   })();
 
   /**
-   * @class settings 
+   * @class defaults 
    * 
    * @singleton
    */
-  var settings = {
+  var defaults = {
     /** @property */
-    version: '0.6.2',
+    version: '0.6.10',
 
     /**
      * 
@@ -2180,6 +2378,74 @@
       placeholder: false,           // enable placeholder text
       prettifyHtml: true,           // enable prettifying html while toggling codeview
 
+      iconPrefix: 'fa fa-',         // prefix for css icon classes
+
+      icons: {
+        font: {
+          bold: 'bold',
+          italic: 'italic',
+          underline: 'underline',
+          clear: 'eraser',
+          height: 'text-height',
+          strikethrough: 'strikethrough',
+          superscript: 'superscript',
+          subscript: 'subscript'
+        },
+        image: {
+          image: 'picture-o',
+          floatLeft: 'align-left',
+          floatRight: 'align-right',
+          floatNone: 'align-justify',
+          shapeRounded: 'square',
+          shapeCircle: 'circle-o',
+          shapeThumbnail: 'picture-o',
+          shapeNone: 'times',
+          remove: 'trash-o'
+        },
+        link: {
+          link: 'link',
+          unlink: 'unlink',
+          edit: 'edit'
+        },
+        table: {
+          table: 'table'
+        },
+        hr: {
+          insert: 'minus'
+        },
+        style: {
+          style: 'magic'
+        },
+        lists: {
+          unordered: 'list-ul',
+          ordered: 'list-ol'
+        },
+        options: {
+          help: 'question',
+          fullscreen: 'arrows-alt',
+          codeview: 'code'
+        },
+        paragraph: {
+          paragraph: 'align-left',
+          outdent: 'outdent',
+          indent: 'indent',
+          left: 'align-left',
+          center: 'align-center',
+          right: 'align-right',
+          justify: 'align-justify'
+        },
+        color: {
+          recent: 'font'
+        },
+        history: {
+          undo: 'undo',
+          redo: 'repeat'
+        },
+        misc: {
+          check: 'check'
+        }
+      },
+
       codemirror: {                 // codemirror options
         mode: 'text/html',
         htmlMode: true,
@@ -2194,7 +2460,9 @@
       toolbar: [
         ['style', ['style']],
         ['font', ['bold', 'italic', 'underline', 'clear']],
+        // ['font', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
         ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
         ['color', ['color']],
         ['para', ['ul', 'ol', 'paragraph']],
         ['height', ['height']],
@@ -2203,6 +2471,8 @@
         ['view', ['fullscreen', 'codeview']],
         ['help', ['help']]
       ],
+
+      plugin : { },
 
       // air mode: inline editor
       airMode: false,
@@ -2234,10 +2504,12 @@
       // fontName
       fontNames: [
         'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
-        'Helvetica Neue', 'Impact', 'Lucida Grande',
+        'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
         'Tahoma', 'Times New Roman', 'Verdana'
       ],
       fontNamesIgnoreCheck: [],
+
+      fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
 
       // pallete colors(n x n)
       colors: [
@@ -2284,8 +2556,6 @@
       onCreateLink: function (sLinkUrl) {
         if (sLinkUrl.indexOf('@') !== -1 && sLinkUrl.indexOf(':') === -1) {
           sLinkUrl =  'mailto:' + sLinkUrl;
-        } else if (sLinkUrl.indexOf('://') === -1) {
-          sLinkUrl = 'http://' + sLinkUrl;
         }
 
         return sLinkUrl;
@@ -2363,7 +2633,11 @@
           underline: 'Underline',
           clear: 'Remove Font Style',
           height: 'Line Height',
-          name: 'Font Family'
+          name: 'Font Family',
+          strikethrough: 'Strikethrough',
+          subscript: 'Subscript',
+          superscript: 'Superscript',
+          size: 'Font Size'
         },
         image: {
           image: 'Picture',
@@ -2531,55 +2805,137 @@
    * @singleton
    * @alternateClassName key
    */
-  var key = {
-    /**
-     * @method isEdit
-     *
-     * @param {Number} keyCode
-     * @return {Boolean}
-     */
-    isEdit: function (keyCode) {
-      return list.contains([8, 9, 13, 32], keyCode);
-    },
-    /**
-     * @property {Object} nameFromCode
-     * @property {String} nameFromCode.8 "BACKSPACE"
-     */
-    nameFromCode: {
-      '8': 'BACKSPACE',
-      '9': 'TAB',
-      '13': 'ENTER',
-      '32': 'SPACE',
+  var key = (function () {
+    var keyMap = {
+      'BACKSPACE': 8,
+      'TAB': 9,
+      'ENTER': 13,
+      'SPACE': 32,
 
       // Number: 0-9
-      '48': 'NUM0',
-      '49': 'NUM1',
-      '50': 'NUM2',
-      '51': 'NUM3',
-      '52': 'NUM4',
-      '53': 'NUM5',
-      '54': 'NUM6',
-      '55': 'NUM7',
-      '56': 'NUM8',
+      'NUM0': 48,
+      'NUM1': 49,
+      'NUM2': 50,
+      'NUM3': 51,
+      'NUM4': 52,
+      'NUM5': 53,
+      'NUM6': 54,
+      'NUM7': 55,
+      'NUM8': 56,
 
       // Alphabet: a-z
-      '66': 'B',
-      '69': 'E',
-      '73': 'I',
-      '74': 'J',
-      '75': 'K',
-      '76': 'L',
-      '82': 'R',
-      '83': 'S',
-      '85': 'U',
-      '89': 'Y',
-      '90': 'Z',
+      'B': 66,
+      'E': 69,
+      'I': 73,
+      'J': 74,
+      'K': 75,
+      'L': 76,
+      'R': 82,
+      'S': 83,
+      'U': 85,
+      'Y': 89,
+      'Z': 90,
 
-      '191': 'SLASH',
-      '219': 'LEFTBRACKET',
-      '220': 'BACKSLASH',
-      '221': 'RIGHTBRACKET'
-    }
+      'SLASH': 191,
+      'LEFTBRACKET': 219,
+      'BACKSLASH': 220,
+      'RIGHTBRACKET': 221
+    };
+
+    return {
+      /**
+       * @method isEdit
+       *
+       * @param {Number} keyCode
+       * @return {Boolean}
+       */
+      isEdit: function (keyCode) {
+        return list.contains([8, 9, 13, 32], keyCode);
+      },
+      /**
+       * @method isMove
+       *
+       * @param {Number} keyCode
+       * @return {Boolean}
+       */
+      isMove: function (keyCode) {
+        return list.contains([37, 38, 39, 40], keyCode);
+      },
+      /**
+       * @property {Object} nameFromCode
+       * @property {String} nameFromCode.8 "BACKSPACE"
+       */
+      nameFromCode: func.invertObject(keyMap),
+      code: keyMap
+    };
+  })();
+
+  /**
+   * @class editing.History
+   *
+   * Editor History
+   *
+   */
+  var History = function ($editable) {
+    var stack = [], stackOffset = -1;
+    var editable = $editable[0];
+
+    var makeSnapshot = function () {
+      var rng = range.create();
+      var emptyBookmark = {s: {path: [], offset: 0}, e: {path: [], offset: 0}};
+
+      return {
+        contents: $editable.html(),
+        bookmark: (rng ? rng.bookmark(editable) : emptyBookmark)
+      };
+    };
+
+    var applySnapshot = function (snapshot) {
+      if (snapshot.contents !== null) {
+        $editable.html(snapshot.contents);
+      }
+      if (snapshot.bookmark !== null) {
+        range.createFromBookmark(editable, snapshot.bookmark).select();
+      }
+    };
+
+    /**
+     * undo
+     */
+    this.undo = function () {
+      if (0 < stackOffset) {
+        stackOffset--;
+        applySnapshot(stack[stackOffset]);
+      }
+    };
+
+    /**
+     * redo
+     */
+    this.redo = function () {
+      if (stack.length - 1 > stackOffset) {
+        stackOffset++;
+        applySnapshot(stack[stackOffset]);
+      }
+    };
+
+    /**
+     * recorded undo
+     */
+    this.recordUndo = function () {
+      stackOffset++;
+
+      // Wash out stack after stackOffset
+      if (stack.length > stackOffset) {
+        stack = stack.slice(0, stackOffset);
+      }
+
+      // Create new snapshot and push it to the end
+      stack.push(makeSnapshot());
+    };
+
+    // Create first undo stack
+    this.recordUndo();
   };
 
   /**
@@ -2592,6 +2948,7 @@
     /**
      * @method jQueryCSS
      *
+     * [workaround] for old jQuery
      * passing an array of style properties to .css()
      * will result in an object of property-value pairs.
      * (compability with version < 1.9)
@@ -2644,7 +3001,7 @@
       var onlyPartialContains = !!(options && options.onlyPartialContains);
 
       if (rng.isCollapsed()) {
-        return rng.insertNode(dom.create(nodeName));
+        return [rng.insertNode(dom.create(nodeName))];
       }
 
       var pred = dom.makePredByNodeName(nodeName);
@@ -2723,121 +3080,6 @@
       styleInfo.range = rng;
 
       return styleInfo;
-    };
-  };
-
-
-  /**
-   * @class editing.Typing
-   *
-   * Typing
-   *
-   */
-  var Typing = function () {
-
-    /**
-     * insert tab
-     *
-     * @param {jQuery} $editable
-     * @param {WrappedRange} rng
-     * @param {Number} tabsize
-     */
-    this.insertTab = function ($editable, rng, tabsize) {
-      var tab = dom.createText(new Array(tabsize + 1).join(dom.NBSP_CHAR));
-      rng = rng.deleteContents();
-      rng.insertNode(tab, true);
-
-      rng = range.create(tab, tabsize);
-      rng.select();
-    };
-
-    /**
-     * insert paragraph
-     */
-    this.insertParagraph = function () {
-      var rng = range.create();
-
-      // deleteContents on range.
-      rng = rng.deleteContents();
-
-      // Wrap range if it needs to be wrapped by paragraph
-      rng = rng.wrapBodyInlineWithPara();
-
-      // finding paragraph
-      var splitRoot = dom.ancestor(rng.sc, dom.isPara);
-
-      var nextPara;
-      // on paragraph: split paragraph
-      
-      if (splitRoot) {
-        nextPara = dom.splitTree(splitRoot, rng.getStartPoint());
-
-        var emptyAnchors = dom.listDescendant(splitRoot, dom.isEmptyAnchor);
-        emptyAnchors = emptyAnchors.concat(dom.listDescendant(nextPara, dom.isEmptyAnchor));
-
-        $.each(emptyAnchors, function (idx, anchor) {
-          dom.remove(anchor);
-        });
-      // no paragraph: insert empty paragraph
-      } else {
-        var next = rng.sc.childNodes[rng.so];
-        nextPara = $(dom.emptyPara)[0];
-        if (next) {
-          rng.sc.insertBefore(nextPara, next);
-        } else {
-          rng.sc.appendChild(nextPara);
-        }
-      }
-
-      range.create(nextPara, 0).normalize().select();
-    };
-
-  };
-
-  /**
-   * @class editing.Table
-   *
-   * Table
-   *
-   */
-  var Table = function () {
-    /**
-     * handle tab key
-     *
-     * @param {WrappedRange} rng
-     * @param {Boolean} isShift
-     */
-    this.tab = function (rng, isShift) {
-      var cell = dom.ancestor(rng.commonAncestor(), dom.isCell);
-      var table = dom.ancestor(cell, dom.isTable);
-      var cells = dom.listDescendant(table, dom.isCell);
-
-      var nextCell = list[isShift ? 'prev' : 'next'](cells, cell);
-      if (nextCell) {
-        range.create(nextCell, 0).select();
-      }
-    };
-
-    /**
-     * create empty table element
-     *
-     * @param {Number} rowCount
-     * @param {Number} colCount
-     * @return {Node}
-     */
-    this.createTable = function (colCount, rowCount) {
-      var tds = [], tdHTML;
-      for (var idxCol = 0; idxCol < colCount; idxCol++) {
-        tds.push('<td>' + dom.blank + '</td>');
-      }
-      tdHTML = tds.join('');
-
-      var trs = [], trHTML;
-      for (var idxRow = 0; idxRow < rowCount; idxRow++) {
-        trs.push('<tr>' + tdHTML + '</tr>');
-      }
-      trHTML = trs.join('');
-      return $('<table class="table table-bordered">' + trHTML + '</table>')[0];
     };
   };
 
@@ -3024,12 +3266,16 @@
         var lastList = headList.childNodes.length > 1 ? dom.splitTree(headList, {
           node: last.parentNode,
           offset: dom.position(last) + 1
-        }, true) : null;
+        }, {
+          isSkipPaddingBlankHTML: true
+        }) : null;
 
         var middleList = dom.splitTree(headList, {
           node: head.parentNode,
           offset: dom.position(head)
-        }, true);
+        }, {
+          isSkipPaddingBlankHTML: true
+        });
 
         paras = isEscapseToBody ? dom.listDescendant(middleList, dom.isLi) :
                                   list.from(middleList.childNodes).filter(dom.isLi);
@@ -3063,14 +3309,145 @@
     };
   };
 
+
+  /**
+   * @class editing.Typing
+   *
+   * Typing
+   *
+   */
+  var Typing = function () {
+
+    // a Bullet instance to toggle lists off
+    var bullet = new Bullet();
+
+    /**
+     * insert tab
+     *
+     * @param {jQuery} $editable
+     * @param {WrappedRange} rng
+     * @param {Number} tabsize
+     */
+    this.insertTab = function ($editable, rng, tabsize) {
+      var tab = dom.createText(new Array(tabsize + 1).join(dom.NBSP_CHAR));
+      rng = rng.deleteContents();
+      rng.insertNode(tab, true);
+
+      rng = range.create(tab, tabsize);
+      rng.select();
+    };
+
+    /**
+     * insert paragraph
+     */
+    this.insertParagraph = function () {
+      var rng = range.create();
+
+      // deleteContents on range.
+      rng = rng.deleteContents();
+
+      // Wrap range if it needs to be wrapped by paragraph
+      rng = rng.wrapBodyInlineWithPara();
+
+      // finding paragraph
+      var splitRoot = dom.ancestor(rng.sc, dom.isPara);
+
+      var nextPara;
+      // on paragraph: split paragraph
+      
+      if (splitRoot) {
+        // if it is an empty line with li
+        if (dom.isEmpty(splitRoot) && dom.isLi(splitRoot)) {
+          // disable UL/OL and escape!
+          bullet.toggleList(splitRoot.parentNode.nodeName);
+          return;
+        // if new line has content (not a line break)
+        } else {
+          nextPara = dom.splitTree(splitRoot, rng.getStartPoint());
+
+          var emptyAnchors = dom.listDescendant(splitRoot, dom.isEmptyAnchor);
+          emptyAnchors = emptyAnchors.concat(dom.listDescendant(nextPara, dom.isEmptyAnchor));
+
+          $.each(emptyAnchors, function (idx, anchor) {
+            dom.remove(anchor);
+          });
+        }
+      // no paragraph: insert empty paragraph
+      } else {
+        var next = rng.sc.childNodes[rng.so];
+        nextPara = $(dom.emptyPara)[0];
+        if (next) {
+          rng.sc.insertBefore(nextPara, next);
+        } else {
+          rng.sc.appendChild(nextPara);
+        }
+      }
+
+      range.create(nextPara, 0).normalize().select();
+
+    };
+
+  };
+
+  /**
+   * @class editing.Table
+   *
+   * Table
+   *
+   */
+  var Table = function () {
+    /**
+     * handle tab key
+     *
+     * @param {WrappedRange} rng
+     * @param {Boolean} isShift
+     */
+    this.tab = function (rng, isShift) {
+      var cell = dom.ancestor(rng.commonAncestor(), dom.isCell);
+      var table = dom.ancestor(cell, dom.isTable);
+      var cells = dom.listDescendant(table, dom.isCell);
+
+      var nextCell = list[isShift ? 'prev' : 'next'](cells, cell);
+      if (nextCell) {
+        range.create(nextCell, 0).select();
+      }
+    };
+
+    /**
+     * create empty table element
+     *
+     * @param {Number} rowCount
+     * @param {Number} colCount
+     * @return {Node}
+     */
+    this.createTable = function (colCount, rowCount) {
+      var tds = [], tdHTML;
+      for (var idxCol = 0; idxCol < colCount; idxCol++) {
+        tds.push('<td>' + dom.blank + '</td>');
+      }
+      tdHTML = tds.join('');
+
+      var trs = [], trHTML;
+      for (var idxRow = 0; idxRow < rowCount; idxRow++) {
+        trs.push('<tr>' + tdHTML + '</tr>');
+      }
+      trHTML = trs.join('');
+      return $('<table class="table table-bordered">' + trHTML + '</table>')[0];
+    };
+  };
+
+
+  var KEY_BOGUS = 'bogus';
+
   /**
    * @class editing.Editor
    *
    * Editor
    *
    */
-  var Editor = function () {
+  var Editor = function (handler) {
 
+    var self = this;
     var style = new Style();
     var table = new Table();
     var typing = new Typing();
@@ -3085,7 +3462,7 @@
      * @return {WrappedRange}
      */
     this.createRange = function ($editable) {
-      $editable.focus();
+      this.focus($editable);
       return range.create();
     };
 
@@ -3098,7 +3475,7 @@
      * @param {Boolean} [thenCollapse=false]
      */
     this.saveRange = function ($editable, thenCollapse) {
-      $editable.focus();
+      this.focus($editable);
       $editable.data('range', range.create());
       if (thenCollapse) {
         range.create().collapse().select();
@@ -3132,7 +3509,7 @@
       var rng = $editable.data('range');
       if (rng) {
         rng.select();
-        $editable.focus();
+        this.focus($editable);
       }
     };
 
@@ -3159,22 +3536,22 @@
      * @return {Boolean} false if range is no
      */
     this.currentStyle = function (target) {
-      var rng = range.create();
+      var rng = range.create().normalize();
       return rng ? rng.isOnEditable() && style.current(rng, target) : false;
     };
 
-    var triggerOnBeforeChange = this.triggerOnBeforeChange = function ($editable) {
-      var onBeforeChange = $editable.data('callbacks').onBeforeChange;
-      if (onBeforeChange) {
-        onBeforeChange($editable.html(), $editable);
-      }
+    var triggerOnBeforeChange = function ($editable) {
+      var $holder = dom.makeLayoutInfo($editable).holder();
+      handler.bindCustomEvent(
+        $holder, $editable.data('callbacks'), 'before.command'
+      )($editable.html(), $editable);
     };
 
-    var triggerOnChange = this.triggerOnChange = function ($editable) {
-      var onChange = $editable.data('callbacks').onChange;
-      if (onChange) {
-        onChange($editable.html(), $editable);
-      }
+    var triggerOnChange = function ($editable) {
+      var $holder = dom.makeLayoutInfo($editable).holder();
+      handler.bindCustomEvent(
+        $holder, $editable.data('callbacks'), 'change'
+      )($editable.html(), $editable);
     };
 
     /**
@@ -3206,16 +3583,21 @@
      */
     var beforeCommand = this.beforeCommand = function ($editable) {
       triggerOnBeforeChange($editable);
+      // keep focus on editable before command execution
+      self.focus($editable);
     };
 
     /**
      * @method afterCommand
      * after command
      * @param {jQuery} $editable
+     * @param {Boolean} isPreventTrigger
      */
-    var afterCommand = this.afterCommand = function ($editable) {
+    var afterCommand = this.afterCommand = function ($editable, isPreventTrigger) {
       $editable.data('NoteHistory').recordUndo();
-      triggerOnChange($editable);
+      if (!isPreventTrigger) {
+        triggerOnChange($editable);
+      }
     };
 
     /**
@@ -3316,6 +3698,9 @@
 
     /**
      * @method fontName
+     *
+     * change font name
+     *
      * @param {jQuery} $editable
      * @param {Mixed} value
      */
@@ -3334,7 +3719,7 @@
 
           document.execCommand(sCmd, false, value);
 
-          afterCommand($editable);
+          afterCommand($editable, true);
         };
       })(commands[idx]);
     }
@@ -3349,7 +3734,7 @@
      * @param {Object} options
      */
     this.tab = function ($editable, options) {
-      var rng = range.create();
+      var rng = this.createRange($editable);
       if (rng.isCollapsed() && rng.isOnCell()) {
         table.tab(rng);
       } else {
@@ -3365,8 +3750,8 @@
      * handle shift+tab key
      *
      */
-    this.untab = function () {
-      var rng = range.create();
+    this.untab = function ($editable) {
+      var rng = this.createRange($editable);
       if (rng.isCollapsed() && rng.isOnCell()) {
         table.tab(rng, true);
       }
@@ -3439,13 +3824,13 @@
           width: width
         });
         range.create().insertNode($image[0]);
-        range.createFromNode($image[0]).collapse().select();
+        range.createFromNodeAfter($image[0]).select();
         afterCommand($editable);
       }).fail(function () {
-        var callbacks = $editable.data('callbacks');
-        if (callbacks.onImageUploadError) {
-          callbacks.onImageUploadError();
-        }
+        var $holder = dom.makeLayoutInfo($editable).holder();
+        handler.bindCustomEvent(
+          $holder, $editable.data('callbacks'), 'image.upload.error'
+        )();
       });
     };
 
@@ -3457,9 +3842,8 @@
      */
     this.insertNode = function ($editable, node) {
       beforeCommand($editable);
-      var rng = this.createRange($editable);
-      rng.insertNode(node);
-      range.createFromNode(node).collapse().select();
+      range.create().insertNode(node);
+      range.createFromNodeAfter(node).select();
       afterCommand($editable);
     };
 
@@ -3470,9 +3854,20 @@
      */
     this.insertText = function ($editable, text) {
       beforeCommand($editable);
-      var rng = this.createRange($editable);
-      var textNode = rng.insertNode(dom.createText(text));
+      var textNode = range.create().insertNode(dom.createText(text));
       range.create(textNode, dom.nodeLength(textNode)).select();
+      afterCommand($editable);
+    };
+
+    /**
+     * paste HTML
+     * @param {Node} $editable
+     * @param {String} markup
+     */
+    this.pasteHTML = function ($editable, markup) {
+      beforeCommand($editable);
+      var contents = range.create().pasteHTML(markup);
+      range.createFromNodeAfter(list.last(contents)).select();
       afterCommand($editable);
     };
 
@@ -3484,6 +3879,7 @@
      */
     this.formatBlock = function ($editable, tagName) {
       beforeCommand($editable);
+      // [workaround] for MSIE, IE need `<`
       tagName = agent.isMSIE ? '<' + tagName + '>' : tagName;
       document.execCommand('FormatBlock', false, tagName);
       afterCommand($editable);
@@ -3506,27 +3902,59 @@
     /* jshint ignore:end */
 
     /**
-     * fontsize
-     * FIXME: Still buggy
+     * fontSize
      *
      * @param {jQuery} $editable
      * @param {String} value - px
      */
     this.fontSize = function ($editable, value) {
-      beforeCommand($editable);
+      var rng = range.create();
 
-      document.execCommand('fontSize', false, 3);
-      if (agent.isFF) {
-        // firefox: <font size="3"> to <span style='font-size={value}px;'>, buggy
-        $editable.find('font[size=3]').removeAttr('size').css('font-size', value + 'px');
+      if (rng.isCollapsed()) {
+        var spans = style.styleNodes(rng);
+        var firstSpan = list.head(spans);
+
+        $(spans).css({
+          'font-size': value + 'px'
+        });
+
+        // [workaround] added styled bogus span for style
+        //  - also bogus character needed for cursor position
+        if (firstSpan && !dom.nodeLength(firstSpan)) {
+          firstSpan.innerHTML = dom.ZERO_WIDTH_NBSP_CHAR;
+          range.createFromNodeAfter(firstSpan.firstChild).select();
+          $editable.data(KEY_BOGUS, firstSpan);
+        }
       } else {
-        // chrome: <span style="font-size: medium"> to <span style='font-size={value}px;'>
-        $editable.find('span').filter(function () {
-          return this.style.fontSize === 'medium';
-        }).css('font-size', value + 'px');
+        beforeCommand($editable);
+        $(style.styleNodes(rng)).css({
+          'font-size': value + 'px'
+        });
+        afterCommand($editable);
+      }
+    };
+
+    /**
+     * remove bogus node and character
+     */
+    this.removeBogus = function ($editable) {
+      var bogusNode = $editable.data(KEY_BOGUS);
+      if (!bogusNode) {
+        return;
       }
 
-      afterCommand($editable);
+      var textNode = list.find(list.from(bogusNode.childNodes), dom.isText);
+
+      var bogusCharIdx = textNode.nodeValue.indexOf(dom.ZERO_WIDTH_NBSP_CHAR);
+      if (bogusCharIdx !== -1) {
+        textNode.deleteData(bogusCharIdx, 1);
+      }
+
+      if (dom.isEmpty(bogusNode)) {
+        dom.remove(bogusNode);
+      }
+
+      $editable.removeData(KEY_BOGUS);
     };
 
     /**
@@ -3550,7 +3978,7 @@
      * @param {jQuery} $editable
      */
     this.unlink = function ($editable) {
-      var rng = range.create();
+      var rng = this.createRange($editable);
       if (rng.isOnAnchor()) {
         var anchor = dom.ancestor(rng.sc, dom.isAnchor);
         rng = range.createFromNode(anchor);
@@ -3573,8 +4001,10 @@
       var linkUrl = linkInfo.url;
       var linkText = linkInfo.text;
       var isNewWindow = linkInfo.newWindow;
-      var rng = linkInfo.range;
+      var rng = linkInfo.range || this.createRange($editable);
       var isTextChanged = rng.toString() !== linkText;
+
+      options = options || dom.makeLayoutInfo($editable).editor().data('options');
 
       beforeCommand($editable);
 
@@ -3582,11 +4012,11 @@
         linkUrl = options.onCreateLink(linkUrl);
       }
 
-      var anchors;
+      var anchors = [];
       if (isTextChanged) {
         // Create a new link when text changed.
         var anchor = rng.insertNode($('<A>' + linkText + '</A>')[0]);
-        anchors = [anchor];
+        anchors.push(anchor);
       } else {
         anchors = style.styleNodes(rng, {
           nodeName: 'A',
@@ -3596,15 +4026,17 @@
       }
 
       $.each(anchors, function (idx, anchor) {
-        $(anchor).attr({
-          href: linkUrl,
-          target: isNewWindow ? '_blank' : ''
-        });
+        $(anchor).attr('href', linkUrl);
+        if (isNewWindow) {
+          $(anchor).attr('target', '_blank');
+        } else {
+          $(anchor).removeAttr('target');
+        }
       });
 
-      var startRange = range.createFromNode(list.head(anchors)).collapse(true);
+      var startRange = range.createFromNodeBefore(list.head(anchors));
       var startPoint = startRange.getStartPoint();
-      var endRange = range.createFromNode(list.last(anchors)).collapse();
+      var endRange = range.createFromNodeAfter(list.last(anchors));
       var endPoint = endRange.getEndPoint();
 
       range.create(
@@ -3627,7 +4059,7 @@
      * @return {String} [return.url=""]
      */
     this.getLinkInfo = function ($editable) {
-      $editable.focus();
+      this.focus($editable);
 
       var rng = range.create().expand(dom.isAnchor);
 
@@ -3637,7 +4069,7 @@
       return {
         range: rng,
         text: rng.toString(),
-        isNewWindow: $anchor.length ? $anchor.attr('target') === '_blank' : true,
+        isNewWindow: $anchor.length ? $anchor.attr('target') === '_blank' : false,
         url: $anchor.length ? $anchor.attr('href') : ''
       };
     };
@@ -3672,8 +4104,7 @@
       var dimension = sDim.split('x');
       beforeCommand($editable);
 
-      var rng = range.create();
-      rng = rng.deleteContents();
+      var rng = range.create().deleteContents();
       rng.insertNode(table.createTable(dimension[0], dimension[1]));
       afterCommand($editable);
     };
@@ -3762,81 +4193,39 @@
       beforeCommand($editable);
       $target.detach();
 
-      var callbacks = $editable.data('callbacks');
-      if (callbacks && callbacks.onMediaDelete) {
-        callbacks.onMediaDelete($target, this, $editable);
-      }
+      handler.bindCustomEvent(
+        $(), $editable.data('callbacks'), 'media.delete'
+      )($target, $editable);
 
       afterCommand($editable);
     };
-  };
 
-  /**
-   * @class editing.History
-   *
-   * Editor History
-   *
-   */
-  var History = function ($editable) {
-    var stack = [], stackOffset = -1;
-    var editable = $editable[0];
+    /**
+     * set focus
+     *
+     * @param $editable
+     */
+    this.focus = function ($editable) {
+      $editable.focus();
 
-    var makeSnapshot = function () {
-      var rng = range.create();
-      var emptyBookmark = {s: {path: [0], offset: 0}, e: {path: [0], offset: 0}};
-
-      return {
-        contents: $editable.html(),
-        bookmark: (rng ? rng.bookmark(editable) : emptyBookmark)
-      };
-    };
-
-    var applySnapshot = function (snapshot) {
-      if (snapshot.contents !== null) {
-        $editable.html(snapshot.contents);
-      }
-      if (snapshot.bookmark !== null) {
-        range.createFromBookmark(editable, snapshot.bookmark).select();
+      // [workaround] for firefox bug http://goo.gl/lVfAaI
+      if (agent.isFF && !range.create().isOnEditable()) {
+        range.createFromNode($editable[0])
+             .normalize()
+             .collapse()
+             .select();
       }
     };
 
     /**
-     * undo
+     * returns whether contents is empty or not.
+     *
+     * @param {jQuery} $editable
+     * @return {Boolean}
      */
-    this.undo = function () {
-      if (0 < stackOffset) {
-        stackOffset--;
-        applySnapshot(stack[stackOffset]);
-      }
+    this.isEmpty = function ($editable) {
+      return dom.isEmpty($editable[0]) || dom.emptyPara === $editable.html();
     };
-
-    /**
-     * redo
-     */
-    this.redo = function () {
-      if (stack.length - 1 > stackOffset) {
-        stackOffset++;
-        applySnapshot(stack[stackOffset]);
-      }
-    };
-
-    /**
-     * recorded undo
-     */
-    this.recordUndo = function () {
-      stackOffset++;
-
-      // Wash out stack after stackOffset
-      if (stack.length > stackOffset) {
-        stack = stack.slice(0, stackOffset);
-      }
-
-      // Create new snapshot and push it to the end
-      stack.push(makeSnapshot());
-    };
-
-    // Create first undo stack
-    this.recordUndo();
   };
 
   /**
@@ -3922,10 +4311,18 @@
       if ($fontname.length) {
         var selectedFont = styleInfo['font-family'];
         if (!!selectedFont) {
-          selectedFont = list.head(selectedFont.split(','));
-          selectedFont = selectedFont.replace(/\'/g, '');
+
+          var list = selectedFont.split(',');
+          for (var i = 0, len = list.length; i < len; i++) {
+            selectedFont = list[i].replace(/[\'\"]/g, '').replace(/\s+$/, '').replace(/^\s+/, '');
+            if (agent.isFontInstalled(selectedFont)) {
+              break;
+            }
+          }
+          
           $fontname.find('.note-current-fontname').text(selectedFont);
           checkDropdownMenu($fontname, selectedFont);
+
         }
       }
 
@@ -4036,7 +4433,6 @@
     };
 
     /**
-     *
      * @param {jQuery} $container
      * @param {Boolean} [bFullscreen=false]
      */
@@ -4046,13 +4442,83 @@
     };
 
     /**
-     *
      * @param {jQuery} $container
      * @param {Boolean} [isCodeview=false]
      */
     this.updateCodeview = function ($container, isCodeview) {
       var $btn = $container.find('button[data-event="codeview"]');
       $btn.toggleClass('active', isCodeview);
+
+      if (isCodeview) {
+        this.deactivate($container);
+      } else {
+        this.activate($container);
+      }
+    };
+
+    /**
+     * get button in toolbar 
+     *
+     * @param {jQuery} $editable
+     * @param {String} name
+     * @return {jQuery}
+     */
+    this.get = function ($editable, name) {
+      var $toolbar = dom.makeLayoutInfo($editable).toolbar();
+
+      return $toolbar.find('[data-name=' + name + ']');
+    };
+
+    /**
+     * set button state
+     * @param {jQuery} $editable
+     * @param {String} name
+     * @param {Boolean} [isActive=true]
+     */
+    this.setButtonState = function ($editable, name, isActive) {
+      isActive = (isActive === false) ? false : true;
+
+      var $button = this.get($editable, name);
+      $button.toggleClass('active', isActive);
+    };
+  };
+
+  var EDITABLE_PADDING = 24;
+
+  var Statusbar = function () {
+    var $document = $(document);
+
+    this.attach = function (layoutInfo, options) {
+      if (!options.disableResizeEditor) {
+        layoutInfo.statusbar().on('mousedown', hStatusbarMousedown);
+      }
+    };
+
+    /**
+     * `mousedown` event handler on statusbar
+     *
+     * @param {MouseEvent} event
+     */
+    var hStatusbarMousedown = function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      var $editable = dom.makeLayoutInfo(event.target).editable();
+      var editableTop = $editable.offset().top - $document.scrollTop();
+
+      var layoutInfo = dom.makeLayoutInfo(event.currentTarget || event.target);
+      var options = layoutInfo.editor().data('options');
+
+      $document.on('mousemove', function (event) {
+        var nHeight = event.clientY - (editableTop + EDITABLE_PADDING);
+
+        nHeight = (options.minHeight > 0) ? Math.max(nHeight, options.minHeight) : nHeight;
+        nHeight = (options.maxHeight > 0) ? Math.min(nHeight, options.maxHeight) : nHeight;
+
+        $editable.height(nHeight);
+      }).one('mouseup', function () {
+        $document.off('mousemove');
+      });
     };
   };
 
@@ -4117,7 +4583,13 @@
       if (styleInfo.anchor) {
         var $anchor = $linkPopover.find('a');
         var href = $(styleInfo.anchor).attr('href');
+        var target = $(styleInfo.anchor).attr('target');
         $anchor.attr('href', href).html(href);
+        if (!target) {
+          $anchor.removeAttr('target');
+        } else {
+          $anchor.attr('target', '_blank');
+        }
         showPopover($linkPopover, posFromPlaceholder(styleInfo.anchor, isAirMode));
       } else {
         $linkPopover.hide();
@@ -4168,7 +4640,55 @@
    *
    * Handle
    */
-  var Handle = function () {
+  var Handle = function (handler) {
+    var $document = $(document);
+
+    /**
+     * `mousedown` event handler on $handle
+     *  - controlSizing: resize image
+     *
+     * @param {MouseEvent} event
+     */
+    var hHandleMousedown = function (event) {
+      if (dom.isControlSizing(event.target)) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        var layoutInfo = dom.makeLayoutInfo(event.target),
+            $handle = layoutInfo.handle(),
+            $popover = layoutInfo.popover(),
+            $editable = layoutInfo.editable(),
+            $editor = layoutInfo.editor();
+
+        var target = $handle.find('.note-control-selection').data('target'),
+            $target = $(target), posStart = $target.offset(),
+            scrollTop = $document.scrollTop();
+
+        var isAirMode = $editor.data('options').airMode;
+
+        $document.on('mousemove', function (event) {
+          handler.invoke('editor.resizeTo', {
+            x: event.clientX - posStart.left,
+            y: event.clientY - (posStart.top - scrollTop)
+          }, $target, !event.shiftKey);
+
+          handler.invoke('handle.update', $handle, {image: target}, isAirMode);
+          handler.invoke('popover.update', $popover, {image: target}, isAirMode);
+        }).one('mouseup', function () {
+          $document.off('mousemove');
+          handler.invoke('editor.afterCommand', $editable);
+        });
+
+        if (!$target.data('ratio')) { // original ratio.
+          $target.data('ratio', $target.height() / $target.width());
+        }
+      }
+    };
+
+    this.attach = function (layoutInfo) {
+      layoutInfo.handle().on('mousedown', hHandleMousedown);
+    };
+
     /**
      * update handle
      * @param {jQuery} $handle
@@ -4211,13 +4731,383 @@
     };
   };
 
+  var Fullscreen = function (handler) {
+    var $window = $(window);
+    var $scrollbar = $('html, body');
+
+    /**
+     * toggle fullscreen
+     *
+     * @param {Object} layoutInfo
+     */
+    this.toggle = function (layoutInfo) {
+
+      var $editor = layoutInfo.editor(),
+          $toolbar = layoutInfo.toolbar(),
+          $editable = layoutInfo.editable(),
+          $codable = layoutInfo.codable();
+
+      var resize = function (size) {
+        $editable.css('height', size.h);
+        $codable.css('height', size.h);
+        if ($codable.data('cmeditor')) {
+          $codable.data('cmeditor').setsize(null, size.h);
+        }
+      };
+
+      $editor.toggleClass('fullscreen');
+      var isFullscreen = $editor.hasClass('fullscreen');
+      if (isFullscreen) {
+        $editable.data('orgheight', $editable.css('height'));
+
+        $window.on('resize', function () {
+          resize({
+            h: $window.height() - $toolbar.outerHeight()
+          });
+        }).trigger('resize');
+
+        $scrollbar.css('overflow', 'hidden');
+      } else {
+        $window.off('resize');
+        resize({
+          h: $editable.data('orgheight')
+        });
+        $scrollbar.css('overflow', 'visible');
+      }
+
+      handler.invoke('toolbar.updateFullscreen', $toolbar, isFullscreen);
+    };
+  };
+
+
+  var CodeMirror;
+  if (agent.hasCodeMirror) {
+    if (agent.isSupportAmd) {
+      require(['CodeMirror'], function (cm) {
+        CodeMirror = cm;
+      });
+    } else {
+      CodeMirror = window.CodeMirror;
+    }
+  }
+
   /**
-   * @class module.Dialog
-   *
-   * Dialog
-   *
+   * @class Codeview
    */
-  var Dialog = function () {
+  var Codeview = function (handler) {
+
+    this.sync = function (layoutInfo) {
+      var isCodeview = handler.invoke('codeview.isActivated', layoutInfo);
+      if (isCodeview && agent.hasCodeMirror) {
+        layoutInfo.codable().data('cmEditor').save();
+      }
+    };
+
+    /**
+     * @param {Object} layoutInfo
+     * @return {Boolean}
+     */
+    this.isActivated = function (layoutInfo) {
+      var $editor = layoutInfo.editor();
+      return $editor.hasClass('codeview');
+    };
+
+    /**
+     * toggle codeview
+     *
+     * @param {Object} layoutInfo
+     */
+    this.toggle = function (layoutInfo) {
+      if (this.isActivated(layoutInfo)) {
+        this.deactivate(layoutInfo);
+      } else {
+        this.activate(layoutInfo);
+      }
+    };
+
+    /**
+     * activate code view
+     *
+     * @param {Object} layoutInfo
+     */
+    this.activate = function (layoutInfo) {
+      var $editor = layoutInfo.editor(),
+          $toolbar = layoutInfo.toolbar(),
+          $editable = layoutInfo.editable(),
+          $codable = layoutInfo.codable(),
+          $popover = layoutInfo.popover(),
+          $handle = layoutInfo.handle();
+
+      var options = $editor.data('options');
+
+      $codable.val(dom.html($editable, options.prettifyHtml));
+      $codable.height($editable.height());
+
+      handler.invoke('toolbar.updateCodeview', $toolbar, true);
+      handler.invoke('popover.hide', $popover);
+      handler.invoke('handle.hide', $handle);
+
+      $editor.addClass('codeview');
+
+      $codable.focus();
+
+      // activate CodeMirror as codable
+      if (agent.hasCodeMirror) {
+        var cmEditor = CodeMirror.fromTextArea($codable[0], options.codemirror);
+
+        // CodeMirror TernServer
+        if (options.codemirror.tern) {
+          var server = new CodeMirror.TernServer(options.codemirror.tern);
+          cmEditor.ternServer = server;
+          cmEditor.on('cursorActivity', function (cm) {
+            server.updateArgHints(cm);
+          });
+        }
+
+        // CodeMirror hasn't Padding.
+        cmEditor.setSize(null, $editable.outerHeight());
+        $codable.data('cmEditor', cmEditor);
+      }
+    };
+
+    /**
+     * deactivate code view
+     *
+     * @param {Object} layoutInfo
+     */
+    this.deactivate = function (layoutInfo) {
+      var $holder = layoutInfo.holder(),
+          $editor = layoutInfo.editor(),
+          $toolbar = layoutInfo.toolbar(),
+          $editable = layoutInfo.editable(),
+          $codable = layoutInfo.codable();
+
+      var options = $editor.data('options');
+
+      // deactivate CodeMirror as codable
+      if (agent.hasCodeMirror) {
+        var cmEditor = $codable.data('cmEditor');
+        $codable.val(cmEditor.getValue());
+        cmEditor.toTextArea();
+      }
+
+      var value = dom.value($codable, options.prettifyHtml) || dom.emptyPara;
+      var isChange = $editable.html() !== value;
+
+      $editable.html(value);
+      $editable.height(options.height ? $codable.height() : 'auto');
+      $editor.removeClass('codeview');
+
+      if (isChange) {
+        handler.bindCustomEvent(
+          $holder, $editable.data('callbacks'), 'change'
+        )($editable.html(), $editable);
+      }
+
+      $editable.focus();
+
+      handler.invoke('toolbar.updateCodeview', $toolbar, false);
+    };
+  };
+
+  var DragAndDrop = function (handler) {
+    var $document = $(document);
+
+    /**
+     * attach Drag and Drop Events
+     *
+     * @param {Object} layoutInfo - layout Informations
+     * @param {Object} options
+     */
+    this.attach = function (layoutInfo, options) {
+      if (options.airMode || options.disableDragAndDrop) {
+        // prevent default drop event
+        $document.on('drop', function (e) {
+          e.preventDefault();
+        });
+      } else {
+        this.attachDragAndDropEvent(layoutInfo, options);
+      }
+    };
+
+    /**
+     * attach Drag and Drop Events
+     *
+     * @param {Object} layoutInfo - layout Informations
+     * @param {Object} options
+     */
+    this.attachDragAndDropEvent = function (layoutInfo, options) {
+      var collection = $(),
+          $editor = layoutInfo.editor(),
+          $dropzone = layoutInfo.dropzone(),
+          $dropzoneMessage = $dropzone.find('.note-dropzone-message');
+
+      // show dropzone on dragenter when dragging a object to document
+      // -but only if the editor is visible, i.e. has a positive width and height
+      $document.on('dragenter', function (e) {
+        var isCodeview = handler.invoke('codeview.isActivated', layoutInfo);
+        var hasEditorSize = $editor.width() > 0 && $editor.height() > 0;
+        if (!isCodeview && !collection.length && hasEditorSize) {
+          $editor.addClass('dragover');
+          $dropzone.width($editor.width());
+          $dropzone.height($editor.height());
+          $dropzoneMessage.text(options.langInfo.image.dragImageHere);
+        }
+        collection = collection.add(e.target);
+      }).on('dragleave', function (e) {
+        collection = collection.not(e.target);
+        if (!collection.length) {
+          $editor.removeClass('dragover');
+        }
+      }).on('drop', function () {
+        collection = $();
+        $editor.removeClass('dragover');
+      });
+
+      // change dropzone's message on hover.
+      $dropzone.on('dragenter', function () {
+        $dropzone.addClass('hover');
+        $dropzoneMessage.text(options.langInfo.image.dropImage);
+      }).on('dragleave', function () {
+        $dropzone.removeClass('hover');
+        $dropzoneMessage.text(options.langInfo.image.dragImageHere);
+      });
+
+      // attach dropImage
+      $dropzone.on('drop', function (event) {
+
+        var dataTransfer = event.originalEvent.dataTransfer;
+        var layoutInfo = dom.makeLayoutInfo(event.currentTarget || event.target);
+
+        if (dataTransfer && dataTransfer.files && dataTransfer.files.length) {
+          event.preventDefault();
+          layoutInfo.editable().focus();
+          handler.insertImages(layoutInfo, dataTransfer.files);
+        } else {
+          var insertNodefunc = function () {
+            layoutInfo.holder().summernote('insertNode', this);
+          };
+
+          for (var i = 0, len = dataTransfer.types.length; i < len; i++) {
+            var type = dataTransfer.types[i];
+            var content = dataTransfer.getData(type);
+
+            if (type.toLowerCase().indexOf('text') > -1) {
+              layoutInfo.holder().summernote('pasteHTML', content);
+            } else {
+              $(content).each(insertNodefunc);
+            }
+          }
+        }
+      }).on('dragover', false); // prevent default dragover event
+    };
+  };
+
+  var Clipboard = function (handler) {
+
+    var $paste;
+
+    this.attach = function (layoutInfo) {
+
+      if (window.clipboardData || agent.isFF) {
+        $paste = $('<div />').attr('contenteditable', true).css({
+          position : 'absolute',
+          left : -100000,
+          opacity : 0
+        });
+        layoutInfo.editable().after($paste);
+        $paste.on('paste', hPasteClipboardImage);
+
+        layoutInfo.editable().on('keydown', function (e) {
+          if (e.ctrlKey && e.keyCode === 86) {  // CTRL+V
+            handler.invoke('saveRange', layoutInfo.editable());
+            if ($paste) {
+              $paste.focus();
+            }
+          }
+        });
+      }
+
+      layoutInfo.editable().on('paste', hPasteClipboardImage);
+    };
+
+    var hPasteContent = function (handler, $paste, $editable) {
+      var pasteContent = $('<div />').html($paste.html());
+
+      handler.invoke('restoreRange', $editable);
+      handler.invoke('focus', $editable);
+      handler.invoke('pasteHTML', $editable, pasteContent.html());
+      $paste.empty();
+    };
+
+    /**
+     * paste clipboard image
+     *
+     * @param {Event} event
+     */
+    var hPasteClipboardImage = function (event) {
+
+      var clipboardData = event.originalEvent.clipboardData;
+      var layoutInfo = dom.makeLayoutInfo(event.currentTarget || event.target);
+      var $editable = layoutInfo.editable();
+
+      if (!clipboardData || !clipboardData.items || !clipboardData.items.length) {
+
+        var callbacks = $editable.data('callbacks');
+        // only can run if it has onImageUpload method
+        if (!callbacks.onImageUpload) {
+          hPasteContent(handler, $paste, $editable);
+          return;
+        }
+
+        setTimeout(function () {
+          if (!$paste) {
+            return;
+          }
+
+          var imgNode = $paste[0].firstChild;
+          if (!imgNode) {
+            hPasteContent(handler, $paste, $editable);
+            return;
+          }
+
+          if (!dom.isImg(imgNode)) {
+            hPasteContent(handler, $paste, $editable);
+          } else {
+            handler.invoke('restoreRange', $editable);
+            var datauri = imgNode.src;
+
+            var data = atob(datauri.split(',')[1]);
+            var array = new Uint8Array(data.length);
+            for (var i = 0; i < data.length; i++) {
+              array[i] = data.charCodeAt(i);
+            }
+
+            var blob = new Blob([array], { type : 'image/png' });
+            blob.name = 'clipboard.png';
+            handler.invoke('focus', $editable);
+            handler.insertImages(layoutInfo, [blob]);
+
+            $paste.empty();
+          }
+
+        }, 0);
+
+        return;
+      }
+
+      var item = list.head(clipboardData.items);
+      var isClipboardImage = item.kind === 'file' && item.type.indexOf('image/') !== -1;
+
+      if (isClipboardImage) {
+        handler.insertImages(layoutInfo, [item.getAsFile()]);
+      }
+
+      handler.invoke('editor.afterCommand', $editable);
+    };
+  };
+
+  var LinkDialog = function (handler) {
 
     /**
      * toggle button status
@@ -4232,57 +5122,17 @@
     };
 
     /**
-     * show image dialog
+     * bind enter key
      *
-     * @param {jQuery} $editable
-     * @param {jQuery} $dialog
-     * @return {Promise}
+     * @private
+     * @param {jQuery} $input
+     * @param {jQuery} $btn
      */
-    this.showImageDialog = function ($editable, $dialog) {
-      return $.Deferred(function (deferred) {
-        var $imageDialog = $dialog.find('.note-image-dialog');
-
-        var $imageInput = $dialog.find('.note-image-input'),
-            $imageUrl = $dialog.find('.note-image-url'),
-            $imageBtn = $dialog.find('.note-image-btn');
-
-        $imageDialog.one('shown.bs.modal', function () {
-          // Cloning imageInput to clear element.
-          $imageInput.replaceWith($imageInput.clone()
-            .on('change', function () {
-              deferred.resolve(this.files || [this.value]);
-              $imageDialog.modal('hide');
-            })
-            .val('')
-          );
-
-          $imageBtn.click(function (event) {
-            event.preventDefault();
-
-            deferred.resolve($imageUrl.val());
-            $imageDialog.modal('hide');
-          });
-
-          $imageUrl.on('keyup paste', function (event) {
-            var url;
-            
-            if (event.type === 'paste') {
-              url = event.originalEvent.clipboardData.getData('text');
-            } else {
-              url = $imageUrl.val();
-            }
-            
-            toggleBtn($imageBtn, url);
-          }).val('').trigger('focus');
-        }).one('hidden.bs.modal', function () {
-          $imageInput.off('change');
-          $imageUrl.off('keyup paste');
-          $imageBtn.off('click');
-
-          if (deferred.state() === 'pending') {
-            deferred.reject();
-          }
-        }).modal('show');
+    var bindEnterKey = function ($input, $btn) {
+      $input.on('keypress', function (event) {
+        if (event.keyCode === key.code.ENTER) {
+          $btn.trigger('click');
+        }
       });
     };
 
@@ -4307,6 +5157,7 @@
           $linkText.val(linkInfo.text);
 
           $linkText.on('input', function () {
+            toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
             // if linktext was modified by keyup,
             // stop cloning text from linkUrl
             linkInfo.text = $linkText.val();
@@ -4314,18 +5165,21 @@
 
           // if no url was given, copy text to url
           if (!linkInfo.url) {
-            linkInfo.url = linkInfo.text;
+            linkInfo.url = linkInfo.text || 'http://';
             toggleBtn($linkBtn, linkInfo.text);
           }
 
           $linkUrl.on('input', function () {
-            toggleBtn($linkBtn, $linkUrl.val());
+            toggleBtn($linkBtn, $linkText.val() && $linkUrl.val());
             // display same link on `Text to display` input
             // when create a new link
             if (!linkInfo.text) {
               $linkText.val($linkUrl.val());
             }
           }).val(linkInfo.url).trigger('focus').trigger('select');
+
+          bindEnterKey($linkUrl, $linkBtn);
+          bindEnterKey($linkText, $linkBtn);
 
           $openInNewWindow.prop('checked', linkInfo.newWindow);
 
@@ -4342,8 +5196,8 @@
           });
         }).one('hidden.bs.modal', function () {
           // detach events
-          $linkText.off('input');
-          $linkUrl.off('input');
+          $linkText.off('input keypress');
+          $linkUrl.off('input keypress');
           $linkBtn.off('click');
 
           if (deferred.state() === 'pending') {
@@ -4353,6 +5207,136 @@
       }).promise();
     };
 
+    /**
+     * @param {Object} layoutInfo
+     */
+    this.show = function (layoutInfo) {
+      var $editor = layoutInfo.editor(),
+          $dialog = layoutInfo.dialog(),
+          $editable = layoutInfo.editable(),
+          $popover = layoutInfo.popover(),
+          linkInfo = handler.invoke('editor.getLinkInfo', $editable);
+
+      var options = $editor.data('options');
+
+      handler.invoke('editor.saveRange', $editable);
+      this.showLinkDialog($editable, $dialog, linkInfo).then(function (linkInfo) {
+        handler.invoke('editor.restoreRange', $editable);
+        handler.invoke('editor.createLink', $editable, linkInfo, options);
+        // hide popover after creating link
+        handler.invoke('popover.hide', $popover);
+      }).fail(function () {
+        handler.invoke('editor.restoreRange', $editable);
+      });
+    };
+  };
+
+  var ImageDialog = function (handler) {
+    /**
+     * toggle button status
+     *
+     * @private
+     * @param {jQuery} $btn
+     * @param {Boolean} isEnable
+     */
+    var toggleBtn = function ($btn, isEnable) {
+      $btn.toggleClass('disabled', !isEnable);
+      $btn.attr('disabled', !isEnable);
+    };
+
+    /**
+     * bind enter key
+     *
+     * @private
+     * @param {jQuery} $input
+     * @param {jQuery} $btn
+     */
+    var bindEnterKey = function ($input, $btn) {
+      $input.on('keypress', function (event) {
+        if (event.keyCode === key.code.ENTER) {
+          $btn.trigger('click');
+        }
+      });
+    };
+
+    this.show = function (layoutInfo) {
+      var $dialog = layoutInfo.dialog(),
+          $editable = layoutInfo.editable();
+
+      handler.invoke('editor.saveRange', $editable);
+      this.showImageDialog($editable, $dialog).then(function (data) {
+        handler.invoke('editor.restoreRange', $editable);
+
+        if (typeof data === 'string') {
+          // image url
+          handler.invoke('editor.insertImage', $editable, data);
+        } else {
+          // array of files
+          handler.insertImages(layoutInfo, data);
+        }
+      }).fail(function () {
+        handler.invoke('editor.restoreRange', $editable);
+      });
+    };
+
+    /**
+     * show image dialog
+     *
+     * @param {jQuery} $editable
+     * @param {jQuery} $dialog
+     * @return {Promise}
+     */
+    this.showImageDialog = function ($editable, $dialog) {
+      return $.Deferred(function (deferred) {
+        var $imageDialog = $dialog.find('.note-image-dialog');
+
+        var $imageInput = $dialog.find('.note-image-input'),
+            $imageUrl = $dialog.find('.note-image-url'),
+            $imageBtn = $dialog.find('.note-image-btn');
+
+        $imageDialog.one('shown.bs.modal', function () {
+          // Cloning imageInput to clear element.
+          $imageInput.replaceWith($imageInput.clone()
+            .on('change', function () {
+              deferred.resolve(this.files || this.value);
+              $imageDialog.modal('hide');
+            })
+            .val('')
+          );
+
+          $imageBtn.click(function (event) {
+            event.preventDefault();
+
+            deferred.resolve($imageUrl.val());
+            $imageDialog.modal('hide');
+          });
+
+          $imageUrl.on('keyup paste', function (event) {
+            var url;
+            
+            if (event.type === 'paste') {
+              url = event.originalEvent.clipboardData.getData('text');
+            } else {
+              url = $imageUrl.val();
+            }
+            
+            toggleBtn($imageBtn, url);
+          }).val('').trigger('focus');
+          bindEnterKey($imageUrl, $imageBtn);
+        }).one('hidden.bs.modal', function () {
+          $imageInput.off('change');
+          $imageUrl.off('keyup paste keypress');
+          $imageBtn.off('click');
+
+          if (deferred.state() === 'pending') {
+            deferred.reject();
+          }
+        }).modal('show');
+      });
+    };
+  };
+
+  var HelpDialog = function (handler) {
     /**
      * show help dialog
      *
@@ -4369,62 +5353,93 @@
         }).modal('show');
       }).promise();
     };
+
+    /**
+     * @param {Object} layoutInfo
+     */
+    this.show = function (layoutInfo) {
+      var $dialog = layoutInfo.dialog(),
+          $editable = layoutInfo.editable();
+
+      handler.invoke('editor.saveRange', $editable, true);
+      this.showHelpDialog($editable, $dialog).then(function () {
+        handler.invoke('editor.restoreRange', $editable);
+      });
+    };
   };
 
-
-  var CodeMirror;
-  if (agent.hasCodeMirror) {
-    if (agent.isSupportAmd) {
-      require(['CodeMirror'], function (cm) {
-        CodeMirror = cm;
-      });
-    } else {
-      CodeMirror = window.CodeMirror;
-    }
-  }
 
   /**
    * @class EventHandler
    *
    * EventHandler
+   *  - TODO: new instance per a editor
    */
   var EventHandler = function () {
-    var $window = $(window);
-    var $document = $(document);
-    var $scrollbar = $('html, body');
-
-    var editor = new Editor();
-    var toolbar = new Toolbar(), popover = new Popover();
-    var handle = new Handle(), dialog = new Dialog();
-
     /**
-     * get editor
-     * @returns {editing.Editor}
+     * Modules
      */
-    this.getEditor = function () {
-      return editor;
+    var modules = this.modules = {
+      editor: new Editor(this),
+      toolbar: new Toolbar(this),
+      statusbar: new Statusbar(this),
+      popover: new Popover(this),
+      handle: new Handle(this),
+      fullscreen: new Fullscreen(this),
+      codeview: new Codeview(this),
+      dragAndDrop: new DragAndDrop(this),
+      clipboard: new Clipboard(this),
+      linkDialog: new LinkDialog(this),
+      imageDialog: new ImageDialog(this),
+      helpDialog: new HelpDialog(this)
     };
 
     /**
-     * returns makeLayoutInfo from editor's descendant node.
+     * invoke module's method
      *
-     * @private
-     * @param {Node} descendant
-     * @return {Object}
+     * @param {String} moduleAndMethod - ex) 'editor.redo'
+     * @param {...*} arguments - arguments of method
+     * @return {*}
      */
-    var makeLayoutInfo = function (descendant) {
-      var $target = $(descendant).closest('.note-editor, .note-air-editor, .note-air-layout');
+    this.invoke = function () {
+      var moduleAndMethod = list.head(list.from(arguments));
+      var args = list.tail(list.from(arguments));
 
-      if (!$target.length) { return null; }
+      var splits = moduleAndMethod.split('.');
+      var hasSeparator = splits.length > 1;
+      var moduleName = hasSeparator && list.head(splits);
+      var methodName = hasSeparator ? list.last(splits) : list.head(splits);
 
-      var $editor;
-      if ($target.is('.note-editor, .note-air-editor')) {
-        $editor = $target;
-      } else {
-        $editor = $('#note-editor-' + list.last($target.attr('id').split('-')));
-      }
+      var module = this.getModule(moduleName);
+      var method = module[methodName];
 
-      return dom.buildLayoutInfo($editor);
+      return method && method.apply(module, args);
+    };
+
+    /**
+     * returns module
+     *
+     * @param {String} moduleName - name of module
+     * @return {Module} - defaults is editor
+     */
+    this.getModule = function (moduleName) {
+      return this.modules[moduleName] || this.modules.editor;
+    };
+
+    /**
+     * @param {jQuery} $holder
+     * @param {Object} callbacks
+     * @param {String} eventNamespace
+     * @returns {Function}
+     */
+    var bindCustomEvent = this.bindCustomEvent = function ($holder, callbacks, eventNamespace) {
+      return function () {
+        var callback = callbacks[func.namespaceToCamel(eventNamespace, 'on')];
+        if (callback) {
+          callback.apply($holder[0], arguments);
+        }
+        return $holder.trigger('summernote.' + eventNamespace, arguments);
+      };
     };
 
     /**
@@ -4434,33 +5449,28 @@
      * @param {Object} layoutInfo
      * @param {File[]} files
      */
-    var insertImages = function (layoutInfo, files) {
+    this.insertImages = function (layoutInfo, files) {
       var $editor = layoutInfo.editor(),
-          $editable = layoutInfo.editable();
+          $editable = layoutInfo.editable(),
+          $holder = layoutInfo.holder();
 
       var callbacks = $editable.data('callbacks');
       var options = $editor.data('options');
 
       // If onImageUpload options setted
       if (callbacks.onImageUpload) {
-        callbacks.onImageUpload(files, editor, $editable);
+        bindCustomEvent($holder, callbacks, 'image.upload')(files);
       // else insert Image as dataURL
       } else {
         $.each(files, function (idx, file) {
           var filename = file.name;
           if (options.maximumImageFileSize && options.maximumImageFileSize < file.size) {
-            if (callbacks.onImageUploadError) {
-              callbacks.onImageUploadError(options.langInfo.image.maximumFileSizeError);
-            } else {
-              alert(options.langInfo.image.maximumFileSizeError);
-            }
+            bindCustomEvent($holder, callbacks, 'image.upload.error')(options.langInfo.image.maximumFileSizeError);
           } else {
             async.readFileAsDataURL(file).then(function (sDataURL) {
-              editor.insertImage($editable, sDataURL, filename);
+              modules.editor.insertImage($editable, sDataURL, filename);
             }).fail(function () {
-              if (callbacks.onImageUploadError) {
-                callbacks.onImageUploadError();
-              }
+              bindCustomEvent($holder, callbacks, 'image.upload.error')(options.langInfo.image.maximumFileSizeError);
             });
           }
         });
@@ -4472,153 +5482,35 @@
        * @param {Object} layoutInfo
        */
       showLinkDialog: function (layoutInfo) {
-        var $editor = layoutInfo.editor(),
-            $dialog = layoutInfo.dialog(),
-            $editable = layoutInfo.editable(),
-            linkInfo = editor.getLinkInfo($editable);
-
-        var options = $editor.data('options');
-
-        editor.saveRange($editable);
-        dialog.showLinkDialog($editable, $dialog, linkInfo).then(function (linkInfo) {
-          editor.restoreRange($editable);
-          editor.createLink($editable, linkInfo, options);
-          // hide popover after creating link
-          popover.hide(layoutInfo.popover());
-        }).fail(function () {
-          editor.restoreRange($editable);
-        });
+        modules.linkDialog.show(layoutInfo);
       },
 
       /**
        * @param {Object} layoutInfo
        */
       showImageDialog: function (layoutInfo) {
-        var $dialog = layoutInfo.dialog(),
-            $editable = layoutInfo.editable();
-
-        editor.saveRange($editable);
-        dialog.showImageDialog($editable, $dialog).then(function (data) {
-          editor.restoreRange($editable);
-
-          if (typeof data === 'string') {
-            // image url
-            editor.insertImage($editable, data);
-          } else {
-            // array of files
-            insertImages(layoutInfo, data);
-          }
-        }).fail(function () {
-          editor.restoreRange($editable);
-        });
+        modules.imageDialog.show(layoutInfo);
       },
 
       /**
        * @param {Object} layoutInfo
        */
       showHelpDialog: function (layoutInfo) {
-        var $dialog = layoutInfo.dialog(),
-            $editable = layoutInfo.editable();
-
-        editor.saveRange($editable, true);
-        dialog.showHelpDialog($editable, $dialog).then(function () {
-          editor.restoreRange($editable);
-        });
+        modules.helpDialog.show(layoutInfo);
       },
 
+      /**
+       * @param {Object} layoutInfo
+       */
       fullscreen: function (layoutInfo) {
-        var $editor = layoutInfo.editor(),
-        $toolbar = layoutInfo.toolbar(),
-        $editable = layoutInfo.editable(),
-        $codable = layoutInfo.codable();
-
-        var resize = function (size) {
-          $editable.css('height', size.h);
-          $codable.css('height', size.h);
-          if ($codable.data('cmeditor')) {
-            $codable.data('cmeditor').setsize(null, size.h);
-          }
-        };
-
-        $editor.toggleClass('fullscreen');
-        var isFullscreen = $editor.hasClass('fullscreen');
-        if (isFullscreen) {
-          $editable.data('orgheight', $editable.css('height'));
-
-          $window.on('resize', function () {
-            resize({
-              h: $window.height() - $toolbar.outerHeight()
-            });
-          }).trigger('resize');
-
-          $scrollbar.css('overflow', 'hidden');
-        } else {
-          $window.off('resize');
-          resize({
-            h: $editable.data('orgheight')
-          });
-          $scrollbar.css('overflow', 'visible');
-        }
-
-        toolbar.updateFullscreen($toolbar, isFullscreen);
+        modules.fullscreen.toggle(layoutInfo);
       },
 
+      /**
+       * @param {Object} layoutInfo
+       */
       codeview: function (layoutInfo) {
-        var $editor = layoutInfo.editor(),
-        $toolbar = layoutInfo.toolbar(),
-        $editable = layoutInfo.editable(),
-        $codable = layoutInfo.codable(),
-        $popover = layoutInfo.popover(),
-        $handle = layoutInfo.handle();
-
-        var options = $editor.data('options');
-
-        var cmEditor, server;
-
-        $editor.toggleClass('codeview');
-
-        var isCodeview = $editor.hasClass('codeview');
-        if (isCodeview) {
-          $codable.val(dom.html($editable, options.prettifyHtml));
-          $codable.height($editable.height());
-          toolbar.deactivate($toolbar);
-          popover.hide($popover);
-          handle.hide($handle);
-          $codable.focus();
-
-          // activate CodeMirror as codable
-          if (agent.hasCodeMirror) {
-            cmEditor = CodeMirror.fromTextArea($codable[0], options.codemirror);
-
-            // CodeMirror TernServer
-            if (options.codemirror.tern) {
-              server = new CodeMirror.TernServer(options.codemirror.tern);
-              cmEditor.ternServer = server;
-              cmEditor.on('cursorActivity', function (cm) {
-                server.updateArgHints(cm);
-              });
-            }
-
-            // CodeMirror hasn't Padding.
-            cmEditor.setSize(null, $editable.outerHeight());
-            $codable.data('cmEditor', cmEditor);
-          }
-        } else {
-          // deactivate CodeMirror as codable
-          if (agent.hasCodeMirror) {
-            cmEditor = $codable.data('cmEditor');
-            $codable.val(cmEditor.getValue());
-            cmEditor.toTextArea();
-          }
-
-          $editable.html(dom.value($codable, options.prettifyHtml) || dom.emptyPara);
-          $editable.height(options.height ? $codable.height() : 'auto');
-
-          toolbar.activate($toolbar);
-          $editable.focus();
-        }
-
-        toolbar.updateCodeview(layoutInfo.toolbar(), isCodeview);
+        modules.codeview.toggle(layoutInfo);
       }
     };
 
@@ -4629,164 +5521,34 @@
       }
     };
 
+    var hKeyupAndMouseup = function (event) {
+      var layoutInfo = dom.makeLayoutInfo(event.currentTarget || event.target);
+      modules.editor.removeBogus(layoutInfo.editable());
+      hToolbarAndPopoverUpdate(event);
+    };
+
     var hToolbarAndPopoverUpdate = function (event) {
       // delay for range after mouseup
       setTimeout(function () {
-        var layoutInfo = makeLayoutInfo(event.currentTarget || event.target);
-        var styleInfo = editor.currentStyle(event.target);
+        var layoutInfo = dom.makeLayoutInfo(event.currentTarget || event.target);
+        var styleInfo = modules.editor.currentStyle(event.target);
         if (!styleInfo) { return; }
 
         var isAirMode = layoutInfo.editor().data('options').airMode;
         if (!isAirMode) {
-          toolbar.update(layoutInfo.toolbar(), styleInfo);
+          modules.toolbar.update(layoutInfo.toolbar(), styleInfo);
         }
 
-        popover.update(layoutInfo.popover(), styleInfo, isAirMode);
-        handle.update(layoutInfo.handle(), styleInfo, isAirMode);
+        modules.popover.update(layoutInfo.popover(), styleInfo, isAirMode);
+        modules.handle.update(layoutInfo.handle(), styleInfo, isAirMode);
       }, 0);
     };
 
     var hScroll = function (event) {
-      var layoutInfo = makeLayoutInfo(event.currentTarget || event.target);
+      var layoutInfo = dom.makeLayoutInfo(event.currentTarget || event.target);
       //hide popover and handle when scrolled
-      popover.hide(layoutInfo.popover());
-      handle.hide(layoutInfo.handle());
-    };
-
-    /**
-     * paste clipboard image
-     *
-     * @param {Event} event
-     */
-    var hPasteClipboardImage = function (event) {
-      var clipboardData = event.originalEvent.clipboardData;
-      var layoutInfo = makeLayoutInfo(event.currentTarget || event.target);
-      var $editable = layoutInfo.editable();
-
-      if (!clipboardData || !clipboardData.items || !clipboardData.items.length) {
-        var callbacks = $editable.data('callbacks');
-        // only can run if it has onImageUpload method
-        if (!callbacks.onImageUpload) {
-          return;
-        }
-
-        // save cursor
-        editor.saveNode($editable);
-        editor.saveRange($editable);
-
-        $editable.html('');
-
-        setTimeout(function () {
-          var $img = $editable.find('img');
-
-          if (!$img.length || $img[0].src.indexOf('data:') === -1) {
-            // pasted content
-            var html = $editable.html();
-
-            editor.restoreNode($editable);
-            editor.restoreRange($editable);
-
-            try {
-              // insert normal dom code
-              $(html).each(function () {
-                $editable.focus();
-                editor.insertNode($editable, this);
-              });
-            } catch (ex) {
-              // insert text
-              $editable.focus();
-              editor.insertText($editable, html);
-            }
-            return;
-          }
-
-          var datauri = $img[0].src;
-          var data = atob(datauri.split(',')[1]);
-          var array = new Uint8Array(data.length);
-          for (var i = 0; i < data.length; i++) {
-            array[i] = data.charCodeAt(i);
-          }
-
-          var blob = new Blob([array], { type : 'image/png'});
-          blob.name = 'clipboard.png';
-
-          editor.restoreNode($editable);
-          editor.restoreRange($editable);
-          insertImages(layoutInfo, [blob]);
-
-          editor.afterCommand($editable);
-        }, 0);
-
-        return;
-      }
-
-      var item = list.head(clipboardData.items);
-      var isClipboardImage = item.kind === 'file' && item.type.indexOf('image/') !== -1;
-
-      if (isClipboardImage) {
-        insertImages(layoutInfo, [item.getAsFile()]);
-      }
-
-      editor.afterCommand($editable);
-    };
-
-    /**
-     * paste clipboard image
-     *
-     * @param {Event} event
-     */
-    var hPasteClipboardOnCodeBlock = function (event) {
-      var clipboardData = event.originalEvent.clipboardData;
-      var layoutInfo = makeLayoutInfo(event.currentTarget || event.target);
-      var $editable = layoutInfo.editable();
-      var rng = editor.createRange($editable);
-      
-      if (dom.isCodeBlock(rng.sc))  {
-        editor.insertText($editable, clipboardData.getData('text/plain'));
-        editor.afterCommand($editable);
-        event.preventDefault();
-      }
-    };
-
-    /**
-     * `mousedown` event handler on $handle
-     *  - controlSizing: resize image
-     *
-     * @param {MouseEvent} event
-     */
-    var hHandleMousedown = function (event) {
-      if (dom.isControlSizing(event.target)) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        var layoutInfo = makeLayoutInfo(event.target),
-            $handle = layoutInfo.handle(), $popover = layoutInfo.popover(),
-            $editable = layoutInfo.editable(),
-            $editor = layoutInfo.editor();
-
-        var target = $handle.find('.note-control-selection').data('target'),
-            $target = $(target), posStart = $target.offset(),
-            scrollTop = $document.scrollTop();
-
-        var isAirMode = $editor.data('options').airMode;
-
-        $document.on('mousemove', function (event) {
-          editor.resizeTo({
-            x: event.clientX - posStart.left,
-            y: event.clientY - (posStart.top - scrollTop)
-          }, $target, !event.shiftKey);
-
-          handle.update($handle, {image: target}, isAirMode);
-          popover.update($popover, {image: target}, isAirMode);
-        }).one('mouseup', function () {
-          $document.off('mousemove');
-          editor.afterCommand($editable);
-        });
-
-        if (!$target.data('ratio')) { // original ratio.
-          $target.data('ratio', $target.height() / $target.width());
-        }
-      }
+      modules.popover.hide(layoutInfo.popover());
+      modules.handle.hide(layoutInfo.handle());
     };
 
     var hToolbarAndPopoverMousedown = function (event) {
@@ -4805,7 +5567,7 @@
             value = $btn.attr('data-value'),
             hide = $btn.attr('data-hide');
 
-        var layoutInfo = makeLayoutInfo(event.target);
+        var layoutInfo = dom.makeLayoutInfo(event.target);
 
         // before command: detect control selection element($target)
         var $target;
@@ -4821,11 +5583,11 @@
         }
 
         if ($.isFunction($.summernote.pluginEvents[eventName])) {
-          $.summernote.pluginEvents[eventName](event, editor, layoutInfo, value);
-        } else if (editor[eventName]) { // on command
+          $.summernote.pluginEvents[eventName](event, modules.editor, layoutInfo, value);
+        } else if (modules.editor[eventName]) { // on command
           var $editable = layoutInfo.editable();
-          $editable.trigger('focus');
-          editor[eventName]($editable, value, $target);
+          $editable.focus();
+          modules.editor[eventName]($editable, value, $target);
           event.preventDefault();
         } else if (commands[eventName]) {
           commands[eventName].call(this, layoutInfo);
@@ -4835,40 +5597,12 @@
         // after command
         if ($.inArray(eventName, ['backColor', 'foreColor']) !== -1) {
           var options = layoutInfo.editor().data('options', options);
-          var module = options.airMode ? popover : toolbar;
+          var module = options.airMode ? modules.popover : modules.toolbar;
           module.updateRecentColor(list.head($btn), eventName, value);
         }
 
         hToolbarAndPopoverUpdate(event);
       }
-    };
-
-    var EDITABLE_PADDING = 24;
-    /**
-     * `mousedown` event handler on statusbar
-     *
-     * @param {MouseEvent} event
-     */
-    var hStatusbarMousedown = function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      var $editable = makeLayoutInfo(event.target).editable();
-      var nEditableTop = $editable.offset().top - $document.scrollTop();
-
-      var layoutInfo = makeLayoutInfo(event.currentTarget || event.target);
-      var options = layoutInfo.editor().data('options');
-
-      $document.on('mousemove', function (event) {
-        var nHeight = event.clientY - (nEditableTop + EDITABLE_PADDING);
-
-        nHeight = (options.minHeight > 0) ? Math.max(nHeight, options.minHeight) : nHeight;
-        nHeight = (options.maxHeight > 0) ? Math.min(nHeight, options.maxHeight) : nHeight;
-
-        $editable.height(nHeight);
-      }).one('mouseup', function () {
-        $document.off('mousemove');
-      });
     };
 
     var PX_PER_EM = 18;
@@ -4912,95 +5646,7 @@
 
       $dimensionDisplay.html(dim.c + ' x ' + dim.r);
     };
-
-    /**
-     * Drag and Drop Events
-     *
-     * @param {Object} layoutInfo - layout Informations
-     * @param {Object} options
-     */
-    var handleDragAndDropEvent = function (layoutInfo, options) {
-      if (options.disableDragAndDrop) {
-        // prevent default drop event
-        $document.on('drop', function (e) {
-          e.preventDefault();
-        });
-      } else {
-        attachDragAndDropEvent(layoutInfo, options);
-      }
-    };
-
-    /**
-     * attach Drag and Drop Events
-     *
-     * @param {Object} layoutInfo - layout Informations
-     * @param {Object} options
-     */
-    var attachDragAndDropEvent = function (layoutInfo, options) {
-      var collection = $(),
-          $dropzone = layoutInfo.dropzone,
-          $dropzoneMessage = layoutInfo.dropzone.find('.note-dropzone-message');
-
-      // show dropzone on dragenter when dragging a object to document.
-      $document.on('dragenter', function (e) {
-        var isCodeview = layoutInfo.editor.hasClass('codeview');
-        if (!isCodeview && !collection.length) {
-          layoutInfo.editor.addClass('dragover');
-          $dropzone.width(layoutInfo.editor.width());
-          $dropzone.height(layoutInfo.editor.height());
-          $dropzoneMessage.text(options.langInfo.image.dragImageHere);
-        }
-        collection = collection.add(e.target);
-      }).on('dragleave', function (e) {
-        collection = collection.not(e.target);
-        if (!collection.length) {
-          layoutInfo.editor.removeClass('dragover');
-        }
-      }).on('drop', function () {
-        collection = $();
-        layoutInfo.editor.removeClass('dragover');
-      }).on('mouseout', function (e) {
-        collection = collection.not(e.target);
-        if (!collection.length) {
-          layoutInfo.editor.removeClass('dragover');
-        }
-      });
-
-      // change dropzone's message on hover.
-      $dropzone.on('dragenter', function () {
-        $dropzone.addClass('hover');
-        $dropzoneMessage.text(options.langInfo.image.dropImage);
-      }).on('dragleave', function () {
-        $dropzone.removeClass('hover');
-        $dropzoneMessage.text(options.langInfo.image.dragImageHere);
-      });
-
-      // attach dropImage
-      $dropzone.on('drop', function (event) {
-        event.preventDefault();
-
-        var dataTransfer = event.originalEvent.dataTransfer;
-        var html = dataTransfer.getData('text/html');
-        var text = dataTransfer.getData('text/plain');
-
-        var layoutInfo = makeLayoutInfo(event.currentTarget || event.target);
-
-        if (dataTransfer && dataTransfer.files && dataTransfer.files.length) {
-          layoutInfo.editable().focus();
-          insertImages(layoutInfo, dataTransfer.files);
-        } else if (html) {
-          $(html).each(function () {
-            layoutInfo.editable().focus();
-            editor.insertNode(layoutInfo.editable(), this);
-          });
-        } else if (text) {
-          layoutInfo.editable().focus();
-          editor.insertText(layoutInfo.editable(), text);
-        }
-      }).on('dragover', false); // prevent default dragover event
-    };
-
-
+    
     /**
      * bind KeyMap on keydown
      *
@@ -5008,39 +5654,49 @@
      * @param {Object} keyMap
      */
     this.bindKeyMap = function (layoutInfo, keyMap) {
-      var $editor = layoutInfo.editor;
-      var $editable = layoutInfo.editable;
-
-      layoutInfo = makeLayoutInfo($editable);
+      var $editor = layoutInfo.editor();
+      var $editable = layoutInfo.editable();
 
       $editable.on('keydown', function (event) {
-        var aKey = [];
+        var keys = [];
 
         // modifier
-        if (event.metaKey) { aKey.push('CMD'); }
-        if (event.ctrlKey && !event.altKey) { aKey.push('CTRL'); }
-        if (event.shiftKey) { aKey.push('SHIFT'); }
+        if (event.metaKey) { keys.push('CMD'); }
+        if (event.ctrlKey && !event.altKey) { keys.push('CTRL'); }
+        if (event.shiftKey) { keys.push('SHIFT'); }
 
         // keycode
         var keyName = key.nameFromCode[event.keyCode];
-        if (keyName) { aKey.push(keyName); }
+        if (keyName) {
+          keys.push(keyName);
+        }
 
-        var eventName = keyMap[aKey.join('+')];
+        var pluginEvent;
+        var keyString = keys.join('+');
+        var eventName = keyMap[keyString];
         if (eventName) {
-          if ($.summernote.pluginEvents[eventName]) {
-            var plugin = $.summernote.pluginEvents[eventName];
-            if ($.isFunction(plugin)) {
-              plugin(event, editor, layoutInfo);
+          // FIXME Summernote doesn't support event pipeline yet.
+          //  - Plugin -> Base Code
+          pluginEvent = $.summernote.pluginEvents[keyString];
+          if ($.isFunction(pluginEvent)) {
+            if (pluginEvent(event, modules.editor, layoutInfo)) {
+              return false;
             }
-          } else if (editor[eventName]) {
-            editor[eventName]($editable, $editor.data('options'));
+          }
+
+          pluginEvent = $.summernote.pluginEvents[eventName];
+
+          if ($.isFunction(pluginEvent)) {
+            pluginEvent(event, modules.editor, layoutInfo);
+          } else if (modules.editor[eventName]) {
+            modules.editor[eventName]($editable, $editor.data('options'));
             event.preventDefault();
           } else if (commands[eventName]) {
             commands[eventName].call(this, layoutInfo);
             event.preventDefault();
           }
         } else if (key.isEdit(event.keyCode)) {
-          editor.afterCommand($editable);
+          modules.editor.afterCommand($editable);
         }
       });
     };
@@ -5050,49 +5706,40 @@
      *
      * @param {Object} layoutInfo - layout Informations
      * @param {Object} options - user options include custom event handlers
-     * @param {function(event)} [options.onenter] - enter key handler
-     * @param {function(event)} [options.onfocus]
-     * @param {function(event)} [options.onblur]
-     * @param {function(event)} [options.onkeyup]
-     * @param {function(event)} [options.onkeydown]
-     * @param {function(event)} [options.onpaste]
-     * @param {function(event)} [options.onToolBarclick]
-     * @param {function(event)} [options.onChange]
      */
     this.attach = function (layoutInfo, options) {
       // handlers for editable
       if (options.shortcuts) {
         this.bindKeyMap(layoutInfo, options.keyMap[agent.isMac ? 'mac' : 'pc']);
       }
-      layoutInfo.editable.on('mousedown', hMousedown);
-      layoutInfo.editable.on('keyup mouseup', hToolbarAndPopoverUpdate);
-      layoutInfo.editable.on('scroll', hScroll);
-      layoutInfo.editable.on('paste', hPasteClipboardImage);
-      layoutInfo.editable.on('paste', hPasteClipboardOnCodeBlock);
+      layoutInfo.editable().on('mousedown', hMousedown);
+      layoutInfo.editable().on('keyup mouseup', hKeyupAndMouseup);
+      layoutInfo.editable().on('scroll', hScroll);
+
+      // handler for clipboard
+      modules.clipboard.attach(layoutInfo, options);
 
       // handler for handle and popover
-      layoutInfo.handle.on('mousedown', hHandleMousedown);
-      layoutInfo.popover.on('click', hToolbarAndPopoverClick);
-      layoutInfo.popover.on('mousedown', hToolbarAndPopoverMousedown);
+      modules.handle.attach(layoutInfo, options);
+      layoutInfo.popover().on('click', hToolbarAndPopoverClick);
+      layoutInfo.popover().on('mousedown', hToolbarAndPopoverMousedown);
+
+      // handler for drag and drop
+      modules.dragAndDrop.attach(layoutInfo, options);
 
       // handlers for frame mode (toolbar, statusbar)
       if (!options.airMode) {
-        // handler for drag and drop
-        handleDragAndDropEvent(layoutInfo, options);
-
         // handler for toolbar
-        layoutInfo.toolbar.on('click', hToolbarAndPopoverClick);
-        layoutInfo.toolbar.on('mousedown', hToolbarAndPopoverMousedown);
+        layoutInfo.toolbar().on('click', hToolbarAndPopoverClick);
+        layoutInfo.toolbar().on('mousedown', hToolbarAndPopoverMousedown);
 
         // handler for statusbar
-        if (!options.disableResizeEditor) {
-          layoutInfo.statusbar.on('mousedown', hStatusbarMousedown);
-        }
+        modules.statusbar.attach(layoutInfo, options);
       }
 
       // handler for table dimension
-      var $catcherContainer = options.airMode ? layoutInfo.popover :
-                                                layoutInfo.toolbar;
+      var $catcherContainer = options.airMode ? layoutInfo.popover() :
+                                                layoutInfo.toolbar();
       var $catcher = $catcherContainer.find('.note-dimension-picker-mousecatcher');
       $catcher.css({
         width: options.insertTableMaxSize.col + 'em',
@@ -5102,76 +5749,117 @@
       });
 
       // save options on editor
-      layoutInfo.editor.data('options', options);
+      layoutInfo.editor().data('options', options);
 
       // ret styleWithCSS for backColor / foreColor clearing with 'inherit'.
       if (!agent.isMSIE) {
-        // protect FF Error: NS_ERROR_FAILURE: Failure
+        // [workaround] for Firefox
+        //  - protect FF Error: NS_ERROR_FAILURE: Failure
         setTimeout(function () {
           document.execCommand('styleWithCSS', 0, options.styleWithSpan);
         }, 0);
       }
 
       // History
-      var history = new History(layoutInfo.editable);
-      layoutInfo.editable.data('NoteHistory', history);
-
-      // basic event callbacks (lowercase)
-      // enter, focus, blur, keyup, keydown
-      if (options.onenter) {
-        layoutInfo.editable.keypress(function (event) {
-          if (event.keyCode === key.ENTER) {
-            options.onenter(event);
-          }
-        });
-      }
-
-      if (options.onfocus) { layoutInfo.editable.focus(options.onfocus); }
-      if (options.onblur) { layoutInfo.editable.blur(options.onblur); }
-      if (options.onkeyup) { layoutInfo.editable.keyup(options.onkeyup); }
-      if (options.onkeydown) { layoutInfo.editable.keydown(options.onkeydown); }
-      if (options.onpaste) { layoutInfo.editable.on('paste', options.onpaste); }
-
-      // callbacks for advanced features (camel)
-      if (options.onToolbarClick) { layoutInfo.toolbar.click(options.onToolbarClick); }
-      if (options.onChange) {
-        var hChange = function () {
-          editor.triggerOnChange(layoutInfo.editable);
-        };
-
-        if (agent.isMSIE) {
-          var sDomEvents = 'DOMCharacterDataModified DOMSubtreeModified DOMNodeInserted';
-          layoutInfo.editable.on(sDomEvents, hChange);
-        } else {
-          layoutInfo.editable.on('input', hChange);
-        }
-      }
+      var history = new History(layoutInfo.editable());
+      layoutInfo.editable().data('NoteHistory', history);
 
       // All editor status will be saved on editable with jquery's data
       // for support multiple editor with singleton object.
-      layoutInfo.editable.data('callbacks', {
-        onBeforeChange: options.onBeforeChange,
+      layoutInfo.editable().data('callbacks', {
+        onInit: options.onInit,
+        onFocus: options.onFocus,
+        onBlur: options.onBlur,
+        onKeydown: options.onKeydown,
+        onKeyup: options.onKeyup,
+        onMousedown: options.onMousedown,
+        onEnter: options.onEnter,
+        onPaste: options.onPaste,
+        onBeforeCommand: options.onBeforeCommand,
         onChange: options.onChange,
-        onAutoSave: options.onAutoSave,
         onImageUpload: options.onImageUpload,
         onImageUploadError: options.onImageUploadError,
-        onFileUpload: options.onFileUpload,
-        onFileUploadError: options.onFileUpload,
-        onMediaDelete : options.onMediaDelete
+        onMediaDelete: options.onMediaDelete,
+        onToolbarClick: options.onToolbarClick
       });
+
+      // Textarea: auto filling the code before form submit.
+      if (dom.isTextarea(list.head(layoutInfo.holder()))) {
+        layoutInfo.holder().closest('form').submit(function () {
+          layoutInfo.holder().val(layoutInfo.holder().code());
+        });
+      }
     };
 
-    this.detach = function (layoutInfo, options) {
-      layoutInfo.editable.off();
+    /**
+     * attach jquery custom event
+     *
+     * @param {Object} layoutInfo - layout Informations
+     */
+    this.attachCustomEvent = function (layoutInfo, options) {
+      var $holder = layoutInfo.holder();
+      var $editable = layoutInfo.editable();
+      var callbacks = $editable.data('callbacks');
 
-      layoutInfo.popover.off();
-      layoutInfo.handle.off();
-      layoutInfo.dialog.off();
+      $editable.focus(bindCustomEvent($holder, callbacks, 'focus'));
+      $editable.blur(bindCustomEvent($holder, callbacks, 'blur'));
+
+      $editable.keydown(function (event) {
+        if (event.keyCode === key.code.ENTER) {
+          bindCustomEvent($holder, callbacks, 'enter').call(this, event);
+        }
+        bindCustomEvent($holder, callbacks, 'keydown').call(this, event);
+      });
+      $editable.keyup(bindCustomEvent($holder, callbacks, 'keyup'));
+
+      $editable.on('mousedown', bindCustomEvent($holder, callbacks, 'mousedown'));
+      $editable.on('mouseup', bindCustomEvent($holder, callbacks, 'mouseup'));
+      $editable.on('scroll', bindCustomEvent($holder, callbacks, 'scroll'));
+
+      $editable.on('paste', bindCustomEvent($holder, callbacks, 'paste'));
+      
+      // [workaround] for old IE - IE8 don't have input events
+      //  - TODO check IE version
+      var changeEventName = agent.isMSIE ? 'DOMCharacterDataModified DOMSubtreeModified DOMNodeInserted' : 'input';
+      $editable.on(changeEventName, function () {
+        bindCustomEvent($holder, callbacks, 'change')($editable.html(), $editable);
+      });
 
       if (!options.airMode) {
-        layoutInfo.dropzone.off();
-        layoutInfo.toolbar.off();
-        layoutInfo.statusbar.off();
+        layoutInfo.toolbar().click(bindCustomEvent($holder, callbacks, 'toolbar.click'));
+        layoutInfo.popover().click(bindCustomEvent($holder, callbacks, 'popover.click'));
+      }
+
+      // Textarea: auto filling the code before form submit.
+      if (dom.isTextarea(list.head($holder))) {
+        $holder.closest('form').submit(function (e) {
+          bindCustomEvent($holder, callbacks, 'submit').call(this, e, $holder.code());
+        });
+      }
+
+      // fire init event
+      bindCustomEvent($holder, callbacks, 'init')(layoutInfo);
+
+      // fire plugin init event
+      for (var i = 0, len = $.summernote.plugins.length; i < len; i++) {
+        if ($.isFunction($.summernote.plugins[i].init)) {
+          $.summernote.plugins[i].init(layoutInfo);
+        }
+      }
+    };
+      
+    this.detach = function (layoutInfo, options) {
+      layoutInfo.holder().off();
+      layoutInfo.editable().off();
+
+      layoutInfo.popover().off();
+      layoutInfo.handle().off();
+      layoutInfo.dialog().off();
+
+      if (!options.airMode) {
+        layoutInfo.dropzone().off();
+        layoutInfo.toolbar().off();
+        layoutInfo.statusbar().off();
       }
     };
   };
@@ -5205,9 +5893,11 @@
       var dropdown = options.dropdown;
       var hide = options.hide;
 
-      return '<button type="button"' +
+      return (dropdown ? '<div class="btn-group' +
+               (className ? ' ' + className : '') + '">' : '') +
+               '<button type="button"' +
                  ' class="btn btn-default btn-sm btn-small' +
-                   (className ? ' ' + className : '') +
+                   ((!dropdown && className) ? ' ' + className : '') +
                    (dropdown ? ' dropdown-toggle' : '') +
                  '"' +
                  (dropdown ? ' data-toggle="dropdown"' : '') +
@@ -5216,10 +5906,11 @@
                  (value ? ' data-value=\'' + value + '\'' : '') +
                  (hide ? ' data-hide=\'' + hide + '\'' : '') +
                  ' tabindex="-1">' +
-               label +
-               (dropdown ? ' <span class="caret"></span>' : '') +
-             '</button>' +
-             (dropdown || '');
+                 label +
+                 (dropdown ? ' <span class="caret"></span>' : '') +
+               '</button>' +
+               (dropdown || '') +
+             (dropdown ? '</div>' : '');
     };
 
     /**
@@ -5244,12 +5935,14 @@
      * @param {String} content
      */
     var tplPopover = function (className, content) {
-      return '<div class="' + className + ' popover bottom in" style="display: none;">' +
+      var $popover = $('<div class="' + className + ' popover bottom in" style="display: none;">' +
                '<div class="arrow"></div>' +
                '<div class="popover-content">' +
-                 content +
                '</div>' +
-             '</div>';
+             '</div>');
+
+      $popover.find('.popover-content').append(content);
+      return $popover;
     };
 
     /**
@@ -5270,44 +5963,60 @@
                      '<h4 class="modal-title">' + title + '</h4>' +
                    '</div>' : ''
                    ) +
-                   '<form class="note-modal-form">' +
-                     '<div class="modal-body">' + body + '</div>' +
-                     (footer ?
-                     '<div class="modal-footer">' + footer + '</div>' : ''
-                     ) +
-                   '</form>' +
+                   '<div class="modal-body">' + body + '</div>' +
+                   (footer ?
+                   '<div class="modal-footer">' + footer + '</div>' : ''
+                   ) +
                  '</div>' +
                '</div>' +
              '</div>';
     };
 
+    /**
+     * bootstrap dropdown template
+     *
+     * @param {String|String[]} contents
+     * @param {String} [className='']
+     * @param {String} [nodeName='']
+     */
+    var tplDropdown = function (contents, className, nodeName) {
+      var classes = 'dropdown-menu' + (className ? ' ' + className : '');
+      nodeName = nodeName || 'ul';
+      if (contents instanceof Array) {
+        contents = contents.join('');
+      }
+
+      return '<' + nodeName + ' class="' + classes + '">' + contents + '</' + nodeName + '>';
+    };
+
     var tplButtonInfo = {
-      picture: function (lang) {
-        return tplIconButton('fa fa-picture-o', {
+      picture: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.image.image, {
           event: 'showImageDialog',
           title: lang.image.image,
           hide: true
         });
       },
-      link: function (lang) {
-        return tplIconButton('fa fa-link', {
+      link: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.link.link, {
           event: 'showLinkDialog',
           title: lang.link.link,
           hide: true
         });
       },
-      table: function (lang) {
-        var dropdown = '<ul class="note-table dropdown-menu">' +
-                         '<div class="note-dimension-picker">' +
-                           '<div class="note-dimension-picker-mousecatcher" data-event="insertTable" data-value="1x1"></div>' +
-                           '<div class="note-dimension-picker-highlighted"></div>' +
-                           '<div class="note-dimension-picker-unhighlighted"></div>' +
-                         '</div>' +
-                         '<div class="note-dimension-display"> 1 x 1 </div>' +
-                       '</ul>';
-        return tplIconButton('fa fa-table', {
+      table: function (lang, options) {
+        var dropdown = [
+          '<div class="note-dimension-picker">',
+          '<div class="note-dimension-picker-mousecatcher" data-event="insertTable" data-value="1x1"></div>',
+          '<div class="note-dimension-picker-highlighted"></div>',
+          '<div class="note-dimension-picker-unhighlighted"></div>',
+          '</div>',
+          '<div class="note-dimension-display"> 1 x 1 </div>'
+        ];
+
+        return tplIconButton(options.iconPrefix + options.icons.table.table, {
           title: lang.table.table,
-          dropdown: dropdown
+          dropdown: tplDropdown(dropdown, 'note-table')
         });
       },
       style: function (lang, options) {
@@ -5321,30 +6030,54 @@
                  '</a></li>';
         }, '');
 
-        return tplIconButton('fa fa-magic', {
+        return tplIconButton(options.iconPrefix + options.icons.style.style, {
           title: lang.style.style,
-          dropdown: '<ul class="dropdown-menu">' + items + '</ul>'
+          dropdown: tplDropdown(items)
         });
       },
       fontname: function (lang, options) {
+        var realFontList = [];
         var items = options.fontNames.reduce(function (memo, v) {
           if (!agent.isFontInstalled(v) && options.fontNamesIgnoreCheck.indexOf(v) === -1) {
             return memo;
           }
+          realFontList.push(v);
           return memo + '<li><a data-event="fontName" href="#" data-value="' + v + '" style="font-family:\'' + v + '\'">' +
-                          '<i class="fa fa-check"></i> ' + v +
+                          '<i class="' + options.iconPrefix + options.icons.misc.check + '"></i> ' + v +
                         '</a></li>';
         }, '');
+
+        var hasDefaultFont = agent.isFontInstalled(options.defaultFontName);
+        var defaultFontName = (hasDefaultFont) ? options.defaultFontName : realFontList[0];
+
         var label = '<span class="note-current-fontname">' +
-                       options.defaultFontName +
+                        defaultFontName +
                      '</span>';
         return tplButton(label, {
           title: lang.font.name,
-          dropdown: '<ul class="dropdown-menu">' + items + '</ul>'
+          className: 'note-fontname',
+          dropdown: tplDropdown(items, 'note-check')
         });
       },
-      color: function (lang) {
-        var colorButtonLabel = '<i class="fa fa-font" style="color:black;background-color:yellow;"></i>';
+      fontsize: function (lang, options) {
+        var items = options.fontSizes.reduce(function (memo, v) {
+          return memo + '<li><a data-event="fontSize" href="#" data-value="' + v + '">' +
+                          '<i class="' + options.iconPrefix + options.icons.misc.check + '"></i> ' + v +
+                        '</a></li>';
+        }, '');
+
+        var label = '<span class="note-current-fontsize">11</span>';
+        return tplButton(label, {
+          title: lang.font.size,
+          className: 'note-fontsize',
+          dropdown: tplDropdown(items, 'note-check')
+        });
+      },
+      color: function (lang, options) {
+        var colorButtonLabel = '<i class="' +
+                                  options.iconPrefix + options.icons.color.recent +
+                                '" style="color:black;background-color:yellow;"></i>';
+
         var colorButton = tplButton(colorButtonLabel, {
           className: 'note-recent-color',
           title: lang.color.recent,
@@ -5352,156 +6085,168 @@
           value: '{"backColor":"yellow"}'
         });
 
-        var dropdown = '<ul class="dropdown-menu">' +
-                         '<li>' +
-                           '<div class="btn-group">' +
-                             '<div class="note-palette-title">' + lang.color.background + '</div>' +
-                             '<div class="note-color-reset" data-event="backColor"' +
-                               ' data-value="inherit" title="' + lang.color.transparent + '">' +
-                               lang.color.setTransparent +
-                             '</div>' +
-                             '<div class="note-color-palette" data-target-event="backColor"></div>' +
-                           '</div>' +
-                           '<div class="btn-group">' +
-                             '<div class="note-palette-title">' + lang.color.foreground + '</div>' +
-                             '<div class="note-color-reset" data-event="foreColor" data-value="inherit" title="' + lang.color.reset + '">' +
-                               lang.color.resetToDefault +
-                             '</div>' +
-                             '<div class="note-color-palette" data-target-event="foreColor"></div>' +
-                           '</div>' +
-                         '</li>' +
-                       '</ul>';
+        var items = [
+          '<li><div class="btn-group">',
+          '<div class="note-palette-title">' + lang.color.background + '</div>',
+          '<div class="note-color-reset" data-event="backColor"',
+          ' data-value="inherit" title="' + lang.color.transparent + '">' + lang.color.setTransparent + '</div>',
+          '<div class="note-color-palette" data-target-event="backColor"></div>',
+          '</div><div class="btn-group">',
+          '<div class="note-palette-title">' + lang.color.foreground + '</div>',
+          '<div class="note-color-reset" data-event="foreColor" data-value="inherit" title="' + lang.color.reset + '">',
+          lang.color.resetToDefault,
+          '</div>',
+          '<div class="note-color-palette" data-target-event="foreColor"></div>',
+          '</div></li>'
+        ];
 
         var moreButton = tplButton('', {
           title: lang.color.more,
-          dropdown: dropdown
+          dropdown: tplDropdown(items)
         });
 
         return colorButton + moreButton;
       },
-      bold: function (lang) {
-        return tplIconButton('fa fa-bold', {
+      bold: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.bold, {
           event: 'bold',
           title: lang.font.bold
         });
       },
-      italic: function (lang) {
-        return tplIconButton('fa fa-italic', {
+      italic: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.italic, {
           event: 'italic',
           title: lang.font.italic
         });
       },
-      underline: function (lang) {
-        return tplIconButton('fa fa-underline', {
+      underline: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.underline, {
           event: 'underline',
           title: lang.font.underline
         });
       },
-      clear: function (lang) {
-        return tplIconButton('fa fa-eraser', {
+      strikethrough: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.strikethrough, {
+          event: 'strikethrough',
+          title: lang.font.strikethrough
+        });
+      },
+      superscript: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.superscript, {
+          event: 'superscript',
+          title: lang.font.superscript
+        });
+      },
+      subscript: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.subscript, {
+          event: 'subscript',
+          title: lang.font.subscript
+        });
+      },
+      clear: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.font.clear, {
           event: 'removeFormat',
           title: lang.font.clear
         });
       },
-      ul: function (lang) {
-        return tplIconButton('fa fa-list-ul', {
+      ul: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.lists.unordered, {
           event: 'insertUnorderedList',
           title: lang.lists.unordered
         });
       },
-      ol: function (lang) {
-        return tplIconButton('fa fa-list-ol', {
+      ol: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.lists.ordered, {
           event: 'insertOrderedList',
           title: lang.lists.ordered
         });
       },
-      paragraph: function (lang) {
-        var leftButton = tplIconButton('fa fa-align-left', {
+      paragraph: function (lang, options) {
+        var leftButton = tplIconButton(options.iconPrefix + options.icons.paragraph.left, {
           title: lang.paragraph.left,
           event: 'justifyLeft'
         });
-        var centerButton = tplIconButton('fa fa-align-center', {
+        var centerButton = tplIconButton(options.iconPrefix + options.icons.paragraph.center, {
           title: lang.paragraph.center,
           event: 'justifyCenter'
         });
-        var rightButton = tplIconButton('fa fa-align-right', {
+        var rightButton = tplIconButton(options.iconPrefix + options.icons.paragraph.right, {
           title: lang.paragraph.right,
           event: 'justifyRight'
         });
-        var justifyButton = tplIconButton('fa fa-align-justify', {
+        var justifyButton = tplIconButton(options.iconPrefix + options.icons.paragraph.justify, {
           title: lang.paragraph.justify,
           event: 'justifyFull'
         });
 
-        var outdentButton = tplIconButton('fa fa-outdent', {
+        var outdentButton = tplIconButton(options.iconPrefix + options.icons.paragraph.outdent, {
           title: lang.paragraph.outdent,
           event: 'outdent'
         });
-        var indentButton = tplIconButton('fa fa-indent', {
+        var indentButton = tplIconButton(options.iconPrefix + options.icons.paragraph.indent, {
           title: lang.paragraph.indent,
           event: 'indent'
         });
 
-        var dropdown = '<div class="dropdown-menu">' +
-                         '<div class="note-align btn-group">' +
-                           leftButton + centerButton + rightButton + justifyButton +
-                         '</div>' +
-                         '<div class="note-list btn-group">' +
-                           indentButton + outdentButton +
-                         '</div>' +
-                       '</div>';
+        var dropdown = [
+          '<div class="note-align btn-group">',
+          leftButton + centerButton + rightButton + justifyButton,
+          '</div><div class="note-list btn-group">',
+          indentButton + outdentButton,
+          '</div>'
+        ];
 
-        return tplIconButton('fa fa-align-left', {
+        return tplIconButton(options.iconPrefix + options.icons.paragraph.paragraph, {
           title: lang.paragraph.paragraph,
-          dropdown: dropdown
+          dropdown: tplDropdown(dropdown, '', 'div')
         });
       },
       height: function (lang, options) {
         var items = options.lineHeights.reduce(function (memo, v) {
           return memo + '<li><a data-event="lineHeight" href="#" data-value="' + parseFloat(v) + '">' +
-                          '<i class="fa fa-check"></i> ' + v +
+                          '<i class="' + options.iconPrefix + options.icons.misc.check + '"></i> ' + v +
                         '</a></li>';
         }, '');
 
-        return tplIconButton('fa fa-text-height', {
+        return tplIconButton(options.iconPrefix + options.icons.font.height, {
           title: lang.font.height,
-          dropdown: '<ul class="dropdown-menu">' + items + '</ul>'
+          dropdown: tplDropdown(items, 'note-check')
         });
 
       },
-      help: function (lang) {
-        return tplIconButton('fa fa-question', {
+      help: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.options.help, {
           event: 'showHelpDialog',
           title: lang.options.help,
           hide: true
         });
       },
-      fullscreen: function (lang) {
-        return tplIconButton('fa fa-arrows-alt', {
+      fullscreen: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.options.fullscreen, {
           event: 'fullscreen',
           title: lang.options.fullscreen
         });
       },
-      codeview: function (lang) {
-        return tplIconButton('fa fa-code', {
+      codeview: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.options.codeview, {
           event: 'codeview',
           title: lang.options.codeview
         });
       },
-      undo: function (lang) {
-        return tplIconButton('fa fa-undo', {
+      undo: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.history.undo, {
           event: 'undo',
           title: lang.history.undo
         });
       },
-      redo: function (lang) {
-        return tplIconButton('fa fa-repeat', {
+      redo: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.history.redo, {
           event: 'redo',
           title: lang.history.redo
         });
       },
-      hr: function (lang) {
-        return tplIconButton('fa fa-minus', {
+      hr: function (lang, options) {
+        return tplIconButton(options.iconPrefix + options.icons.hr.insert, {
           event: 'insertHorizontalRule',
           title: lang.hr.insert
         });
@@ -5510,12 +6255,12 @@
 
     var tplPopovers = function (lang, options) {
       var tplLinkPopover = function () {
-        var linkButton = tplIconButton('fa fa-edit', {
+        var linkButton = tplIconButton(options.iconPrefix + options.icons.link.edit, {
           title: lang.link.edit,
           event: 'showLinkDialog',
           hide: true
         });
-        var unlinkButton = tplIconButton('fa fa-unlink', {
+        var unlinkButton = tplIconButton(options.iconPrefix + options.icons.link.unlink, {
           title: lang.link.unlink,
           event: 'unlink'
         });
@@ -5543,44 +6288,44 @@
           value: '0.25'
         });
 
-        var leftButton = tplIconButton('fa fa-align-left', {
+        var leftButton = tplIconButton(options.iconPrefix + options.icons.image.floatLeft, {
           title: lang.image.floatLeft,
           event: 'floatMe',
           value: 'left'
         });
-        var rightButton = tplIconButton('fa fa-align-right', {
+        var rightButton = tplIconButton(options.iconPrefix + options.icons.image.floatRight, {
           title: lang.image.floatRight,
           event: 'floatMe',
           value: 'right'
         });
-        var justifyButton = tplIconButton('fa fa-align-justify', {
+        var justifyButton = tplIconButton(options.iconPrefix + options.icons.image.floatNone, {
           title: lang.image.floatNone,
           event: 'floatMe',
           value: 'none'
         });
 
-        var roundedButton = tplIconButton('fa fa-square', {
+        var roundedButton = tplIconButton(options.iconPrefix + options.icons.image.shapeRounded, {
           title: lang.image.shapeRounded,
           event: 'imageShape',
           value: 'img-rounded'
         });
-        var circleButton = tplIconButton('fa fa-circle-o', {
+        var circleButton = tplIconButton(options.iconPrefix + options.icons.image.shapeCircle, {
           title: lang.image.shapeCircle,
           event: 'imageShape',
           value: 'img-circle'
         });
-        var thumbnailButton = tplIconButton('fa fa-picture-o', {
+        var thumbnailButton = tplIconButton(options.iconPrefix + options.icons.image.shapeThumbnail, {
           title: lang.image.shapeThumbnail,
           event: 'imageShape',
           value: 'img-thumbnail'
         });
-        var noneButton = tplIconButton('fa fa-times', {
+        var noneButton = tplIconButton(options.iconPrefix + options.icons.image.shapeNone, {
           title: lang.image.shapeNone,
           event: 'imageShape',
           value: ''
         });
 
-        var removeButton = tplIconButton('fa fa-trash-o', {
+        var removeButton = tplIconButton(options.iconPrefix + options.icons.image.remove, {
           title: lang.image.remove,
           event: 'removeMedia',
           value: 'none'
@@ -5594,24 +6339,34 @@
       };
 
       var tplAirPopover = function () {
-        var content = '';
+        var $content = $('<div />');
         for (var idx = 0, len = options.airPopover.length; idx < len; idx ++) {
           var group = options.airPopover[idx];
-          content += '<div class="note-' + group[0] + ' btn-group">';
+
+          var $group = $('<div class="note-' + group[0] + ' btn-group">');
           for (var i = 0, lenGroup = group[1].length; i < lenGroup; i++) {
-            content += tplButtonInfo[group[1][i]](lang, options);
+            var $button = $(tplButtonInfo[group[1][i]](lang, options));
+
+            $button.attr('data-name', group[1][i]);
+
+            $group.append($button);
           }
-          content += '</div>';
+          $content.append($group);
         }
 
-        return tplPopover('note-air-popover', content);
+        return tplPopover('note-air-popover', $content.children());
       };
 
-      return '<div class="note-popover">' +
-               tplLinkPopover() +
-               tplImagePopover() +
-               (options.airMode ?  tplAirPopover() : '') +
-             '</div>';
+      var $notePopover = $('<div class="note-popover" />');
+
+      $notePopover.append(tplLinkPopover());
+      $notePopover.append(tplImagePopover());
+
+      if (options.airMode) {
+        $notePopover.append(tplAirPopover());
+      }
+
+      return $notePopover;
     };
 
     var tplHandles = function () {
@@ -5764,7 +6519,7 @@
                    '</div>' +
                    '<div class="form-group row-fluid">' +
                      '<label>' + lang.link.url + '</label>' +
-                     '<input class="note-link-url form-control span12" type="text" />' +
+                     '<input class="note-link-url form-control span12" type="text" value="http://" />' +
                    '</div>' +
                    (!options.disableLinkTarget ?
                      '<div class="checkbox">' +
@@ -5782,7 +6537,7 @@
                    '<div class="title">' + lang.shortcut.shortcuts + '</div>' +
                    (agent.isMac ? tplShortcutTable(lang, options) : replaceMacKeys(tplShortcutTable(lang, options))) +
                    '<p class="text-center">' +
-                     '<a href="//summernote.org/" target="_blank">Summernote 0.6.2</a> · ' +
+                     '<a href="//summernote.org/" target="_blank">Summernote 0.6.10</a> · ' +
                      '<a href="//github.com/summernote/summernote" target="_blank">Project</a> · ' +
                      '<a href="//github.com/summernote/summernote/issues" target="_blank">Issues</a>' +
                    '</p>';
@@ -5956,24 +6711,25 @@
       $('<textarea class="note-codable"></textarea>').prependTo($editor);
 
       //04. create Toolbar
-      var toolbarHTML = '';
+      var $toolbar = $('<div class="note-toolbar btn-toolbar" />');
       for (var idx = 0, len = options.toolbar.length; idx < len; idx ++) {
         var groupName = options.toolbar[idx][0];
         var groupButtons = options.toolbar[idx][1];
 
-        toolbarHTML += '<div class="note-' + groupName + ' btn-group">';
+        var $group = $('<div class="note-' + groupName + ' btn-group" />');
         for (var i = 0, btnLength = groupButtons.length; i < btnLength; i++) {
           var buttonInfo = tplButtonInfo[groupButtons[i]];
           // continue creating toolbar even if a button doesn't exist
           if (!$.isFunction(buttonInfo)) { continue; }
-          toolbarHTML += buttonInfo(langInfo, options);
+
+          var $button = $(buttonInfo(langInfo, options));
+          $button.attr('data-name', groupButtons[i]);  // set button's alias, becuase to get button element from $toolbar
+          $group.append($button);
         }
-        toolbarHTML += '</div>';
+        $toolbar.append($group);
       }
 
-      toolbarHTML = '<div class="note-toolbar btn-toolbar">' + toolbarHTML + '</div>';
-
-      var $toolbar = $(toolbarHTML).prependTo($editor);
+      $toolbar.prependTo($editor);
       var keyMap = options.keyMap[agent.isMac ? 'mac' : 'pc'];
       createPalette($toolbar, options);
       createTooltip($toolbar, keyMap, 'bottom');
@@ -5986,8 +6742,10 @@
       //06. handle(control selection, ...)
       $(tplHandles()).prependTo($editor);
 
+      var $dialogContainer = options.dialogsInBody ? document.body : $editor;
+
       //07. create Dialog
-      var $dialog = $(tplDialogs(langInfo, options)).prependTo($editor);
+      var $dialog = $(tplDialogs(langInfo, options)).prependTo($dialogContainer);
       $dialog.find('button.close, a.modal-close').click(function () {
         $(this).closest('.modal').modal('hide');
       });
@@ -5998,6 +6756,10 @@
       //09. Editor/Holder switch
       $editor.insertAfter($holder);
       $holder.hide();
+    };
+
+    this.hasNoteEditor = function ($holder) {
+      return this.noteEditorFromHolder($holder).length > 0;
     };
 
     this.noteEditorFromHolder = function ($holder) {
@@ -6017,10 +6779,6 @@
      * @param {Object} options
      */
     this.createLayout = function ($holder, options) {
-      if (this.noteEditorFromHolder($holder).length) {
-        return;
-      }
-
       if (options.airMode) {
         this.createLayoutByAirMode($holder, options);
       } else {
@@ -6032,20 +6790,18 @@
      * returns layoutInfo from holder
      *
      * @param {jQuery} $holder - placeholder
-     * @returns {Object}
+     * @return {Object}
      */
     this.layoutInfoFromHolder = function ($holder) {
       var $editor = this.noteEditorFromHolder($holder);
-      if (!$editor.length) { return; }
-
-      var layoutInfo = dom.buildLayoutInfo($editor);
-      // cache all properties.
-      for (var key in layoutInfo) {
-        if (layoutInfo.hasOwnProperty(key)) {
-          layoutInfo[key] = layoutInfo[key].call();
-        }
+      if (!$editor.length) {
+        return;
       }
-      return layoutInfo;
+
+      // connect $holder to $editor
+      $editor.data('holder', $holder);
+
+      return dom.buildLayoutInfo($editor);
     };
 
     /**
@@ -6061,13 +6817,16 @@
         $holder.removeClass('note-air-editor note-editable')
                .removeAttr('id contentEditable');
 
-        layoutInfo.popover.remove();
-        layoutInfo.handle.remove();
-        layoutInfo.dialog.remove();
+        layoutInfo.popover().remove();
+        layoutInfo.handle().remove();
+        layoutInfo.dialog().remove();
       } else {
-        $holder.html(layoutInfo.editable.html());
+        $holder.html(layoutInfo.editable().html());
 
-        layoutInfo.editor.remove();
+        if (options.dialogsInBody) {
+          layoutInfo.dialog().remove();
+        }
+        layoutInfo.editor().remove();
         $holder.show();
       }
     };
@@ -6114,14 +6873,17 @@
    * 
    * summernote attribute  
    * 
-   * @mixin settings
+   * @mixin defaults
    * @singleton  
    * 
    */
   $.summernote = $.summernote || {};
 
-  // extends default `settings`
-  $.extend($.summernote, settings);
+  // extends default settings
+  //  - $.summernote.version
+  //  - $.summernote.options
+  //  - $.summernote.lang
+  $.extend($.summernote, defaults);
 
   var renderer = new Renderer();
   var eventHandler = new EventHandler();
@@ -6139,6 +6901,7 @@
      */
     core: {
       agent: agent,
+      list : list,
       dom: dom,
       range: range
     },
@@ -6161,7 +6924,9 @@
      * * layoutInfo is a summernote layout information.
      * * value is data-value property.
      */
-    pluginEvents: {}
+    pluginEvents: {},
+
+    plugins : []
   });
 
   /**
@@ -6182,7 +6947,7 @@
    *        // "hello"  is button's namespace.      
    *        "hello" : function(lang, options) {
    *            // make icon button by template function          
-   *            return tmpl.iconButton('fa fa-header', {
+   *            return tmpl.iconButton(options.iconPrefix + 'header', {
    *                // callback function name when button clicked 
    *                event : 'hello',
    *                // set data-value property                 
@@ -6222,6 +6987,10 @@
    * @param {Object} [plugin.options] update $.summernote.options
    */
   $.summernote.addPlugin = function (plugin) {
+
+    // save plugin list
+    $.summernote.plugins.push(plugin);
+
     if (plugin.buttons) {
       $.each(plugin.buttons, function (name, button) {
         renderer.addButtonInfo(name, button);
@@ -6267,54 +7036,74 @@
      * ```
      *   
      * @member $.fn
-     * @param {Object} options reference to $.summernote.options
-     * @returns {this}
+     * @param {Object|String} options reference to $.summernote.options
+     * @return {this}
      */
-    summernote: function (options) {
-      // extend default options
+    summernote: function () {
+      // check first argument's type
+      //  - {String}: External API call {{module}}.{{method}}
+      //  - {Object}: init options
+      var type = $.type(list.head(arguments));
+      var isExternalAPICalled = type === 'string';
+      var hasInitOptions = type === 'object';
+
+      // extend default options with custom user options
+      var options = hasInitOptions ? list.head(arguments) : {};
+
       options = $.extend({}, $.summernote.options, options);
+      options.icons = $.extend({}, $.summernote.options.icons, options.icons);
 
       // Include langInfo in options for later use, e.g. for image drag-n-drop
       // Setup language info with en-US as default
       options.langInfo = $.extend(true, {}, $.summernote.lang['en-US'], $.summernote.lang[options.lang]);
 
+      // override plugin options
+      if (!isExternalAPICalled && hasInitOptions) {
+        for (var i = 0, len = $.summernote.plugins.length; i < len; i++) {
+          var plugin = $.summernote.plugins[i];
+
+          if (options.plugin[plugin.name]) {
+            $.summernote.plugins[i] = $.extend(true, plugin, options.plugin[plugin.name]);
+          }
+        }
+      }
+
       this.each(function (idx, holder) {
         var $holder = $(holder);
 
-        // createLayout with options
-        renderer.createLayout($holder, options);
+        // if layout isn't created yet, createLayout and attach events
+        if (!renderer.hasNoteEditor($holder)) {
+          renderer.createLayout($holder, options);
 
-        var info = renderer.layoutInfoFromHolder($holder);
-        eventHandler.attach(info, options);
+          var layoutInfo = renderer.layoutInfoFromHolder($holder);
+          $holder.data('layoutInfo', layoutInfo);
 
-        // Textarea: auto filling the code before form submit.
-        if (dom.isTextarea($holder[0])) {
-          $holder.closest('form').submit(function () {
-            var contents = $holder.code();
-            $holder.val(contents);
+          eventHandler.attach(layoutInfo, options);
+          eventHandler.attachCustomEvent(layoutInfo, options);
 
-            // callback on submit
-            if (options.onsubmit) {
-              options.onsubmit(contents);
-            }
-          });
         }
       });
 
-      // focus on first editable element
-      if (this.first().length && options.focus) {
-        var info = renderer.layoutInfoFromHolder(this.first());
-        info.editable.focus();
-      }
+      var $first = this.first();
+      if ($first.length) {
+        var layoutInfo = renderer.layoutInfoFromHolder($first);
 
-      // callback on init
-      if (this.length && options.oninit) {
-        options.oninit();
+        // external API
+        if (isExternalAPICalled) {
+          var moduleAndMethod = list.head(list.from(arguments));
+          var args = list.tail(list.from(arguments));
+
+          // TODO now external API only works for editor
+          var params = [moduleAndMethod, layoutInfo.editable()].concat(args);
+          return eventHandler.invoke.apply(eventHandler, params);
+        } else if (options.focus) {
+          // focus on first editable element for initialize editor
+          layoutInfo.editable().focus();
+        }
       }
 
       return this;
     },
-    //
 
     /**
      * @method 
@@ -6332,29 +7121,36 @@
      * ```
      *
      * @member $.fn 
-     * @param {String} [sHTML] - HTML contents(optional, set)
-     * @returns {this|String} - context(set) or HTML contents of note(get).
+     * @param {String} [html] - HTML contents(optional, set)
+     * @return {this|String} - context(set) or HTML contents of note(get).
      */
-    code: function (sHTML) {
+    code: function (html) {
       // get the HTML contents of note
-      if (sHTML === undefined) {
+      if (html === undefined) {
         var $holder = this.first();
-        if (!$holder.length) { return; }
-        var info = renderer.layoutInfoFromHolder($holder);
-        if (!!(info && info.editable)) {
-          var isCodeview = info.editor.hasClass('codeview');
-          if (isCodeview && agent.hasCodeMirror) {
-            info.codable.data('cmEditor').save();
-          }
-          return isCodeview ? info.codable.val() : info.editable.html();
+        if (!$holder.length) {
+          return;
         }
-        return dom.isTextarea($holder[0]) ? $holder.val() : $holder.html();
+
+        var layoutInfo = renderer.layoutInfoFromHolder($holder);
+        var $editable = layoutInfo && layoutInfo.editable();
+
+        if ($editable && $editable.length) {
+          var isCodeview = eventHandler.invoke('codeview.isActivated', layoutInfo);
+          eventHandler.invoke('codeview.sync', layoutInfo);
+          return isCodeview ? layoutInfo.codable().val() :
+                              layoutInfo.editable().html();
+        }
+        return dom.value($holder);
       }
 
       // set the HTML contents of note
       this.each(function (i, holder) {
-        var info = renderer.layoutInfoFromHolder($(holder));
-        if (info && info.editable) { info.editable.html(sHTML); }
+        var layoutInfo = renderer.layoutInfoFromHolder($(holder));
+        var $editable = layoutInfo && layoutInfo.editable();
+        if ($editable) {
+          $editable.html(html);
+        }
       });
 
       return this;
@@ -6366,16 +7162,18 @@
      * destroy Editor Layout and detach Key and Mouse Event
      *
      * @member $.fn
-     * @returns {this}
+     * @return {this}
      */
     destroy: function () {
       this.each(function (idx, holder) {
         var $holder = $(holder);
 
-        var info = renderer.layoutInfoFromHolder($holder);
-        if (!info || !info.editable) { return; }
+        if (!renderer.hasNoteEditor($holder)) {
+          return;
+        }
 
-        var options = info.editor.data('options');
+        var info = renderer.layoutInfoFromHolder($holder);
+        var options = info.editor().data('options');
 
         eventHandler.detach(info, options);
         renderer.removeLayout($holder, info, options);
