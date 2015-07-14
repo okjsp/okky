@@ -33,7 +33,9 @@
             <select id="category" name="categoryCode" class="form-control">
                 <option value="">게시판을 선택해 주세요.</option>
                 <g:each in="${categories}" var="category">
-                    <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
+                    <g:if test="${category.writeByExternalLink != true}">
+                        <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
+                    </g:if>
                 </g:each>
             </select>
         </div>

@@ -124,15 +124,22 @@ class ArticleController {
         }
 
         def categories
+        def goExternalLink = false
         
         if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
             categories = Category.findAllByWritableAndEnabled(true, true)
         } else {
+            goExternalLink = category.writeByExternalLink
             categories = category.children ?: category.parent?.children ?: [category]
         }
+        
+        if(goExternalLink) {
+            redirect(url: category.externalLink)
+        } else {
+            respond new Article(params), model: [categories: categories, category: category]
+        }
 
-
-        respond new Article(params), model: [categories: categories, category: category]
+        
     }
 
     @Transactional

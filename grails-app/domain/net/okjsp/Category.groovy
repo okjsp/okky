@@ -21,6 +21,9 @@ class Category implements Serializable {
     boolean useNote
     boolean useOpinion
     boolean requireTag = false
+    
+    Boolean writeByExternalLink = false
+    String externalLink
 
     static belongsTo = [parent: Category]
 
@@ -38,6 +41,8 @@ class Category implements Serializable {
         useNote nullable: true
         useOpinion nullable: true
         iconCssNames nullable: true
+        writeByExternalLink nullable: true
+        externalLink nullable: true
     }
 
     static mapping = {
