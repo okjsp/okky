@@ -25,15 +25,15 @@
                         <div class="user-points">
                             <div class="user-point">
                                 <div class="user-point-label"><i class="fa fa-flash"></i> 활동점수</div>
-                                <div class="user-point-num"><a href="">${avatar.activityPoint}</a></div>
+                                <div class="user-point-num"><a href="#">${avatar.activityPoint}</a></div>
                             </div>
                             <div class="user-point">
                                 <div class="user-point-label"><i class="fa fa-user"></i> 팔로잉</div>
-                                <div class="user-point-num"><a href="">${counts.followingCount}</a></div>
+                                <div class="user-point-num"><a href="#">${counts.followingCount}</a></div>
                             </div>
                             <div class="user-point">
                                 <div class="user-point-label"><i class="fa fa-users"></i> 팔로워</div>
-                                <div class="user-point-num"><a href="">${counts.followerCount}</a></div>
+                                <div class="user-point-num"><a href="#">${counts.followerCount}</a></div>
                             </div>
                         </div>
                     </div>
