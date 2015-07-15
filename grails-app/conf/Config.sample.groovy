@@ -248,3 +248,6 @@ quartz {
 tomcat.deploy.username=""
 tomcat.deploy.password=''
 tomcat.deploy.url=""
+
+grails.encrypt.key = ""
+grails.encrypt.salt = ""
