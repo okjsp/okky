@@ -249,5 +249,5 @@ tomcat.deploy.username=""
 tomcat.deploy.password=''
 tomcat.deploy.url=""
 
-grails.encrypt.key = ""
-grails.encrypt.salt = ""
+grails.encrypt.key = "asdf"
+grails.encrypt.salt = "1234"
