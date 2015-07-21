@@ -22,32 +22,7 @@ class EncryptService {
 
     SecretKeySpec skeySpec = null
     IvParameterSpec ivParameterSpec = null
-
-    String key1 = grailsApplication.config.grails.encrypt.key
-    String salt = grailsApplication.config.grails.encrypt.salt
-
-    EncryptService() {
-        if(skeySpec == null) {
-            synchronized(EncryptService.class) {
-
-                if (skeySpec == null) {
-                    SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
-                    PBEKeySpec pbeKeySpec = new PBEKeySpec(key1.chars, salt.getBytes("UTF-8"), 1000, 256)
-                    Key secretKey = factory.generateSecret(pbeKeySpec)
-
-                    byte[] key = new byte[16]
-                    byte[] iv = new byte[16]
-
-                    System.arraycopy(secretKey.encoded, 0, key, 0, 16)
-                    System.arraycopy(secretKey.encoded, 16, iv, 0, 16)
-
-                    skeySpec = new SecretKeySpec(key, "AES")
-                    ivParameterSpec = new IvParameterSpec(iv)
-                }
-            }
-        }
-    }
-
+    
     public byte [] encryptWithCRC(byte [] value) {
 
         if(!encryption) return value
@@ -118,10 +93,40 @@ class EncryptService {
     }
 
     public Cipher getCipher(int mode) {
+        
+        if(skeySpec == null) {
+            init()
+        }
+        
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
         cipher.init(mode, skeySpec, ivParameterSpec)
 
         cipher
+    }
+    
+    private void init() {
+        
+        String key1 = grailsApplication.config.grails.encrypt.key
+        String salt = grailsApplication.config.grails.encrypt.salt
+        
+        synchronized(EncryptService.class) {
+            
+            if (skeySpec == null) {
+                
+                SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+                PBEKeySpec pbeKeySpec = new PBEKeySpec(key1.chars, salt.getBytes("UTF-8"), 1000, 256)
+                Key secretKey = factory.generateSecret(pbeKeySpec)
+
+                byte[] key = new byte[16]
+                byte[] iv = new byte[16]
+
+                System.arraycopy(secretKey.encoded, 0, key, 0, 16)
+                System.arraycopy(secretKey.encoded, 16, iv, 0, 16)
+
+                skeySpec = new SecretKeySpec(key, "AES")
+                ivParameterSpec = new IvParameterSpec(iv)
+            }
+        }
     }
 
 }
