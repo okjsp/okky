@@ -1367,10 +1367,10 @@ blockquote {
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 2px solid #ffffff;
+    border: 1px solid #ffffff;
     border-radius: 50%;
     text-align: center;
-    font-size: 10px;
+    font-size: 11px;
     padding-top: 4px;
     vertical-align: top;
     margin-right: 20px;
@@ -1552,7 +1552,7 @@ blockquote {
 }
 
 .note-form .panel-body {
-    padding: 10px;
+    padding: 5px;
 }
 
 .note-form .note-editable {
