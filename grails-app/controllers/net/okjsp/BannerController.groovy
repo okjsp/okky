@@ -8,7 +8,27 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class BannerController {
 
+    UserService userService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+
+    @Transactional
+    def stats(Banner banner) {
+
+        if (banner == null) {
+            notFound()
+            return
+        }
+
+        String ip = userService.getRealIp(request)
+
+        def bannerClick = BannerClick.findOrCreateWhere(banner: banner, ip: ip)
+
+        bannerClick.clickCount++
+        bannerClick.save(flush: true)
+
+        redirect url: banner.url
+    }
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)

@@ -29,17 +29,17 @@ class BannerTagLib {
                 case BannerType.MAIN_RIGHT :
                 case BannerType.SUB_RIGHT :
                     bannerHTML = """<div class="right-banner">
-                                        <a href="${banner.url}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
+                                        <a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
                                     </div>"""
                     break
                 case BannerType.MAIN : 
                     bannerHTML = """<div class="main-banner-wrapper">
-                                        <div class="main-banner"><a href="${banner.url}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
+                                        <div class="main-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
                                     </div>"""
                     break
                 case BannerType.CONTENT :
                     bannerHTML = """<div class="sub-banner-wrapper">
-                                        <div class="sub-banner"><a href="${banner.url}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
+                                        <div class="sub-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
                                     </div>"""
                     break
             }

@@ -53,5 +53,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
     '/upload/*/**':             ['permitAll'],
 
+    '/banner/stats/**':         ['permitAll'],
+
     '/_admin/**':               ['ROLE_ADMIN']
 ]

@@ -43,6 +43,7 @@ class UrlMappings {
         
         "/bbs"(redirect: "/")
 
+        "/banner/stats/$id(.$format)?"(controller: "banner", action: "stats")
 
         /* Admin */
 
