@@ -23,6 +23,7 @@
 				<li class="controller"><g:link controller="statistic">가입현황</g:link></li>
                 <li class="controller"><g:link controller="banner">베너</g:link></li>
                 <li class="controller"><g:link controller="spamWord">스팸문구</g:link></li>
+                <li class="controller"><g:link controller="export">DM발송대상</g:link></li>
             </ul>
         </div>
 		<g:layoutBody/>
