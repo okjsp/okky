@@ -16,7 +16,7 @@
 
 2. Grails를 설치합니다.
   ```sh
-    gvm install grails 2.4.3
+    gvm install grails 2.4.5
   ```
 
 3. 선호하는 IDE 나 편집기를 사용하시면 됩니다.
