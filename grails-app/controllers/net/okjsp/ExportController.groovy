@@ -7,29 +7,14 @@ import static org.springframework.http.HttpStatus.*
 @Transactional(readOnly = true)
 class ExportController {
     
-    EncryptService encryptService
+    def userService
 
     def index() {
 
         response.contentType = "text/csv"
-        response.setHeader("Content-disposition", "attachment; filename=test.csv")
+        response.setHeader("Content-disposition", String.format("attachment; filename=dm_%s.csv", new Date().format("yyyy-MM-dd")))
         
-        def persons = Person.findAllByDmAllowed(true)
-        
-        StringBuilder sb = new StringBuilder()
-        
-        // 성능은?
-        for(Person p : persons) {
-            
-            // 한글문제 처리
-            String name = p.getFullName()
-            String email = p.getEmail()
-            String enc = new String(encryptService.encrypt(email.getBytes()))
-            
-            sb.append(String.format("%s,%s,%s%s", name, email, enc, System.lineSeparator()))
-        }
-        
-        render sb.toString()
+        render (text: userService.getDmUserCvsString(), encoding: "EUC-KR")
     }
 
     protected void notFound() {
