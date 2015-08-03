@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 @Transactional
 class UserService {
 
+    EncryptService encryptService
     def grailsApplication
 
     /**
@@ -76,5 +77,25 @@ class UserService {
             ipAddress = request.getRemoteAddr()
 
         ipAddress
+    }
+    
+    def getDmUserCvsString() {
+        
+        def persons = Person.findAllByDmAllowed(true)
+        
+        StringBuilder sb = new StringBuilder()
+        
+        String url = String.format("%s/user/rejectDM?k=", grailsApplication.config.grails.serverURL)
+        
+        for(Person p : persons) {
+            
+            String name = p.getFullName()
+            String email = p.getEmail()
+            String enc = new String(encryptService.encrypt(email.getBytes()))
+            
+            sb.append(String.format("%s,%s,%s%s%s", name, email, url, enc, System.lineSeparator()))
+        }
+        
+        sb.toString()
     }
 }

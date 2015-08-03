@@ -18,10 +18,12 @@ class UserController {
     RecaptchaService recaptchaService
     SpringSecurityService springSecurityService
     MailService mailService
+    EncryptService encryptService
+    
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index']]
+    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index', 'rejectDM']]
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
@@ -264,5 +266,26 @@ class UserController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+    
+    @Transactional
+    def rejectDM(String k) {
+        
+        String email = "", result = "실패"
+        
+        try {
+            email = new String(encryptService.decrypt(k.getBytes()))
+        } catch(Exception e) {
+            e.printStackTrace()
+        }
+        
+        Person p = Person.findByEmail(email)
+        if(p != null) {
+            p.setDmAllowed(false)
+            p.save()
+            result = "성공"
+        }
+        
+        render "수신거부에 ${result}하였습니다."
     }
 }

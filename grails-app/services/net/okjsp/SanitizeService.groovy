@@ -33,7 +33,7 @@ class SanitizeService {
         .and(
             new HtmlPolicyBuilder()
 
-                .allowElements("img", "hr", "iframe", "table", "th", "tr", "td", "tbody", "col", "colgroup", "thead", "tfooter", "caption", "code", "pre")
+                .allowElements("img", "hr", "iframe", "table", "th", "tr", "td", "tbody", "col", "colgroup", "thead", "tfooter", "caption", "code", "pre", "font")
                 .allowStandardUrlProtocols()
 
                 .allowAttributes("alt").onElements("img")
@@ -51,6 +51,9 @@ class SanitizeService {
 
                 .allowAttributes("src").matching(new FilterUrlByProtocolAttributePolicy(["http", "https"]))
                 .onElements("img", "iframe")
+                
+                .allowAttributes("color")
+                .onElements("font")
 
                 .toFactory()
     )
