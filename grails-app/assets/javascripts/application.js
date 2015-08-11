@@ -11,7 +11,6 @@
 //= require libs/summernote
 //= require libs/summernote-ko-KR
 //= require libs/summernote-ext-video
-//= require libs/summernote-ext-fontstyle
 //= require libs/summernote-ext-codeblock
 //= require libs/spin
 //= require libs/jquery.spin
