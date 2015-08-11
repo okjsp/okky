@@ -89,10 +89,13 @@
 <g:hiddenField name="content.textType" value="HTML"/>
 <asset:script type="text/javascript">
     $('#summernote').summernote({minHeight: 300, lang: 'ko-KR',
-      oninit: function() {
+      onInit: function() {
         if($(window).height() > 400)
             $('.note-editable').css('max-height', $(window).height()-100);
       }
+    });
+      },
+      onImageUpload: $.onImageUpload($('#summernote'))
     });
 
     function postForm() {

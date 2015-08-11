@@ -12,7 +12,8 @@ $(function() {
                     $('#note-create-cancel-btn').show();
                     $('#btn-create-btn').prop('disabled', false);
                     $editor.find('.note-editable').css('max-height', $(window).height()-100);
-            }
+            },
+            onImageUpload: $.onImageUpload($editor)
         });
     });
 
@@ -85,7 +86,7 @@ $(function() {
         sending = true;
 
         $.ajax({
-            url:contextPath+'/content/edit/'+id+'.json',
+            url:contextPath+'/content/edit/'+id+'.json?_='+(new Date().getTime()),
             dataType: 'json',
             type: 'get',
             success: function(result) {

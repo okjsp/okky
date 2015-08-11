@@ -11,7 +11,6 @@
 //= require libs/summernote
 //= require libs/summernote-ko-KR
 //= require libs/summernote-ext-video
-//= require libs/summernote-ext-fontstyle
 //= require libs/summernote-ext-codeblock
 //= require libs/spin
 //= require libs/jquery.spin
@@ -72,24 +71,57 @@ if (typeof jQuery !== 'undefined') {
             }
         });
         
-        var onImagaUpload = function(files, editor, $editable) {
+        $.onImageUpload = function($editor) {
 
-            var $form = $('.note-image-dialog .note-modal-form');
+            return function(files) {
 
-            $('<iframe src="about:blank"  style="display: none;" name="imageUploadHandlerFrame"></iframe>').appendTo('body');
+              var createImage = function (sUrl, filename) {
+                return $.Deferred(function (deferred) {
+                  var $img = $('<img>');
 
-            $.imageUploaded = function(image) {
-                editor.insertImage($editable, image);
-            };
+                  $img.one('load', function () {
+                    $img.off('error abort');
+                    deferred.resolve($img);
+                  }).one('error abort', function () {
+                    $img.off('load').detach();
+                    deferred.reject($img);
+                  }).css({
+                    display: 'none'
+                  }).appendTo(document.body).attr({
+                    'src': sUrl,
+                    'data-filename': filename
+                  });
+                }).promise();
+              };
 
-            $form.attr({
+              var $form = $('.note-image-dialog .note-modal-form');
+
+              $('<iframe src="about:blank"  style="display: none;" name="imageUploadHandlerFrame"></iframe>').appendTo('body');
+
+              $.imageUploaded = function(sUrl, filename) {
+
+                createImage(sUrl, filename).then(function ($image) {
+                  var width = $image.width() >= $editor.width() ? '100%' : $image.width();
+
+                  $image.css({
+                    display: '',
+                    width: width
+                  });
+
+                  $editor.summernote('insertNode', $image.get(0));
+                });
+              };
+
+              $form.attr({
                 enctype: 'multipart/form-data',
                 target: 'imageUploadHandlerFrame',
                 action: contextPath+'/file/image',
                 method: 'post'
-            });
+              });
 
-            $form[0].submit();
+              $form[0].submit();
+
+            };
         };
 
         $.extend($.summernote.options, {
@@ -107,8 +139,7 @@ if (typeof jQuery !== 'undefined') {
                 ['para', ['ul', 'ol', 'table']],
                 ['insert', ['codeblock', 'link', 'picture', 'video', 'hr']],
                 ['view', ['fullscreen', 'codeview', 'help']]
-            ],
-            onImageUpload : onImagaUpload
+            ]
         });
 
 	})(jQuery);
