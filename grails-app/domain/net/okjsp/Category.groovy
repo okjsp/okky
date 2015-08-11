@@ -21,6 +21,7 @@ class Category implements Serializable {
     boolean useNote
     boolean useOpinion
     boolean requireTag = false
+    Boolean anonymity = false
     
     Boolean writeByExternalLink = false
     String externalLink
@@ -41,6 +42,7 @@ class Category implements Serializable {
         useNote nullable: true
         useOpinion nullable: true
         iconCssNames nullable: true
+        anonymity nullable: true
         writeByExternalLink nullable: true
         externalLink nullable: true
     }

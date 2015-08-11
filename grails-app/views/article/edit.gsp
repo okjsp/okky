@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <g:form url="[resource:article, action:'update']" useToken="true" method="PUT" class="article-form" role="form" onsubmit="return postForm()">
+                    <g:form id="article-form" url="[resource:article, action:'update']" useToken="true" method="PUT" class="article-form" role="form" onsubmit="return postForm()">
                         <fieldset class="form">
                             <g:render template="form"/>
 
@@ -54,5 +54,15 @@
 
         </div>
 
-	</body>
+        <asset:script type="text/javascript">
+            $('#category').change(function() {
+                if(this.value && confirm('게시판 변경시 수정된 내용은 초기화 됩니다. 변경 하시겠습니까?')) {
+                    $('#article-form').attr('action', location.href)
+                        .submit();
+                }
+            });
+        </asset:script>
+
+
+    </body>
 </html>

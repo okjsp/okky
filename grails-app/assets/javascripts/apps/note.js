@@ -7,7 +7,7 @@ $(function() {
         var $editor = $(this);
         $(this).summernote({lang: 'ko-KR',
             focus: true,
-            oninit: function() {
+            onInit: function() {
                 if($(window).height() > 400)
                     $('#note-create-cancel-btn').show();
                     $('#btn-create-btn').prop('disabled', false);

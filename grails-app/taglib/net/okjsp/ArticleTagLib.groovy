@@ -56,23 +56,25 @@ class ArticleTagLib {
         }
 
         out << "<div class='avatar avatar-${size} clearfix ${cssClass}'>"
-        
+
         if(avatar.id)
             out << "<a href='${request.contextPath}/user/info/${avatar.id}' class='avatar-photo'><img src='${url}'/></a> "
         else
-            out << "<span class='avatar-photo'><img src='${url}'/></span>"
+            out << "<span class='avatar-photo'><img src='${url}'/></span> "
 
         if (attrs.pictureOnly != 'true') {
             out << """<div class="avatar-info">"""
-            
+
             if(avatar.id)
                 out << """<a class="nickname" href="${request.contextPath}/user/info/${avatar.id}">${avatar.nickname}</a> """
             else
-                out << """<span class="nickname"><strong>${avatar.nickname}</strong></span> """
+                out << """<span class="nickname">${avatar.nickname}</span> """
 
             if (attrs.dateCreated != null) {
                 if(avatar.id)
                     out << """<div class="activity"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
+                else
+                    out << """<div class="activity"><span class="fa fa-lock"></span> </div>"""
                 
                 out << """<div class="date-created timeago" title="${attrs.dateCreated}">${attrs.dateCreated}</div>"""
             } else {
