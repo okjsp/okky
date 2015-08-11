@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=utf-8" %>
-<%@ page import="net.okjsp.Article" %>
+<%@ page import="net.okjsp.AvatarPictureType; net.okjsp.Article" %>
 <%@ page import="net.okjsp.Content" %>
 <%@ page import="net.okjsp.ContentTextType" %>
 
@@ -19,7 +19,8 @@
     </head>
 	<body>
 
-    <g:sidebar category="${article.category}"/>
+        <g:sidebar category="${article.category}"/>
+
         <div id="article" class="content" role="main">
             <div class="nav" role="navigation">
                 <g:link class="create btn btn-success btn-wide pull-right" uri="/articles/${article.category.code}/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
@@ -171,7 +172,7 @@
                                     </div>
                                 </div>
 
-                                <g:isAuthorOrAdmin author="${note.author}">
+                                <g:isAuthorOrAdmin content="${note}">
                                 <div id="content-function-cog-${note.id}" class="content-function-cog">
                                     <div class="dropdown">
                                         <a href="javascript://" data-toggle="dropdown"><i class="fa fa-cog" data-toggle="tooltip" data-placement="left" title="게시물 설정"></i></a>
@@ -205,7 +206,12 @@
                                                 <i class="fa fa-edit"></i>
                                             </div>
                                         </g:if>
-                                        <g:avatar size="medium"/>
+                                        <g:if test="${article.category.anonymity}">
+                                            <g:avatar size="medium" avatar="[nickname: '익명', pictureType:net.okjsp.AvatarPictureType.ANONYMOUSE]"/>
+                                        </g:if>
+                                        <g:else>
+                                            <g:avatar size="medium"/>
+                                        </g:else>
                                     </div>
                                     <fieldset class="form">
                                         <g:hiddenField name="note.textType" value="HTML"/>

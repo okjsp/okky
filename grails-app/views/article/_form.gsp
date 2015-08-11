@@ -2,60 +2,64 @@
 <%@ page import="net.okjsp.Content" %>
 <%@ page import="net.okjsp.ContentTextType" %>
 
-
-<sec:ifAllGranted roles="ROLE_ADMIN">
-
-    <div class="form-group ${hasErrors(bean: article, field: 'choice', 'has-error')} has-feedback">
-        <div class="checkbox">
-            <label>
-                <g:checkBox name="choice" value="${article?.choice}"  />
-                <g:message code="article.choice.label" default="Editor`s Choice" />
-            </label>
+<g:if test="${category?.anonymity}">
+    %{--<div class="form-group ${hasErrors(bean: article, field: 'title', 'error')} has-feedback">
+        <div class="alert alert-info">
+            <ul>
+                <li><b>블라블라</b> 블라블라</li>
+            </ul>
         </div>
-    </div>
-    
-    <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
-        <div>
-            <select id="category" name="categoryCode" class="form-control">
-                <option value="">게시판을 선택해 주세요.</option>
-                <g:each in="${categories}" var="category">
-                    <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
-                </g:each>
-            </select>
-        </div>
-    </div>
-</sec:ifAllGranted>
+    </div>--}%
+</g:if>
 
-<sec:ifNotGranted roles="ROLE_ADMIN">
-    <g:if test="${categories.size() > 1}">
-    <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
-        <div>
-            <select id="category" name="categoryCode" class="form-control">
-                <option value="">게시판을 선택해 주세요.</option>
-                <g:each in="${categories}" var="category">
-                    <g:if test="${category.writeByExternalLink != true}">
+
+<g:if test="${!article.id || !article.category.anonymity}">
+    <sec:ifAllGranted roles="ROLE_ADMIN">
+
+        <div class="form-group ${hasErrors(bean: article, field: 'choice', 'has-error')} has-feedback">
+            <div class="checkbox">
+                <label>
+                    <g:checkBox name="choice" value="${article?.choice}"  />
+                    <g:message code="article.choice.label" default="Editor`s Choice" />
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
+            <div>
+                <select id="category" name="categoryCode" class="form-control">
+                    <option value="">게시판을 선택해 주세요.</option>
+                    <g:each in="${categories}" var="category">
                         <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
-                    </g:if>
-                </g:each>
-            </select>
+                    </g:each>
+                </select>
+            </div>
         </div>
-    </div>
-    </g:if>
-    <g:else>
-        <g:hiddenField name="categoryCode" value="${categories?.getAt(0).code}" />
-    </g:else>
-</sec:ifNotGranted>
+    </sec:ifAllGranted>
 
-%{--<div class="form-group ${hasErrors(bean: article, field: 'title', 'error')} has-feedback">
-    <div class="col-sm-offset-2 col-sm-10">
-        <div class="checkbox">
-            <label>
-                <g:checkBox name="anonymity" value="${article?.anonymity}"  />
-                <g:message code="article.anonymity.label" default="Anonymity" />
-            </label>
+    <sec:ifNotGranted roles="ROLE_ADMIN">
+        <g:if test="${categories.size() > 1}">
+        <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
+            <div>
+                <select id="category" name="categoryCode" class="form-control">
+                    <option value="">게시판을 선택해 주세요.</option>
+                    <g:each in="${categories}" var="category">
+                        <option value="${category.code}"
+                                <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>
+                                data-external="${category.writeByExternalLink}"
+                                data-anonymity="${category.anonymity}">
+                            ${message(code: category.labelCode, default: category.defaultLabel)}
+                        </option>
+                    </g:each>
+                </select>
+            </div>
         </div>
-    </div>
-</div>--}%
+        </g:if>
+        <g:else>
+            <g:hiddenField name="categoryCode" value="${categories?.getAt(0).code}" />
+        </g:else>
+    </sec:ifNotGranted>
+</g:if>
 
 <div class="form-group ${hasErrors(bean: article, field: 'title', 'has-error')} has-feedback">
     <div>

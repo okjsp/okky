@@ -43,7 +43,7 @@ class Article {
 
     static constraints = {
         title blank: false
-        author bindable: false
+        author nullable: true, bindable: false
         lastEditor nullable: true, bindable: false
         aNickName nullable: true
         viewCount bindable: false
@@ -63,7 +63,7 @@ class Article {
     def getDisplayAuthor() {
         if(anonymity) {
             return new Avatar(
-                nickname: aNickName,
+                nickname: aNickName ?: "익명",
                 picture: '',
                 pictureType: AvatarPictureType.ANONYMOUSE,
                 activityPoint: null
@@ -74,10 +74,22 @@ class Article {
     }
 
     def beforeInsert() {
+        if(anonymity) {
+            author = null
+            content.anonymity = true
+            content.author = null
+            content.aNickName = aNickName
+        }
         updateTag()
     }
 
     def beforeUpdate() {
+        if(anonymity) {
+            author = null
+            lastEditor = null
+            content.anonymity = true
+            content.aNickName = aNickName
+        }
         if(isDirty('tagString')) {
             updateTag()
         }

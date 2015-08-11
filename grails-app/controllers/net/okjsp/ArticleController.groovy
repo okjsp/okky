@@ -98,7 +98,7 @@ class ArticleController {
         article.updateViewCount(1)
 
         if(springSecurityService.loggedIn) {
-            Avatar avatar = Avatar.get(springSecurityService.principal.avatarId)
+            Avatar avatar = Avatar.load(springSecurityService.principal.avatarId)
             contentVotes = ContentVote.findAllByArticleAndVoter(article, avatar)
             scrapped = Scrap.findByArticleAndAvatar(article, avatar)
         }
@@ -123,6 +123,8 @@ class ArticleController {
             return
         }
 
+        params.category = category
+
         def categories
         def goExternalLink = false
         
@@ -131,8 +133,9 @@ class ArticleController {
         } else {
             goExternalLink = category.writeByExternalLink
             categories = category.children ?: category.parent?.children ?: [category]
+            params.anonymity = category?.anonymity ?: false
         }
-        
+
         if(goExternalLink) {
             redirect(url: category.externalLink)
         } else {
@@ -152,7 +155,7 @@ class ArticleController {
         try {
 
             withForm {
-                Avatar author = Avatar.get(springSecurityService.principal.avatarId)
+                Avatar author = Avatar.load(springSecurityService.principal.avatarId)
 
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
 
@@ -298,22 +301,22 @@ class ArticleController {
 
         try {
 
-                Avatar avatar = Avatar.get(springSecurityService.principal.avatarId)
+            Avatar avatar = Avatar.get(springSecurityService.principal.avatarId)
 
-                if(Scrap.countByArticleAndAvatar(article, avatar) < 1) {
-                    articleService.saveScrap(article, avatar)
-                } else {
-                    articleService.deleteScrap(article, avatar)
-                }
+            if(Scrap.countByArticleAndAvatar(article, avatar) < 1) {
+                articleService.saveScrap(article, avatar)
+            } else {
+                articleService.deleteScrap(article, avatar)
+            }
 
-                withFormat {
-                    html { redirect article }
-                    json {
-                        article.refresh()
-                        def result = [scrapCount: article.scrapCount]
-                        respond result
-                    }
+            withFormat {
+                html { redirect article }
+                json {
+                    article.refresh()
+                    def result = [scrapCount: article.scrapCount]
+                    respond result
                 }
+            }
 
         } catch (ValidationException e) {
             flash.error = e.message
@@ -334,6 +337,8 @@ class ArticleController {
 
             Content content = new Content()
             bindData(content, params, 'note')
+
+            content.createIp = userService.getRealIp(request)
 
             articleService.addNote(article, content, avatar)
 

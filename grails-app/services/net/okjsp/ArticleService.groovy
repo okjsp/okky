@@ -8,6 +8,8 @@ class ArticleService {
     ActivityService activityService
     NotificationService notificationService
 
+    def grailsApplication
+
     /**
      * 게시물 생성 (Article, Content, Activity 생성)
      * @param article
@@ -17,17 +19,32 @@ class ArticleService {
      */
     def save(Article article, Avatar author, Category category) {
 
+        User user = User.findByAvatar(author)
+
         article.category = category
         article.author = author
+
+        article.anonymity = category?.anonymity ?: false
+        article.aNickName = article.anonymity ? generateNickname(user, article.createIp) : author.nickname
 
         article.content.type = ContentType.ARTICLE
         article.content.author = author
 
         article.content.save(failOnError: true)
 
-        article.save(failOnError: true, flush: true)
+        article.save(failOnError: true)
 
-        activityService.createByArticle(ActivityType.POSTED, article, author)
+        if(article.anonymity) {
+            new Anonymous(
+                    user: user,
+                    article: article,
+                    content: article.content,
+                    type: ContentType.ARTICLE
+            ).save(failOnError: true)
+        } else {
+            activityService.createByArticle(ActivityType.POSTED, article, author)
+        }
+
     }
 
     /**
@@ -38,6 +55,8 @@ class ArticleService {
      * @return
      */
     def update(Article article, Avatar editor, Category category) {
+
+        article.anonymity = category.anonymity
 
         article.category = category
 
@@ -73,6 +92,13 @@ class ArticleService {
 
         content.delete()
 
+        if(article.anonymity) {
+            Anonymous.where {
+                eq('article', article)
+                eq('content', article.content)
+            }.deleteAll()
+        }
+
         article.delete(flush: true)
     }
 
@@ -85,8 +111,12 @@ class ArticleService {
      */
     def addNote(Article article, Content content, Avatar author) {
 
+        User user = User.findByAvatar(author)
+
         content.type = ContentType.NOTE
         content.author = author
+        content.anonymity = article.anonymity
+        content.aNickName = article.anonymity ? generateNickname(user, article.createIp) : author.nickname
         content.save(failOnError: true)
 
         article.noteCount++
@@ -95,9 +125,16 @@ class ArticleService {
 
         article.save(failOnError: true, flush: true)
 
-        activityService.createByContent(ActivityType.NOTED, content, author)
-
-        // Notification 은 스케쥴로 발송
+        if(article.anonymity) {
+            new Anonymous(
+                    user: user,
+                    article: article,
+                    content: content,
+                    type: ContentType.NOTE
+            ).save(failOnError: true)
+        } else {
+            activityService.createByContent(ActivityType.NOTED, content, author)
+        }
     }
 
     /**
@@ -172,6 +209,17 @@ class ArticleService {
 
         contentVote.delete(flush: true)
 
+    }
+
+    def generateNickname(User user, String ip) {
+
+        String md5 = "${ip}${grailsApplication.config.grails.encrypt.key}${user.id}".encodeAsMD5()
+
+        println md5
+
+        int startIndex = user.id % 10
+
+        return "A${md5.substring(startIndex, startIndex+7)}"
     }
 
 }

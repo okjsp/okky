@@ -38,10 +38,15 @@
 
             <div class="panel panel-default clearfix">
                 <div class="panel-heading clearfix">
-                    <g:avatar avatar="${article.displayAuthor}" size="medium" class="pull-left" />
+                    <g:if test="${category.anonymity}">
+                        <g:avatar avatar="${article.displayAuthor}" size="medium" class="pull-left" />
+                    </g:if>
+                    <g:else>
+                        <g:avatar avatar="${article.displayAuthor}" size="medium" class="pull-left" />
+                    </g:else>
                 </div>
                 <div class="panel-body">
-                    <g:form url="[resource:article, uri: '/articles/'+params.code+'/save']" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
+                    <g:form id="article-form" url="[resource:article, uri: '/articles/'+params.code+'/save']" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
                         <fieldset class="form">
                             <g:render template="form"/>
 
@@ -57,6 +62,17 @@
             </div>
 
         </div>
+
+        <asset:script type="text/javascript">
+            $('#category').change(function() {
+                var $opt = $(this).find(':selected');
+
+                if(this.value && ($opt.data('external') !== true || confirm('외부 링크로 이동합니다. 이동하시겠습니까?'))) {
+                    $('#article-form').attr('action', contextPath+'/articles/'+$opt.val()+'/create')
+                        .submit();
+                }
+            });
+        </asset:script>
 
 	</body>
 </html>

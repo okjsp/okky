@@ -18,6 +18,7 @@ class Content {
 
     boolean anonymity = false
     String aNickName
+    String createIp = null
 
     Date dateCreated
     Date lastUpdated
@@ -36,12 +37,13 @@ class Content {
 
     static constraints = {
         text blank: false
-        author bindable: false
+        author bindable: false, nullable: true
         lastEditor nullable: true, bindable: false
         voteCount bindable: false
         type bindable: false
         article nullable: true
         aNickName nullable: true
+        createIp nullable: true
         text validator: { val ->
             def spam = SpamWord.findAll().find { word ->
                 val.contains(word.text)
@@ -74,11 +76,22 @@ class Content {
         if(text) {
             text = sanitizeService.sanitize(text)
         }
+
+        if(anonymity) {
+            anonymity = true
+            author = null
+        }
     }
 
     def beforeUpdate() {
         if(isDirty("text")) {
             text = sanitizeService.sanitize(text)
+        }
+
+        if(anonymity) {
+            anonymity = true
+            lastEditor = null
+            author = null
         }
     }
 
