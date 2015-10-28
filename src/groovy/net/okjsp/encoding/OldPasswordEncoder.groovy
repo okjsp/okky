@@ -55,9 +55,6 @@ class OldPasswordEncoder implements PasswordEncoder {
     }
 
     boolean isPasswordValid(String encPass, String rawPass, Object salt) {
-
-        boolean valid = encPass == encodePassword(rawPass, salt)
-
-        return valid
+        encPass == encodePassword(rawPass, salt)
     }
 }
