@@ -51,7 +51,7 @@ class OldPasswordEncoder implements PasswordEncoder {
             .append(Long.toString((nr2 & 0xF0) >> 4, 16))
             .append(Long.toString((nr2 & 0x0F), 16))
 
-        return sb.toString()
+        sb.toString()
     }
 
     boolean isPasswordValid(String encPass, String rawPass, Object salt) {
