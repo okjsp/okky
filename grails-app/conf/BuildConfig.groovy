@@ -48,6 +48,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
         mavenRepo "http://repo.grails.org/grails/core"
+        mavenRepo "http://repo.grails.org/grails/plugins"
 
         mavenRepo "https://raw.github.com/fernandezpablo85/scribe-java/mvn-repo"
         mavenRepo "http://repo.spring.io/milestone/"
