@@ -92,8 +92,6 @@
       onInit: function() {
         if($(window).height() > 400)
             $('.note-editable').css('max-height', $(window).height()-100);
-      }
-    });
       },
       onImageUpload: $.onImageUpload($('#summernote'))
     });
