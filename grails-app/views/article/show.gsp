@@ -172,7 +172,7 @@
                                     </div>
                                 </div>
 
-                                <g:isAuthorOrAdmin content="${note}">
+                                <g:isAuthorOrAdmin author="${note.author}">
                                 <div id="content-function-cog-${note.id}" class="content-function-cog">
                                     <div class="dropdown">
                                         <a href="javascript://" data-toggle="dropdown"><i class="fa fa-cog" data-toggle="tooltip" data-placement="left" title="게시물 설정"></i></a>
