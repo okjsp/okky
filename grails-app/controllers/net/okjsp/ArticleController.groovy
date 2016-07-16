@@ -211,6 +211,10 @@ class ArticleController {
         } else {
             categories = article.category.children ?: article.category.parent?.children ?: [article.category]
         }
+
+        if(params.categoryCode) {
+            article.category = Category.get(params.categoryCode)
+        }
         
         respond article, model: [categories: categories]
     }
