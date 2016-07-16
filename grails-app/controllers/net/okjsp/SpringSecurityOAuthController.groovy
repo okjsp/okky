@@ -203,9 +203,11 @@ class SpringSecurityOAuthController {
 
                 try {
 
-                    def reCaptchaVerified = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
+                    def realIp = userService.getRealIp(request)
 
-                    user.createIp = request.remoteAddr
+                    def reCaptchaVerified = recaptchaService.verifyAnswer(session, realIp, params)
+
+                    user.createIp = realIp
 
                     if(user.hasErrors() || !reCaptchaVerified) {
                         respond user.errors, view: 'askToLinkOrCreateAccount', model: [userInstance: user]
