@@ -23,7 +23,7 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index', 'rejectDM']]
+    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index', 'rejectDM', 'withdrawConfirm', 'withdraw']]
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
@@ -66,14 +66,16 @@ class UserController {
 
         try {
 
-            def reCaptchaVerified = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
+            def realIp = userService.getRealIp(request)
+
+            def reCaptchaVerified = recaptchaService.verifyAnswer(session, realIp, params)
 
             if(!reCaptchaVerified) {
                 respond user.errors, view: 'register'
                 return
             }
 
-            user.createIp = userService.getRealIp(request)
+            user.createIp = realIp
 
             userService.saveUser user
 
@@ -257,16 +259,6 @@ class UserController {
         flash.message = message(code: 'user.password.updated.message')
         redirect uri: '/login/auth'
     }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect uri: '/'
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
     
     @Transactional
     def rejectDM(String k) {
@@ -287,5 +279,42 @@ class UserController {
         }
         
         render "수신거부에 ${result}하였습니다."
+    }
+
+    def withdrawConfirm() {
+        render view: "withdrawConfirm"
+    }
+
+    @Transactional
+    def withdraw() {
+        User user = springSecurityService.currentUser
+
+
+        // 게시글에 대한 익명 처리
+        Article.executeUpdate("update Article set anonymity = true, aNickName = :nickname where author = :user",
+                [nickname : user.avatar.nickname, user : user])
+
+        Content.executeUpdate("update Content set anonymity = true, aNickName = :nickname where author = :user",
+                [nickname : user.avatar.nickname, user : user])
+
+        user.withdraw = true
+        user.dateWithdraw = new Date()
+        user.accountLocked = true
+        user.accountExpired = true
+        user.enabled = false
+        user.save()
+
+
+
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+                redirect uri: '/'
+            }
+            '*'{ render status: NOT_FOUND }
+        }
     }
 }
