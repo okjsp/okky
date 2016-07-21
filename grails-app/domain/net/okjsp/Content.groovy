@@ -1,7 +1,6 @@
 package net.okjsp
 
 import grails.transaction.Transactional
-import sun.security.x509.AVA
 
 class Content {
     transient sanitizeService
@@ -95,7 +94,6 @@ class Content {
         }
     }
 
-    @Transactional
     def updateVoteCount(def i) {
         if(id != null) {
             executeUpdate("update Content set voteCount = voteCount+:i where id = :id",[i:i, id: id])

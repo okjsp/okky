@@ -13,6 +13,10 @@
 Config.groovy
 *.db
 
+out
+build
+.slcache
+
 .classpath
 .project
 .settings

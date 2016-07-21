@@ -1,13 +1,10 @@
 package net.okjsp
 
-import com.memetix.random.RandomService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.transaction.Transactional
 import grails.validation.ValidationException
 import org.springframework.http.HttpStatus
-
-import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class ArticleController {
@@ -15,7 +12,6 @@ class ArticleController {
     ArticleService articleService
     SpringSecurityService springSecurityService
     UserService userService
-    RandomService randomService
 
     static responseFormats = ['html', 'json']
 
@@ -109,7 +105,8 @@ class ArticleController {
             type == BannerType.CONTENT && visible == true
         }.list()
 
-        def contentBanner = contentBanners ? randomService.draw(contentBanners) : null
+        Random randomizer = new Random();
+        def contentBanner = contentBanners.get(randomizer.nextInt(contentBanners.size()));
 
         respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
     }
@@ -172,7 +169,7 @@ class ArticleController {
                         flash.message = message(code: 'default.created.message', args: [message(code: 'article.label', default: 'Article'), article.id])
                         redirect article
                     }
-                    json { respond article, [status: CREATED] }
+                    json { respond article, [status: HttpStatus.CREATED] }
                 }
             }.invalidToken {
                 redirect uri: "/articles/${code}", method:"GET"
@@ -211,6 +208,10 @@ class ArticleController {
         } else {
             categories = article.category.children ?: article.category.parent?.children ?: [article.category]
         }
+
+        if(params.categoryCode) {
+            article.category = Category.get(params.categoryCode)
+        }
         
         respond article, model: [categories: categories]
     }
@@ -246,7 +247,7 @@ class ArticleController {
                         flash.message = message(code: 'default.updated.message', args: [message(code: 'Article.label', default: 'Article'), article.id])
                         redirect article
                     }
-                    json { respond article, [status: OK] }
+                    json { respond article, [status: HttpStatus.OK] }
                 }
 
             }.invalidToken {
@@ -285,7 +286,7 @@ class ArticleController {
                 flash.status = "success"
                 redirect uri: "/articles/${categoryCode}", method:"GET"
             }
-            json { render status: NO_CONTENT }
+            json { render status: HttpStatus.NO_CONTENT }
         }
     }
 
@@ -348,7 +349,7 @@ class ArticleController {
                     redirect article
                 }
                 json {
-                    respond article, [status: OK]
+                    respond article, [status: HttpStatus.OK]
                 }
             }
 
@@ -443,7 +444,7 @@ class ArticleController {
 
         withFormat {
             html { redirect article }
-            json { respond article, [status: OK] }
+            json { respond article, [status: HttpStatus.OK] }
         }
     }
 
@@ -467,7 +468,7 @@ class ArticleController {
 
         withFormat {
             html { redirect article }
-            json { respond article, [status: OK] }
+            json { respond article, [status: HttpStatus.OK] }
         }
     }
 
@@ -478,7 +479,7 @@ class ArticleController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
                 redirect uri: '/'
             }
-            json { render status: NOT_FOUND }
+            json { render status: HttpStatus.NOT_FOUND }
         }
     }
 
@@ -489,7 +490,7 @@ class ArticleController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
                 redirect uri: '/'
             }
-            json { render status: NOT_ACCEPTABLE }
+            json { render status: HttpStatus.NOT_ACCEPTABLE }
         }
     }
 }

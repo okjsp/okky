@@ -1,15 +1,20 @@
 package net.okjsp
 
-import grails.converters.JSON
-import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
+import net.okjsp.ConfirmEmail
+import net.okjsp.Person
+import net.okjsp.User
+import org.springframework.mail.MailException
+import org.springframework.mail.MailSender
+import org.springframework.mail.SimpleMailMessage
 
 class FindUserController {
 
 
     UserService userService
     SpringSecurityService springSecurityService
-    MailService mailService
+    MailSender mailSender
+    SimpleMailMessage templateMessage
 
     def beforeInterceptor = [action:this.&notLoggedIn]
 

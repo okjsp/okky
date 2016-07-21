@@ -1,13 +1,8 @@
 package net.okjsp
 
-import grails.plugin.springsecurity.oauth.FacebookOAuthToken
-import grails.plugin.springsecurity.oauth.GoogleOAuthToken
 import grails.transaction.Transactional
 
 class Avatar implements Comparable {
-
-    static enum PictureType {
-    }
 
     String nickname
     String picture
@@ -48,7 +43,6 @@ class Avatar implements Comparable {
                 ,'OKJSP운영진','OKJSP운영자','부운영자','옥히관리자','옥희관리자'].contains(nickname)
     }
 
-    @Transactional
     def updateActivityPoint(def i) {
         if(id != null && i != 0) {
             executeUpdate("update Avatar set activityPoint = activityPoint+:i where id = :id",[i:i, id: id])

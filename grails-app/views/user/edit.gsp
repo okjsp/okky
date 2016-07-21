@@ -51,7 +51,6 @@
                 </fieldset>
                 <button class="btn btn-primary btn-block" type="submit"><g:message code="user.button.edit.label" default="정보 수정"/></button>
             </g:form>
-
         </div>
     </div>
     <div class="col-md-6 main-block-right">
@@ -64,7 +63,7 @@
                     <div id="facebook-connect-link" class="btn btn-disconnect btn-block"><i class="fa fa-chain-broken fa-fw"></i> Facebook 연결 끊기</div>
                 </g:if>
                 <g:else>
-                    <oauth:connect provider="facebook" id="facebook-connect-link" class="btn btn-facebook btn-block"><i class="fa fa-facebook fa-fw"></i> Facebook 연결하기</oauth:connect>
+                    <oauth2:connect provider="facebook" id="facebook-connect-link" class="btn btn-facebook btn-block"><i class="fa fa-facebook fa-fw"></i> Facebook 연결하기</oauth2:connect>
                 </g:else>
                 %{--<g:if test="${user.oAuthIDs.find{ it.provider == 'twitter' }}">
                     <div id="facebook-connect-link" class="btn btn-disconnect btn-block"><i class="fa fa-chain-broken fa-fw"></i> Twitter 연결 끊기</div>
@@ -76,13 +75,8 @@
                     <div id="facebook-connect-link" class="btn btn-disconnect btn-block"><i class="fa fa-chain-broken fa-fw"></i> Google 연결 끊기</div>
                 </g:if>
                 <g:else>
-                    <oauth:connect provider="google" id="google-connect-link" class="btn btn-google btn-block"><i class="fa fa-google fa-fw"></i> Google 연결하기</oauth:connect>
+                    <oauth2:connect provider="google" id="google-connect-link" class="btn btn-google btn-block"><i class="fa fa-google fa-fw"></i> Google 연결하기</oauth2:connect>
                 </g:else>
-            </div>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-body panel-margin">
-                <g:link controller="user" action="withdrawConfirm" class="btn btn-default btn-block"><g:message code="user.button.withdraw.label" default="회원 탈퇴"/></g:link>
             </div>
         </div>
     </div>

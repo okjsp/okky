@@ -1,7 +1,5 @@
 package net.okjsp
 
-import grails.plugin.springsecurity.SpringSecurityUtils
-
 class ManagedUser {
     
     transient springSecurityService

@@ -1,9 +1,9 @@
 package net.okjsp
 
-
-
-import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import net.okjsp.Banner
+import net.okjsp.BannerClick
+import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
 class BannerController {
@@ -62,7 +62,7 @@ class BannerController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'banner.label', default: 'Banner'), banner.id])
                 redirect banner
             }
-            '*' { respond banner, [status: CREATED] }
+            '*' { respond banner, [status: HttpStatus.CREATED] }
         }
     }
 
@@ -89,7 +89,7 @@ class BannerController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Banner.label', default: 'Banner'), banner.id])
                 redirect banner
             }
-            '*'{ respond banner, [status: OK] }
+            '*'{ respond banner, [status: HttpStatus.OK] }
         }
     }
 
@@ -108,7 +108,7 @@ class BannerController {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Banner.label', default: 'Banner'), banner.id])
                 redirect action:"index", method:"GET"
             }
-            '*'{ render status: NO_CONTENT }
+            '*'{ render status: HttpStatus.NO_CONTENT }
         }
     }
 
@@ -118,7 +118,7 @@ class BannerController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'banner.label', default: 'Banner'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: NOT_FOUND }
+            '*'{ render status: HttpStatus.NOT_FOUND }
         }
     }
 }

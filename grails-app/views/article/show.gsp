@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=utf-8" %>
-<%@ page import="net.okjsp.AvatarPictureType; net.okjsp.Article" %>
-<%@ page import="net.okjsp.Content" %>
-<%@ page import="net.okjsp.ContentTextType" %>
+<%@ page import="net.net.okjsp.AvatarPictureType; net.net.okjsp.Article" %>
+<%@ page import="net.net.okjsp.Content" %>
+<%@ page import="net.net.okjsp.ContentTextType" %>
 
 <!DOCTYPE html>
 <html>

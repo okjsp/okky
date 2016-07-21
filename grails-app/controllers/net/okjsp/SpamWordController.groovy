@@ -1,8 +1,8 @@
 package net.okjsp
 
-
-import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import net.okjsp.SpamWord
+import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
 class SpamWordController {
@@ -43,7 +43,7 @@ class SpamWordController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'spamWord.label', default: 'SpamWord'), spamWord.id])
                 redirect spamWord
             }
-            '*' { respond spamWord, [status: CREATED] }
+            '*' { respond spamWord, [status: HttpStatus.CREATED] }
         }
     }
 
@@ -70,7 +70,7 @@ class SpamWordController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'SpamWord.label', default: 'SpamWord'), spamWord.id])
                 redirect spamWord
             }
-            '*' { respond spamWord, [status: OK] }
+            '*' { respond spamWord, [status: HttpStatus.OK] }
         }
     }
 
@@ -89,7 +89,7 @@ class SpamWordController {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'SpamWord.label', default: 'SpamWord'), spamWord.id])
                 redirect action: "index", method: "GET"
             }
-            '*' { render status: NO_CONTENT }
+            '*' { render status: HttpStatus.NO_CONTENT }
         }
     }
 
@@ -99,7 +99,7 @@ class SpamWordController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'spamWord.label', default: 'SpamWord'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*' { render status: NOT_FOUND }
+            '*' { render status: HttpStatus.NOT_FOUND }
         }
     }
 }

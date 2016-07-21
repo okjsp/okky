@@ -99,7 +99,7 @@
             <div class="about-list-head">2013</div>
             <div class="about-list-body">
                 <p>방문 20,000 UV의 국내 최대 트래픽 자바 개발자 커뮤니티</p>
-                <p>okjsp.net 도메인 변경</p>
+                <p>net.okjsp.net 도메인 변경</p>
                 <p>서울시 IT개발자를 위한 청책 토론회 주관</p>
                 <p>OKJSP 13주년 컨퍼런스 개최</p>
             </div>
@@ -133,7 +133,7 @@
         <div class="about-list clearfix">
             <div class="about-list-head">2001</div>
             <div class="about-list-body">
-                <p>okjsp.pe.kr 도메인 서비스 시작</p>
+                <p>net.okjsp.pe.kr 도메인 서비스 시작</p>
                 <p>mysql db 를 사용하는 jsp 공개소스 게시판 배포 시작</p>
                 <p>oracle 섹션 추가 mssql과 oracle용 버전으로 공개소스 게시판 배포</p>
             </div>

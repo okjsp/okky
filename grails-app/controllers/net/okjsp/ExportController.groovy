@@ -1,8 +1,7 @@
 package net.okjsp
 
 import grails.transaction.Transactional
-import grails.util.Environment;
-import static org.springframework.http.HttpStatus.*
+import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
 class ExportController {
@@ -23,7 +22,7 @@ class ExportController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'spamWord.label', default: 'SpamWord'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*' { render status: NOT_FOUND }
+            '*' { render status: HttpStatus.NOT_FOUND }
         }
     }
 }

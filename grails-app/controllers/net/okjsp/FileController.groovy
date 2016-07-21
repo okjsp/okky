@@ -1,7 +1,6 @@
 package net.okjsp
 
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
 
 class FileController {
 

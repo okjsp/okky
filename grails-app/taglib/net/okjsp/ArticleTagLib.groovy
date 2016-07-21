@@ -2,8 +2,8 @@ package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
-import org.ocpsoft.prettytime.PrettyTime
-import org.springframework.web.servlet.support.RequestContextUtils
+import net.okjsp.Avatar
+import net.okjsp.AvatarPictureType
 
 class ArticleTagLib {
 

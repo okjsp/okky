@@ -3,12 +3,10 @@ package net.okjsp
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.userdetails.GrailsUserDetailsService
 import grails.transaction.Transactional
-import org.codehaus.groovy.grails.web.util.WebUtils
+import net.okjsp.User
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-
-import javax.servlet.http.HttpSession
 
 class CustomUserDetailService implements GrailsUserDetailsService {
 
@@ -22,7 +20,7 @@ class CustomUserDetailService implements GrailsUserDetailsService {
     @Transactional
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
             User user = User.findByUsername(username)
-            if (!user || user.withdraw) throw new UsernameNotFoundException(
+            if (!user) throw new UsernameNotFoundException(
                 'User not found', username)
 
             def authorities = user.authorities.collect {

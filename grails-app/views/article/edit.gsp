@@ -1,4 +1,4 @@
-<%@ page import="net.okjsp.Article" %>
+<%@ page import="net.net.okjsp.Article" %>
 <!DOCTYPE html>
 <html>
 	<head>

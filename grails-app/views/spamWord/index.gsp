@@ -1,4 +1,4 @@
-<%@ page import="net.okjsp.SpamWord" %>
+<%@ page import="net.net.okjsp.SpamWord" %>
 <!DOCTYPE html>
 <html>
 <head>

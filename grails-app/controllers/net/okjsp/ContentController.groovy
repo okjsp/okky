@@ -2,10 +2,11 @@ package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
-import grails.validation.ValidationException
-
-import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import net.okjsp.Article
+import net.okjsp.Avatar
+import net.okjsp.Content
+import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
 class ContentController {
@@ -64,7 +65,7 @@ class ContentController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Content.label', default: 'Content'), content.id])
                 redirect content.article
             }
-            json { respond content, [status: OK] }
+            json { respond content, [status: HttpStatus.OK] }
         }
     }
 
@@ -101,7 +102,7 @@ class ContentController {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Content.label', default: 'Content'), content.id])
                 redirect article
             }
-            json { render status: NO_CONTENT }
+            json { render status: HttpStatus.NO_CONTENT }
         }
     }
 
@@ -111,7 +112,7 @@ class ContentController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'content.label', default: 'Content'), params.id])
                 redirect action: "index", method: "GET"
             }
-            json { render status: NOT_FOUND }
+            json { render status: HttpStatus.NOT_FOUND }
         }
     }
 
@@ -122,7 +123,7 @@ class ContentController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'article.label', default: 'Article'), params.id])
                 redirect action: "index", method: "GET"
             }
-            json { render status: NOT_ACCEPTABLE }
+            json { render status: HttpStatus.NOT_ACCEPTABLE }
         }
     }
 }

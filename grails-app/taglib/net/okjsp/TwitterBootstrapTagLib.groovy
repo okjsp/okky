@@ -1,6 +1,6 @@
 package net.okjsp
 
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import org.springframework.web.servlet.support.RequestContextUtils
 
 class TwitterBootstrapTagLib {
 
@@ -42,7 +42,7 @@ class TwitterBootstrapTagLib {
             throwTagError("Tag [paginate] is missing required attribute [total]")
         }
         def messageSource = grailsAttributes.messageSource
-        def locale = RCU.getLocale(request)
+        def locale = RequestContextUtils.getLocale(request)
 
         def total = attrs.int('total') ?: 0
         def action = (attrs.action ? attrs.action : (params.action ? params.action : "index"))

@@ -1,11 +1,9 @@
 package net.okjsp
 
-import grails.transaction.Transactional
-
-@Transactional
+@grails.transaction.Transactional
 
 import grails.converters.JSON
-import grails.util.Environment
+import grails.transaction.Transactional
 
 import javax.crypto.Cipher
 import javax.crypto.SecretKeyFactory

@@ -1,7 +1,5 @@
 package net.okjsp
 
-import grails.transaction.Transactional
-
 class Article {
 
     String title
@@ -23,20 +21,17 @@ class Article {
     String aNickName
 
     Content selectedNote
-    
+
     String createIp = ""
 
     Date dateCreated
     Date lastUpdated
-    
+
     Integer best = 0
 
-    static belongsTo = [content: Content]
-
-    static hasMany = [tags : Tag, notes: Content]
+    static belongsTo = [content: Content, tags : Tag]
 
     static mapping = {
-        notes sort: 'id', order: 'asc'
         sort id: 'desc'
         best formula: "view_count + vote_count * 500 + note_count * 50"
     }
@@ -50,9 +45,7 @@ class Article {
         voteCount bindable: false
         noteCount bindable: false
         scrapCount bindable: false
-        tags maxSize: 5, nullable: true
         tagString nullable: true
-        notes bindable: false
         enabled bindable: false
         selectedNote nullable: true, bindable: false
         content nullable: true
@@ -95,18 +88,9 @@ class Article {
         }
     }
 
-    def beforeDelete() {
-        /*if(tags) {
-            tags.each { tag ->
-                tag.taggedCount--
-                tag.save()
-            }
-        }*/
-    }
-
     void updateTag() {
 
-        def removedTags = tags ?: []
+        def removedTags = this.tags ?: []
 
         if(tagString) {
             def tagNames = tagString.split(/[,\s]+/).toList().unique().findAll { !it.isEmpty() }
@@ -140,28 +124,24 @@ class Article {
     /*
         Custom queries
      */
-    @Transactional
     def updateViewCount(def i) {
         if(id != null) {
             executeUpdate("update Article set viewCount = viewCount+:i where id = :id",[i:i, id: id])
         }
     }
 
-    @Transactional
     def updateNoteCount(def i) {
         if(id != null) {
             executeUpdate("update Article set noteCount = noteCount+:i where id = :id",[i:i, id: id])
         }
     }
 
-    @Transactional
     def updateVoteCount(def i) {
         if(id != null) {
             executeUpdate("update Article set voteCount = voteCount+:i where id = :id",[i:i, id: id])
         }
     }
 
-    @Transactional
     def updateScrapCount(def i) {
         if(id != null) {
             executeUpdate("update Article set scrapCount = scrapCount+:i where id = :id",[i:i, id: id])

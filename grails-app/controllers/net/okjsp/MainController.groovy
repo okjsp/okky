@@ -1,5 +1,10 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.annotation.Secured
+import net.okjsp.Banner
+import net.okjsp.BannerType
+
+@Secured(value=["hasRole('ROLE_ANONYMOUS')"])
 class MainController {
 
     def mainService
@@ -12,7 +17,7 @@ class MainController {
     def index() {
         
         def mainBanners = Banner.where {
-            type == BannerType.MAIN && visible == true            
+            type == BannerType.MAIN && visible == true
         }.list()
 
         def mainBanner = mainBanners ? randomService.draw(mainBanners) : null

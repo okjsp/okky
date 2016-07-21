@@ -1,8 +1,8 @@
 package net.okjsp
 
 import grails.transaction.Transactional
-
-import static org.springframework.http.HttpStatus.*
+import net.okjsp.User
+import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
 class StatisticController {
@@ -36,7 +36,7 @@ class StatisticController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'spamWord.label', default: 'SpamWord'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*' { render status: NOT_FOUND }
+            '*' { render status: HttpStatus.NOT_FOUND }
         }
     }
 }

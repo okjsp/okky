@@ -1,7 +1,5 @@
 package net.okjsp
 
-import grails.plugin.cache.Cacheable
-
 class Category implements Serializable {
 
     String code

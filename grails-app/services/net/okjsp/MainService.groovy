@@ -1,12 +1,11 @@
 package net.okjsp
 
-import grails.plugin.cache.CacheEvict
 import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
-import groovy.time.TimeCategory
+import net.okjsp.Article
+import net.okjsp.Category
 import org.hibernate.FetchMode
-import org.hibernate.criterion.CriteriaSpecification
 
 @Transactional(readOnly = true)
 class MainService {

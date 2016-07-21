@@ -1,6 +1,7 @@
 package net.okjsp
 
 import grails.transaction.Transactional
+import net.okjsp.*
 
 @Transactional
 class UserService {

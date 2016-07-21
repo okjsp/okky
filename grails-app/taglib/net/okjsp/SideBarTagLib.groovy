@@ -1,8 +1,8 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
-import org.ocpsoft.prettytime.PrettyTime
-import org.springframework.web.servlet.support.RequestContextUtils
+import net.okjsp.Avatar
+import net.okjsp.Category
 
 class SideBarTagLib {
 

@@ -31,7 +31,7 @@
                 <g:layoutBody/>
                 <div class="right-banner-wrapper">
 
-                    <g:banner type="${isIndex ? "MAIN_RIGHT" : "SUB_RIGHT"}" />
+                    %{--<g:banner type="${isIndex ? "MAIN_RIGHT" : "SUB_RIGHT"}" />--}%
                 
                     <div class="google-ad">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -53,10 +53,10 @@
         <script>
             var contextPath = "${request.contextPath}", encodedURL = "${encodedURL()}";
         </script>
-        <asset:javascript src="application.js" />
-        <asset:javascript src="apps/search.js" />
+        <asset:javascript src="javascripts/application.js" />
+        <asset:javascript src="javascripts/apps/search.js" />
         <sec:ifLoggedIn>
-            <asset:javascript src="apps/notification.js" />
+            <asset:javascript src="javascripts/apps/notification.js" />
         </sec:ifLoggedIn>
         <g:pageProperty name="page.script"/>
         <asset:deferredScripts />

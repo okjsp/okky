@@ -1,8 +1,9 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.transaction.Transactional
-
+import net.okjsp.Avatar
+import net.okjsp.Notification
+import net.okjsp.NotificationRead
 
 class NotificationController {
     SpringSecurityService springSecurityService
