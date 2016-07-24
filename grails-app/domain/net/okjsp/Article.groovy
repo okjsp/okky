@@ -29,7 +29,9 @@ class Article {
 
     Integer best = 0
 
-    static belongsTo = [content: Content, tags : Tag]
+    static belongsTo = [content: Content]
+
+    static hasMany = [tags : Tag, notes: Content]
 
     static mapping = {
         sort id: 'desc'

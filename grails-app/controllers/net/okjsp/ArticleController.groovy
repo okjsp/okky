@@ -102,8 +102,15 @@ class ArticleController {
             type == BannerType.CONTENT && visible == true
         }.list()
 
-        Random randomizer = new Random();
-        def contentBanner = contentBanners.get(randomizer.nextInt(contentBanners.size()));
+        Random randomizer = new Random()
+
+        def contentBanner
+
+        if(contentBanners.size() > 0) {
+            def randId = randomizer.nextInt(contentBanners.size())
+            println randId
+            contentBanner = contentBanners.get(randId)
+        }
 
         respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
     }
