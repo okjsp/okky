@@ -1,10 +1,12 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import net.okjsp.User
 import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
+@Secured("ROLE_ADMIN")
 class StatisticController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]

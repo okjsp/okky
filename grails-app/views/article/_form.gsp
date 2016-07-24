@@ -1,6 +1,6 @@
-<%@ page import="net.net.okjsp.Article" %>
-<%@ page import="net.net.okjsp.Content" %>
-<%@ page import="net.net.okjsp.ContentTextType" %>
+<%@ page import="net.okjsp.Article" %>
+<%@ page import="net.okjsp.Content" %>
+<%@ page import="net.okjsp.ContentTextType" %>
 
 <g:if test="${category?.anonymity}">
     %{--<div class="form-group ${hasErrors(bean: article, field: 'title', 'error')} has-feedback">

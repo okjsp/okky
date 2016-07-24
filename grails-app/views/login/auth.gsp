@@ -26,8 +26,8 @@
                 <g:if test="${params.redirectUrl}">
                     <input type="hidden" name="redirectUrl" value="${params.redirectUrl}" />
                 </g:if>
-                <input type="text" name="j_username" id='username' class="username form-control input-sm" placeholder="${message(code: "springSecurity.login.username.label")}" required autofocus>
-                <input type="password" name='j_password' class="password form-control input-sm" placeholder="${message(code: "springSecurity.login.password.label")}" required>
+                <input type="text" name="username" id='username' class="username form-control input-sm" placeholder="${message(code: "springSecurity.login.username.label")}" required autofocus>
+                <input type="password" name='password' class="password form-control input-sm" placeholder="${message(code: "springSecurity.login.password.label")}" required>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name='${rememberMeParameter}' id='remember_me' <g:if test='${hasCookie}'>checked='checked'</g:if>> <g:message code="springSecurity.login.remember.me.label"/>

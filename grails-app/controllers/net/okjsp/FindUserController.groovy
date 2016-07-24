@@ -1,6 +1,7 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.annotation.Secured
 import net.okjsp.ConfirmEmail
 import net.okjsp.Person
 import net.okjsp.User
@@ -8,6 +9,7 @@ import org.springframework.mail.MailException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 
+@Secured("permitAll")
 class FindUserController {
 
 

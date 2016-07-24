@@ -53,10 +53,10 @@
         <script>
             var contextPath = "${request.contextPath}", encodedURL = "${encodedURL()}";
         </script>
-        <asset:javascript src="javascripts/application.js" />
-        <asset:javascript src="javascripts/apps/search.js" />
+        <asset:javascript src="application.js" />
+        <asset:javascript src="apps/search.js" />
         <sec:ifLoggedIn>
-            <asset:javascript src="javascripts/apps/notification.js" />
+            <asset:javascript src="apps/notification.js" />
         </sec:ifLoggedIn>
         <g:pageProperty name="page.script"/>
         <asset:deferredScripts />

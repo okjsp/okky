@@ -1,4 +1,4 @@
-<%@ page import="net.net.okjsp.Banner" %>
+<%@ page import="net.okjsp.Banner" %>
 <!DOCTYPE html>
 <html>
 	<head>

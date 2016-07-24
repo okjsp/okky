@@ -1,6 +1,7 @@
 package net.okjsp
 
 import com.megatome.grails.RecaptchaService
+import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.mail.MailException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
@@ -32,7 +33,7 @@ class UserController {
         }
     }
 
-
+    @Secured("permitAll")
     def index(Integer id, Integer max) {
         params.max = Math.min(max ?: 20, 100)
         params.sort = params.sort ?: 'id'

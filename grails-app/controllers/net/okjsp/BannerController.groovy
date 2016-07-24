@@ -1,11 +1,13 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import net.okjsp.Banner
 import net.okjsp.BannerClick
 import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
+@Secured("ROLE_ADMIN")
 class BannerController {
 
     UserService userService
@@ -13,6 +15,7 @@ class BannerController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     @Transactional
+    @Secured("permitAll")
     def stats(Banner banner) {
 
         if (banner == null) {

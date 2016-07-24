@@ -5,8 +5,8 @@
 // You're free to add application-wide JavaScript to this file, but it's generally better 
 // to create separate JavaScript files as needed.
 //
-//= require jquery
-//= require bootstrap
+//= require libs/jquery-2.2.0.min
+//= require libs/bootstrap
 //= require libs/bootstrap-tagsinput
 //= require libs/summernote
 //= require libs/summernote-ko-KR

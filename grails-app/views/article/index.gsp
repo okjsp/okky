@@ -1,5 +1,3 @@
-
-<%@ page import="net.net.okjsp.Article" %>
 <!DOCTYPE html>
 <html>
 	<head>

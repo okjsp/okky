@@ -2,6 +2,7 @@ package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import grails.validation.ValidationException
 import org.springframework.http.HttpStatus
@@ -13,15 +14,10 @@ class ArticleController {
     SpringSecurityService springSecurityService
     UserService userService
 
-    static responseFormats = ['html', 'json']
-
     static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: ["DELETE","POST"], scrap: "POST",
                              addNote: "POST", assent: ["PUT","POST"], dissent: ["PUT","POST"]]
-    
-    def beforeInterceptor = {
-        response.characterEncoding = 'UTF-8' //workaround for https://jira.grails.org/browse/GRAILS-11830
-    }
 
+    @Secured("permitAll")
     def index(String code, Integer max) {
         params.max = Math.min(max ?: 20, 100)
         params.sort = params.sort ?: 'id'
@@ -51,8 +47,7 @@ class ArticleController {
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
     }
 
-
-
+    @Secured("permitAll")
     def tagged(String tag, Integer max) {
         params.max = Math.min(max ?: 20, 100)
         params.sort = params.sort ?: 'id'
@@ -73,13 +68,15 @@ class ArticleController {
 
         respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count()]
     }
-    
+
+    @Secured("permitAll")
     def seq(Long id) {
         
         redirect uri:"/article/${id}"
     }
 
     @Transactional
+    @Secured("permitAll")
     def show(Long id) {
 
         def contentVotes = [], scrapped
@@ -111,6 +108,7 @@ class ArticleController {
         respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
     }
 
+    @Secured("ROLE_USER")
     def create(String code) {
 
         def category = Category.get(code)
@@ -143,6 +141,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def save(String code) {
 
         Article article = new Article(params)
@@ -185,6 +184,7 @@ class ArticleController {
         }
     }
 
+    @Secured("ROLE_USER")
     def edit(Long id) {
 
         Article article = Article.get(id)
@@ -217,6 +217,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def update(Article article) {
 
         if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
@@ -260,6 +261,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def delete(Long id) {
 
         Article article = Article.get(id)
@@ -291,6 +293,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def scrap(Long id) {
 
         Article article = Article.get(id)
@@ -328,6 +331,7 @@ class ArticleController {
 
 
     @Transactional
+    @Secured("ROLE_USER")
     def addNote(Long id) {
 
         Article article = Article.get(id)
@@ -361,6 +365,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def assent(Long id, Long contentId) {
 
         Article article = Article.get(id)
@@ -381,6 +386,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def dissent(Long id, Long contentId) {
 
         Article article = Article.get(id)
@@ -401,6 +407,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def unvote(Long id, Long contentId) {
 
         Article article = Article.get(id)
@@ -422,6 +429,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def selectNote(Long id, Long contentId) {
 
         Article article = Article.get(id)
@@ -449,6 +457,7 @@ class ArticleController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def deselectNote(Long id) {
 
         Article article = Article.get(id)

@@ -2,6 +2,7 @@ package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import net.okjsp.Article
 import net.okjsp.Avatar
@@ -17,11 +18,13 @@ class ContentController {
 
     static allowedMethods = [update: ["POST","PUT"], delete: ["POST","DELETE"]]
 
+    @Secured("permitAll")
     def show(Long id) {
         Content content = Content.get(id)
         respond content
     }
 
+    @Secured("ROLE_USER")
     def edit(Long id) {
 
         Content content = Content.get(id)
@@ -37,6 +40,7 @@ class ContentController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def update(Content content) {
 
         if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
@@ -70,6 +74,7 @@ class ContentController {
     }
 
     @Transactional
+    @Secured("ROLE_USER")
     def delete(Long id) {
 
         Content content = Content.get(id)

@@ -1,7 +1,9 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.web.multipart.MultipartFile
 
+@Secured("ROLE_USER")
 class FileController {
 
     def image() {

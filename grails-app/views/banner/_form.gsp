@@ -1,4 +1,4 @@
-<%@ page import="net.net.okjsp.Banner" %>
+<%@ page import="net.okjsp.Banner" %>
 
 
 
@@ -43,7 +43,7 @@
 		<g:message code="banner.type.label" default="Type" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select name="type" from="${net.net.okjsp.BannerType?.values()}" keys="${net.net.okjsp.BannerType.values()*.name()}" required="" value="${banner?.type?.name()}" />
+	<g:select name="type" from="${net.okjsp.BannerType?.values()}" keys="${net.okjsp.BannerType.values()*.name()}" required="" value="${banner?.type?.name()}" />
 
 </div>
 

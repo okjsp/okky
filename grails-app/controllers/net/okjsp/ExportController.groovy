@@ -1,9 +1,11 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
+@Secured("ROLE_ADMIN")
 class ExportController {
     
     def userService

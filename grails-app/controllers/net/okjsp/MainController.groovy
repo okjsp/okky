@@ -4,7 +4,6 @@ import grails.plugin.springsecurity.annotation.Secured
 import net.okjsp.Banner
 import net.okjsp.BannerType
 
-@Secured(value=["hasRole('ROLE_ANONYMOUS')"])
 class MainController {
 
     def mainService
@@ -14,6 +13,7 @@ class MainController {
 
     def grailsCacheAdminService
 
+    @Secured(["permitAll"])
     def index() {
         
         def mainBanners = Banner.where {

@@ -1,10 +1,12 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.annotation.Secured
 import net.okjsp.Avatar
 import net.okjsp.Notification
 import net.okjsp.NotificationRead
 
+@Secured("ROLE_USER")
 class NotificationController {
     SpringSecurityService springSecurityService
     NotificationService notificationService

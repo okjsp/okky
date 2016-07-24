@@ -1,9 +1,9 @@
 
-<%@ page import="net.net.okjsp.User" %>
-<%@ page import="net.net.okjsp.Activity" %>
-<%@ page import="net.net.okjsp.Content" %>
-<%@ page import="net.net.okjsp.ContentType" %>
-<%@ page import="net.net.okjsp.ActivityType" %>
+<%@ page import="net.okjsp.User" %>
+<%@ page import="net.okjsp.Activity" %>
+<%@ page import="net.okjsp.Content" %>
+<%@ page import="net.okjsp.ContentType" %>
+<%@ page import="net.okjsp.ActivityType" %>
 <!DOCTYPE html>
 <html>
 	<head>
