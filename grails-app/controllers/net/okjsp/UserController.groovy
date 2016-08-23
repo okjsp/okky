@@ -41,8 +41,26 @@ class UserController {
         Avatar currentAvatar = Avatar.get(id)
         User user = User.findByAvatar(currentAvatar)
 
-        def activitiesQuery = Activity.where {
-            avatar == currentAvatar
+        def activitiesQuery
+
+        if(params.category == 'activity' || (!params.category && !currentAvatar.official)) {
+            activitiesQuery= Activity.where {
+                avatar == currentAvatar
+            }
+        } else {
+            def category
+
+            if(params.category == 'solved') category = ActivityType.SOLVED
+            else if(params.category == 'scrapped') category = ActivityType.SCRAPED
+            else {
+                params.category = 'articles'
+                category = ActivityType.POSTED
+            }
+
+            activitiesQuery= Activity.where {
+                avatar == currentAvatar
+                type == category
+            }
         }
 
         def counts = [
@@ -289,22 +307,11 @@ class UserController {
     def withdraw() {
         User user = springSecurityService.currentUser
 
+        userService.withdraw(user)
 
-        // 게시글에 대한 익명 처리
-        Article.executeUpdate("update Article set anonymity = true, aNickName = :nickname where author = :user",
-                [nickname : user.avatar.nickname, user : user])
+        session.invalidate()
 
-        Content.executeUpdate("update Content set anonymity = true, aNickName = :nickname where author = :user",
-                [nickname : user.avatar.nickname, user : user])
-
-        user.withdraw = true
-        user.dateWithdraw = new Date()
-        user.accountLocked = true
-        user.accountExpired = true
-        user.enabled = false
-        user.save()
-
-
+        render view: "withdrawComplete"
 
     }
 

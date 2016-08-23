@@ -91,6 +91,7 @@ class UserService {
             
             String name = p.getFullName()
             String email = p.getEmail()
+
             String enc = new String(encryptService.encrypt(email.getBytes()))
             
             sb.append(String.format("%s,%s,%s%s%s", name, email, url, enc, System.lineSeparator()))
@@ -98,4 +99,22 @@ class UserService {
         
         sb.toString()
     }
+
+    def withdraw(user) {
+
+        // 게시글에 대한 익명 처리
+        Article.executeUpdate("update Article set anonymity = true, aNickName = :nickname where author = :user",
+                [nickname : user.avatar.nickname, user : user])
+
+        Content.executeUpdate("update Content set anonymity = true, aNickName = :nickname where author = :user",
+                [nickname : user.avatar.nickname, user : user])
+
+        user.withdraw = true
+        user.dateWithdraw = new Date()
+        user.accountLocked = true
+        user.accountExpired = true
+        user.enabled = false
+        user.save(flush: true)
+    }
 }
+
