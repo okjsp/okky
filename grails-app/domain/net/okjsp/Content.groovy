@@ -5,6 +5,7 @@ import sun.security.x509.AVA
 
 class Content {
     transient sanitizeService
+    transient articleService
 
     ContentType type = ContentType.ARTICLE
     ContentTextType textType = ContentTextType.MD
@@ -86,6 +87,18 @@ class Content {
     def beforeUpdate() {
         if(isDirty("text")) {
             text = sanitizeService.sanitize(text)
+
+            def latestChangeLog = ChangeLog.createCriteria().get {
+                eq('article', article)
+                eq('content', this)
+                eq('type', ChangeLogType.CONTENT)
+                order('revision', 'desc')
+                maxResults(1)
+            }
+
+            if(!latestChangeLog || latestChangeLog.md5 != this.getPersistentValue('text').encodeAsMD5()) {
+                articleService.changeLog(ChangeLogType.CONTENT, article, this, this.getPersistentValue('text'))
+            }
         }
 
         if(anonymity) {

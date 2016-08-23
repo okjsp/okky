@@ -4,6 +4,8 @@ import grails.transaction.Transactional
 
 class Article {
 
+    transient articleService
+
     String title
     String tagString
 
@@ -92,6 +94,11 @@ class Article {
         }
         if(isDirty('tagString')) {
             updateTag()
+            articleService.changeLog(ChangeLogType.TAGS, this, content, this.getPersistentValue('tagString'))
+        }
+        if(isDirty('title')) {
+            updateTag()
+            articleService.changeLog(ChangeLogType.TITLE, this, content, this.getPersistentValue('title'))
         }
     }
 
