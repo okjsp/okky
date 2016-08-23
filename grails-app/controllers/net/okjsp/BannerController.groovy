@@ -1,6 +1,6 @@
 package net.okjsp
 
-
+import org.springframework.web.multipart.MultipartFile
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -32,6 +32,8 @@ class BannerController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        params.order = params.order ?: 'desc'
+        params.sort = params.sort ?: 'id'
         respond Banner.list(params), model:[bannerCount: Banner.count()]
     }
 
@@ -53,6 +55,17 @@ class BannerController {
         if (banner.hasErrors()) {
             respond banner.errors, view:'create'
             return
+        }
+
+
+        MultipartFile imageFile = request.getFile("imageFile")
+
+        if(!imageFile.empty) {
+            def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
+            def mil = System.currentTimeMillis()
+            imageFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/banner/", "${mil}${ext}"))
+
+            banner.image = "${grailsApplication.config.grails.fileURL}/banner/${mil}${ext}"
         }
 
         banner.save flush:true
@@ -80,6 +93,16 @@ class BannerController {
         if (banner.hasErrors()) {
             respond banner.errors, view:'edit'
             return
+        }
+
+        MultipartFile imageFile = request.getFile("imageFile")
+
+        if(!imageFile.empty) {
+            def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
+            def mil = System.currentTimeMillis()
+            imageFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/banner/", "${mil}${ext}"))
+
+            banner.image = "${grailsApplication.config.grails.fileURL}/banner/${mil}${ext}"
         }
 
         banner.save flush:true
