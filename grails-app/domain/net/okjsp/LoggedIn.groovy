@@ -9,4 +9,13 @@ class LoggedIn {
     static constraints = {
         remoteAddr nullable: true
     }
+
+    static mapping = {
+        sort dateCreated: 'desc'
+    }
+
+    @Override
+    String toString() {
+        "${remoteAddr} | ${dateCreated}"
+    }
 }
