@@ -4,6 +4,7 @@ import com.memetix.random.RandomService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.validation.ValidationException
+import org.hibernate.type.StandardBasicTypes
 import org.springframework.http.HttpStatus
 
 import static org.springframework.http.HttpStatus.*
@@ -111,7 +112,16 @@ class ArticleController {
 
         def contentBanner = contentBanners ? randomService.draw(contentBanners) : null
 
-        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
+        def changeLogs = ChangeLog.createCriteria().list {
+            eq('article', article)
+            projections {
+                sqlGroupProjection 'article_id as articleId, max(date_created) as dateCreated, content_id as contentId', 'content_id', ['articleId', 'dateCreated', 'contentId'], [StandardBasicTypes.LONG, StandardBasicTypes.TIMESTAMP, StandardBasicTypes.LONG]
+            }
+        }
+
+        println changeLogs
+
+        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner, changeLogs: changeLogs]
     }
 
     def create(String code) {
@@ -469,6 +479,22 @@ class ArticleController {
             html { redirect article }
             json { respond article, [status: OK] }
         }
+    }
+
+    def changes(Long id) {
+
+        Content content = Content.get(id)
+
+        Article article = content.article
+
+        def changeLogs = ChangeLog.where{
+            eq('article', content.article)
+            eq('content', content)
+        }.list(sort: 'id', order: 'desc')
+
+        println changeLogs
+
+        respond article, model: [content: content, changeLogs: changeLogs]
     }
 
     protected void notFound() {

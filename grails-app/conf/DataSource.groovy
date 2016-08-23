@@ -30,6 +30,13 @@ environments {
             logSql = true
         }
     }
+    beta {
+        dataSource {
+            dbCreate = "update"
+            jndiName = "java:comp/env/jdbc/okjsp2014"
+            logSql = false
+        }
+    }
     production {
         dataSource {
             dbCreate = "update"

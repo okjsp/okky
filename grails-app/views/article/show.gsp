@@ -30,10 +30,10 @@
 
             <div class="panel panel-default clearfix">
                 <div class="panel-heading clearfix">
-                    <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" class="pull-left" />
+                    <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" changeLog="${changeLogs?.find { it[2] == article.content.id}}" logType="article" class="pull-left" />
                     <div class="content-identity pull-right">
-                    <div class="content-identity-count"><i class="fa fa-comment"></i> <g:shorten number="${article.noteCount}" /></div>
-                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></div>
+                    <div class="content-identity-count"><i class="fa fa-comment"></i> <g:formatNumber number="${article.noteCount}" /></div>
+                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:formatNumber number="${article.viewCount}" /></div>
                     </div>
                 </div>
                 <div class="content-container clearfix">
@@ -150,7 +150,7 @@
                                         </g:isNotAuthor>
                                     </g:if>
 
-                                    <g:avatar avatar="${note.displayAuthor}" size="medium" dateCreated="${note.dateCreated}"/>
+                                    <g:avatar avatar="${note.displayAuthor}" size="medium" dateCreated="${note.dateCreated}" changeLog="${changeLogs?.find { it[2] == note.id}}" logType="content"/>
                                     <fieldset class="form">
                                         <article id="note-text-${note.id}" class="list-group-item-text note-text">
                                             <g:if test="${note.textType == ContentTextType.MD}">

@@ -1341,20 +1341,35 @@ blockquote {
     font-size: 10px;
 }
 
-.avatar-x-small .timeago {
+.avatar-x-small .timeago, .avatar-x-small .date-created {
+    color: #ccc;
     font-size: 8px;
 }
 
-.avatar-small .timeago {
+.avatar-small .timeago, .avatar-small .date-created {
+    color: #ccc;
     font-size: 10px;
 }
 
 .avatar-medium .timeago {
-    display: block;
+    color: #ccc;
     font-size: 12px;
 }
 
-.avatar-list .timeago {
+.avatar-medium .date-created {
+    display: block;
+    color: #ccc;
+    font-size: 12px;
+}
+
+.avatar-medium .date-created a,
+.avatar-medium .date-created a .timeago {
+    text-decoration: underline;
+    color: #ccc;
+}
+
+.avatar-list .date-created {
+    color: #ccc;
     display: block;
     font-size: 10px;
 }
@@ -1429,6 +1444,29 @@ blockquote {
     min-height: 180px;
     margin: 30px 0;
     word-break: break-all;
+    word-wrap: break-word;
+}
+
+.content-log-text {
+    width: 100%;
+    max-height: 180px;
+    overflow: hidden;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.content-log-text.expend {
+    max-height: none;
+    overflow: visible;
+}
+
+.change-date {
+    font-weight: bold;
+}
+
+.expend-content {
+    width: 100%;
+    padding: 10px 0 0;
 }
 
 .content-tags {

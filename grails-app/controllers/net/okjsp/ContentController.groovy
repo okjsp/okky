@@ -94,6 +94,11 @@ class ContentController {
         article.removeFromNotes(content)
         article.updateNoteCount(-1)
 
+        ChangeLog.where{
+            eq('article', article)
+            eq('content', content)
+        }.deleteAll()
+
         content.delete flush: true
 
         withFormat {

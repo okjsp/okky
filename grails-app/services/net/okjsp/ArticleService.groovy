@@ -83,6 +83,8 @@ class ArticleService {
 
         Content content = article.content
 
+        ChangeLog.where{ eq('article', article) }.deleteAll()
+
         article.content = null
         article.save(flush: true)
 
@@ -220,6 +222,30 @@ class ArticleService {
         int startIndex = user.id % 10
 
         return "A${md5.substring(startIndex, startIndex+7)}"
+    }
+
+    def changeLog(ChangeLogType type, Article articleInstance, Content contentInstance, String text) {
+
+        def latestChangeLog = ChangeLog.createCriteria().get {
+            eq('article', articleInstance)
+            eq('content', contentInstance)
+            order('revision', 'desc')
+            maxResults(1)
+        }
+
+        int revision = 1
+
+        if(latestChangeLog) {
+            revision = latestChangeLog.revision+1
+        }
+
+        new ChangeLog(
+                type: type,
+                md5: text.encodeAsMD5(),
+                text: text,
+                article: articleInstance,
+                content: contentInstance,
+                revision: revision).save()
     }
 
 }
