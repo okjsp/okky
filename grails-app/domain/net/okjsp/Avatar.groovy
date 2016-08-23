@@ -13,6 +13,7 @@ class Avatar implements Comparable {
     String picture
     AvatarPictureType pictureType = AvatarPictureType.GRAVATAR
     Integer activityPoint = 0
+    Boolean official = false
 
     static hasMany = [activities: Activity, tags : Tag]
 
@@ -27,6 +28,7 @@ class Avatar implements Comparable {
         }
         picture blank: false
         activityPoint bindable: false
+        official nullable: true, bindable: false
     }
 
     def setPictureBySns(User user, AvatarPictureType type = pictureType) {
