@@ -25,6 +25,8 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
     '/content/**':              ['ROLE_USER'],
 
+    '/changes/**':              ['permitAll'],
+
     '/user/**':                 ['permitAll'],
     '/user/*/**':               ['permitAll'],
     
@@ -32,6 +34,10 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
     '/user/edit':               ['ROLE_USER'],
     '/user/update':             ['ROLE_USER'],
+    '/user/withdraw':           ['ROLE_USER'],
+    '/user/withdrawConfirm':    ['ROLE_USER'],
+    '/user/passwordChange':     ['ROLE_USER'],
+    '/user/updatePasswordChange':    ['ROLE_USER'],
 
     '/find/user/**':            ['permitAll'],
 
@@ -41,7 +47,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
 
     '/oauth/**':                ['permitAll'],
 
-    '/seq/*':                  ['permitAll'],
+    '/seq/*':                   ['permitAll'],
 
     '/bbs':                     ['permitAll'],
 

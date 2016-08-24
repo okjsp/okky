@@ -48,6 +48,10 @@ html * {
 	margin: 0;
 }
 
+input[type='file'] {
+	display: inline-block;
+}
+
 body {
 	background: #ffffff;
 	color: #333333;
@@ -611,4 +615,9 @@ a.skip {
 	margin-left: 40px;
 	margin-top: 10px;
 	white-space: nowrap;
+}
+
+
+.search-form {
+	padding: 20px;
 }

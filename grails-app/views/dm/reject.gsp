@@ -10,13 +10,10 @@
 		<a href="#edit-banner" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
 		<div class="nav" role="navigation">
 			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
 			</ul>
 		</div>
 		<div id="edit-banner" class="content scaffold-edit" role="main">
-			<h1><g:message code="default.edit.label" args="[entityName]" /></h1>
+			<h1>수신거부 명단 업데이트</h1>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
@@ -27,13 +24,30 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form url="[resource:banner, action:'update']" method="PUT" enctype="multipart/form-data">
-				<g:hiddenField name="version" value="${banner?.version}" />
+			<g:form url="[controller:'dm', action:'updateReject']" method="PUT" enctype="multipart/form-data">
 				<fieldset class="form">
-					<g:render template="form"/>
+					<div class="fieldcontain ${hasErrors(bean: banner, field: 'image', 'error')} required">
+						<label for="image">
+							<g:message code="dm.rejectCount.label" default="수신거부자" />
+						</label>
+
+						<span>${rejectCount} 명</span>
+					</div>
+					<div class="fieldcontain ${hasErrors(bean: banner, field: 'image', 'error')} required">
+						<label for="rejectFile">
+							<g:message code="dm.rejectFile.label" default="수신거부 명단 (CSV)" />
+							<span class="required-indicator">*</span>
+						</label>
+
+						<input type="file" name="rejectFile" required="" id="rejectFile" />
+
+						<g:if test="${banner?.image}">
+							<a href="${banner?.image}" target="_blank">${banner?.image}</a>
+						</g:if>
+					</div>
 				</fieldset>
 				<fieldset class="buttons">
-					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
+					<g:actionSubmit class="save" action="updateReject" value="${message(code: 'default.button.update.label', default: 'Update')}" />
 				</fieldset>
 			</g:form>
 		</div>

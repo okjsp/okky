@@ -12,6 +12,7 @@ class UrlMappings {
         "/logout?/$action"(controller: "logout")
         "/user/$action"(controller: "user")
         "/user/info/$id"(controller: "user", action: "index")
+        "/user/info/$id/$category?"(controller: "user", action: "index")
         "/user/privacy"(view: '/user/privacy')
         "/user/agreement"(view: '/user/agreement')
 
@@ -25,6 +26,7 @@ class UrlMappings {
         
         "/articles/tagged/$tag(.$format)?"(controller: "article", action: "tagged")
 
+        "/changes/$id(.$format)?"(controller: "article", action: "changes")
 
         "/content/$id(.$format)?"(controller: "content", action: "show")
         "/content/$action/$id(.$format)?"(controller: "content")
@@ -49,7 +51,10 @@ class UrlMappings {
 
         "/_admin/banner/$action?/$id?(.$format)?"(controller: "banner")
         "/_admin/spamWord/$action?/$id?(.$format)?"(controller: "spamWord")
-        "/_admin/export"(controller: "export")
+        "/_admin/user/$action?/$id?(.$format)?"(controller: "adminUser")
+        "/_admin/dm/export"(controller: "dm", action: 'export')
+        "/_admin/dm/reject"(controller: "dm", action: 'reject')
+        "/_admin/dm/updateReject"(controller: "dm", action: 'updateReject')
         "/_admin"(controller: "statistic")
 
         "/intro/about"(view: "/intro/about")

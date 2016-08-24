@@ -17,7 +17,7 @@ class MainController {
 
         def mainBanner = mainBanners ? randomService.draw(mainBanners) : null
 
-        def promoteArticles = mainService.getPromoteArticles().clone().sort{ Math.random() }.unique{ a, b -> a.authorId <=> b.authorId }
+        def promoteArticles = mainService.getPromoteArticles().clone().sort{ Math.random() * 1000 }.unique{ a, b -> a.authorId <=> b.authorId }
 //        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
         if(promoteArticles?.size() > 6) promoteArticles = promoteArticles.subList(0, 5)
 

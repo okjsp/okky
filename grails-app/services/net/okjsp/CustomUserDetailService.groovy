@@ -22,7 +22,7 @@ class CustomUserDetailService implements GrailsUserDetailsService {
     @Transactional
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
             User user = User.findByUsername(username)
-            if (!user) throw new UsernameNotFoundException(
+            if (!user || user.withdraw) throw new UsernameNotFoundException(
                 'User not found', username)
 
             def authorities = user.authorities.collect {

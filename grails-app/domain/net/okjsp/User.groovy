@@ -12,11 +12,13 @@ class User {
 	boolean accountExpired = false
 	boolean accountLocked = false
 	boolean passwordExpired = false
+	boolean withdraw = false
 
     Date lastPasswordChanged = new Date()
 
     Date dateCreated
     Date lastUpdated
+	Date dateWithdraw
 
     Person person
     Avatar avatar
@@ -45,10 +47,14 @@ class User {
         loggedIns bindable: false
         createIp bindable: false, nullable: true
         lastUpdateIp nullable: true, bindable: false
+		dateWithdraw bindable: false, nullable: true
+		withdraw bindable: false, nullable: true
 	}
 
 	static mapping = {
 		password column: '`password`'
+
+		loggedIns sort:'id', order:'desc'
 
 		if (Environment.current == Environment.DEVELOPMENT)
 			dateJoined formula: "FORMATDATETIME(date_created, 'yyyy-MM-dd')"

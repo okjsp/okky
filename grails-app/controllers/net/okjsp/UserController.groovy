@@ -23,7 +23,8 @@ class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index', 'rejectDM']]
+    def beforeInterceptor = [action:this.&notLoggedIn,
+                             except: ['edit', 'update', 'index', 'rejectDM', 'withdrawConfirm', 'withdraw', 'passwordChange', 'updatePasswordChange']]
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
@@ -31,7 +32,6 @@ class UserController {
             return false
         }
     }
-
 
     def index(Integer id, Integer max) {
         params.max = Math.min(max ?: 20, 100)
@@ -41,8 +41,31 @@ class UserController {
         Avatar currentAvatar = Avatar.get(id)
         User user = User.findByAvatar(currentAvatar)
 
-        def activitiesQuery = Activity.where {
-            avatar == currentAvatar
+        if(user.withdraw) {
+            redirect uri: '/'
+            return
+        }
+
+        def activitiesQuery
+
+        if(params.category == 'activity' || (!params.category && !currentAvatar.official)) {
+            activitiesQuery= Activity.where {
+                avatar == currentAvatar
+            }
+        } else {
+            def category
+
+            if(params.category == 'solved') category = ActivityType.SOLVED
+            else if(params.category == 'scrapped') category = ActivityType.SCRAPED
+            else {
+                params.category = 'articles'
+                category = ActivityType.POSTED
+            }
+
+            activitiesQuery= Activity.where {
+                avatar == currentAvatar
+                type == category
+            }
         }
 
         def counts = [
@@ -66,14 +89,16 @@ class UserController {
 
         try {
 
-            def reCaptchaVerified = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
+            def realIp = userService.getRealIp(request)
+
+            def reCaptchaVerified = recaptchaService.verifyAnswer(session, realIp, params)
 
             if(!reCaptchaVerified) {
                 respond user.errors, view: 'register'
                 return
             }
 
-            user.createIp = userService.getRealIp(request)
+            user.createIp = realIp
 
             userService.saveUser user
 
@@ -257,16 +282,6 @@ class UserController {
         flash.message = message(code: 'user.password.updated.message')
         redirect uri: '/login/auth'
     }
-
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect uri: '/'
-            }
-            '*'{ render status: NOT_FOUND }
-        }
-    }
     
     @Transactional
     def rejectDM(String k) {
@@ -287,5 +302,68 @@ class UserController {
         }
         
         render "수신거부에 ${result}하였습니다."
+    }
+
+    def withdrawConfirm() {
+        render view: "withdrawConfirm"
+    }
+
+    @Transactional
+    def withdraw() {
+        User user = springSecurityService.currentUser
+
+        userService.withdraw(user)
+
+        session.invalidate()
+
+        redirect controller: 'user', action: 'withdrawComplete'
+
+    }
+
+    def withdrawComplete() {
+        render view: "withdrawComplete"
+    }
+
+    def passwordChange() {
+        render view: "passwordChange"
+    }
+
+    @Transactional
+    def updatePasswordChange(String oldPassword, String password, String passwordConfirm, String key) {
+
+        User user = springSecurityService.currentUser
+
+        if(user.password != springSecurityService.encodePassword(oldPassword)) {
+            flash.message = message(code: 'user.oldPassword.not.equal.message')
+            render view: 'passwordChange'
+            return
+        }
+
+        if(password != passwordConfirm) {
+            flash.message = message(code: 'user.password.not.equal.message')
+            render view: 'passwordChange', model: [key: key]
+            return
+        }
+
+        user.password = password
+        user.save()
+
+        if(user.hasErrors()) {
+            flash.message = message(code: 'user.password.matches.error', args: [message(code: 'user.password.label')])
+            render view: 'passwordChange', model: [key: key]
+            return
+        }
+
+        redirect controller: 'user', action: 'edit'
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+                redirect uri: '/'
+            }
+            '*'{ render status: NOT_FOUND }
+        }
     }
 }
