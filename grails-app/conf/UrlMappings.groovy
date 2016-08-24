@@ -52,7 +52,9 @@ class UrlMappings {
         "/_admin/banner/$action?/$id?(.$format)?"(controller: "banner")
         "/_admin/spamWord/$action?/$id?(.$format)?"(controller: "spamWord")
         "/_admin/user/$action?/$id?(.$format)?"(controller: "adminUser")
-        "/_admin/export"(controller: "export")
+        "/_admin/dm/export"(controller: "dm", action: 'export')
+        "/_admin/dm/reject"(controller: "dm", action: 'reject')
+        "/_admin/dm/updateReject"(controller: "dm", action: 'updateReject')
         "/_admin"(controller: "statistic")
 
         "/intro/about"(view: "/intro/about")

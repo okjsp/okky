@@ -4,6 +4,7 @@ import com.memetix.random.RandomService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.validation.ValidationException
+import org.hibernate.FetchMode
 import org.hibernate.type.StandardBasicTypes
 import org.springframework.http.HttpStatus
 
@@ -40,6 +41,23 @@ class ArticleController {
             return
         }
 
+        def choiceJobs
+
+        if(category.code == 'jobs' || category.parent?.code == 'jobs') {
+
+            def diff = new Date() - 30
+
+            choiceJobs = Article.withCriteria() {
+                eq('choice', true)
+                eq('enabled', true)
+                'in'('category', [Category.get('recruit'), Category.get('resumes'), Category.get('evalcom')])
+                gt('dateCreated', diff)
+                order('id', 'desc')
+
+                maxResults(3)
+            }.findAll()
+        }
+
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
         
@@ -53,7 +71,7 @@ class ArticleController {
 
         }
 
-        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
+        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
     }
 
 
@@ -118,8 +136,6 @@ class ArticleController {
                 sqlGroupProjection 'article_id as articleId, max(date_created) as dateCreated, content_id as contentId', 'content_id', ['articleId', 'dateCreated', 'contentId'], [StandardBasicTypes.LONG, StandardBasicTypes.TIMESTAMP, StandardBasicTypes.LONG]
             }
         }
-
-        println changeLogs
 
         respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner, changeLogs: changeLogs]
     }

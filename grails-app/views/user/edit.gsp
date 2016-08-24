@@ -82,6 +82,8 @@
         </div>
         <div class="panel panel-default">
             <div class="panel-body panel-margin">
+                <g:link controller="user" action="passwordChange" class="btn btn-info btn-block"><g:message code="user.button.passwordChange.label" default="비밀번호 변경"/></g:link>
+
                 <g:link controller="user" action="withdrawConfirm" class="btn btn-default btn-block"><g:message code="user.button.withdraw.label" default="회원 탈퇴"/></g:link>
             </div>
         </div>

@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="content-container clearfix">
-                    <div class="panel-body content-body pull-left">
+                    <div id="content-body" class="panel-body content-body pull-left">
                         <div class="content-tags">
                             <span class="list-group-item-text article-id">#${article.id}</span>
                             <g:categoryLabel category="${article.category}" />
@@ -61,7 +61,7 @@
 
                     </div>
 
-                    <div class="content-function pull-right text-center">
+                    <div id="content-function" class="content-function pull-right text-center">
                         <div class="content-function-group">
                             <g:voteButtons content="${article.content}" votes="${contentVotes}" category="${article.category}" />
                         </div>

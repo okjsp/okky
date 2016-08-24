@@ -100,14 +100,20 @@ class UserService {
         sb.toString()
     }
 
-    def withdraw(user) {
+    def withdraw(User user) {
 
         // 게시글에 대한 익명 처리
         Article.executeUpdate("update Article set anonymity = true, aNickName = :nickname where author = :user",
                 [nickname : user.avatar.nickname, user : user])
-
+        // 댓글에 대한 익명 처리
         Content.executeUpdate("update Content set anonymity = true, aNickName = :nickname where author = :user",
                 [nickname : user.avatar.nickname, user : user])
+
+        // DM 발송에서 제외
+        def person = user.person
+
+        person.dmAllowed = false
+        person.save(flush: true)
 
         user.withdraw = true
         user.dateWithdraw = new Date()

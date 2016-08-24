@@ -1342,6 +1342,7 @@ blockquote {
 }
 
 .avatar-x-small .timeago, .avatar-x-small .date-created {
+    display: inline-block;
     color: #ccc;
     font-size: 8px;
 }
@@ -1484,6 +1485,19 @@ blockquote {
     width: 100px;
     padding-top: 20px;
     color: #666;
+}
+
+.content-function.fixed {
+    position: fixed;
+    top: 0;
+    left: 943px;
+}
+
+.content-function.over {
+    position: absolute;
+    top: inherit;
+    bottom: 130px;
+    right: 0;
 }
 
 .content-function .fa {
@@ -1779,11 +1793,24 @@ blockquote {
     margin-bottom: 0;
 }
 
+.special-nav {
+    margin-top: 20px;
+    overflow: auto;
+}
+
 .article-middle-block .list-tag {
     width: 100%;
     height: 19px;
     overflow: hidden;
     line-height: 20px;
+}
+
+.okkys-choice {
+    margin-top: 25px;
+}
+
+.okkys-choice .list-group-item-heading {
+    font-weight: bold;
 }
 
 @-webkit-keyframes note-alert-animation {
@@ -2136,8 +2163,33 @@ blockquote {
         width: 100%;
     }
 
+    .user-info-nav {
+        width: 100%;
+    }
+
+    .user-info-nav .nav > li {
+        float: left;
+    }
+
+    .user-info-nav li.active a {
+        border-left: none;
+        background-color: #ddd;
+        font-weight: normal;
+        font-size: 14px;
+    }
+
     #footer {
         width: 100%;
+    }
+
+
+    .content-function.fixed,
+    .content-function.over {
+        position:relative;
+        top: inherit;
+        bottom: inherit;
+        left: inherit;
+        right: inherit;
     }
 
 }

@@ -39,7 +39,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-10 main-block-left">
+            <div class="col-sm-2 user-info-nav pull-right">
+                <ul class="nav">
+                    <li class="${!params.category || params.category == 'activity' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/activity">최근 활동</g:link> </li>
+                    <li class="${params.category == 'articles' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/articles">게시물 <g:if test="${counts.postedCount > 0}"><span class="badge">${counts.postedCount}</span></g:if></g:link></li>
+                    %{--<li class="${params.category == 'solved' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/solved"><g:if test="${counts.solvedCount > 0}"><span class="badge">${counts.solvedCount}</span></g:if> 질문 해결</g:link></li>--}%
+                    <li class="${params.category == 'scrapped' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/scrapped">스크랩 <g:if test="${counts.scrappedCount > 0}"><span class="badge">${counts.scrappedCount}</span></g:if></g:link></li>
+                </ul>
+            </div>
+            <div class="col-sm-10 main-block-left pull-left">
                 <ul class="list-group">
 
                     <g:each in="${activities}" var="activity">
@@ -115,14 +123,6 @@
                         <g:paginate controller="user" action="index" id="${avatar.id}" class="pagination-sm" total="${activitiesCount ?: 0}" />
                     </g:if>
                 </div>
-            </div>
-            <div class="col-sm-2 user-info-nav">
-                <ul class="nav">
-                    <li class="${!params.category || params.category == 'activity' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/activity">최근 활동</g:link> </li>
-                    <li class="${params.category == 'articles' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/articles"><g:if test="${counts.postedCount > 0}"><span class="badge">${counts.postedCount}</span></g:if> 게시물</g:link></li>
-                    <li class="${params.category == 'solved' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/solved"><g:if test="${counts.solvedCount > 0}"><span class="badge">${counts.solvedCount}</span></g:if> 질문 해결</g:link></li>
-                    <li class="${params.category == 'scrapped' ? 'active' : ''}"><g:link uri="/user/info/${avatar.id}/scrapped"><g:if test="${counts.scrappedCount > 0}"><span class="badge">${counts.scrappedCount}</span></g:if> 스크랩</g:link></li>
-                </ul>
             </div>
         </div>
 	</body>
