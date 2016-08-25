@@ -7,17 +7,22 @@ class ChangeLog {
 
     ChangeLogType type
     String md5
+    String patch
     String text
+
+    Avatar avatar
 
     int revision
 
     Date dateCreated
+
+    static transients = ['text']
 
     static constraints = {
         content nullable: true
     }
 
     static mapping = {
-        text type: 'text'
+        patch type: 'text'
     }
 }

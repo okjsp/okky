@@ -94,11 +94,11 @@ class Article {
         }
         if(isDirty('tagString')) {
             updateTag()
-            articleService.changeLog(ChangeLogType.TAGS, this, content, this.getPersistentValue('tagString'))
+            articleService.changeLog(ChangeLogType.TAGS, this, content, this.getPersistentValue('tagString'), tagString)
         }
         if(isDirty('title')) {
             updateTag()
-            articleService.changeLog(ChangeLogType.TITLE, this, content, this.getPersistentValue('title'))
+            articleService.changeLog(ChangeLogType.TITLE, this, content, this.getPersistentValue('title'), title)
         }
     }
 

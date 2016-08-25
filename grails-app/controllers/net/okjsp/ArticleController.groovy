@@ -508,14 +508,38 @@ class ArticleController {
         Article article = content.article
 
         def changeLogs = ChangeLog.where{
-            eq('article', content.article)
+            eq('article', article)
             eq('content', content)
         }.list(sort: 'id', order: 'desc')
 
-        println changeLogs
+
+        def lastTexts = [:]
+
+        changeLogs.each { ChangeLog log ->
+
+            if(!lastTexts[log.type]) {
+                if(log.type == ChangeLogType.TITLE) {
+                    lastTexts[log.type] = article.title
+                } else if(log.type == ChangeLogType.CONTENT) {
+                    lastTexts[log.type] = content.text
+                } else if(log.type == ChangeLogType.TAGS) {
+                    lastTexts[log.type] = article.tagString
+                }
+            }
+
+            def dmp = new diff_match_patch()
+
+            LinkedList<diff_match_patch.Patch> patches = dmp.patch_fromText(log.patch)
+
+            log.text = dmp.patch_apply(patches, lastTexts[log.type] as String)[0]
+
+            lastTexts[log.type] = log.text
+
+        }
 
         respond article, model: [content: content, changeLogs: changeLogs]
     }
+
 
     protected void notFound() {
 

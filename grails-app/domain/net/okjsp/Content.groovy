@@ -88,17 +88,7 @@ class Content {
         if(isDirty("text")) {
             text = sanitizeService.sanitize(text)
 
-            def latestChangeLog = ChangeLog.createCriteria().get {
-                eq('article', article)
-                eq('content', this)
-                eq('type', ChangeLogType.CONTENT)
-                order('revision', 'desc')
-                maxResults(1)
-            }
-
-            if(!latestChangeLog || latestChangeLog.md5 != this.getPersistentValue('text').encodeAsMD5()) {
-                articleService.changeLog(ChangeLogType.CONTENT, article, this, this.getPersistentValue('text'))
-            }
+            articleService.changeLog(ChangeLogType.CONTENT, article, this,  this.getPersistentValue('text'), text)
         }
 
         if(anonymity) {

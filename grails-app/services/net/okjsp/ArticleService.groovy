@@ -1,6 +1,8 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
+import net.okjsp.diff_match_patch
 
 @Transactional
 class ArticleService {
@@ -8,6 +10,7 @@ class ArticleService {
     ActivityService activityService
     NotificationService notificationService
 
+    SpringSecurityService springSecurityService
     def grailsApplication
 
     /**
@@ -224,7 +227,9 @@ class ArticleService {
         return "A${md5.substring(startIndex, startIndex+7)}"
     }
 
-    def changeLog(ChangeLogType type, Article articleInstance, Content contentInstance, String text) {
+    def changeLog(ChangeLogType type, Article articleInstance, Content contentInstance, String oldText, String text) {
+
+        Avatar avatar = Avatar.load(springSecurityService.principal.avatarId)
 
         def latestChangeLog = ChangeLog.createCriteria().get {
             eq('article', articleInstance)
@@ -233,19 +238,26 @@ class ArticleService {
             maxResults(1)
         }
 
-        int revision = 1
+        def dmp = new diff_match_patch()
 
-        if(latestChangeLog) {
-            revision = latestChangeLog.revision+1
+        def patches = dmp.patch_make(text, oldText)
+
+        if(patches) {
+            int revision = 1
+
+            if(latestChangeLog) {
+                revision = latestChangeLog.revision+1
+            }
+
+            new ChangeLog(
+                    type: type,
+                    md5: text.encodeAsMD5(),
+                    patch: dmp.patch_toText(patches),
+                    article: articleInstance,
+                    content: contentInstance,
+                    avatar: avatar,
+                    revision: revision).save()
         }
-
-        new ChangeLog(
-                type: type,
-                md5: text.encodeAsMD5(),
-                text: text,
-                article: articleInstance,
-                content: contentInstance,
-                revision: revision).save()
     }
 
 }
