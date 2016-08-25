@@ -92,9 +92,10 @@ class UserService {
             String name = p.getFullName()
             String email = p.getEmail()
 
-            String enc = new String(encryptService.encrypt(email.getBytes()))
-            
-            sb.append(String.format("%s,%s,%s%s%s", name, email, url, enc, System.lineSeparator()))
+            if(email && !email.empty) {
+                String enc = new String(encryptService.encrypt(email.getBytes()))
+                sb.append(String.format("%s,%s,%s%s%s", name, email, url, enc, System.lineSeparator()))
+            }
         }
         
         sb.toString()
