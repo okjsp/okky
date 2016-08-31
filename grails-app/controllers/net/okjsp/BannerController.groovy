@@ -10,7 +10,7 @@ class BannerController {
 
     UserService userService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: "DELETE"]
 
     @Transactional
     def stats(Banner banner) {
