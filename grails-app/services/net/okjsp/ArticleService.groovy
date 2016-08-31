@@ -231,32 +231,35 @@ class ArticleService {
 
         Avatar avatar = Avatar.load(springSecurityService.principal.avatarId)
 
-        def latestChangeLog = ChangeLog.createCriteria().get {
-            eq('article', articleInstance)
-            eq('content', contentInstance)
-            order('revision', 'desc')
-            maxResults(1)
-        }
+        if(oldText) {
 
-        def dmp = new diff_match_patch()
-
-        def patches = dmp.patch_make(text, oldText)
-
-        if(patches) {
-            int revision = 1
-
-            if(latestChangeLog) {
-                revision = latestChangeLog.revision+1
+            def latestChangeLog = ChangeLog.createCriteria().get {
+                eq('article', articleInstance)
+                eq('content', contentInstance)
+                order('revision', 'desc')
+                maxResults(1)
             }
 
-            new ChangeLog(
-                    type: type,
-                    md5: text.encodeAsMD5(),
-                    patch: dmp.patch_toText(patches),
-                    article: articleInstance,
-                    content: contentInstance,
-                    avatar: avatar,
-                    revision: revision).save()
+            def dmp = new diff_match_patch()
+
+            def patches = dmp.patch_make(text, oldText)
+
+            if(patches) {
+                int revision = 1
+
+                if(latestChangeLog) {
+                    revision = latestChangeLog.revision+1
+                }
+
+                new ChangeLog(
+                        type: type,
+                        md5: oldText.encodeAsMD5(),
+                        patch: dmp.patch_toText(patches),
+                        article: articleInstance,
+                        content: contentInstance,
+                        avatar: avatar,
+                        revision: revision).save()
+            }
         }
     }
 

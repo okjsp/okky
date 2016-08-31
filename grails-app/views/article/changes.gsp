@@ -31,6 +31,7 @@
     <div class="panel panel-default clearfix">
         <div class="panel-body">
             <g:if test="${content.type == ContentType.ARTICLE}">
+                <g:tags tags="${article.tagString}" />
                 <h2 class="panel-title">${article.title}</h2>
                 <hr />
             </g:if>
@@ -62,11 +63,17 @@
                 <g:if test="${changeLog.type == ChangeLogType.CONTENT}">
                     <span class="change-date"><g:formatDate date="${changeLog.dateCreated}" format="yyyy-MM-dd HH:mm:ss"/></span> 에 아래 내용에 변경 됨
                 </g:if>
+                <g:if test="${changeLog.type == ChangeLogType.TAGS}">
+                    <span class="change-date">${changeLog.dateCreated}</span>에 아래 태그에서 변경 됨
+                </g:if>
                 <span class="pull-right">#${changeLog.revision}</span>
             </div>
             <div class="panel-body">
                 <g:if test="${changeLog.type == ChangeLogType.TITLE}">
                 <h2 class="panel-title">${changeLog.text}</h2>
+                </g:if>
+                <g:if test="${changeLog.type == ChangeLogType.TAGS}">
+                    <g:tags tags="${changeLog.text}" />
                 </g:if>
                 <g:if test="${changeLog.type == ChangeLogType.CONTENT}">
                     <article class="content-log-text">

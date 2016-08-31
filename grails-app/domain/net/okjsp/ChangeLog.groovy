@@ -20,6 +20,7 @@ class ChangeLog {
 
     static constraints = {
         content nullable: true
+        avatar nullable: true
     }
 
     static mapping = {
