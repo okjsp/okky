@@ -65,9 +65,15 @@ class ArticleController {
             categories = categories.findAll { it.code != 'promote' }
 
         def articlesQuery = Article.where {
-            category in categories && enabled == true
+            category in categories
+            if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
+                enabled == true
             if(params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+
+        }
+
+        if(SpringSecurityUtils.ifAnyGranted("ROLE_ADMIN")) {
 
         }
 

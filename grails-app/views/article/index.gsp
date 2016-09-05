@@ -71,7 +71,12 @@
                                     </div>
 
                                     <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''}">
-                                        <g:link controller="article" action="show" id="${article.id}">${fieldValue(bean: article, field: "title")}</g:link>
+                                        <g:link controller="article" action="show" id="${article.id}">
+                                            <g:if test="${!article.enabled}">
+                                                <span class="fa fa-ban" style="color:red;"></span>
+                                            </g:if>
+                                            ${fieldValue(bean: article, field: "title")}
+                                        </g:link>
                                     </h5>
                                 </div>
 
@@ -159,7 +164,12 @@
                                 </div>
 
                                 <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''}">
-                                    <g:link controller="article" action="show" id="${article.id}">${fieldValue(bean: article, field: "title")}</g:link>
+                                    <g:link controller="article" action="show" id="${article.id}">
+                                        <g:if test="${!article.enabled}">
+                                            <span class="fa fa-ban" style="color:red;"></span>
+                                        </g:if>
+                                        ${fieldValue(bean: article, field: "title")}
+                                    </g:link>
                                 </h5>
                             </div>
                             

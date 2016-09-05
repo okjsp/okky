@@ -43,7 +43,12 @@
                             <g:categoryLabel category="${article.category}" />
                             <g:tags tags="${article.tagString}" />
                         </div>
-                        <h2 class="panel-title">${article.title}</h2>
+                        <h2 class="panel-title">
+                            <g:if test="${!article.enabled}">
+                                <span class="fa fa-ban" style="color:red;"></span>
+                            </g:if>
+                            ${article.title}
+                        </h2>
                         <hr/>
                         <article class="content-text">
                         <g:if test="${article.content}">
