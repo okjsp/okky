@@ -138,6 +138,9 @@ class ArticleTagLib {
             case AvatarPictureType.FACEBOOK:
                 url = "//graph.facebook.com/${avatar.picture}/picture?width=${s}&height=${s}"
                 break
+            case AvatarPictureType.ATTACHED:
+                url = avatar.picture
+                break
             case AvatarPictureType.ANONYMOUSE:
                 url = "//www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=${s}"
                 break
