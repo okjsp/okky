@@ -109,7 +109,8 @@ class ArticleController {
 
         Article article = Article.get(id)
 
-        if(article == null) {
+
+        if(article == null || (!article.enabled && SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))) {
             notFound()
             return
         }
@@ -186,6 +187,8 @@ class ArticleController {
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
 
                     article.choice = params.choice?:false
+
+                    article.enabled = !params.disabled
 
                 }
 
@@ -266,6 +269,8 @@ class ArticleController {
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
                     
                     article.choice = params.choice?:false
+
+                    article.enabled = !params.disabled
                     
                 }
 

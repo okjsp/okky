@@ -33,9 +33,13 @@ class Article {
     
     Integer best = 0
 
+    boolean disabled
+
     static belongsTo = [content: Content]
 
     static hasMany = [tags : Tag, notes: Content]
+
+    static transients = ['disabled']
 
     static mapping = {
         notes sort: 'id', order: 'asc'

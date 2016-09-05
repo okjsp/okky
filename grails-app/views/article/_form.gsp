@@ -22,6 +22,16 @@
                     <g:checkBox name="choice" value="${article?.choice}"  />
                     <g:message code="article.choice.label" default="Editor`s Choice" />
                 </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                    <g:checkBox name="disabled" value="${!article?.enabled}"  />
+                    <g:message code="article.disabled.label" default="게시물 비공개 (관리자만 접근가능)" />
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: article, field: 'enabled', 'has-error')} has-feedback">
+            <div class="checkbox">
             </div>
         </div>
 
