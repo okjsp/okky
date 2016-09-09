@@ -48,7 +48,7 @@
                     </g:else>
                 </g:if>
             </article>
-            <div class="text-center expend-content" style="display: none;"><a href="javascript://" class="expend-content-btn">- 펼처 보기 -</a></div>
+            <div class="text-center expend-content" style="display: none;"><a href="javascript://" class="expend-content-btn">- 펼쳐 보기 -</a></div>
         </div>
     </div>
     <hr/>
@@ -89,7 +89,7 @@
                             </g:else>
                         </g:if>
                     </article>
-                    <div class="text-center expend-content" style="display: none;"><a href="javascript://" class="expend-content-btn">- 펼처 보기 -</a></div>
+                    <div class="text-center expend-content" style="display: none;"><a href="javascript://" class="expend-content-btn">- 펼쳐 보기 -</a></div>
                 </g:if>
             </div>
         </div>
@@ -109,7 +109,7 @@
                     console.log($content[0])
                     if($content.is('.expend')) {
                         $content.removeClass('expend');
-                        $(this).find('.expend-content-btn').text('- 펼처 보기 -');
+                        $(this).find('.expend-content-btn').text('- 펼쳐 보기 -');
                     } else {
                         $content.addClass('expend');
                         $(this).find('.expend-content-btn').text('- 접 기 -');
