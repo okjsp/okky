@@ -1,15 +1,13 @@
 package net.okjsp
 
 import com.megatome.grails.RecaptchaService
-import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
-import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
-import grails.util.Environment
+import grails.plugins.mail.MailService
+import grails.transaction.Transactional
 import grails.validation.ValidationException
 
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
 class UserController {

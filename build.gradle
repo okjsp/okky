@@ -60,7 +60,8 @@ dependencies {
 
     compile "org.grails.plugins:recaptcha:3.0.1"
 
-    compile "org.grails.plugins:mail:1.0.7"
+    //compile "org.grails.plugins:mail:1.0.7"
+    compile "org.grails.plugins:mail:2.0.0.RC6"
 
     compile "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239"
 

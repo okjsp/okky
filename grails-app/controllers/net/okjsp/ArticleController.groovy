@@ -5,7 +5,6 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import grails.validation.ValidationException
-import org.hibernate.FetchMode
 import org.hibernate.type.StandardBasicTypes
 import org.springframework.http.HttpStatus
 

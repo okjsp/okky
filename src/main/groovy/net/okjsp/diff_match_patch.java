@@ -1,4 +1,5 @@
-package net.okjsp;/*
+package net.okjsp;
+/*
  * Diff Match and Patch
  *
  * Copyright 2006 Google Inc.
@@ -18,16 +19,9 @@ package net.okjsp;/*
  */
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Stack;
+import java.net.URLEncoder;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
