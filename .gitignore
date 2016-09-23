@@ -21,3 +21,4 @@ build
 .project
 .settings
 target-eclipse
+.slcache

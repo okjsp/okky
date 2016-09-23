@@ -1,5 +1,6 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
 import net.okjsp.*
 
@@ -9,6 +10,7 @@ class ArticleService {
     ActivityService activityService
     NotificationService notificationService
 
+    SpringSecurityService springSecurityService
     def grailsApplication
 
     /**
@@ -83,6 +85,8 @@ class ArticleService {
         Scrap.where { eq('article', article) }.deleteAll()
 
         Content content = article.content
+
+        ChangeLog.where{ eq('article', article) }.deleteAll()
 
         article.content = null
         article.save(flush: true)
@@ -221,6 +225,42 @@ class ArticleService {
         int startIndex = user.id % 10
 
         return "A${md5.substring(startIndex, startIndex+7)}"
+    }
+
+    def changeLog(ChangeLogType type, Article articleInstance, Content contentInstance, String oldText, String text) {
+
+        Avatar avatar = Avatar.load(springSecurityService.principal.avatarId)
+
+        if(oldText) {
+
+            def latestChangeLog = ChangeLog.createCriteria().get {
+                eq('article', articleInstance)
+                eq('content', contentInstance)
+                order('revision', 'desc')
+                maxResults(1)
+            }
+
+            def dmp = new diff_match_patch()
+
+            def patches = dmp.patch_make(text, oldText)
+
+            if(patches) {
+                int revision = 1
+
+                if(latestChangeLog) {
+                    revision = latestChangeLog.revision+1
+                }
+
+                new ChangeLog(
+                        type: type,
+                        md5: oldText.encodeAsMD5(),
+                        patch: dmp.patch_toText(patches),
+                        article: articleInstance,
+                        content: contentInstance,
+                        avatar: avatar,
+                        revision: revision).save()
+            }
+        }
     }
 
 }

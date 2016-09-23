@@ -4,6 +4,7 @@ import grails.transaction.Transactional
 
 class Content {
     transient sanitizeService
+    transient articleService
 
     ContentType type = ContentType.ARTICLE
     ContentTextType textType = ContentTextType.MD
@@ -85,6 +86,8 @@ class Content {
     def beforeUpdate() {
         if(isDirty("text")) {
             text = sanitizeService.sanitize(text)
+
+            articleService.changeLog(ChangeLogType.CONTENT, article, this,  this.getPersistentValue('text'), text)
         }
 
         if(anonymity) {

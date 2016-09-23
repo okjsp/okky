@@ -75,8 +75,22 @@ class ArticleTagLib {
                     out << """<div class="activity"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
                 else
                     out << """<div class="activity"><span class="fa fa-lock"></span> </div>"""
-                
-                out << """<div class="date-created timeago" title="${attrs.dateCreated}">${attrs.dateCreated}</div>"""
+
+
+                if(attrs.changeLog == null) {
+
+                    out << """<div class="date-created"><span class="timeago" title="${attrs.dateCreated}">${attrs.dateCreated}</span> """
+
+
+                } else {
+
+                    out << """<div class="date-created"><span class="timeago" title="${attrs.dateCreated}">${attrs.dateCreated}</span> 작성 """
+
+                    out << """  <span class="date-saperate">∙</span> <a href="${request.contextPath}/changes/${attrs.changeLog[2]}"><span class="timeago" title="${attrs.changeLog[1]}">${attrs.changeLog[1]}</span> 수정됨 </a>"""
+
+                }
+
+                out << """</div> """
             } else {
                 if(avatar.id)
                     out << """<div class="activity ${size == 'medium' ? 'block' : ''}"><span class="fa fa-flash"></span> ${shortenNumber(avatar.activityPoint)}</div>"""
@@ -123,6 +137,9 @@ class ArticleTagLib {
         switch (avatar.pictureType) {
             case AvatarPictureType.FACEBOOK:
                 url = "//graph.facebook.com/${avatar.picture}/picture?width=${s}&height=${s}"
+                break
+            case AvatarPictureType.ATTACHED:
+                url = avatar.picture
                 break
             case AvatarPictureType.ANONYMOUSE:
                 url = "//www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=${s}"

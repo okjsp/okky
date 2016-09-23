@@ -11,22 +11,17 @@
 
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: banner, field: 'clickCount', 'error')} required">
-	<label for="clickCount">
-		<g:message code="banner.clickCount.label" default="Click Count" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:field name="clickCount" type="number" value="${banner.clickCount}" required=""/>
-
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: banner, field: 'image', 'error')} required">
 	<label for="image">
 		<g:message code="banner.image.label" default="Image" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="image" required="" value="${banner?.image}"/>
 
+	<input type="file" name="imageFile" required="" id="iamge" />
+
+	<g:if test="${banner?.image}">
+		<a href="${banner?.image}" target="_blank">${banner?.image}</a>
+	</g:if>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: banner, field: 'name', 'error')} required">
@@ -52,7 +47,7 @@
 		<g:message code="banner.url.label" default="Url" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="url" required="" value="${banner?.url}"/>
+	<g:textField name="url" required="" value="${banner?.url}" />
 
 </div>
 

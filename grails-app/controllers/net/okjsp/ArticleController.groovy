@@ -5,6 +5,8 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 import grails.validation.ValidationException
+import org.hibernate.FetchMode
+import org.hibernate.type.StandardBasicTypes
 import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
@@ -31,6 +33,23 @@ class ArticleController {
             return
         }
 
+        def choiceJobs
+
+        if(category.code == 'jobs' || category.parent?.code == 'jobs') {
+
+            def diff = new Date() - 30
+
+            choiceJobs = Article.withCriteria() {
+                eq('choice', true)
+                eq('enabled', true)
+                'in'('category', [Category.get('recruit'), Category.get('resumes'), Category.get('evalcom')])
+                gt('dateCreated', diff)
+                order('id', 'desc')
+
+                maxResults(3)
+            }.findAll()
+        }
+
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
         
@@ -38,13 +57,19 @@ class ArticleController {
             categories = categories.findAll { it.code != 'promote' }
 
         def articlesQuery = Article.where {
-            category in categories && enabled == true
+            category in categories
+            if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
+                enabled == true
             if(params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
 
         }
 
-        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category]
+        if(SpringSecurityUtils.ifAnyGranted("ROLE_ADMIN")) {
+
+        }
+
+        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
     }
 
     @Secured("permitAll")
@@ -83,7 +108,8 @@ class ArticleController {
 
         Article article = Article.get(id)
 
-        if(article == null) {
+
+        if(article == null || (!article.enabled && SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))) {
             notFound()
             return
         }
@@ -112,7 +138,14 @@ class ArticleController {
             contentBanner = contentBanners.get(randId)
         }
 
-        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner]
+        def changeLogs = ChangeLog.createCriteria().list {
+            eq('article', article)
+            projections {
+                sqlGroupProjection 'article_id as articleId, max(date_created) as dateCreated, content_id as contentId', 'content_id', ['articleId', 'dateCreated', 'contentId'], [StandardBasicTypes.LONG, StandardBasicTypes.TIMESTAMP, StandardBasicTypes.LONG]
+            }
+        }
+
+        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner, changeLogs: changeLogs]
     }
 
     @Secured("ROLE_USER")
@@ -163,6 +196,8 @@ class ArticleController {
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
 
                     article.choice = params.choice?:false
+
+                    article.enabled = !params.disabled
 
                 }
 
@@ -245,6 +280,8 @@ class ArticleController {
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
                     
                     article.choice = params.choice?:false
+
+                    article.enabled = !params.disabled
                     
                 }
 
@@ -487,6 +524,46 @@ class ArticleController {
             json { respond article, [status: HttpStatus.OK] }
         }
     }
+
+    def changes(Long id) {
+
+        Content content = Content.get(id)
+
+        Article article = content.article
+
+        def changeLogs = ChangeLog.where{
+            eq('article', article)
+            eq('content', content)
+        }.list(sort: 'id', order: 'desc')
+
+
+        def lastTexts = [:]
+
+        changeLogs.each { ChangeLog log ->
+
+            if(!lastTexts[log.type]) {
+                if(log.type == ChangeLogType.TITLE) {
+                    lastTexts[log.type] = article.title
+                } else if(log.type == ChangeLogType.CONTENT) {
+                    lastTexts[log.type] = content.text
+                } else if(log.type == ChangeLogType.TAGS) {
+                    lastTexts[log.type] = article.tagString
+                }
+            }
+
+            def dmp = new diff_match_patch()
+
+            LinkedList<diff_match_patch.Patch> patches = dmp.patch_fromText(log.patch)
+
+            log.text = dmp.patch_apply(patches, lastTexts[log.type] as String)[0]
+
+            lastTexts[log.type] = log.text
+
+        }
+
+        respond article, model: [content: content, changeLogs: changeLogs]
+    }
+
 
     protected void notFound() {
 

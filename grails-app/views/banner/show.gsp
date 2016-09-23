@@ -40,6 +40,15 @@
 					
 				</li>
 				</g:if>
+
+				<g:if test="${banner?.ipCount}">
+					<li class="fieldcontain">
+						<span id="ipCount-label" class="property-label"><g:message code="banner.ipCount.label" default="Click per IP" /></span>
+
+						<span class="property-value" aria-labelledby="ipCount-label"><g:fieldValue bean="${banner}" field="ipCount"/></span>
+
+					</li>
+				</g:if>
 			
 				<g:if test="${banner?.dateCreated}">
 				<li class="fieldcontain">

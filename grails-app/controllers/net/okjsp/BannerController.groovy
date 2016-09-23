@@ -1,10 +1,10 @@
 package net.okjsp
 
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.web.multipart.MultipartFile
+
+import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
-import net.okjsp.Banner
-import net.okjsp.BannerClick
-import org.springframework.http.HttpStatus
 
 @Transactional(readOnly = true)
 @Secured("ROLE_ADMIN")
@@ -12,7 +12,7 @@ class BannerController {
 
     UserService userService
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: "DELETE"]
 
     @Transactional
     @Secured("permitAll")
@@ -35,6 +35,8 @@ class BannerController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        params.order = params.order ?: 'desc'
+        params.sort = params.sort ?: 'id'
         respond Banner.list(params), model:[bannerCount: Banner.count()]
     }
 
@@ -58,6 +60,17 @@ class BannerController {
             return
         }
 
+
+        MultipartFile imageFile = request.getFile("imageFile")
+
+        if(!imageFile.empty) {
+            def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
+            def mil = System.currentTimeMillis()
+            imageFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/banner/", "${mil}${ext}"))
+
+            banner.image = "${grailsApplication.config.grails.fileURL}/banner/${mil}${ext}"
+        }
+
         banner.save flush:true
 
         request.withFormat {
@@ -65,7 +78,7 @@ class BannerController {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'banner.label', default: 'Banner'), banner.id])
                 redirect banner
             }
-            '*' { respond banner, [status: HttpStatus.CREATED] }
+            '*' { respond banner, [status: CREATED] }
         }
     }
 
@@ -85,6 +98,16 @@ class BannerController {
             return
         }
 
+        MultipartFile imageFile = request.getFile("imageFile")
+
+        if(!imageFile.empty) {
+            def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
+            def mil = System.currentTimeMillis()
+            imageFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/banner/", "${mil}${ext}"))
+
+            banner.image = "${grailsApplication.config.grails.fileURL}/banner/${mil}${ext}"
+        }
+
         banner.save flush:true
 
         request.withFormat {
@@ -92,7 +115,7 @@ class BannerController {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'Banner.label', default: 'Banner'), banner.id])
                 redirect banner
             }
-            '*'{ respond banner, [status: HttpStatus.OK] }
+            '*'{ respond banner, [status: OK] }
         }
     }
 
@@ -111,7 +134,7 @@ class BannerController {
                 flash.message = message(code: 'default.deleted.message', args: [message(code: 'Banner.label', default: 'Banner'), banner.id])
                 redirect action:"index", method:"GET"
             }
-            '*'{ render status: HttpStatus.NO_CONTENT }
+            '*'{ render status: NO_CONTENT }
         }
     }
 
@@ -121,7 +144,7 @@ class BannerController {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'banner.label', default: 'Banner'), params.id])
                 redirect action: "index", method: "GET"
             }
-            '*'{ render status: HttpStatus.NOT_FOUND }
+            '*'{ render status: NOT_FOUND }
         }
     }
 }
