@@ -30,7 +30,6 @@ $(function() {
         $contentBody = $('#content-body');
 
     $window.scroll(function() {
-        console.log($window.scrollTop(), ($contentBody.outerHeight() - 200));
         var contentHeight = $contentBody.outerHeight() - 200;
         if($window.scrollTop() > 134 && $window.scrollTop() < contentHeight) {
             $contentFunction.addClass('fixed').removeClass('over');
