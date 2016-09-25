@@ -78,11 +78,13 @@ class UserController {
         respond user, model: [avatar: currentAvatar, activities: activitiesQuery.list(params), activitiesCount: activitiesQuery.count(), counts: counts]
     }
 
+    @Secured("permitAll")
     def register() {
         recaptchaService.cleanUp session
         respond new User(params)
     }
 
+    @Secured("permitAll")
     @Transactional
     def save(User user) {
 
@@ -127,6 +129,7 @@ class UserController {
         }
     }
 
+    @Secured("permitAll")
     def complete() {
 
         if(springSecurityService.isLoggedIn()) {
@@ -148,6 +151,7 @@ class UserController {
         render view: 'complete', model: [email: confirmEmail.email]
     }
 
+    @Secured("permitAll")
     @Transactional
     def confirm(String key) {
 
@@ -182,11 +186,13 @@ class UserController {
         render view: 'confirm'
     }
 
+    @Secured("ROLE_USER")
     def edit() {
         User user = springSecurityService.currentUser
         respond user
     }
 
+    @Secured("ROLE_USER")
     @Transactional
     def update(User user) {
         if (user == null) {
@@ -217,6 +223,7 @@ class UserController {
         }
     }
 
+    @Secured("permitAll")
     def password(String key) {
 
         if(springSecurityService.isLoggedIn()) {
@@ -238,7 +245,8 @@ class UserController {
         render view: 'password', model: [key: key]
 
     }
-    
+
+    @Secured("ROLE_USER")
     @Transactional
     def updatePassword(String password, String passwordConfirm, String key) {
 
@@ -281,7 +289,8 @@ class UserController {
         flash.message = message(code: 'user.password.updated.message')
         redirect uri: '/login/auth'
     }
-    
+
+    @Secured("ROLE_USER")
     @Transactional
     def rejectDM(String k) {
         
@@ -303,10 +312,12 @@ class UserController {
         render "수신거부에 ${result}하였습니다."
     }
 
+    @Secured("ROLE_USER")
     def withdrawConfirm() {
         render view: "withdrawConfirm"
     }
 
+    @Secured("ROLE_USER")
     @Transactional
     def withdraw() {
         User user = springSecurityService.currentUser
@@ -319,14 +330,17 @@ class UserController {
 
     }
 
+    @Secured("permitAll")
     def withdrawComplete() {
         render view: "withdrawComplete"
     }
 
+    @Secured("ROLE_USER")
     def passwordChange() {
         render view: "passwordChange"
     }
 
+    @Secured("ROLE_USER")
     @Transactional
     def updatePasswordChange(String oldPassword, String password, String passwordConfirm, String key) {
 

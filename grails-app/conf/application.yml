@@ -134,36 +134,87 @@ recaptcha:
     includeNoScript: true
 
 ---
+
 environments:
     development:
-        grails:
-          logging:
+        baseURL: "http://localhost:8080/okky"
+        logging:
             jul:
-              usebridge: true
-          plugin:
-            springsecurity:
-              debug:
-                useFilter: true
+                usebridge: true
         recaptcha:
             enabled: false
+        grails:
+            mail:
+                #disabled: true
+                host: 'smtp.gmail.com'
+                port: 465
+                username: 'memi.dev@gmail.com'
+                password: '!rlaals13728M'
+                poolSize: 50
+                default:
+                    from: 'memi.dev@Gmail.com'
+                key: 'key'
+        plugin:
+            springsecurity:
+                debug:
+                    useFilter: true
+                oauth2:
+                    providers:
+                        facebook:
+                            api_key: '892426937476416'
+                            api_secret: '3a607e0138aa2251156702c5234f31d7'
+                            successUri: "/oauth/facebook/success"
+                            failureUri: "/oauth/facebook/failure"
+                            callback: "${baseURL}/oauth/facebook/callback"
+                            scope: 'email,publish_stream,offline_access'
+                        google:
+                            api_key: '937987783004-1a2ae8nl90502og2sucupolh5g82el7e.apps.googleusercontent.com'
+                            api_secret: 'Q1MtT5Mf-4RYkqm8Swbb0VOE'
+                            successUri: "/oauth/google/success"
+                            failureUri: "/oauth/google/failure"
+                            callback: "${baseURL}/oauth/google/callback"
+                            scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+
     production:
+        baseURL: grails.serverURL
         recaptcha:
             enabled: true
+        plugin:
+            springsecurity:
+                oauth2:
+                    providers:
+                        facebook:
+                            api_key: ''
+                            api_secret: ''
+                            successUri: "/oauth/facebook/success"
+                            failureUri: "/oauth/facebook/failure"
+                            callback: "${baseURL}/oauth/facebook/callback"
+                            scope: 'email,publish_stream,offline_access'
+                        google:
+                            api_key: ''
+                            api_secret: ''
+                            successUri: "/oauth/google/success"
+                            failureUri: "/oauth/google/failure"
+                            callback: "${baseURL}/oauth/google/callback"
+                            scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+
 ---
-grails:
-    plugin:
-        springsecurity:
-            oauth2:
-                providers:
-                    facebook:
-                        api_key: 'facebook-api-key'
-                        api_secret: 'facebook-api-secret'
-                        successUri: "/oauth/facebook/success"
-                        failureUri: "/oauth/facebook/failure"
-                        callback: "/oauth/facebook/callback"
-                    google:
-                        api_key: 'facebook-api-key'
-                        api_secret: 'facebook-api-secret'
-                        successUri: "/oauth/google/success"
-                        failureUri: "/oauth/google/failure"
-                        callback: "/oauth/google/callback"
+#grails:
+#    plugin:
+#        springsecurity:
+#            oauth2:
+#                providers:
+#                    facebook:
+#                        api_key: '892426937476416'
+#                        api_secret: '3a607e0138aa2251156702c5234f31d7'
+#                        successUri: "/oauth/facebook/success"
+#                        failureUri: "/oauth/facebook/failure"
+#                        callback: "${baseURL}/oauth/facebook/callback"
+#                        scope: 'email,publish_stream,offline_access'
+#                    google:
+#                        api_key: '937987783004-1a2ae8nl90502og2sucupolh5g82el7e.apps.googleusercontent.com'
+#                        api_secret: 'Q1MtT5Mf-4RYkqm8Swbb0VOE'
+#                        successUri: "/oauth/google/success"
+#                        failureUri: "/oauth/google/failure"
+#                        callback: "${baseURL}/oauth/google/callback"
+#                        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
