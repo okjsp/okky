@@ -63,6 +63,8 @@ dependencies {
     //compile "org.grails.plugins:mail:1.0.7"
     compile "org.grails.plugins:mail:2.0.0.RC6"
 
+    compile 'org.grails.plugins:grails-cookie:2.0.3'
+
     compile "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239"
 
     console "org.grails:grails-console"
