@@ -246,7 +246,8 @@ class UserController {
 
     }
 
-    @Secured("ROLE_USER")
+    //@Secured("ROLE_USER")
+    @Secured("permitAll")
     @Transactional
     def updatePassword(String password, String passwordConfirm, String key) {
 

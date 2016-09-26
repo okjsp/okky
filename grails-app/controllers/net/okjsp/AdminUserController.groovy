@@ -1,10 +1,11 @@
 package net.okjsp
 
-
-
-import static org.springframework.http.HttpStatus.*
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
 
+import static org.springframework.http.HttpStatus.*
+
+@Secured("ROLE_ADMIN")
 @Transactional(readOnly = true)
 class AdminUserController {
 

@@ -49,8 +49,6 @@ class UserService {
 
         ConfirmEmail.where { user == userInstance }.deleteAll()
 
-        println grailsApplication.config.grails.mail.password
-
         def secured = "${now.time}_${userInstance.username}_${userInstance.person.email}_${grailsApplication.config.grails.mail.key}".encodeAsSHA256().encodeAsBase64()
 
         new ConfirmEmail(user: userInstance, securedKey: secured, email: userInstance.person.email, dateExpired: new Date(now.time+(30*60*1000))).save(flush: true, failOnError: true)

@@ -1,11 +1,12 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import grails.util.Environment
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartFile
 
-import static org.springframework.http.HttpStatus.*
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
+@Secured("ROLE_ADMIN")
 @Transactional(readOnly = true)
 class DmController {
     

@@ -524,6 +524,7 @@ class ArticleController {
         }
     }
 
+    @Secured("permitAll")
     def changes(Long id) {
 
         Content content = Content.get(id)

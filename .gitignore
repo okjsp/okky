@@ -11,6 +11,8 @@
 *.iml
 *.log
 Config.groovy
+application.groovy
+application.yml
 *.db
 
 out

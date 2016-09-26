@@ -1,10 +1,13 @@
 package net.okjsp.listeners
 
+import grails.converters.JSON
 import grails.core.GrailsApplication
 import grails.plugin.cookie.CookieService
+import grails.transaction.Transactional
 import net.okjsp.CustomUserDetail
 import net.okjsp.LoggedIn
 import net.okjsp.User
+import net.okjsp.UserRole
 import net.okjsp.UserService
 import org.grails.web.util.WebUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +28,7 @@ class CustomSecurityEventListener implements ApplicationListener<AuthenticationS
     @Autowired
     UserService userService
 
+    @Transactional
     void onApplicationEvent(AuthenticationSuccessEvent event) {
 
         CustomUserDetail userDetail = event.authentication.principal
