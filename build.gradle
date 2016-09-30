@@ -23,8 +23,6 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
 
-apply plugin: 'codenarc'
-
 ext {
     grailsVersion = project.grailsVersion
     gradleWrapperVersion = project.gradleWrapperVersion
@@ -33,6 +31,7 @@ ext {
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    maven { url "https://bintray.com/grails/plugins" }
 }
 
 dependencyManagement {
@@ -57,9 +56,14 @@ dependencies {
 
     compile 'org.grails.plugins:spring-security-core:3.1.1'
 
-//    compile 'org.grails.plugins:spring-security-oauth2-provider:3.0.0-RC1'
-
+//    compile 'org.grails.plugins:oauth:3.0.1'
 //    compile 'org.grails.plugins:spring-security-oauth2:1.1.0'
+    // oauth2 내장
+    compile 'org.codehaus.groovy:groovy-all:2.4.3'
+    compile 'com.ning:async-http-client:1.9.38'
+    compile 'org.asynchttpclient:async-http-client:2.0.4'
+    compile 'com.github.scribejava:scribejava-apis:2.7.3'
+
 //    compile 'org.grails.plugins:spring-security-oauth2-google:1.1.0'
 //    compile 'org.grails.plugins:spring-security-oauth2-facebook:1.0.0'
 
