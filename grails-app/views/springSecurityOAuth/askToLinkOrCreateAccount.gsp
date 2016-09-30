@@ -43,7 +43,7 @@
 
                         <g:textField name="person.fullName" class="form-control input-sm" placeholder="${message(code: "person.fullName.label", default: '이름')}" required="" value="${userInstance?.person?.fullName}"/>
 
-                        <g:textField name="avatar.nickname" class="form-control input-sm" placeholder="${message(code: "person.nickname.label", default: '닉네임')}" required="" value="${userInstance?.avatar?.nickname}"/>
+                        <g:textField name="avatar.nickname" class="form-control input-sm" placeholder="${message(code: "avatar.nickname.label", default: '닉네임')}" required="" value="${userInstance?.avatar?.nickname}"/>
 
                         <div class="checkbox">
                             <label>

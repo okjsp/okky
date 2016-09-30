@@ -23,6 +23,8 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
 
+apply plugin: 'codenarc'
+
 ext {
     grailsVersion = project.grailsVersion
     gradleWrapperVersion = project.gradleWrapperVersion
@@ -54,9 +56,12 @@ dependencies {
     compile "org.hibernate:hibernate-ehcache"
 
     compile 'org.grails.plugins:spring-security-core:3.1.1'
-    compile 'org.grails.plugins:spring-security-oauth2:1.1.0'
-    compile 'org.grails.plugins:spring-security-oauth2-google:1.1.0'
-    compile 'org.grails.plugins:spring-security-oauth2-facebook:1.0.0'
+
+//    compile 'org.grails.plugins:spring-security-oauth2-provider:3.0.0-RC1'
+
+//    compile 'org.grails.plugins:spring-security-oauth2:1.1.0'
+//    compile 'org.grails.plugins:spring-security-oauth2-google:1.1.0'
+//    compile 'org.grails.plugins:spring-security-oauth2-facebook:1.0.0'
 
     compile "org.grails.plugins:recaptcha:3.0.1"
 
