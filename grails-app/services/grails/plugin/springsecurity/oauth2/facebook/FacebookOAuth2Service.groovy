@@ -29,7 +29,7 @@ class FacebookOAuth2Service extends OAuth2AbstractProviderService {
 
     @Override
     String getProfileScope() {
-        return 'https://graph.facebook.com/me?fields=email'
+        return 'https://graph.facebook.com/me?fields=email,name'
     }
 
     /**
@@ -55,7 +55,7 @@ class FacebookOAuth2Service extends OAuth2AbstractProviderService {
             log.error("No user email from " + getProviderID() + ". Response was:\n" + response.body)
             throw new OAuth2Exception("No user email from " + getProviderID())
         }
-        new FacebookOauth2SpringToken(accessToken, user?.email, providerID)
+        new FacebookOauth2SpringToken(accessToken, user?.email, user?.name, providerID)
     }
 
 }

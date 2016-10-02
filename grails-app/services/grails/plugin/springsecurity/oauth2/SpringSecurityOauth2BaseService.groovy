@@ -21,14 +21,11 @@ import grails.plugin.springsecurity.oauth2.service.OAuth2AbstractProviderService
 import grails.plugin.springsecurity.oauth2.service.OAuth2ProviderService
 import grails.plugin.springsecurity.oauth2.token.OAuth2SpringToken
 import grails.plugin.springsecurity.oauth2.util.OAuth2ProviderConfiguration
-import grails.plugin.springsecurity.userdetails.GormUserDetailsService
-import grails.plugin.springsecurity.userdetails.GrailsUser
 import grails.transaction.Transactional
 import org.apache.commons.lang.exception.ExceptionUtils
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 @Transactional
 class SpringSecurityOauth2BaseService {
@@ -41,6 +38,7 @@ class SpringSecurityOauth2BaseService {
 
     def grailsApplication
     AuthenticationManager authenticationManager
+    def userDetailsService
 
     OAuth2SpringToken createAuthToken(String providerName, OAuth2AccessToken scribeToken) {
         def providerService = getProviderService(providerName)
@@ -86,34 +84,9 @@ class SpringSecurityOauth2BaseService {
      * @return A current OAuth2SpringToken
      */
     OAuth2SpringToken updateOAuthToken(OAuth2SpringToken oAuthToken, user) {
-        def conf = SpringSecurityUtils.securityConfig
 
-        // user
-
-        String usernamePropertyName = conf.userLookup.usernamePropertyName
-        String passwordPropertyName = conf.userLookup.passwordPropertyName
-        String enabledPropertyName = conf.userLookup.enabledPropertyName
-        String accountExpiredPropertyName = conf.userLookup.accountExpiredPropertyName
-        String accountLockedPropertyName = conf.userLookup.accountLockedPropertyName
-        String passwordExpiredPropertyName = conf.userLookup.passwordExpiredPropertyName
-
-        String username = user."${usernamePropertyName}"
-        String password = user."${passwordPropertyName}"
-        boolean enabled = enabledPropertyName ? user."${enabledPropertyName}" : true
-        boolean accountExpired = accountExpiredPropertyName ? user."${accountExpiredPropertyName}" : false
-        boolean accountLocked = accountLockedPropertyName ? user."${accountLockedPropertyName}" : false
-        boolean passwordExpired = passwordExpiredPropertyName ? user."${passwordExpiredPropertyName}" : false
-
-        // authorities
-
-        String authoritiesPropertyName = conf.userLookup.authoritiesPropertyName
-        String authorityPropertyName = conf.authority.nameField
-        Collection<?> userAuthorities = user."${authoritiesPropertyName}"
-        def authorities = userAuthorities.collect { new SimpleGrantedAuthority(it."${authorityPropertyName}") }
-
-        oAuthToken.principal = new GrailsUser(username, password, enabled, !accountExpired, !passwordExpired,
-                !accountLocked, authorities ?: [GormUserDetailsService.NO_ROLE], user.id)
-        oAuthToken.authorities = authorities
+        oAuthToken.principal = userDetailsService.loadUserByUsername(user.username)
+        oAuthToken.authorities = oAuthToken.principal.authorities
         oAuthToken.authenticated = true
 
         return oAuthToken

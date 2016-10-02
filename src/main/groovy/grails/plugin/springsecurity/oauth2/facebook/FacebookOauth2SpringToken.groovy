@@ -14,12 +14,16 @@ import grails.plugin.springsecurity.oauth2.token.OAuth2SpringToken
  */
 class FacebookOauth2SpringToken extends OAuth2SpringToken{
 
+    public static final String PROVIDER_NAME = 'facebook'
+
     private String email
+    private String name
     private String providerId
 
-    FacebookOauth2SpringToken(OAuth2AccessToken accessToken, String email, String providerId) {
+    FacebookOauth2SpringToken(OAuth2AccessToken accessToken, String email, String name, String providerId) {
         super(accessToken)
         this.email = email
+        this.name = name
         this.providerId = providerId
     }
 
@@ -35,6 +39,6 @@ class FacebookOauth2SpringToken extends OAuth2SpringToken{
 
     @Override
     String getScreenName() {
-        return email
+        return name
     }
 }

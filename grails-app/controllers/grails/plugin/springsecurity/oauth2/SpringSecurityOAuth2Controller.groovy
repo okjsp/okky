@@ -15,18 +15,23 @@
 package grails.plugin.springsecurity.oauth2
 
 import com.github.scribejava.core.model.OAuth2AccessToken
+import com.megatome.grails.RecaptchaService
 import com.sun.istack.internal.Nullable
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugin.springsecurity.oauth2.exception.OAuth2Exception
+import grails.plugin.springsecurity.oauth2.facebook.FacebookOauth2SpringToken
 import grails.plugin.springsecurity.oauth2.token.OAuth2SpringToken
 import grails.plugin.springsecurity.userdetails.GrailsUser
+import grails.validation.ValidationException
+import net.okjsp.AvatarPictureType
+import net.okjsp.Person
+import net.okjsp.User
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.exception.ExceptionUtils
 import org.grails.validation.routines.UrlValidator
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.servlet.ModelAndView
 
 /**
  * Controller for handling OAuth authentication request and
@@ -41,6 +46,10 @@ class SpringSecurityOAuth2Controller {
 
     SpringSecurityOauth2BaseService springSecurityOauth2BaseService
     SpringSecurityService springSecurityService
+    def userService
+    RecaptchaService recaptchaService
+
+    def oauthService
 
     /**
      * Authenticate
@@ -75,6 +84,7 @@ class SpringSecurityOAuth2Controller {
 
         // Check if we got an AuthCode from the server query
         String authCode = params.code
+
         log.debug("AuthCode: " + authCode)
         if (!authCode || authCode.isEmpty()) {
             throw new OAuth2Exception("No AuthCode in callback for provider '${providerName}'")
@@ -110,6 +120,7 @@ class SpringSecurityOAuth2Controller {
             log.warn "No OAuth token in the session for provider '${provider}'"
             throw new OAuth2Exception("Authentication error for provider '${provider}'")
         }
+
         // Create the relevant authentication token and attempt to log in.
         OAuth2SpringToken oAuthToken = springSecurityOauth2BaseService.createAuthToken(provider, session[sessionKey])
 
@@ -132,14 +143,20 @@ class SpringSecurityOAuth2Controller {
     }
 
     def ask() {
+
+        OAuth2SpringToken oAuth2SpringToken = session[SPRING_SECURITY_OAUTH_TOKEN]
+
+        // Check for token in session
+        if (!oAuth2SpringToken) {
+            println "askToLinkOrCreateAccount: OAuthToken not found in session"
+            throw new OAuth2Exception('Authentication error')
+        }
+
+        User user = new User()
+
         if (springSecurityService.isLoggedIn()) {
             def currentUser = springSecurityService.currentUser
-            OAuth2SpringToken oAuth2SpringToken = session[SPRING_SECURITY_OAUTH_TOKEN] as OAuth2SpringToken
-            // Check for token in session
-            if (!oAuth2SpringToken) {
-                log.warn("ask: OAuthToken not found in session")
-                throw new OAuth2Exception('Authentication error')
-            }
+
             // Try to add the token to the OAuthID's
             currentUser.addTooAuthIDs(
                     provider: oAuth2SpringToken.providerName,
@@ -152,17 +169,40 @@ class SpringSecurityOAuth2Controller {
                 authenticateAndRedirect(oAuth2SpringToken, getDefaultTargetUrl())
                 return
             }
+        } else {
+            Person person = new Person()
+
+            if(oAuth2SpringToken.providerName == FacebookOauth2SpringToken.PROVIDER_NAME) {
+
+                person.fullName = oAuth2SpringToken.screenName
+                person.email = oAuth2SpringToken.socialId
+
+//            } else if(providerName == GoogleOAuthToken.PROVIDER_NAME) {
+//
+//                def response = oauthService.getGoogleResource(oAuthToken.accessToken, 'https://www.googleapis.com/oauth2/v1/userinfo')
+//                def info = JSON.parse(response.body)
+//                println "info ==="
+//                println info
+//
+//                person.fullName = info.name
+//                person.email = info.email
+            }
+
+            user.person = person
         }
+
+
+
         // There seems to be a new one in the town aka 'There is no one logged in'
         // Ask to create a new account or link an existing user to it
-        return new ModelAndView("/springSecurityOAuth2/ask", [:])
+        render view: '/springSecurityOAuth/askToLinkOrCreateAccount', model: [userInstance: user]
     }
 
     /**
      * Associates an OAuthID with an existing account. Needs the user's password to ensure
      * that the user owns that account, and authenticates to verify before linking.
      */
-    def linkAccount(OAuth2LinkAccountCommand command) {
+    def linkAccount(User command) {
         OAuth2SpringToken oAuth2SpringToken = session[SPRING_SECURITY_OAUTH_TOKEN] as OAuth2SpringToken
         if (!oAuth2SpringToken) {
             log.warn "linkAccount: OAuthToken not found in session"
@@ -175,9 +215,9 @@ class SpringSecurityOAuth2Controller {
                 render view: 'ask', model: [linkAccountCommand: command]
                 return
             }
-            def commandValid = command.validate()
+            //def commandValid = command.validate()
             def User = springSecurityOauth2BaseService.lookupUserClass()
-            boolean linked = commandValid && User.withTransaction { status ->
+            boolean linked = User.withTransaction { status ->
                 def user = User.findByUsername(command.username)
                 if (user) {
                     user.addTooAuthIDs(provider: oAuth2SpringToken.providerName, accessToken: oAuth2SpringToken.socialId, user: user)
@@ -198,52 +238,57 @@ class SpringSecurityOAuth2Controller {
                 return
             }
         }
-        render view: 'ask', model: [linkAccountCommand: command]
+        render view: '/springSecurityOAuth/askToLinkOrCreateAccount', model: [userInstance: command]
     }
 
     /**
      * Create ne account and associate it with the oAuthID
      */
-    def createAccount(OAuth2CreateAccountCommand command) {
+    def createAccount() {
         OAuth2SpringToken oAuth2SpringToken = session[SPRING_SECURITY_OAUTH_TOKEN] as OAuth2SpringToken
         if (!oAuth2SpringToken) {
             log.warn "createAccount: OAuthToken not found in session"
             throw new OAuth2Exception('Authentication error')
         }
+
+        User user = new User(params)
+
         if (request.post) {
             if (!springSecurityService.loggedIn) {
-                def commandValid = command.validate()
-                def User = springSecurityOauth2BaseService.lookupUserClass()
-                boolean created = commandValid && User.withTransaction { status ->
-                    def user = springSecurityOauth2BaseService.lookupUserClass().newInstance()
-                    user.username = command.username
-                    user.password = command.password1
-                    user.enabled = true
+
+                try {
+
+                    def realIp = userService.getRealIp(request)
+                    def reCaptchaVerified = recaptchaService.verifyAnswer(session, realIp, params)
+
+                    user.createIp = realIp
+
+                    if(user.hasErrors() || !reCaptchaVerified) {
+                        respond user.errors, view: '/springSecurityOAuth/askToLinkOrCreateAccount', model: [userInstance: user]
+                        return
+                    }
+
                     user.addTooAuthIDs(provider: oAuth2SpringToken.providerName, accessToken: oAuth2SpringToken.socialId, user: user)
-                    if (!user.validate() || !user.save()) {
-                        status.setRollbackOnly()
-                        false
+
+                    if(oAuth2SpringToken.providerName == FacebookOauth2SpringToken.PROVIDER_NAME) {
+                        user.avatar.pictureType = AvatarPictureType.FACEBOOK
                     }
-                    def UserRole = springSecurityOauth2BaseService.lookupUserRoleClass()
-                    def Role = springSecurityOauth2BaseService.lookupRoleClass()
-                    def roles = springSecurityOauth2BaseService.roleNames
-                    for (roleName in roles) {
-                        log.debug("Creating role " + roleName + " for user " + user.username)
-                        // Make sure that the role exists.
-                        UserRole.create user, Role.findOrSaveByAuthority(roleName)
+
+                    def created = userService.saveUser user
+
+                    recaptchaService.cleanUp session
+
+                    if (created) {
+                        authenticateAndRedirect(oAuth2SpringToken, getDefaultTargetUrl())
+                        return
                     }
-                    // make sure that the new roles are effective immediately
-                    springSecurityService.reauthenticate(user.username)
-                    oAuth2SpringToken = springSecurityOauth2BaseService.updateOAuthToken(oAuth2SpringToken, user)
-                    true
+                } catch (ValidationException e) {
+                    respond user.errors, view: '/springSecurityOAuth/askToLinkOrCreateAccount'
                 }
-                if (created) {
-                    authenticateAndRedirect(oAuth2SpringToken, getDefaultTargetUrl())
-                    return
-                }
+
             }
         }
-        render view: 'ask', model: [createAccountCommand: command]
+        render view: '/springSecurityOAuth/askToLinkOrCreateAccount', model: [userInstance: user]
     }
 
     /**
@@ -269,55 +314,5 @@ class SpringSecurityOAuth2Controller {
             return [url: (savedRequest.redirectUrl ?: defaultUrlOnNull)]
         }
         return [uri: (config.successHandler.defaultTargetUrl ?: defaultUrlOnNull)]
-    }
-}
-
-/**
- * A bean for storing createAccount values
- */
-class OAuth2CreateAccountCommand {
-
-    def springSecurityOauth2BaseService
-
-    String username
-    String password1
-    String password2
-
-    static constraints = {
-        username blank: false, minSize: 3, validator: { String username, command ->
-            if (command.springSecurityOauth2BaseService.usernameTaken(username)) {
-                return 'OAuthCreateAccountCommand.username.error.unique'
-            }
-        }
-        password1 blank: false, minSize: 8, maxSize: 64, validator: { password1, command ->
-            if (command.username && command.username == password1) {
-                return 'OAuthCreateAccountCommand.password.error.username'
-            }
-
-            if (password1 && password1.length() >= 8 && password1.length() <= 64 &&
-                    (!password1.matches('^.*\\p{Alpha}.*$') ||
-                            !password1.matches('^.*\\p{Digit}.*$') ||
-                            !password1.matches('^.*[!@#$%^&].*$'))) {
-                return 'OAuthCreateAccountCommand.password.error.strength'
-            }
-        }
-        password2 nullable: true, blank: true, validator: { password2, command ->
-            if (command.password1 != password2) {
-                return 'OAuthCreateAccountCommand.password.error.mismatch'
-            }
-        }
-    }
-}
-
-/**
- * A bean for storing link account commands
- */
-class OAuth2LinkAccountCommand {
-    String username
-    String password
-
-    static constraints = {
-        username blank: false
-        password blank: false
     }
 }
