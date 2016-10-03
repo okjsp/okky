@@ -1,6 +1,6 @@
 package net.okjsp
 
-import grails.transaction.Transactional
+import grails.plugin.springsecurity.oauth2.facebook.FacebookOauth2SpringToken
 
 class Avatar implements Comparable {
 
@@ -8,6 +8,7 @@ class Avatar implements Comparable {
     String picture
     AvatarPictureType pictureType = AvatarPictureType.GRAVATAR
     Integer activityPoint = 0
+    Boolean official = false
 
     static hasMany = [activities: Activity, tags : Tag]
 
@@ -22,6 +23,7 @@ class Avatar implements Comparable {
         }
         picture blank: false
         activityPoint bindable: false
+        official nullable: true, bindable: false
     }
 
     def setPictureBySns(User user, AvatarPictureType type = pictureType) {
@@ -30,7 +32,7 @@ class Avatar implements Comparable {
 
         switch (type) {
             case AvatarPictureType.FACEBOOK :
-                picture = user.oAuthIDs.find { it.provider == FacebookOAuthToken.PROVIDER_NAME}.accessToken
+                picture = user.oAuthIDs.find { it.provider == FacebookOauth2SpringToken.PROVIDER_NAME}.accessToken
                 break
             default:
                 picture = user.person.email.encodeAsMD5()

@@ -30,20 +30,25 @@
 
             <div class="panel panel-default clearfix">
                 <div class="panel-heading clearfix">
-                    <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" class="pull-left" />
+                    <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" changeLog="${changeLogs?.find { it[2] == article.content.id}}" logType="article" class="pull-left" />
                     <div class="content-identity pull-right">
-                    <div class="content-identity-count"><i class="fa fa-comment"></i> <g:shorten number="${article.noteCount}" /></div>
-                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></div>
+                    <div class="content-identity-count"><i class="fa fa-comment"></i> <g:formatNumber number="${article.noteCount}" /></div>
+                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:formatNumber number="${article.viewCount}" /></div>
                     </div>
                 </div>
                 <div class="content-container clearfix">
-                    <div class="panel-body content-body pull-left">
+                    <div id="content-body" class="panel-body content-body pull-left">
                         <div class="content-tags">
                             <span class="list-group-item-text article-id">#${article.id}</span>
                             <g:categoryLabel category="${article.category}" />
                             <g:tags tags="${article.tagString}" />
                         </div>
-                        <h2 class="panel-title">${article.title}</h2>
+                        <h2 class="panel-title">
+                            <g:if test="${!article.enabled}">
+                                <span class="fa fa-ban" style="color:red;"></span>
+                            </g:if>
+                            ${article.title}
+                        </h2>
                         <hr/>
                         <article class="content-text">
                         <g:if test="${article.content}">
@@ -61,7 +66,7 @@
 
                     </div>
 
-                    <div class="content-function pull-right text-center">
+                    <div id="content-function" class="content-function pull-right text-center">
                         <div class="content-function-group">
                             <g:voteButtons content="${article.content}" votes="${contentVotes}" category="${article.category}" />
                         </div>
@@ -150,7 +155,7 @@
                                         </g:isNotAuthor>
                                     </g:if>
 
-                                    <g:avatar avatar="${note.displayAuthor}" size="medium" dateCreated="${note.dateCreated}"/>
+                                    <g:avatar avatar="${note.displayAuthor}" size="medium" dateCreated="${note.dateCreated}" changeLog="${changeLogs?.find { it[2] == note.id}}" logType="content"/>
                                     <fieldset class="form">
                                         <article id="note-text-${note.id}" class="list-group-item-text note-text">
                                             <g:if test="${note.textType == ContentTextType.MD}">

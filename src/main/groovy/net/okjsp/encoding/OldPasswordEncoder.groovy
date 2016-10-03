@@ -34,30 +34,27 @@ class OldPasswordEncoder implements PasswordEncoder {
         StringBuilder sb = new StringBuilder(16);
 
         sb.append(Long.toString((nr & 0xF0000000) >> 28, 16))
-        sb.append(Long.toString((nr & 0xF000000) >> 24, 16))
-        sb.append(Long.toString((nr & 0xF00000) >> 20, 16))
-        sb.append(Long.toString((nr & 0xF0000) >> 16, 16))
-        sb.append(Long.toString((nr & 0xF000) >> 12, 16))
-        sb.append(Long.toString((nr & 0xF00) >> 8, 16))
-        sb.append(Long.toString((nr & 0xF0) >> 4, 16))
-        sb.append(Long.toString((nr & 0x0F), 16))
+            .append(Long.toString((nr & 0xF000000) >> 24, 16))
+            .append(Long.toString((nr & 0xF00000) >> 20, 16))
+            .append(Long.toString((nr & 0xF0000) >> 16, 16))
+            .append(Long.toString((nr & 0xF000) >> 12, 16))
+            .append(Long.toString((nr & 0xF00) >> 8, 16))
+            .append(Long.toString((nr & 0xF0) >> 4, 16))
+            .append(Long.toString((nr & 0x0F), 16))
 
         sb.append(Long.toString((nr2 & 0xF0000000) >> 28, 16))
-        sb.append(Long.toString((nr2 & 0xF000000) >> 24, 16))
-        sb.append(Long.toString((nr2 & 0xF00000) >> 20, 16))
-        sb.append(Long.toString((nr2 & 0xF0000) >> 16, 16))
-        sb.append(Long.toString((nr2 & 0xF000) >> 12, 16))
-        sb.append(Long.toString((nr2 & 0xF00) >> 8, 16))
-        sb.append(Long.toString((nr2 & 0xF0) >> 4, 16))
-        sb.append(Long.toString((nr2 & 0x0F), 16))
+            .append(Long.toString((nr2 & 0xF000000) >> 24, 16))
+            .append(Long.toString((nr2 & 0xF00000) >> 20, 16))
+            .append(Long.toString((nr2 & 0xF0000) >> 16, 16))
+            .append(Long.toString((nr2 & 0xF000) >> 12, 16))
+            .append(Long.toString((nr2 & 0xF00) >> 8, 16))
+            .append(Long.toString((nr2 & 0xF0) >> 4, 16))
+            .append(Long.toString((nr2 & 0x0F), 16))
 
-        return sb.toString()
+        sb.toString()
     }
 
     boolean isPasswordValid(String encPass, String rawPass, Object salt) {
-
-        boolean valid = encPass == encodePassword(rawPass, salt)
-
-        return valid
+        encPass == encodePassword(rawPass, salt)
     }
 }

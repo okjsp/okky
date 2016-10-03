@@ -14,11 +14,14 @@ class MainService {
 
     @Cacheable(value="choiceArticlesCache")
     def getChoiceArticles() {
+
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
             eq('choice', true)
             eq('enabled', true)
+            ne('category', Category.get('recruit'))
+            ne('category', Category.get('resumes'))
             order('id', 'desc')
             maxResults(5)
         }.findAll()

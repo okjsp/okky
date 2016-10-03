@@ -1,15 +1,13 @@
 package net.okjsp
 
 import com.megatome.grails.RecaptchaService
-import grails.plugin.springsecurity.annotation.Secured
-import org.springframework.mail.MailException
-import org.springframework.mail.MailSender
-import org.springframework.mail.SimpleMailMessage
 import grails.plugin.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.annotation.Secured
+import grails.plugins.mail.MailService
 import grails.transaction.Transactional
 import grails.validation.ValidationException
-import net.okjsp.*
-import org.springframework.http.HttpStatus
+
+import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 class UserController {
@@ -17,14 +15,14 @@ class UserController {
     UserService userService
     RecaptchaService recaptchaService
     SpringSecurityService springSecurityService
-    /*MailSender mailSender
-    SimpleMailMessage templateMessage*/
+    MailService mailService
     EncryptService encryptService
     
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = [action:this.&notLoggedIn, except: ['edit', 'update', 'index', 'rejectDM']]
+    def beforeInterceptor = [action:this.&notLoggedIn,
+                             except: ['edit', 'update', 'index', 'rejectDM', 'withdrawConfirm', 'withdraw', 'passwordChange', 'updatePasswordChange']]
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
@@ -42,8 +40,31 @@ class UserController {
         Avatar currentAvatar = Avatar.get(id)
         User user = User.findByAvatar(currentAvatar)
 
-        def activitiesQuery = Activity.where {
-            avatar == currentAvatar
+        if(user.withdraw) {
+            redirect uri: '/'
+            return
+        }
+
+        def activitiesQuery
+
+        if(params.category == 'activity' || (!params.category && !currentAvatar.official)) {
+            activitiesQuery= Activity.where {
+                avatar == currentAvatar
+            }
+        } else {
+            def category
+
+            if(params.category == 'solved') category = ActivityType.SOLVED
+            else if(params.category == 'scrapped') category = ActivityType.SCRAPED
+            else {
+                params.category = 'articles'
+                category = ActivityType.POSTED
+            }
+
+            activitiesQuery= Activity.where {
+                avatar == currentAvatar
+                type == category
+            }
         }
 
         def counts = [
@@ -57,24 +78,28 @@ class UserController {
         respond user, model: [avatar: currentAvatar, activities: activitiesQuery.list(params), activitiesCount: activitiesQuery.count(), counts: counts]
     }
 
+    @Secured("permitAll")
     def register() {
         recaptchaService.cleanUp session
         respond new User(params)
     }
 
+    @Secured("permitAll")
     @Transactional
     def save(User user) {
 
         try {
 
-            def reCaptchaVerified = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
+            def realIp = userService.getRealIp(request)
+
+            def reCaptchaVerified = recaptchaService.verifyAnswer(session, realIp, params)
 
             if(!reCaptchaVerified) {
                 respond user.errors, view: 'register'
                 return
             }
 
-            user.createIp = userService.getRealIp(request)
+            user.createIp = realIp
 
             userService.saveUser user
 
@@ -82,18 +107,12 @@ class UserController {
 
             def key = userService.createConfirmEmail(user)
 
-            /*mailService.sendMail {
+            mailService.sendMail {
                 async true
                 to user.person.email
                 subject message(code:'email.join.subject')
                 body(view:'/email/join_confirm', model: [user: user, key: key, grailsApplication: grailsApplication] )
-            }*/
-
-            /*SimpleMailMessage msg = new SimpleMailMessage(templateMessage)
-            msg.setTo(user.person.email)
-            msg.setSubject("회원 가입 메일")
-            msg.setText("회원 가입 메일")
-            mailSender.send(msg)*/
+            }
 
             session['confirmSecuredKey'] = key
 
@@ -102,7 +121,7 @@ class UserController {
                     flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id])
                     redirect action: 'complete'
                 }
-                '*' { respond user, [status: HttpStatus.CREATED] }
+                '*' { respond user, [status: CREATED] }
             }
 
         } catch (ValidationException e) {
@@ -110,6 +129,7 @@ class UserController {
         }
     }
 
+    @Secured("permitAll")
     def complete() {
 
         if(springSecurityService.isLoggedIn()) {
@@ -131,6 +151,7 @@ class UserController {
         render view: 'complete', model: [email: confirmEmail.email]
     }
 
+    @Secured("permitAll")
     @Transactional
     def confirm(String key) {
 
@@ -165,11 +186,13 @@ class UserController {
         render view: 'confirm'
     }
 
+    @Secured("ROLE_USER")
     def edit() {
         User user = springSecurityService.currentUser
         respond user
     }
 
+    @Secured("ROLE_USER")
     @Transactional
     def update(User user) {
         if (user == null) {
@@ -191,7 +214,7 @@ class UserController {
                     flash.message = message(code: 'default.updated.message', args: [message(code: 'User.label', default: 'User'), user.id])
                     redirect action: 'edit'
                 }
-                '*'{ respond user, [status: HttpStatus.OK] }
+                '*'{ respond user, [status: OK] }
             }
 
         } catch (ValidationException e) {
@@ -200,6 +223,7 @@ class UserController {
         }
     }
 
+    @Secured("permitAll")
     def password(String key) {
 
         if(springSecurityService.isLoggedIn()) {
@@ -221,7 +245,9 @@ class UserController {
         render view: 'password', model: [key: key]
 
     }
-    
+
+    //@Secured("ROLE_USER")
+    @Secured("permitAll")
     @Transactional
     def updatePassword(String password, String passwordConfirm, String key) {
 
@@ -265,16 +291,7 @@ class UserController {
         redirect uri: '/login/auth'
     }
 
-    protected void notFound() {
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
-                redirect uri: '/'
-            }
-            '*'{ render status: HttpStatus.NOT_FOUND }
-        }
-    }
-    
+    @Secured("ROLE_USER")
     @Transactional
     def rejectDM(String k) {
         
@@ -294,5 +311,73 @@ class UserController {
         }
         
         render "수신거부에 ${result}하였습니다."
+    }
+
+    @Secured("ROLE_USER")
+    def withdrawConfirm() {
+        render view: "withdrawConfirm"
+    }
+
+    @Secured("ROLE_USER")
+    @Transactional
+    def withdraw() {
+        User user = springSecurityService.currentUser
+
+        userService.withdraw(user)
+
+        session.invalidate()
+
+        redirect controller: 'user', action: 'withdrawComplete'
+
+    }
+
+    @Secured("permitAll")
+    def withdrawComplete() {
+        render view: "withdrawComplete"
+    }
+
+    @Secured("ROLE_USER")
+    def passwordChange() {
+        render view: "passwordChange"
+    }
+
+    @Secured("ROLE_USER")
+    @Transactional
+    def updatePasswordChange(String oldPassword, String password, String passwordConfirm, String key) {
+
+        User user = springSecurityService.currentUser
+
+        if(user.password != springSecurityService.encodePassword(oldPassword)) {
+            flash.message = message(code: 'user.oldPassword.not.equal.message')
+            render view: 'passwordChange'
+            return
+        }
+
+        if(password != passwordConfirm) {
+            flash.message = message(code: 'user.password.not.equal.message')
+            render view: 'passwordChange', model: [key: key]
+            return
+        }
+
+        user.password = password
+        user.save()
+
+        if(user.hasErrors()) {
+            flash.message = message(code: 'user.password.matches.error', args: [message(code: 'user.password.label')])
+            render view: 'passwordChange', model: [key: key]
+            return
+        }
+
+        redirect controller: 'user', action: 'edit'
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
+                redirect uri: '/'
+            }
+            '*'{ render status: NOT_FOUND }
+        }
     }
 }

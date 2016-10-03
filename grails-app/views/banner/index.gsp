@@ -24,11 +24,13 @@
 			<thead>
 					<tr>
 
-                        <g:sortableColumn property="name" title="${message(code: 'banner.name.label', default: 'Name')}" />
+                        <g:sortableColumn property="name" title="${message(code: 'banner.name.label', default: 'Name')}" action="index" />
 					
 						<g:sortableColumn property="target" title="${message(code: 'banner.target.label', default: 'Target')}" />
 					
 						<g:sortableColumn property="clickCount" title="${message(code: 'banner.clickCount.label', default: 'Click Count')}" />
+
+						<g:sortableColumn property="ipCount" title="${message(code: 'banner.ipCount.label', default: 'Click per IP')}" />
 
                         <g:sortableColumn property="dateCreated" title="${message(code: 'banner.dateCreated.label', default: 'Date Created')}" />
 					
@@ -45,7 +47,9 @@
                         <td>${fieldValue(bean: banner, field: "target")}</td>
 					
 						<td>${fieldValue(bean: banner, field: "clickCount")}</td>
-					
+
+						<td>${fieldValue(bean: banner, field: "ipCount")}</td>
+
 						<td><g:formatDate date="${banner.dateCreated}" /></td>
 					
 						<td><g:formatDate date="${banner.lastUpdated}" /></td>

@@ -46,9 +46,9 @@
                 <h5 class="panel-header">SNS 로그인</h5>
             </div>
             <div class="panel-body panel-margin sns-buttons">
-                <oauth:connect provider="facebook" id="facebook-connect-link" class="btn btn-facebook btn-block"><i class="fa fa-facebook fa-fw"></i> Facebook 으로 로그인</oauth:connect>
+                <oauth2:connect provider="facebook" id="facebook-connect-link" class="btn btn-facebook btn-block"><i class="fa fa-facebook fa-fw"></i> Facebook 으로 로그인</oauth2:connect>
                 %{--<oauth:connect provider="twitter" id="twitter-connect-link" class="btn btn-twitter btn-block"><i class="fa fa-twitter fa-fw"></i> Twitter 로 로그인</oauth:connect>--}%
-                <oauth:connect provider="google" id="google-connect-link" class="btn btn-google btn-block"><i class="fa fa-google fa-fw"></i> Google 로 로그인</oauth:connect>
+                <oauth2:connect provider="google" id="google-connect-link" class="btn btn-google btn-block"><i class="fa fa-google fa-fw"></i> Google 로 로그인</oauth2:connect>
             </div>
         </div>
     </div>

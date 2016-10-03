@@ -2,11 +2,7 @@ package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.annotation.Secured
-import net.okjsp.ConfirmEmail
-import net.okjsp.Person
-import net.okjsp.User
-import org.springframework.mail.MailException
-import org.springframework.mail.MailSender
+import grails.plugins.mail.MailService
 import org.springframework.mail.SimpleMailMessage
 
 @Secured("permitAll")
@@ -15,7 +11,8 @@ class FindUserController {
 
     UserService userService
     SpringSecurityService springSecurityService
-    MailSender mailSender
+    //MailSender mailSender
+    MailService mailService
     SimpleMailMessage templateMessage
 
     def beforeInterceptor = [action:this.&notLoggedIn]

@@ -2,6 +2,8 @@ package net.okjsp
 
 class Article {
 
+    transient articleService
+
     String title
     String tagString
 
@@ -29,9 +31,13 @@ class Article {
 
     Integer best = 0
 
+    boolean disabled
+
     static belongsTo = [content: Content]
 
     static hasMany = [tags : Tag, notes: Content]
+
+    static transients = ['disabled']
 
     static mapping = {
         sort id: 'desc'
@@ -87,6 +93,10 @@ class Article {
         }
         if(isDirty('tagString')) {
             updateTag()
+            articleService.changeLog(ChangeLogType.TAGS, this, content, this.getPersistentValue('tagString'), tagString)
+        }
+        if(isDirty('title')) {
+            articleService.changeLog(ChangeLogType.TITLE, this, content, this.getPersistentValue('title'), title)
         }
     }
 

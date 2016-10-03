@@ -24,4 +24,20 @@ $(function() {
     $('article.content-text, article.note-text').each(function() {
         autoLinker(this);
     });
+
+    var $window = $(window),
+        $contentFunction = $('#content-function'),
+        $contentBody = $('#content-body');
+
+    $window.scroll(function() {
+        console.log($window.scrollTop(), ($contentBody.outerHeight() - 200));
+        var contentHeight = $contentBody.outerHeight() - 200;
+        if($window.scrollTop() > 134 && $window.scrollTop() < contentHeight) {
+            $contentFunction.addClass('fixed').removeClass('over');
+        } else if($window.scrollTop() < 135) {
+            $contentFunction.removeClass('fixed over');
+        } else if($window.scrollTop() > contentHeight) {
+            $contentFunction.addClass('over').removeClass('fixed');
+        }
+    });
 });

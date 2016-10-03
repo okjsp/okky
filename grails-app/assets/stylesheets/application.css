@@ -1341,20 +1341,36 @@ blockquote {
     font-size: 10px;
 }
 
-.avatar-x-small .timeago {
+.avatar-x-small .timeago, .avatar-x-small .date-created {
+    display: inline-block;
+    color: #ccc;
     font-size: 8px;
 }
 
-.avatar-small .timeago {
+.avatar-small .timeago, .avatar-small .date-created {
+    color: #ccc;
     font-size: 10px;
 }
 
 .avatar-medium .timeago {
-    display: block;
+    color: #ccc;
     font-size: 12px;
 }
 
-.avatar-list .timeago {
+.avatar-medium .date-created {
+    display: block;
+    color: #ccc;
+    font-size: 12px;
+}
+
+.avatar-medium .date-created a,
+.avatar-medium .date-created a .timeago {
+    text-decoration: underline;
+    color: #ccc;
+}
+
+.avatar-list .date-created {
+    color: #ccc;
     display: block;
     font-size: 10px;
 }
@@ -1429,6 +1445,29 @@ blockquote {
     min-height: 180px;
     margin: 30px 0;
     word-break: break-all;
+    word-wrap: break-word;
+}
+
+.content-log-text {
+    width: 100%;
+    max-height: 180px;
+    overflow: hidden;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.content-log-text.expend {
+    max-height: none;
+    overflow: visible;
+}
+
+.change-date {
+    font-weight: bold;
+}
+
+.expend-content {
+    width: 100%;
+    padding: 10px 0 0;
 }
 
 .content-tags {
@@ -1446,6 +1485,19 @@ blockquote {
     width: 100px;
     padding-top: 20px;
     color: #666;
+}
+
+.content-function.fixed {
+    position: fixed;
+    top: 0;
+    left: 943px;
+}
+
+.content-function.over {
+    position: absolute;
+    top: inherit;
+    bottom: 130px;
+    right: 0;
 }
 
 .content-function .fa {
@@ -1741,11 +1793,24 @@ blockquote {
     margin-bottom: 0;
 }
 
+.special-nav {
+    margin-top: 20px;
+    overflow: auto;
+}
+
 .article-middle-block .list-tag {
     width: 100%;
     height: 19px;
     overflow: hidden;
     line-height: 20px;
+}
+
+.okkys-choice {
+    margin-top: 25px;
+}
+
+.okkys-choice .list-group-item-heading {
+    font-weight: bold;
 }
 
 @-webkit-keyframes note-alert-animation {
@@ -2098,8 +2163,33 @@ blockquote {
         width: 100%;
     }
 
+    .user-info-nav {
+        width: 100%;
+    }
+
+    .user-info-nav .nav > li {
+        float: left;
+    }
+
+    .user-info-nav li.active a {
+        border-left: none;
+        background-color: #ddd;
+        font-weight: normal;
+        font-size: 14px;
+    }
+
     #footer {
         width: 100%;
+    }
+
+
+    .content-function.fixed,
+    .content-function.over {
+        position:relative;
+        top: inherit;
+        bottom: inherit;
+        left: inherit;
+        right: inherit;
     }
 
 }

@@ -30,7 +30,7 @@ class NotificationController {
 
         notificationService.read(avatar)
 
-        cache false
+//        cache false 오류 나네
 
         def result = [notifications: notifications, count: count, lastRead: lastRead]
 
@@ -43,7 +43,7 @@ class NotificationController {
 
         def result = [count: notificationService.count(avatar)]
 
-        cache false
+//        cache false   오류 나네
         respond result
     }
 }
