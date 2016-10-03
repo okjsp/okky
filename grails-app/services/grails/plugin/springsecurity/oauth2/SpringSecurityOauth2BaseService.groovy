@@ -98,6 +98,10 @@ class SpringSecurityOauth2BaseService {
      */
     def void registerProvider(OAuth2ProviderService providerService) throws OAuth2Exception {
         log.debug("Registering provider: " + providerService.getProviderID())
+
+        println "println registerProvider.............."
+        println providerServiceMap
+
         if (providerServiceMap.containsKey(providerService.getProviderID())) {
             // There is already a provider under that name
             log.warn("There is already a provider with the name " + providerService.getProviderID() + " registered")

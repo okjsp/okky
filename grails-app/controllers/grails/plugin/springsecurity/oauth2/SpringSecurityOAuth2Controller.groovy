@@ -22,6 +22,7 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import grails.plugin.springsecurity.oauth2.exception.OAuth2Exception
 import grails.plugin.springsecurity.oauth2.facebook.FacebookOauth2SpringToken
+import grails.plugin.springsecurity.oauth2.google.GoogleOauth2SpringToken
 import grails.plugin.springsecurity.oauth2.token.OAuth2SpringToken
 import grails.plugin.springsecurity.userdetails.GrailsUser
 import grails.validation.ValidationException
@@ -170,28 +171,14 @@ class SpringSecurityOAuth2Controller {
                 return
             }
         } else {
+
             Person person = new Person()
 
-            if(oAuth2SpringToken.providerName == FacebookOauth2SpringToken.PROVIDER_NAME) {
-
-                person.fullName = oAuth2SpringToken.screenName
-                person.email = oAuth2SpringToken.socialId
-
-//            } else if(providerName == GoogleOAuthToken.PROVIDER_NAME) {
-//
-//                def response = oauthService.getGoogleResource(oAuthToken.accessToken, 'https://www.googleapis.com/oauth2/v1/userinfo')
-//                def info = JSON.parse(response.body)
-//                println "info ==="
-//                println info
-//
-//                person.fullName = info.name
-//                person.email = info.email
-            }
+            person.fullName = oAuth2SpringToken.screenName
+            person.email = oAuth2SpringToken.socialId
 
             user.person = person
         }
-
-
 
         // There seems to be a new one in the town aka 'There is no one logged in'
         // Ask to create a new account or link an existing user to it
