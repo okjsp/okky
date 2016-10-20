@@ -19,17 +19,23 @@ class UrlMappings {
         "/find/user?/$action"(controller: "findUser")
 
         "/articles/$code/$action?(.$format)?"(controller: "article")
+        "/articles/tagged/$tag(.$format)?"(controller: "article", action: "tagged")
 
         "/article/$id(.$format)?"(controller: "article", action: "show")
         "/article/$action/$id(.$format)?"(controller: "article")
         "/article/$id/$action/$contentId(.$format)?"(controller: "article")
-        
-        "/articles/tagged/$tag(.$format)?"(controller: "article", action: "tagged")
 
         "/changes/$id(.$format)?"(controller: "article", action: "changes")
 
         "/content/$id(.$format)?"(controller: "content", action: "show")
         "/content/$action/$id(.$format)?"(controller: "content")
+
+        "/recruits/$action?(.$format)?"(controller: "recruit")
+        "/recruits/tagged/$tag(.$format)?"(controller: "recruit", action: "tagged")
+
+        "/recruit/$id(.$format)?"(controller: "recruit", action: "show")
+        "/recruit/$action/$id(.$format)?"(controller: "recruit")
+        "/recruit/$id/$action/$contentId(.$format)?"(controller: "recruit")
 
         "/notification(.$format)?"(controller: "notification", action: "index")
 

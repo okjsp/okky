@@ -25,21 +25,23 @@ class Article {
     String aNickName
 
     Content selectedNote
-    
+
     String createIp = ""
 
     Date dateCreated
     Date lastUpdated
-    
+
     Integer best = 0
 
     boolean disabled
+
+    Recruit recruit
 
     static belongsTo = [content: Content]
 
     static hasMany = [tags : Tag, notes: Content]
 
-    static transients = ['disabled']
+    static transients = ['disabled', 'recruit']
 
     static mapping = {
         notes sort: 'id', order: 'asc'
@@ -56,7 +58,7 @@ class Article {
         voteCount bindable: false
         noteCount bindable: false
         scrapCount bindable: false
-        tags maxSize: 5, nullable: true
+        tags maxSize: 10, nullable: true
         tagString nullable: true
         notes bindable: false
         enabled bindable: false

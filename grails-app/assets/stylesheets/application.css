@@ -967,7 +967,7 @@ blockquote {
 
 .category-filter-wrapper {
     margin-top: 20px;
-    
+
 }
 
 .category-filter-query {
@@ -1125,6 +1125,23 @@ blockquote {
     margin-top: 3px;
     margin-bottom: 3px;
     word-break: break-all;
+}
+
+.detail-info {
+  margin: 6px 0 5px;
+  font-size: 12px;
+  color: #0f0f0f0;
+}
+
+.detail-info .detail-info-row {
+  padding: 3px 0;
+}
+
+.content-body .detail-info {
+  font-size: 14px;
+}
+
+.list-recruit .list-group-item-heading {
 }
 
 .list-group-item-summary {
@@ -1480,6 +1497,11 @@ blockquote {
     width: 700px;
 }
 
+.content-body label {
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
 .content-function {
     position:relative;
     width: 100px;
@@ -1779,7 +1801,7 @@ blockquote {
     margin-top : 10px;
     padding-top : 10px;
     border-top: 1px solid #ddd;
-    
+
 }
 
 .article-middle-block:first-of-type {
@@ -1863,11 +1885,11 @@ blockquote {
         height: 40px;
         padding: 0;
     }
-    
+
     .sidebar.open {
         height: 350px;
     }
-    
+
     .nav-main {
         margin: 0;
     }
@@ -1883,7 +1905,7 @@ blockquote {
     .sidebar-header-icon {
         font-size: 20px;
     }
-    
+
     .sidebar-header,
     .sidebar-header:hover,
     .sidebar-header:focus,
@@ -1897,7 +1919,7 @@ blockquote {
     .nav-main {
         margin: 0;
     }
-    
+
     .sidebar-category .nav-main {
         width: 50%;
     }
@@ -1905,7 +1927,7 @@ blockquote {
     .nav-user .nav-sidebar-label {
         display: none;
     }
-    
+
     .nav-user,
     .sidebar-category .nav-user {
         position: fixed;
@@ -1916,8 +1938,8 @@ blockquote {
         height: auto;
         margin: 0;
     }
-    
-    .nav-user .nav-sidebar, 
+
+    .nav-user .nav-sidebar,
     .nav-user.nav-sidebar {
         margin: 0;
     }
@@ -1928,8 +1950,8 @@ blockquote {
         font-size: 14px;
     }
 
-    .nav-sidebar > li > .link, 
-    .nav-sidebar > li:not(.active) > .link:hover, 
+    .nav-sidebar > li > .link,
+    .nav-sidebar > li:not(.active) > .link:hover,
     .nav-sidebar > li:not(.active) > .link:focus {
         padding: 10px !important;
     }
@@ -1938,11 +1960,11 @@ blockquote {
     .sidebar-category .nav-user li {
         border: 0 !important;
     }
-    
+
     .nav-user .avatar {
         display: none;
     }
-    
+
     .nav-user-action {
         width: 70px;
     }
@@ -1961,7 +1983,7 @@ blockquote {
         width: 50%;
         float: left;
     }
-    
+
     .nav-user-action .nav-user-func {
         width: 50%;
         float: left;
@@ -2004,7 +2026,7 @@ blockquote {
 
     .sidebar-category-nav .nav {
         margin-top: 10px;
-        
+
     }
 
     .sidebar-footer {
@@ -2015,7 +2037,7 @@ blockquote {
         width: 150px;
         left: 60px;
     }
-    
+
     .sub-title {
         font-size: 20px;
     }
@@ -2084,14 +2106,14 @@ blockquote {
     .google-ad {
         display: none;
     }
-    
+
     .list-summary-wrapper {
         display: none;
     }
-    
+
     .note-evaluate-wrapper {
         padding : 0 20px;
-        
+
     }
 
     .avatar-list .avatar-photo {
@@ -2103,7 +2125,7 @@ blockquote {
     .avatar-list .timeago {
         font-size: 10px;
     }
-    
+
     .avatar-list .nickname {
         line-height: 17px;
         vertical-align: middle;
@@ -2121,7 +2143,7 @@ blockquote {
     .list-title-wrapper {
         width: auto;
     }
-    
+
     .list-group-item-author {
         width: auto;
     }
@@ -2135,7 +2157,7 @@ blockquote {
         font-size: 30px;
         line-height: 10px;
     }
-    
+
     .article-scrap-wrapper {
         vertical-align: middle;
     }
@@ -2146,19 +2168,19 @@ blockquote {
         padding: 0 10px;
         text-align: left;
     }
-    
+
     .note-submit-buttons > p {
         float: left;
     }
-    
+
     .note-submit-buttons #btn-create-btn {
         float: right;
     }
-    
+
     .share-btn-wrapper {
         margin-bottom: 0;
     }
-    
+
     .article-form {
         width: 100%;
     }
