@@ -13,7 +13,7 @@
         },
         freeInput: true,
         addOnBlur: true,
-        maxTags: 5,
+        maxTags: 10,
         maxChars: 20,
         confirmKeys: [13, 32, 44, 91, 188],
         onTagExists: function(item, $tag) {
