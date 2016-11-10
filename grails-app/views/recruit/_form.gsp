@@ -5,6 +5,28 @@
 <%@ page import="net.okjsp.JobPayType" %>
 <%@ page import="net.okjsp.JobPositionType" %>
 
+
+<g:if test="${!recruit.jobType}">
+<div class="form-group ${hasErrors(bean: recruit, field: 'jobType', 'has-error')} has-feedback">
+    <div class="row">
+        <div class="col-xs-12 text-center">
+          <div class="content-header">
+            <h3>계약 형태를 선택해 주세요.</h3>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+          <a href="?jobType=FULLTIME" class="btn btn-block btn-success">${message(code: 'recruit.jobType.FULLTIME', default: '정규직')}</a>
+        </div>
+        <div class="col-xs-6">
+          <a href="?jobType=CONTRACT" class="btn btn-block btn-primary">${message(code: 'recruit.jobType.CONTRACT', default: '계약직(프리랜서)')}</a>
+        </div>
+    </div>
+</div>
+</g:if>
+
+<g:if test="${recruit.jobType}">
 <sec:ifAllGranted roles="ROLE_ADMIN">
 
     <div class="form-group ${hasErrors(bean: article, field: 'choice', 'has-error')} has-feedback">
@@ -22,32 +44,69 @@
     </div>
 </sec:ifAllGranted>
 
-<div class="form-group ${hasErrors(bean: recruit, field: 'jobType', 'has-error')} has-feedback">
-    <select id="jobType" name="jobType" class="form-control">
-        <option value=""><g:message code="recruit.jobType.label" default="구인 종류를 선택해 주세요." /></option>
-        <option value="FULLTIME" <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">selected="selected"</g:if>>${message(code: 'recruit.jobType.FULLTIME', default: '정규직')}</option>
-        <option value="CONTRACT" <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">selected="selected"</g:if>>${message(code: 'recruit.jobType.CONTRACT', default: '계약직(프리랜서)')}</option>
-    </select>
+<div class="form-group ${hasErrors(bean: article, field: 'title', 'has-error')} has-feedback">
+    <div>
+      <h4>
+          <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
+            <div class="label label-success">${message(code: 'recruit.jobType.FULLTIME', default: '정규직')}</div>
+          </g:if>
+          <g:elseif test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
+            <div class="label label-primary">${message(code: 'recruit.jobType.CONTRACT', default: '계약직(프리랜서)')}</div>
+          </g:elseif>
+      </h4>
+    </div>
 </div>
 
-<g:if test="${recruit.jobType}">
 <div class="form-group ${hasErrors(bean: article, field: 'title', 'has-error')} has-feedback">
     <div>
         <g:textField name="title" required="" value="${article?.title}" placeholder="제목을 입력해 주세요." class="form-control"/>
     </div>
 </div>
 
+<div class="form-group">
+    <div class="row">
+        <div class="col col-sm-12">
+            <label><g:message code="recruit.jobPositionType.label" default="직급"/></label>
+            <div class="btn-group btn-group-justified" role="group">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success">${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default">${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</button>
+              </div>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default">${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</button>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="form-group ${hasErrors(bean: recruit, field: 'jobPositionType', 'has-error')} has-feedback">
     <div class="row">
-        <div class="col col-sm-6">
-            <select id="jobPositionType" name="jobPositionType" class="form-control">
+        <div class="col col-sm-4">
+            <select id="startDate" name="startDate" class="form-control form-inline">
+              <option>투입시기</option>
+            </select>
+            <!-- <select id="jobPositionType" name="jobPositionType" class="form-control">
                 <option value=""><g:message code="recruit.jobPositionType.label" default="직무" /></option>
                 <option value="JUNIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('JUNIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
                 <option value="SENIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('SENIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</option>
                 <option value="MANAGER" <g:if test="${recruit.jobType == JobPositionType.valueOf('MANAGER')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</option>
-            </select>
+            </select> -->
         </div>
-        <div class="col col-sm-6">
+        <div class="col col-sm-4">
+            <select id="startDate" name="startDate" class="form-control form-inline">
+              <option>투입시기</option>
+            </select>
+            <!-- <select id="jobPositionType" name="jobPositionType" class="form-control">
+                <option value=""><g:message code="recruit.jobPositionType.label" default="직무" /></option>
+                <option value="JUNIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('JUNIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
+                <option value="SENIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('SENIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</option>
+                <option value="MANAGER" <g:if test="${recruit.jobType == JobPositionType.valueOf('MANAGER')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</option>
+            </select> -->
+        </div>
+        <div class="col col-sm-4">
             <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
                 <select id="jobPayType" name="jobPayType" class="form-control">
                     <option value=""><g:message code="recruit.jobPayType.label" default="연봉" /></option>
