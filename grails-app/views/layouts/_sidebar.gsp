@@ -6,7 +6,7 @@
     <a href="javascript://" class="sidebar-header">
         <i class="fa fa-bars sidebar-header-icon"></i>
     </a>
-    
+
     <h1><div class="logo"><g:link uri="/"><asset:image src="okjsp_logo.png" alt="OKKY" title="OKKY" /></g:link></div></h1>
 
     <ul id="search-google-icon" class="nav nav-sidebar nav-sidebar-search-wrapper">
@@ -62,7 +62,7 @@
                     <div class="popover-content" id="notification-popover"></div>
                 </div>
             </script>
-            
+
             <script id="search-google-template" type="text/template">
                 <div class="popover popover-fixed" role="tooltip"><div class="arrow"></div>
                     <h3 class="popover-title">Google 검색</h3>
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </script>
-            
+
         </sec:ifLoggedIn>
         <sec:ifNotLoggedIn>
             <g:set var="redirectUrl" value="${request.forwardURI.substring(request.contextPath.length())}" />
@@ -107,7 +107,12 @@
     <ul class="nav">
         <li><g:link uri="/articles/${parentCategory.code}" class="link"><span class="nav-sidebar-label nav-sidebar-category-label">All</span> <span class="nav-indicator ${category.code == parentCategory.code ? 'nav-selected': ''}"><span class="nav-selected-dot"></span></span></g:link></li>
         <g:each in="${subCategories}" var="subCategory">
-            <li><g:link uri="/articles/${subCategory.code}" class="link"><span class="nav-sidebar-label nav-sidebar-category-label"><g:message code="${subCategory.labelCode}" default="${subCategory.defaultLabel}" /></span> <span class="nav-indicator ${subCategory.code == category.code ? 'nav-selected': ''}"><span class="nav-selected-dot"></span></span></g:link></li>
+            <g:if test="${subCategory.isURL}">
+                <li><g:link uri="${subCategory.url}" class="link"><span class="nav-sidebar-label nav-sidebar-category-label"><g:message code="${subCategory.labelCode}" default="${subCategory.defaultLabel}" /></span> <span class="nav-indicator ${subCategory.code == category.code ? 'nav-selected': ''}"><span class="nav-selected-dot"></span></span></g:link></li>
+            </g:if>
+            <g:else>
+                <li><g:link uri="/articles/${subCategory.code}" class="link"><span class="nav-sidebar-label nav-sidebar-category-label"><g:message code="${subCategory.labelCode}" default="${subCategory.defaultLabel}" /></span> <span class="nav-indicator ${subCategory.code == category.code ? 'nav-selected': ''}"><span class="nav-selected-dot"></span></span></g:link></li>
+            </g:else>
         </g:each>
     </ul>
     <div class="special-nav">
