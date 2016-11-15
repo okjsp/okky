@@ -16,11 +16,12 @@ class Recruit {
     Date startDate
     Date endDate
 
-    Date workingMonth
+    Integer workingMonth
 
     static constraints = {
       company nullable: true
       startDate nullable: true
+      endDate nullable: true
       workingMonth nullable: true
     }
 }

@@ -2,12 +2,14 @@
 //
 // Any JavaScript file within this directory can be referenced here using a relative path.
 //
-// You're free to add application-wide JavaScript to this file, but it's generally better 
+// You're free to add application-wide JavaScript to this file, but it's generally better
 // to create separate JavaScript files as needed.
 //
 //= require jquery
 //= require bootstrap
 //= require libs/bootstrap-tagsinput
+//= require libs/bootstrap-datepicker
+//= require libs/bootstrap-datepicker.kr.min
 //= require libs/summernote
 //= require libs/summernote-ko-KR
 //= require libs/summernote-ext-video
@@ -41,7 +43,7 @@ if (typeof jQuery !== 'undefined') {
                 }
             }
         });
-        
+
         $('.sidebar-header').click(function() {
             if($('.sidebar').is('.open')) {
                 $('.sidebar').removeClass('open');
@@ -51,13 +53,13 @@ if (typeof jQuery !== 'undefined') {
                 $('.sidebar-category-nav').addClass('open');
             }
         });
-        
+
         $('html, body').click(function(e) {
             if(!$(e.target).is('.sidebar-header  *, .nav-main *, .sidebar-category-nav *, #search-google-form *')) {
                 $('.sidebar').removeClass('open');
                 $('.sidebar-category-nav').removeClass('open');
             }
-            
+
             if(!$(e.target).is('#search-google, #search-google *, #search-google-popover *')) {
                 $('#search-google').popover('hide');
             }
@@ -70,7 +72,7 @@ if (typeof jQuery !== 'undefined') {
                 $('#user-notification').popover('hide');
             }
         });
-        
+
         $.onImageUpload = function($editor) {
 
             return function(files) {
