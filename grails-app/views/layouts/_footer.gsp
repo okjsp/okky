@@ -11,8 +11,10 @@
         </div>
     </div>
     <div class="sponsor-banner col-sm-6">
-        <a href="http://www.aspose.com" target="_blank"><asset:image src="spb_aspose.png"/></a>
-        <a href="http://www.80port.com" target="_blank"><asset:image src="spb_port80.png"/></a>
+        <div class="sponsor-banner-head">Sponsored by</div>
+        <div class="sponsor-banner-images">
+          <a href="http://www.aspose.com" target="_blank"><asset:image src="spb_aspose.png" alt="ASPOSE"/></a>
+          <a href="http://www.inames.co.kr" target="_blank"><asset:image src="spb_inames.png" alt="아이네임즈"/></a>
+        </div>
     </div>
 </div>
-
