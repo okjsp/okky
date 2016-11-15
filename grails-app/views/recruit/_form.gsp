@@ -84,28 +84,31 @@
 
 <div class="form-group ${hasErrors(bean: recruit, field: 'jobPositionType', 'has-error')} has-feedback">
     <div class="row">
-        <div class="col col-sm-4">
-            <select id="startDate" name="startDate" class="form-control form-inline">
-              <option>투입시기</option>
-            </select>
-            <!-- <select id="jobPositionType" name="jobPositionType" class="form-control">
-                <option value=""><g:message code="recruit.jobPositionType.label" default="직무" /></option>
-                <option value="JUNIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('JUNIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
-                <option value="SENIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('SENIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</option>
-                <option value="MANAGER" <g:if test="${recruit.jobType == JobPositionType.valueOf('MANAGER')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</option>
-            </select> -->
-        </div>
-        <div class="col col-sm-4">
-            <select id="startDate" name="startDate" class="form-control form-inline">
-              <option>투입시기</option>
-            </select>
-            <!-- <select id="jobPositionType" name="jobPositionType" class="form-control">
-                <option value=""><g:message code="recruit.jobPositionType.label" default="직무" /></option>
-                <option value="JUNIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('JUNIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
-                <option value="SENIOR" <g:if test="${recruit.jobType == JobPositionType.valueOf('SENIOR')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</option>
-                <option value="MANAGER" <g:if test="${recruit.jobType == JobPositionType.valueOf('MANAGER')}">selected="selected"</g:if>>${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</option>
-            </select> -->
-        </div>
+        <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
+            <div class="col col-sm-4">
+                <div id="datepicker" class="input-group date">
+                    <input type="text" id="startDate" name="startDate" class="form-control" placeholder="투입시기"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                </div>
+            </div>
+            <div class="col col-sm-4">
+                <select id="workingMonth" name="workingMonth" class="form-control form-inline">
+                  <option>투입기간</option>
+                  <option value="1">1개월</option>
+                  <option value="2">2개월</option>
+                  <option value="3">3개월</option>
+                  <option value="4">4개월</option>
+                  <option value="5">5개월</option>
+                  <option value="6">6개월</option>
+                  <option value="7">7개월</option>
+                  <option value="8">8개월</option>
+                  <option value="9">9개월</option>
+                  <option value="10">10개월</option>
+                  <option value="11">11개월</option>
+                  <option value="12">12개월</option>
+                  <option value="99">13개월 이상</option>
+                </select>
+            </div>
+        </g:if>
         <div class="col col-sm-4">
             <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
                 <select id="jobPayType" name="jobPayType" class="form-control">
@@ -125,7 +128,7 @@
             </g:if>
             <g:elseif test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
                 <select id="jobPayType" name="jobPayType" class="form-control">
-                    <option value=""><g:message code="recruit.jobPayType.label" default="연봉" /></option>
+                    <option value=""><g:message code="recruit.jobPayType.label" default="급여" /></option>
                     <option value="M_20_30" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_20_30')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
                     <option value="M_30_40" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_30_40')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
                     <option value="M_40_50" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_40_50')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_40_50', default: '400만 ~ 500만')}</option>
@@ -250,6 +253,13 @@
       }
     });
 
+    $('#datepicker').datepicker({
+        format: "yyyy/mm",
+        startView: 1,
+        minViewMode: 1,
+        language: "kr",
+        autoclose: true
+    });
 
 
 </asset:script>
