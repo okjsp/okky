@@ -9,6 +9,7 @@
 *
 *= require bootstrap
 *= require bootstrap-tagsinput
+*= require bootstrap-datepicker3
 *= require summernote
 *= require prism
 *= require placeholder_polyfill
@@ -581,6 +582,20 @@ blockquote {
 .sponsor-banner {
     margin-top: -8px;
     text-align: right;
+}
+
+.sponsor-banner-head {
+  margin-bottom: 7px;
+  font-size: 10px;
+}
+
+.sponsor-banner-images {
+  vertical-align: bottom;
+}
+
+.sponsor-banner-images a {
+  margin-left: 15px;
+  vertical-align: bottom;
 }
 
 /* Sidebar navigation */
