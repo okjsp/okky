@@ -256,6 +256,15 @@ class ArticleTagLib {
     }
 
     /**
+     * Strip HTML
+     */
+    def stripHtml = { attrs, body ->
+        def text = attrs.text ?: body()
+        def regex = /<\/?(?i:script|embed|object|frameset|frame|iframe|meta|link|style|a|img|br|p|span|div|hr)(.|\n)*?>/
+        text.replaceAll(regex, '')
+        out << text
+    }
+    /**
      * Line to br
      * @attr text Original Text REQUIRED
      */
