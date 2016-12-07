@@ -7,16 +7,14 @@ class Recruit {
 
     JobType jobType
 
-    JobPositionType jobPositionType
-
-    JobPayType jobPayType
-
     Company company
 
     Date startDate
     Date endDate
 
     Integer workingMonth
+
+    static hasMany = [jobPositions: JobPosition]
 
     static constraints = {
       company nullable: true

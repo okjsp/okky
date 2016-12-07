@@ -7,6 +7,8 @@ import grails.validation.ValidationException
 import org.hibernate.FetchMode
 import org.hibernate.type.StandardBasicTypes
 import org.springframework.http.HttpStatus
+import org.springframework.web.multipart.MultipartFile
+import java.io.File
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -143,7 +145,9 @@ class RecruitController {
             }
         }
 
-        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner, changeLogs: changeLogs]
+        def companyInfo = CompanyInfo.findByCompany(article.recruit.company)
+
+        respond article, model: [contentVotes: contentVotes, notes: notes, scrapped: scrapped, contentBanner: contentBanner, changeLogs: changeLogs, companyInfo: companyInfo]
     }
 
     def create() {
@@ -152,6 +156,13 @@ class RecruitController {
 
         if(category == null) {
             notFound()
+            return
+        }
+
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if(!person.company) {
+            redirect(url: '/recruits/company')
             return
         }
 
@@ -181,7 +192,13 @@ class RecruitController {
     def save() {
 
         Article article = new Article(params)
-        Recruit recruit = new Recruit(params)
+        Recruit recruit = new Recruit(
+                city: params.city,
+                district: params.district,
+                jobType: JobType.valueOf(params.jobType),
+                workingMonth: params.workingMonth,
+                startDate: params.startDate ? Date.parse("yyyy/MM", params.startDate) : null
+        )
 
         def category = Category.get('recruit')
 
@@ -189,6 +206,7 @@ class RecruitController {
 
             withForm {
                 Avatar author = Avatar.load(springSecurityService.principal.avatarId)
+                Person person = Person.load(springSecurityService.principal.personId)
 
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
 
@@ -202,16 +220,31 @@ class RecruitController {
 
                 articleService.save(article, author, category)
 
-                println recruit
+                def jobPositionTypes = params.list('jobPosition.jobPositionType')
+                def jobPayTypes = params.list('jobPosition.jobPayType')
+                def tagStrings = params.list('jobPosition.tagString')
 
                 recruit.article = article
+                recruit.company = person.company
 
-                recruit.save()
+                recruit.save(flush: true, failOnError: true)
+
+                jobPositionTypes.eachWithIndex { String entry, int i ->
+
+                    def jobPosition = new JobPosition(
+                            jobPositionType: JobPositionType.valueOf(entry),
+                            jobPayType: JobPayType.valueOf(jobPayTypes[i]),
+                            tagString: tagStrings[i]
+                    ).save(flush: true)
+
+                    recruit.addToJobPositions(jobPosition)
+                }
+
 
                 withFormat {
                     html {
                         flash.message = message(code: 'default.created.message', args: [message(code: 'article.label', default: 'Article'), article.id])
-                        redirect article
+                        redirect uri: "/recruits", method:"GET"
                     }
                     json { respond article, [status: CREATED] }
                 }
@@ -223,7 +256,9 @@ class RecruitController {
 
             def categories = category.children ?: category.parent?.children ?: [category]
 
-            respond article.errors, view: 'create', model: [categories: categories, category: category]
+            println recruit.errors
+
+            respond article.errors, view: 'create', model: [categories: categories, category: category, recruit: recruit]
         }
     }
 
@@ -555,6 +590,66 @@ class RecruitController {
         respond article, model: [content: content, changeLogs: changeLogs]
     }
 
+
+    def createCompany() {
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if(person.company)
+            redirect uri: '/recruit/create'
+        else
+            respond new Company(params)
+    }
+
+    @Transactional
+    def saveCompany(Company company) {
+
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if (company == null) {
+            notFound()
+            return
+        }
+
+        MultipartFile logoFile = request.getFile("logoFile")
+
+        if(!logoFile.empty) {
+            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'));
+            def mil = System.currentTimeMillis()
+            logoFile.transferTo(new File("${grailsApplication.config.grails.filePath}/logo", "${mil}${ext}"))
+
+            company.logo = "${mil}${ext}"
+        }
+
+        company.manager = person
+
+        company.save()
+
+        company.addToMembers(person)
+
+
+        if (company.hasErrors()) {
+            respond company.errors, view:'createCompany'
+            return
+        }
+
+        def companyInfo = new CompanyInfo(
+                description: params['companyInfo.description'],
+                welfare: params['companyInfo.welfare'],
+                company: company
+        ).save()
+
+
+        person.company = company
+        person.save  flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'company.label', default: 'Company'), company.id])
+                redirect uri: '/recruits/create'
+            }
+            '*' { respond company, [status: CREATED] }
+        }
+    }
 
     protected void notFound() {
 

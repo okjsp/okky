@@ -1148,8 +1148,17 @@ blockquote {
   color: #0f0f0f0;
 }
 
-.detail-info .detail-info-row {
+.detail-info-row {
   padding: 3px 0;
+}
+
+.position-name {
+    font-weight: bold;
+}
+
+.detail-info-row .info-label {
+    font-weight: bold;
+    margin-right: 10px;
 }
 
 .content-body .detail-info {
@@ -1157,6 +1166,14 @@ blockquote {
 }
 
 .list-recruit .list-group-item-heading {
+}
+
+.info-list-recruit.list-group-item {
+    padding: 10px 15px;
+}
+
+.info-list-recruit .list-title-wrapper {
+    width: 600px;
 }
 
 .list-group-item-summary {
@@ -1268,6 +1285,10 @@ blockquote {
     overflow: hidden;
     vertical-align: middle;
     behavior: url(/css/PIE.htc);
+}
+
+.avatar-company {
+    border-radius: 0 !important;
 }
 
 .avatar-photo img {

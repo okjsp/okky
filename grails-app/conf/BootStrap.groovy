@@ -45,6 +45,38 @@ class BootStrap {
                     UserRole.create(testUser, userRole, true)
                 }
 
+                if(!User.findByUsername('testuser2')) {
+
+                    // 테스트 User 생성
+                    def testUser = new User(
+                            username: 'testuser2',
+                            password: 'password11',
+                            person: new Person(fullName: '테스트사용자2', email: 'test2@okky.kr'),
+                            avatar: new Avatar(nickname: '테스트사용자2')
+                    )
+
+                    testUser.enabled = true
+                    testUser.createIp = '0.0.0.0'
+                    userService.saveUser testUser
+                    UserRole.create(testUser, userRole, true)
+                }
+
+                if(!User.findByUsername('testuser3')) {
+
+                    // 테스트 User 생성
+                    def testUser = new User(
+                            username: 'testuser3',
+                            password: 'password11',
+                            person: new Person(fullName: '테스트사용자3', email: 'test3@okky.kr'),
+                            avatar: new Avatar(nickname: '테스트사용자3')
+                    )
+
+                    testUser.enabled = true
+                    testUser.createIp = '0.0.0.0'
+                    userService.saveUser testUser
+                    UserRole.create(testUser, userRole, true)
+                }
+
                 // 1 Level Category
                 def questionsCategory = Category.get('questions') ?: new Category(code: 'questions', labelCode: 'questions.label', defaultLabel: 'Q&A', iconCssNames: 'fa fa-database', sortOrder: 0, writable: true, useNote: true, useOpinion: true, useEvaluate: true, useTag: true, requireTag: true).save(flush: true)
                 def techCategory = Category.get('tech') ?: new Category(code: 'tech', labelCode: 'tech.label', defaultLabel: 'Tech', iconCssNames: 'fa fa-code', sortOrder: 1, writable: false, useNote: true, useOpinion: false, useEvaluate: false, useTag: true).save(flush: true)

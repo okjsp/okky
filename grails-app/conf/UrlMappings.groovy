@@ -32,6 +32,8 @@ class UrlMappings {
 
         "/recruits/$action?(.$format)?"(controller: "recruit")
         "/recruits/tagged/$tag(.$format)?"(controller: "recruit", action: "tagged")
+        "/recruits/company"(controller: "recruit", action: 'createCompany')
+        "/recruits/company/save"(controller: "recruit", action: 'saveCompany')
 
         "/recruit/$id(.$format)?"(controller: "recruit", action: "show")
         "/recruit/$action/$id(.$format)?"(controller: "recruit")
@@ -50,6 +52,8 @@ class UrlMappings {
         "/file/image"(controller: "file", action: "image")
         
         "/bbs"(redirect: "/")
+
+        "/company/$action/$id(.$format)?"(controller: "company")
 
         "/banner/stats/$id(.$format)?"(controller: "banner", action: "stats")
 

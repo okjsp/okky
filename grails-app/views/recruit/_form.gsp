@@ -5,6 +5,7 @@
 <%@ page import="net.okjsp.JobPayType" %>
 <%@ page import="net.okjsp.JobPositionType" %>
 
+<input type="hidden" name="jobType" value="${recruit.jobType}" />
 
 <g:if test="${!recruit.jobType}">
 <div class="form-group ${hasErrors(bean: recruit, field: 'jobType', 'has-error')} has-feedback">
@@ -63,86 +64,108 @@
     </div>
 </div>
 
-<div class="form-group">
-    <div class="row">
-        <div class="col col-sm-12">
-            <label><g:message code="recruit.jobPositionType.label" default="직급"/></label>
-            <div class="btn-group btn-group-justified" role="group">
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-success">${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</button>
-              </div>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</button>
-              </div>
+<g:each in="${recruit.jobPositions}" var="jobPosition" status="index">
+
+    <hr/>
+
+    <label><g:message code="jobPosition.jobPositionType.label" default="직급"/></label>
+    <div class="form-group">
+        <div class="row">
+            <div class="col col-sm-6">
+                <select id="jobPositionType" name="jobPosition.jobPositionType" class="form-control">
+                    <option value=""><g:message code="jobPosition.jobPositionType.label" default="직무" /></option>
+                    <option value="JUNIOR" <g:if test="${jobPosition.jobPositionType == JobPositionType.valueOf('JUNIOR')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
+                    <option value="SENIOR" <g:if test="${jobPosition.jobPositionType == JobPositionType.valueOf('SENIOR')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPositionType.SENIOR', default: 'SENIOR')}</option>
+                    <option value="MANAGER" <g:if test="${jobPosition.jobPositionType == JobPositionType.valueOf('MANAGER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPositionType.MANAGER', default: 'MANAGER')}</option>
+                </select>
+            </div>
+            <div class="col col-sm-6">
+                <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
+                <select id="jobPayType" name="jobPosition.jobPayType" class="form-control">
+                    <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
+                    <option value="Y_25_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_25_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_25_30', default: '2500만 ~ 3000만')}</option>
+                    <option value="Y_30_35" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_30_35')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_30_35', default: '3000만 ~ 3500만')}</option>
+                    <option value="Y_35_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_35_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_35_40', default: '3500만 ~ 4000만')}</option>
+                    <option value="Y_40_45" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_40_45')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_40_45', default: '4000만 ~ 4500만')}</option>
+                    <option value="Y_45_50" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_45_50')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_45_50', default: '4500만 ~ 5000만')}</option>
+                    <option value="Y_50_55" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_50_55')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_50_55', default: '5000만 ~ 5500만')}</option>
+                    <option value="Y_55_60" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_55_60')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_55_60', default: '5500만 ~ 6000만')}</option>
+                    <option value="Y_60_70" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_60_70')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_60_70', default: '6000만 ~ 7000만')}</option>
+                    <option value="Y_70_80" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_70_80')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_70_80', default: '7000만 ~ 8000만')}</option>
+                    <option value="Y_80_90" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_80_90')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_80_90', default: '8000만 ~ 9000만')}</option>
+                    <option value="Y_90_OVER" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_90_OVER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
+                </select>
+                </g:if>
+                <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
+                <select id="jobPayType" name="jobPosition.jobPayType" class="form-control">
+                    <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
+                    <option value="M_20_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_20_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
+                    <option value="M_30_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_30_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
+                    <option value="M_40_50" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_40_50')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_40_50', default: '400만 ~ 500만')}</option>
+                    <option value="M_50_60" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_50_60')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_50_60', default: '500만 ~ 600만')}</option>
+                    <option value="M_60_70" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_60_70')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_60_70', default: '600만 ~ 700만')}</option>
+                    <option value="M_70_80" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_70_80')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_70_80', default: '700만 ~ 800만')}</option>
+                    <option value="M_80_90" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_80_90')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_80_90', default: '800만 ~ 900만')}</option>
+                    <option value="M_90_OVER" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_90_OVER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_90_OVER', default: '900만 이상')}</option>
+                </select>
+                </g:if>
             </div>
         </div>
     </div>
+
+    <div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
+        <div>
+            <g:textField name="jobPositions.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control"/>
+        </div>
+    </div>
+</g:each>
+
+<div id="jobPositionForm">
+
 </div>
 
-<div class="form-group ${hasErrors(bean: recruit, field: 'jobPositionType', 'has-error')} has-feedback">
-    <div class="row">
-        <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
-            <div class="col col-sm-4">
+<g:if test="${recruit.jobPositions?.size() < 2}">
+<div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
+    <buttom type="button" id="addJobPositionFormButton" class="btn btn-sm btn-default btn-block"><i class="fa fa-plus-square-o"></i> 직급 추가</buttom>
+</div>
+</g:if>
+
+<hr/>
+
+<g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
+
+    <hr/>
+
+    <div class="form-group has-feedback">
+        <div class="row">
+            <div class="col col-sm-6">
                 <div id="datepicker" class="input-group date">
                     <input type="text" id="startDate" name="startDate" class="form-control" placeholder="투입시기"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                 </div>
             </div>
-            <div class="col col-sm-4">
+            <div class="col col-sm-6">
                 <select id="workingMonth" name="workingMonth" class="form-control form-inline">
-                  <option>투입기간</option>
-                  <option value="1">1개월</option>
-                  <option value="2">2개월</option>
-                  <option value="3">3개월</option>
-                  <option value="4">4개월</option>
-                  <option value="5">5개월</option>
-                  <option value="6">6개월</option>
-                  <option value="7">7개월</option>
-                  <option value="8">8개월</option>
-                  <option value="9">9개월</option>
-                  <option value="10">10개월</option>
-                  <option value="11">11개월</option>
-                  <option value="12">12개월</option>
-                  <option value="99">13개월 이상</option>
+                    <option value="">투입기간</option>
+                    <option value="1">1개월</option>
+                    <option value="2">2개월</option>
+                    <option value="3">3개월</option>
+                    <option value="4">4개월</option>
+                    <option value="5">5개월</option>
+                    <option value="6">6개월</option>
+                    <option value="7">7개월</option>
+                    <option value="8">8개월</option>
+                    <option value="9">9개월</option>
+                    <option value="10">10개월</option>
+                    <option value="11">11개월</option>
+                    <option value="12">12개월</option>
+                    <option value="99">13개월 이상</option>
                 </select>
             </div>
-        </g:if>
-        <div class="col col-sm-4">
-            <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
-                <select id="jobPayType" name="jobPayType" class="form-control">
-                    <option value=""><g:message code="recruit.jobPayType.label" default="연봉" /></option>
-                    <option value="Y_25_30" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_25_30')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_25_30', default: '2500만 ~ 3000만')}</option>
-                    <option value="Y_30_35" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_30_35')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_30_35', default: '3000만 ~ 3500만')}</option>
-                    <option value="Y_35_40" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_35_40')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_35_40', default: '3500만 ~ 4000만')}</option>
-                    <option value="Y_40_45" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_40_45')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_40_45', default: '4000만 ~ 4500만')}</option>
-                    <option value="Y_45_50" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_45_50')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_45_50', default: '4500만 ~ 5000만')}</option>
-                    <option value="Y_50_55" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_50_55')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_50_55', default: '5000만 ~ 5500만')}</option>
-                    <option value="Y_55_60" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_55_60')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_55_60', default: '5500만 ~ 6000만')}</option>
-                    <option value="Y_60_70" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_60_70')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_60_70', default: '6000만 ~ 7000만')}</option>
-                    <option value="Y_70_80" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_70_80')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_70_80', default: '7000만 ~ 8000만')}</option>
-                    <option value="Y_80_90" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_80_90')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_80_90', default: '8000만 ~ 9000만')}</option>
-                    <option value="Y_90_OVER" <g:if test="${recruit.jobPayType == JobPayType.valueOf('Y_90_OVER')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
-                </select>
-            </g:if>
-            <g:elseif test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
-                <select id="jobPayType" name="jobPayType" class="form-control">
-                    <option value=""><g:message code="recruit.jobPayType.label" default="급여" /></option>
-                    <option value="M_20_30" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_20_30')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
-                    <option value="M_30_40" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_30_40')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
-                    <option value="M_40_50" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_40_50')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_40_50', default: '400만 ~ 500만')}</option>
-                    <option value="M_50_60" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_50_60')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_50_60', default: '500만 ~ 600만')}</option>
-                    <option value="M_60_70" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_60_70')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_60_70', default: '600만 ~ 700만')}</option>
-                    <option value="M_70_80" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_70_80')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_70_80', default: '700만 ~ 800만')}</option>
-                    <option value="M_80_90" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_80_90')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_80_90', default: '800만 ~ 900만')}</option>
-                    <option value="M_90_OVER" <g:if test="${recruit.jobPayType == JobPayType.valueOf('M_90_OVER')}">selected="selected"</g:if>>${message(code: 'recruit.jobPayType.M_90_OVER', default: '900만 이상')}</option>
-                </select>
-            </g:elseif>
         </div>
     </div>
-</div>
+</g:if>
 
+<label><g:message code="recruit.jobArea.label" default="근무지역"/></label>
 <div class="form-group ${hasErrors(bean: recruit, field: 'city', 'has-error')} has-feedback">
     <div class="row">
         <div class="col col-sm-6">
@@ -174,11 +197,7 @@
     </div>
 </div>
 
-<div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
-    <div>
-        <g:textField name="tagString" value="${article?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control"/>
-    </div>
-</div>
+
 
 <div class="form-group ${hasErrors(bean: article.content, field: 'text', 'has-error')} has-feedback">
     <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
@@ -201,7 +220,68 @@
     </g:else>
 
 </div>
+
+<script id="jobPositionFormTemplate" type="script/mustache-template">
+
+    <hr/>
+
+    <label><g:message code="jobPosition.jobPositionType.label" default="직급"/></label>
+    <div class="form-group">
+        <div class="row">
+            <div class="col col-sm-6">
+                <select id="jobPositionType" name="jobPosition.jobPositionType" class="form-control">
+                    <option value=""><g:message code="recruit.jobPositionType.label" default="직무" /></option>
+                    <option value="JUNIOR">${message(code: 'recruit.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
+                    <option value="SENIOR">${message(code: 'recruit.jobPositionType.SENIOR', default: 'SENIOR')}</option>
+                    <option value="MANAGER">${message(code: 'recruit.jobPositionType.MANAGER', default: 'MANAGER')}</option>
+                </select>
+            </div>
+            <div class="col col-sm-6">
+                <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
+                    <select id="jobPayType" name="jobPosition.jobPayType" class="form-control">
+                        <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
+                        <option value="Y_25_30">${message(code: 'jobPosition.jobPayType.Y_25_30', default: '2500만 ~ 3000만')}</option>
+                        <option value="Y_30_35">${message(code: 'jobPosition.jobPayType.Y_30_35', default: '3000만 ~ 3500만')}</option>
+                        <option value="Y_35_40">${message(code: 'jobPosition.jobPayType.Y_35_40', default: '3500만 ~ 4000만')}</option>
+                        <option value="Y_40_45">${message(code: 'jobPosition.jobPayType.Y_40_45', default: '4000만 ~ 4500만')}</option>
+                        <option value="Y_45_50">${message(code: 'jobPosition.jobPayType.Y_45_50', default: '4500만 ~ 5000만')}</option>
+                        <option value="Y_50_55">${message(code: 'jobPosition.jobPayType.Y_50_55', default: '5000만 ~ 5500만')}</option>
+                        <option value="Y_55_60">${message(code: 'jobPosition.jobPayType.Y_55_60', default: '5500만 ~ 6000만')}</option>
+                        <option value="Y_60_70">${message(code: 'jobPosition.jobPayType.Y_60_70', default: '6000만 ~ 7000만')}</option>
+                        <option value="Y_70_80">${message(code: 'jobPosition.jobPayType.Y_70_80', default: '7000만 ~ 8000만')}</option>
+                        <option value="Y_80_90">${message(code: 'jobPosition.jobPayType.Y_80_90', default: '8000만 ~ 9000만')}</option>
+                        <option value="Y_90_OVER">${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
+                    </select>
+                </g:if>
+                <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
+                    <select id="jobPayType" name="jobPosition.jobPayType" class="form-control">
+                        <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
+                        <option value="M_20_30">${message(code: 'recruit.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
+                        <option value="M_30_40">${message(code: 'recruit.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
+                        <option value="M_40_50">${message(code: 'recruit.jobPayType.M_40_50', default: '400만 ~ 500만')}</option>
+                        <option value="M_50_60">${message(code: 'recruit.jobPayType.M_50_60', default: '500만 ~ 600만')}</option>
+                        <option value="M_60_70">${message(code: 'recruit.jobPayType.M_60_70', default: '600만 ~ 700만')}</option>
+                        <option value="M_70_80">${message(code: 'recruit.jobPayType.M_70_80', default: '700만 ~ 800만')}</option>
+                        <option value="M_80_90">${message(code: 'recruit.jobPayType.M_80_90', default: '800만 ~ 900만')}</option>
+                        <option value="M_90_OVER">${message(code: 'recruit.jobPayType.M_90_OVER', default: '900만 이상')}</option>
+                    </select>
+                </g:if>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group has-feedback">
+        <div>
+            <g:textField name="jobPosition.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control tag-input"/>
+        </div>
+    </div>
+
+</script>
 </g:if>
+<script>
+    var jobPositionCount = ${recruit.jobPositions?.size() ?:0};
+</script>
+
 <g:hiddenField name="content.textType" value="HTML"/>
 <asset:script type="text/javascript">
     $('#summernote').summernote({minHeight: 300, lang: 'ko-KR',
@@ -261,5 +341,31 @@
         autoclose: true
     });
 
+    var template = $('#jobPositionFormTemplate').html();
+    Mustache.parse(template);
+
+    function addJobPositionForm() {
+        jobPositionCount++;
+        var rendered = Mustache.render(template);
+
+        var $rendered = $(rendered);
+
+        $rendered.find('.tag-input').tagsinput();
+
+        $rendered.appendTo('#jobPositionForm');
+
+        if(jobPositionCount >= 3) $('#addJobPositionFormButton').hide();
+    }
+
+
+    if(jobPositionCount == 0) {
+        addJobPositionForm();
+    }
+
+    $('#addJobPositionFormButton').click(function() {
+        if(jobPositionCount < 3) {
+            addJobPositionForm();
+        }
+    });
 
 </asset:script>

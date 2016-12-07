@@ -24,26 +24,14 @@
 
         <div id="article" class="content" role="main">
             <div class="nav" role="navigation">
-                <g:link class="create btn btn-success btn-wide pull-right" uri="/articles/${article.category.code}/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
+                <g:link class="create btn btn-success btn-wide pull-right" uri="/recruits/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
 
                 <h4><g:message code="${article.category.labelCode}" default="${article.category.defaultLabel}" /></h4>
             </div>
 
             <div class="panel panel-default clearfix">
-                <div class="panel-heading clearfix">
-                    <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" changeLog="${changeLogs?.find { it[2] == article.content.id}}" logType="article" class="pull-left" />
-                    <div class="content-identity pull-right">
-                    <div class="content-identity-count"><i class="fa fa-comment"></i> <g:formatNumber number="${article.noteCount}" /></div>
-                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:formatNumber number="${article.viewCount}" /></div>
-                    </div>
-                </div>
                 <div class="content-container clearfix">
                     <div id="content-body" class="panel-body content-body pull-left">
-                        <div class="content-tags">
-                            <span class="list-group-item-text article-id">#${article.id}</span>
-                            <g:categoryLabel category="${article.category}" />
-                            <g:tags tags="${article.tagString}" />
-                        </div>
                         <h2 class="panel-title">
                             <g:if test="${!article.enabled}">
                                 <span class="fa fa-ban" style="color:red;"></span>
@@ -51,28 +39,44 @@
                             ${article.title}
                         </h2>
                         <hr/>
-												<g:if test="${article.recruit}">
-													<div class="detail-info">
-														<label>∙ 기본 정보</label>
-														<div class="detail-info-row">
-															<span class="info-label">종류:</span> <span class="label ${article.recruit.jobType == JobType.valueOf('FULLTIME') ? 'label-primary' : 'label-success'}"><g:message code="recruit.jobType.${article.recruit.jobType}"/></span>
-														</div>
-														<div class="detail-info-row"><span class="info-label">지역:</span> <span>${article.recruit.city}</span> <span>${article.recruit.district}</span></div>
-														<div class="detail-info-row"><span class="info-label">급여:</span> <span>${article.recruit.jobPayType}</span></div>
-														<div class="detail-info-row"><span class="info-label">직무:</span> <span>${article.recruit.jobPositionType}</span></div>
-													</div>
-	                        <hr/>
-												</g:if>
+                        <g:if test="${article.recruit}">
+                            <div class="detail-info">
+                                <div class="detail-info-row">
+                                    <span class="info-label">종류 :</span> <span class="label ${article.recruit.jobType == JobType.valueOf('FULLTIME') ? 'label-primary' : 'label-success'}"><g:message code="recruit.jobType.${article.recruit.jobType}"/></span>
+                                </div>
+                                <div class="detail-info-row"><span class="info-label">지역 :</span> <span>${article.recruit.city}</span> <span>${article.recruit.district}</span></div>
+                                <g:if test="${article.recruit.jobType == JobType.CONTRACT}">
+                                    <div class="detail-info-row"><span class="info-label">투입시기 :</span> <span><g:formatDate format="yyyy년 MM월" date="${article.recruit.startDate}"/></span></div>
+                                    <div class="detail-info-row"><span class="info-label">투입기간 :</span> <span>${article.recruit.workingMonth} 개월</span></div>
+                                </g:if>
+                            </div>
+                        <hr/>
+                        </g:if>
+                        <g:each in="${article.recruit.jobPositions}" var="jobPosition">
+                            <div class="panel panel-default position-info">
+                                <div class="panel-heading">
+                                    <div class="panel-title">직급 : <span class="position-name">${jobPosition.jobPositionType}</span></div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="position-info">
+                                        <div class="detail-info-row"><span class="info-label">급여:</span> <span><g:message code="jobPosition.jobPayType.${jobPosition.jobPayType}"/></span></div>
+                                        <div class="detail-info-row"><span class="info-label">Skills:</span> <g:tags tags="${jobPosition.tagString}" /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </g:each>
+                        <hr/>
+
                         <article class="content-text">
-											    <g:if test="${article.recruit.jobType == JobType.valueOf('FULLTIME')}">
-											        <label>∙ <g:message code="recruit.content.label" default="직무 정보"/></label>
-											    </g:if>
-											    <g:elseif test="${article.recruit.jobType == JobType.valueOf('CONTRACT')}">
-											        <label>∙ <g:message code="recruit.content.label" default="프로젝트 정보"/></label>
-											    </g:elseif>
-											    <g:else>
-											        <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
-											    </g:else>
+                        <g:if test="${article.recruit.jobType == JobType.valueOf('FULLTIME')}">
+                            <label>∙ <g:message code="recruit.content.label" default="직무 정보"/></label>
+                        </g:if>
+                        <g:elseif test="${article.recruit.jobType == JobType.valueOf('CONTRACT')}">
+                            <label>∙ <g:message code="recruit.content.label" default="프로젝트 정보"/></label>
+                        </g:elseif>
+                        <g:else>
+                            <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
+                        </g:else>
                         <g:if test="${article.content}">
                             <g:if test="${article.content?.textType == ContentTextType.MD}">
                                 <markdown:renderHtml text="${article.content.text}"/>
@@ -127,6 +131,37 @@
                         </g:isAuthorOrAdmin>
                     </div>
                 </div>
+
+            </div>
+
+            <div class="panel panel-default clearfix">
+                <ul class="list-group">
+                <li class="list-group-item note-title">
+                    <h3 class="panel-title">업체정보</h3>
+                </li>
+                <li class="list-group-item note-item clearfix">
+                    <div class="panel-body pull-left">
+                        <div class="avatar avatar-big clearfix col-sm-3 text-center"><a href="/okky/company/info/${article.recruit.company.id}" class="avatar-photo avatar-company"><img src="${grailsApplication.config.grails.fileURL}/logo/${article.recruit.company.logo}"></a> </div>
+                        <div class="user-info col-sm-9">
+                            <div class="clearfix">
+                                <h2 class="pull-left">${article.recruit.company.name}</h2>
+                            </div>
+                            <hr/>
+                            <div class="clearfix">
+                                <h2>회사 소개</h2>
+                                <g:filterHtml text="${companyInfo.description}" />
+                            </div>
+                            <g:if test="${article.recruit.jobType == JobType.FULLTIME && companyInfo.welfare}">
+                                <hr/>
+                                <div class="clearfix">
+                                    <h2>복지/복리후생</h2>
+                                    <g:filterHtml text="${companyInfo.welfare}" />
+                                </div>
+                            </g:if>
+                        </div>
+                    </div>
+                </li>
+                </ul>
             </div>
 
             <g:banner type="CONTENT" />
@@ -222,7 +257,7 @@
                     </g:each>
                     <li class="list-group-item note-form clearfix">
                         <sec:ifLoggedIn>
-                            <g:form url="[resource:article, action:'addNote']" method="POST" class="note-create-form">
+                            <g:form url="[resource:article.recruit, action:'addNote']" method="POST" class="note-create-form">
                                 <g:if test="${notes}">
                                     <g:hiddenField name="lastNoteId" value="${notes?.last().id} "/>
                                 </g:if>
