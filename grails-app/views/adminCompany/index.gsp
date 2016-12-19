@@ -12,7 +12,7 @@
 		<div class="nav" role="navigation">
 			<ul>
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+				%{--<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>--}%
 			</ul>
 		</div>
 		<div id="list-company" class="content scaffold-list" role="main">
@@ -28,29 +28,33 @@
 					
 						<g:sortableColumn property="name" title="${message(code: 'company.name.label', default: 'Name')}" />
 					
-						<g:sortableColumn property="enabled" title="${message(code: 'company.enabled.label', default: 'Enabled')}" />
-					
 						<th><g:message code="company.manager.label" default="Manager" /></th>
-					
+
+						<g:sortableColumn property="enabled" title="${message(code: 'company.enabled.label', default: 'Enabled')}" />
+
+						<g:sortableColumn property="locked" title="${message(code: 'company.locked.label', default: 'Locked')}" />
+
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${companyList}" status="i" var="company">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${company.id}">${fieldValue(bean: company, field: "logo")}</g:link></td>
-					
-						<td>${fieldValue(bean: company, field: "name")}</td>
-					
-						<td><g:formatBoolean boolean="${company.enabled}" /></td>
-					
+
+						<td><g:link action="show" id="${company.id}"><img src="${grailsApplication.config.grails.fileURL}/logo/${fieldValue(bean: company, field: "logo")}" width="20" height="20" /></g:link></td>
+
+						<td><g:link action="show" id="${company.id}">${fieldValue(bean: company, field: "name")}</g:link></td>
+
 						<td>${fieldValue(bean: company, field: "manager")}</td>
-					
+
+						<td><strong><g:formatBoolean boolean="${company.enabled}" true="인증됨" false="인증안됨" /></strong></td>
+
+						<td><strong><g:formatBoolean boolean="${company.locked}" true="블록됨" false="정상" /></strong></td>
+
 					</tr>
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
+			<div class="admin-pagination">
 				<g:paginate total="${companyCount ?: 0}" />
 			</div>
 		</div>

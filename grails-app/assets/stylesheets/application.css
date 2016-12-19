@@ -1882,7 +1882,13 @@ blockquote {
     100% {background: white;}
 }
 
+@media (min-width: 768px) {
 
+    .form-inline .form-control-inline-half {
+        width: 49%;
+    }
+
+}
 
 @media (max-width: 768px) {
 

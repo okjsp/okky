@@ -14,6 +14,11 @@ class Recruit {
 
     Integer workingMonth
 
+    String tel
+    String email
+
+    boolean closed = false
+
     static hasMany = [jobPositions: JobPosition]
 
     static constraints = {

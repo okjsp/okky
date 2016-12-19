@@ -1,13 +1,25 @@
 <%@ page import="net.okjsp.Company" %>
 
 <div class="alert alert-info">
-	<b>아직 회사정보가 등록되지 않았습니다.</b><br/>
-	회사정보는 최초 등록시 1회만 입력해 주시면 됩니다.
+	아직 회사정보가 등록되지 않았습니다. <br/><br/>
+	<b>회사등록은 기재하신 연락처를 통해 관리자의 인증이 진행되며, 인증 완료 후 구인게시판 이용이 가능합니다.</b> <br/>
+	모든 정보를 정확히 입력해 주시기 바랍니다.
 </div>
 
-<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
-	<label>회사명</label>
-	<g:textField name="name" required="" value="${company?.name}" placeholder="회사명을 입력해 주세요." class="form-control"/>
+
+<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
+			<label>회사명</label>
+			<g:textField name="name" required="" value="${company?.name}" placeholder="회사명을 입력해 주세요." class="form-control"/>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: company, field: 'registerNumber', 'error')} required">
+			<label>사업자등록번호</label>
+			<g:textField name="registerNumber" required="" value="${company?.name}" placeholder="사업자등록번호를 입력해 주세요." class="form-control"/>
+		</div>
+	</div>
 </div>
 
 <div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} ">
@@ -15,16 +27,51 @@
 	<input type="file" name="logoFile" class="form-control" placeholder="회사로고를 첨부해 주세요."/>
 </div>
 
+<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'tel', 'error')} required">
+			<label>대표 연락처</label>
+			<input type="tel" name="companyInfo.tel" value="${companyInfo?.tel}" required="" class="form-control" placeholder="000-0000-0000"/>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'email', 'error')} required">
+			<label>대표 이메일</label>
+			<input type="email" name="companyInfo.email" value="${companyInfo?.email}" required="" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
+		</div>
+	</div>
+</div>
 
-<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
-	<label>회사 소개</label>
-	<g:textArea name="companyInfo.description" required="" rows="20" class="summernote form-control input-block-level"/>
+<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'homepageUrl', 'error')} required">
+			<label>회사 홈페이지</label>
+			<input type="url" name="companyInfo.homepageUrl" value="${companyInfo?.homepageUrl ?: 'http://'}" class="form-control" placeholder="홈페이지 URL을 입력해 주세요."/>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
+			<label>직원 수</label>
+			<select class="form-control" name="companyInfo.employeeNumber">
+				<option value="5"><g:message code="companyInfo.emplayeeNumber.value_5"/></option>
+				<option value="10"><g:message code="companyInfo.emplayeeNumber.value_10"/></option>
+				<option value="20"><g:message code="companyInfo.emplayeeNumber.value_20"/></option>
+				<option value="30"><g:message code="companyInfo.emplayeeNumber.value_30"/></option>
+				<option value="40"><g:message code="companyInfo.emplayeeNumber.value_40"/></option>
+				<option value="50"><g:message code="companyInfo.emplayeeNumber.value_50"/></option>
+				<option value="100"><g:message code="companyInfo.emplayeeNumber.value_100"/></option>
+				<option value="200"><g:message code="companyInfo.emplayeeNumber.value_200"/></option>
+				<option value="999"><g:message code="companyInfo.emplayeeNumber.value_999"/></option>
+			</select>
+		</div>
+	</div>
 </div>
 
 
-<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
-	<label>복지 / 복리후생</label>
-	<g:textArea name="companyInfo.welfare" required="" rows="20" class="summernote form-control input-block-level"/>
+
+<div class="form-group ${hasErrors(bean: companyInfo, field: 'name', 'error')} required">
+	<label>회사 소개</label>
+	<g:textArea name="companyInfo.description" required="" rows="20" class="summernote form-control input-block-level"/>
 </div>
 
 
@@ -69,8 +116,6 @@
       if(city) {
 
         var districts = districtsInCity[city];
-
-        console.log(districts);
 
         $.each(districts, function(i, d){
           $district.append('<option value="'+d+'" class="district">'+d+'</option>');

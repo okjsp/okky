@@ -2,10 +2,15 @@ package net.okjsp
 
 class JobPosition {
 
-    JobPositionType jobPositionType
+    String title
+
+    Integer minCareer
+    Integer maxCareer
 
     JobPayType jobPayType
     String tagString
+
+    String description
 
     static hasMany = [tags : Tag]
 

@@ -19,7 +19,6 @@ class UserController {
     SpringSecurityService springSecurityService
     MailService mailService
     EncryptService encryptService
-    
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 

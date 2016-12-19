@@ -37,12 +37,12 @@
             </g:hasErrors>
             <div class="panel panel-default clearfix">
                 <div class="panel-heading clearfix">
-                    <g:if test="${category.anonymity}">
-                        <g:avatar avatar="${article.displayAuthor}" size="medium" class="pull-left" />
-                    </g:if>
-                    <g:else>
-                        <g:avatar avatar="${article.displayAuthor}" size="medium" class="pull-left" />
-                    </g:else>
+                    <div class="avatar avatar-list clearfix"><a href="/okky/user/info/2" class="avatar-photo avatar-company"><img
+                            src="${grailsApplication.config.grails.fileURL}/logo/${company.logo}">
+                    </a>
+
+                        <div class="avatar-info"><a class="nickname" href="/okky/company/info/${company.id}">${company.name}</a></div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <g:form id="article-form" url="[resource:article, uri: '/recruits/save']" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
