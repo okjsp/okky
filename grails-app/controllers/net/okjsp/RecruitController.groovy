@@ -166,6 +166,16 @@ class RecruitController {
             return
         }
 
+        if(!person.company.enabled) {
+            redirect(url: '/recruits/company/wait')
+            return
+        }
+
+        if(person.company.locked) {
+            redirect(url: '/recruits/company/locked')
+            return
+        }
+
         params.category = category
 
         def categories
@@ -179,10 +189,22 @@ class RecruitController {
             params.anonymity = category?.anonymity ?: false
         }
 
+        def article = new Article(params)
+
+        Recruit recruit = new Recruit(
+                city: params.city,
+                district: params.district,
+                jobType: params.jobType ? JobType.valueOf(params.jobType) : null,
+                workingMonth: params.workingMonth,
+                startDate: params.startDate ? Date.parse("yyyy/MM", params.startDate) : null
+        )
+
+        article.recruit = recruit
+
         if(goExternalLink) {
             redirect(url: category.externalLink)
         } else {
-            respond new Article(params), model: [categories: categories, category: category, recruit: new Recruit(params)]
+            respond article, model: [categories: categories, category: category, recruit: new Recruit(params), company: person.company]
         }
 
 
@@ -191,14 +213,29 @@ class RecruitController {
     @Transactional
     def save() {
 
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if(!person.company) {
+            redirect(url: '/recruits/company')
+            return
+        }
+
+        if(!person.company.enabled) {
+            redirect(url: '/recruits/company/wait')
+            return
+        }
+
+        if(person.company.locked) {
+            redirect(url: '/recruits/company/locked')
+            return
+        }
+
         Article article = new Article(params)
-        Recruit recruit = new Recruit(
-                city: params.city,
-                district: params.district,
-                jobType: JobType.valueOf(params.jobType),
-                workingMonth: params.workingMonth,
-                startDate: params.startDate ? Date.parse("yyyy/MM", params.startDate) : null
-        )
+        Recruit recruit = new Recruit()
+
+        bindData(recruit, params, 'recruit')
+
+        recruit.jobType = params.jobType
 
         def category = Category.get('recruit')
 
@@ -206,7 +243,6 @@ class RecruitController {
 
             withForm {
                 Avatar author = Avatar.load(springSecurityService.principal.avatarId)
-                Person person = Person.load(springSecurityService.principal.personId)
 
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
 
@@ -220,26 +256,10 @@ class RecruitController {
 
                 articleService.save(article, author, category)
 
-                def jobPositionTypes = params.list('jobPosition.jobPositionType')
-                def jobPayTypes = params.list('jobPosition.jobPayType')
-                def tagStrings = params.list('jobPosition.tagString')
-
                 recruit.article = article
                 recruit.company = person.company
 
                 recruit.save(flush: true, failOnError: true)
-
-                jobPositionTypes.eachWithIndex { String entry, int i ->
-
-                    def jobPosition = new JobPosition(
-                            jobPositionType: JobPositionType.valueOf(entry),
-                            jobPayType: JobPayType.valueOf(jobPayTypes[i]),
-                            tagString: tagStrings[i]
-                    ).save(flush: true)
-
-                    recruit.addToJobPositions(jobPosition)
-                }
-
 
                 withFormat {
                     html {
@@ -258,7 +278,7 @@ class RecruitController {
 
             println recruit.errors
 
-            respond article.errors, view: 'create', model: [categories: categories, category: category, recruit: recruit]
+            respond article.errors, view: 'create', model: [categories: categories, category: category, recruit: recruit, company: person.company]
         }
     }
 
@@ -613,7 +633,7 @@ class RecruitController {
         MultipartFile logoFile = request.getFile("logoFile")
 
         if(!logoFile.empty) {
-            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'));
+            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
             def mil = System.currentTimeMillis()
             logoFile.transferTo(new File("${grailsApplication.config.grails.filePath}/logo", "${mil}${ext}"))
 
@@ -626,26 +646,34 @@ class RecruitController {
 
         company.addToMembers(person)
 
-
         if (company.hasErrors()) {
             respond company.errors, view:'createCompany'
             return
         }
 
-        def companyInfo = new CompanyInfo(
-                description: params['companyInfo.description'],
-                welfare: params['companyInfo.welfare'],
-                company: company
-        ).save()
+        def companyInfo = new CompanyInfo()
 
+        bindData(companyInfo, params, 'companyInfo')
+
+        companyInfo.company = company
+        companyInfo.save flush:true
+
+        if (companyInfo.hasErrors()) {
+            respond companyInfo.errors, view:'createCompany'
+            return
+        }
 
         person.company = company
-        person.save  flush:true
+        person.save flush:true
+
+        println companyInfo
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'company.label', default: 'Company'), company.id])
-                redirect uri: '/recruits/create'
+                flash.tel = companyInfo.tel
+                flash.email = companyInfo.email
+                flash.name = company.name
+                redirect uri: '/recruits/company/registered'
             }
             '*' { respond company, [status: CREATED] }
         }

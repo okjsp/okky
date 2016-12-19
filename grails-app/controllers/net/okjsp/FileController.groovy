@@ -10,7 +10,7 @@ class FileController {
         MultipartFile imageFile = request.getFile("files")
 
         if(!imageFile.empty) {
-            def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
+            def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'))
             def mil = System.currentTimeMillis()
             imageFile.transferTo(new File("${grailsApplication.config.grails.filePath}/images/", "${mil}${ext}"))
 

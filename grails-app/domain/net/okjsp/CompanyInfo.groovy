@@ -7,6 +7,11 @@ class CompanyInfo {
     String description
     String welfare
 
+    String tel
+    String email
+    String homepageUrl
+    Integer employeeNumber
+
     static constraints = {
         company nullable: true
         description nullable: true

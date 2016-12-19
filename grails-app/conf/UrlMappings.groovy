@@ -34,6 +34,8 @@ class UrlMappings {
         "/recruits/tagged/$tag(.$format)?"(controller: "recruit", action: "tagged")
         "/recruits/company"(controller: "recruit", action: 'createCompany')
         "/recruits/company/save"(controller: "recruit", action: 'saveCompany')
+        "/recruits/company/registered"(view: "/recruit/registeredCompany")
+        "/recruits/company/wait"(view: "/recruit/waitCompany")
 
         "/recruit/$id(.$format)?"(controller: "recruit", action: "show")
         "/recruit/$action/$id(.$format)?"(controller: "recruit")
@@ -62,6 +64,7 @@ class UrlMappings {
         "/_admin/banner/$action?/$id?(.$format)?"(controller: "banner")
         "/_admin/spamWord/$action?/$id?(.$format)?"(controller: "spamWord")
         "/_admin/user/$action?/$id?(.$format)?"(controller: "adminUser")
+        "/_admin/company/$action?/$id?(.$format)?"(controller: "adminCompany")
         "/_admin/dm/export"(controller: "dm", action: 'export')
         "/_admin/dm/reject"(controller: "dm", action: 'reject')
         "/_admin/dm/updateReject"(controller: "dm", action: 'updateReject')

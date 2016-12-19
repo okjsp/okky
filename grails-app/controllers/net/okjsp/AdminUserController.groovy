@@ -36,8 +36,13 @@ class AdminUserController {
         respond userList, model:[userCount: userCount]
     }
 
-    def show(User user) {
-        respond user
+    def show(User userInstance) {
+
+        def loggedIns = LoggedIn.where {
+            user == userInstance
+        }.list(max: 100, order: 'desc', sort: 'id')
+
+        respond userInstance, model: [loggedIns: loggedIns]
     }
 
     def create() {

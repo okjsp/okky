@@ -175,11 +175,11 @@
 				</li>
 				</g:if>
 
-				<g:if test="${user?.loggedIns}">
+				<g:if test="${loggedIns}">
 					<li class="fieldcontain">
 						<span id="loggedIns-label" class="property-label"><g:message code="user.loggedIns.label" default="Logged Ins" /></span>
 
-						<g:each in="${user.loggedIns}" var="l">
+						<g:each in="${loggedIns}" var="l">
 							<span class="property-value" aria-labelledby="loggedIns-label">${l?.encodeAsHTML()}</span>
 						</g:each>
 
