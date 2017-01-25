@@ -50,6 +50,12 @@ class FindUserController {
 
         def user = User.findByPerson(person)
 
+        if(user.withdraw || !user.enabled || user.accountLocked) {
+            flash.message = message(code: 'email.not.found.message')
+            redirect action: 'index'
+            return
+        }
+
         def key = userService.createConfirmEmail(user)
 
         mailService.sendMail {
