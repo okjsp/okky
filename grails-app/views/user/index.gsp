@@ -120,7 +120,7 @@
                 </ul>
                 <div class="text-center">
                     <g:if test="${activitiesCount > 0}">
-                        <g:paginate controller="user" action="index" id="${avatar.id}" class="pagination-sm" total="${activitiesCount ?: 0}" />
+                        <g:paginate uri="/user/info/${avatar.id}/${params.category?: 'activity'}" controller="user" action="index" id="" class="pagination-sm" total="${activitiesCount ?: 0}" />
                     </g:if>
                 </div>
             </div>
