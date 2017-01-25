@@ -3,7 +3,6 @@
 <%@ page import="net.okjsp.ContentTextType" %>
 <%@ page import="net.okjsp.JobType" %>
 <%@ page import="net.okjsp.JobPayType" %>
-<%@ page import="net.okjsp.JobPositionType" %>
 
 <input type="hidden" name="jobType" value="${recruit.jobType}" />
 
