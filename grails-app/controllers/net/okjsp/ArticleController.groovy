@@ -34,8 +34,6 @@ class ArticleController {
         params.order = params.order ?: 'desc'
         params.query = params.query?.trim()
 
-        println code
-
         def category = Category.get(code)
 
         if(category == null) {
