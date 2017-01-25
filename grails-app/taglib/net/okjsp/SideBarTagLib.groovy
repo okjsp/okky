@@ -24,8 +24,6 @@ class SideBarTagLib {
             notificationCount = notificationService.count(avatar)
         }
 
-        println category
-
         out << render(template: '/layouts/sidebar', model: [category: category, notificationCount: notificationCount])
     }
 
