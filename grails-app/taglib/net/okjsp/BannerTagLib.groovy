@@ -28,14 +28,42 @@ class BannerTagLib {
             def bannerHTML = ""
 
             def target = """target=\"${banner.target}\""""
-            
+
+
+            GrailsWebRequest webUtils = WebUtils.retrieveGrailsWebRequest()
+            def request = webUtils.getCurrentRequest()
+
+            Device device =  deviceResolver.resolveDevice(request)
+
             switch (bannerType) {
                 
                 case BannerType.MAIN_RIGHT :
                 case BannerType.SUB_RIGHT :
-                    bannerHTML = """<div class="right-banner">
+
+
+                    if(device.isMobile()) {
+                        bannerHTML = """
+                            <script type="text/javascript" src="http://ad.appsary.com/ad/22019/tag.js"></script>
+                        """
+                    } else {
+
+                        bannerHTML = """<div class="right-banner">
                                         <a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
                                     </div>"""
+
+                        bannerHTML += """<div class="google-ad">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- okjspad_160x600 -->
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:160px;height:600px"
+                             data-ad-client="ca-pub-8103607814406874"
+                             data-ad-slot="6573675943"></ins>
+                            <script>
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                         </div>"""
+                    }
+
                     break
                 case BannerType.MAIN : 
                     bannerHTML = """<div class="main-banner-wrapper">
@@ -51,36 +79,5 @@ class BannerTagLib {
 
             out << bannerHTML
         }
-    }
-
-
-    /**
-     */
-    def adBanner = { attrs, body ->
-
-        GrailsWebRequest webUtils = WebUtils.retrieveGrailsWebRequest()
-        def request = webUtils.getCurrentRequest()
-
-        Device device =  deviceResolver.resolveDevice(request)
-
-        def bannerHTML = """<div class="google-ad">
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- okjspad_160x600 -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:160px;height:600px"
-                             data-ad-client="ca-pub-8103607814406874"
-                             data-ad-slot="6573675943"></ins>
-                            <script>
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-                    </div>"""
-
-        if(device.isMobile()) {
-            bannerHTML = """
-                <script type="text/javascript" src="http://ad.appsary.com/ad/22019/tag.js"></script>
-            """
-        }
-
-        out << bannerHTML
     }
 }

@@ -33,7 +33,6 @@
 
                     <g:banner type="${isIndex ? "MAIN_RIGHT" : "SUB_RIGHT"}" />
 
-                    <g:adBanner />
                 </div>
                 <div id="footer" class="footer" role="contentinfo">
                     <g:include view="/layouts/_footer.gsp" />
