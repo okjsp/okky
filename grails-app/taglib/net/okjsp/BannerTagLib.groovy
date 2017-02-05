@@ -1,8 +1,13 @@
 package net.okjsp
 
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsWebRequest
+import org.codehaus.groovy.grails.web.util.WebUtils
+import org.springframework.mobile.device.Device
+
 class BannerTagLib {
-    
+
     def randomService
+    def deviceResolver
 
     /**
      * @attr type REQUIRED
@@ -46,5 +51,36 @@ class BannerTagLib {
 
             out << bannerHTML
         }
+    }
+
+
+    /**
+     */
+    def adBanner = { attrs, body ->
+
+        GrailsWebRequest webUtils = WebUtils.retrieveGrailsWebRequest()
+        def request = webUtils.getCurrentRequest()
+
+        Device device =  deviceResolver.resolveDevice(request)
+
+        def bannerHTML = """<div class="google-ad">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- okjspad_160x600 -->
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:160px;height:600px"
+                             data-ad-client="ca-pub-8103607814406874"
+                             data-ad-slot="6573675943"></ins>
+                            <script>
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                    </div>"""
+
+        if(device.isMobile()) {
+            bannerHTML = """
+                <script type="text/javascript" src="http://ad.appsary.com/ad/22019/tag.js"></script>
+            """
+        }
+
+        out << bannerHTML
     }
 }

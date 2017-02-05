@@ -20,10 +20,16 @@ class CustomUserDetailService implements GrailsUserDetailsService {
     }
 
     @Transactional
-    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            User user = User.findByUsername(username)
+    UserDetails loadUserByUsername(String un) throws UsernameNotFoundException {
+            User user = User.where {
+                username == un
+                accountExpired == false
+                accountLocked == false
+                withdraw == false
+            }.get()
+
             if (!user || user.withdraw) throw new UsernameNotFoundException(
-                'User not found', username)
+                'User not found', un)
 
             def authorities = user.authorities.collect {
                 new SimpleGrantedAuthority(it.authority)
