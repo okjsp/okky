@@ -85,6 +85,8 @@ grails.project.dependency.resolution = {
         compile ":spring-security-oauth-facebook:0.2"
         compile ":spring-security-oauth-google:0.3.1"
 
+        compile "org.grails.plugins:spring-mobile:1.1.3"
+
         compile ":random:0.2"
 
         compile ":mail:1.0.7"

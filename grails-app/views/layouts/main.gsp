@@ -32,18 +32,8 @@
                 <div class="right-banner-wrapper">
 
                     <g:banner type="${isIndex ? "MAIN_RIGHT" : "SUB_RIGHT"}" />
-                
-                    <div class="google-ad">
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- okjspad_160x600 -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:160px;height:600px"
-                             data-ad-client="ca-pub-8103607814406874"
-                             data-ad-slot="6573675943"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
+
+                    <g:adBanner />
                 </div>
                 <div id="footer" class="footer" role="contentinfo">
                     <g:include view="/layouts/_footer.gsp" />

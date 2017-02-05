@@ -155,7 +155,7 @@ class SpringSecurityOAuthController {
             def User = customSecurityOAuthService.lookupUserClass()
             boolean linked = User.withTransaction { status ->
                 //def user = User.findByUsernameAndPassword(command.username, springSecurityService.encodePassword(command.password))
-                def user = User.findByUsername(command.username)
+                def user = User.findByUsernameAndEnabled(command.username, true)
                 if (user) {
                     user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
                     if (user.validate() && user.save()) {
@@ -215,7 +215,7 @@ class SpringSecurityOAuthController {
                     }
 
                     user.addToOAuthIDs(provider: oAuthToken.providerName, accessToken: oAuthToken.socialId, user: user)
-
+                    user.enabled = true
                     if(oAuthToken.providerName == FacebookOAuthToken.PROVIDER_NAME)
                         user.avatar.pictureType = AvatarPictureType.FACEBOOK
 
