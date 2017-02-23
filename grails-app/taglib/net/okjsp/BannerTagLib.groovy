@@ -23,46 +23,25 @@ class BannerTagLib {
         }.list()
 
         def banner = banners ? randomService.draw(banners) : null
+        def bannerHTML = ""
+
+
+        GrailsWebRequest webUtils = WebUtils.retrieveGrailsWebRequest()
+        def request = webUtils.getCurrentRequest()
+
+        Device device =  deviceResolver.resolveDevice(request)
+
 
         if(banner) {
-            def bannerHTML = ""
 
             def target = """target=\"${banner.target}\""""
-
-
-            GrailsWebRequest webUtils = WebUtils.retrieveGrailsWebRequest()
-            def request = webUtils.getCurrentRequest()
-
-            Device device =  deviceResolver.resolveDevice(request)
-
             switch (bannerType) {
                 
                 case BannerType.MAIN_RIGHT :
                 case BannerType.SUB_RIGHT :
-
-
-                    if(device.isMobile()) {
-                        bannerHTML = """
-                            <script type="text/javascript" src="http://ad.appsary.com/ad/22019/tag.js"></script>
-                        """
-                    } else {
-
-                        bannerHTML = """<div class="right-banner">
-                                        <a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
-                                    </div>"""
-
-                        bannerHTML += """<div class="google-ad">
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- okjspad_160x600 -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:160px;height:600px"
-                             data-ad-client="ca-pub-8103607814406874"
-                             data-ad-slot="6573675943"></ins>
-                            <script>
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-                         </div>"""
-                    }
+                    bannerHTML = """<div class="right-banner">
+                                    <a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
+                                </div>"""
 
                     break
                 case BannerType.MAIN : 
@@ -76,8 +55,32 @@ class BannerTagLib {
                                     </div>"""
                     break
             }
-
-            out << bannerHTML
         }
+
+        if(bannerType == BannerType.MAIN_RIGHT || bannerType == BannerType.SUB_RIGHT) {
+
+           /* if(device.isMobile()) {
+                bannerHTML = """
+                            <script type="text/javascript" src="http://ad.appsary.com/ad/22019/tag.js"></script>
+                        """
+            } else {*/
+
+                bannerHTML += """<div class="google-ad">
+                        <script type="text/javascript"><!--
+                        google_ad_client = "ca-pub-1191230850516122";
+                        /* adxguru\\okky.kr\\160x600\\0 */
+                        google_ad_slot = "3902767047";
+                        google_ad_width = 160;
+                        google_ad_height = 600;
+                        //-->
+                        </script>
+                        <script type="text/javascript"
+                        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+                        </script>
+                     </div>"""
+//            }
+        }
+
+        out << bannerHTML
     }
 }
