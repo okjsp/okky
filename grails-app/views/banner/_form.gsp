@@ -14,10 +14,9 @@
 <div class="fieldcontain ${hasErrors(bean: banner, field: 'image', 'error')} required">
 	<label for="image">
 		<g:message code="banner.image.label" default="Image" />
-		<span class="required-indicator">*</span>
 	</label>
 
-	<input type="file" name="imageFile" required="" id="iamge" />
+	<input type="file" name="imageFile" id="iamge" />
 
 	<g:if test="${banner?.image}">
 		<a href="${banner?.image}" target="_blank">${banner?.image}</a>
