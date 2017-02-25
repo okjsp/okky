@@ -66,17 +66,11 @@ class BannerTagLib {
             } else {*/
 
                 bannerHTML += """<div class="google-ad">
-                        <script type="text/javascript"><!--
-                        google_ad_client = "ca-pub-1191230850516122";
-                        /* adxguru\\okky.kr\\160x600\\0 */
-                        google_ad_slot = "3902767047";
-                        google_ad_width = 160;
-                        google_ad_height = 600;
-                        //-->
-                        </script>
-                        <script type="text/javascript"
-                        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-                        </script>
+                        <ins class="adsbygoogle adslot_1"
+                           data-ad-client="ca-pub-1191230850516122"
+                           data-ad-slot="9306413607"></ins>
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
                      </div>"""
 //            }
         }
