@@ -102,10 +102,10 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        grails.serverURL = "http://okky.kr"
-        grails.fileURL = "http://file.okky.kr"
+        grails.serverURL = "//okky.kr"
+        grails.fileURL = "//file.okky.kr"
         grails.app.context = "/"
-        grails.assets.url = "http://okky.kr/assets/"
+        grails.assets.url = "//okky.kr/assets/"
         grails.filePath = "/var/www"
     }
 }
