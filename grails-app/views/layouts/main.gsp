@@ -38,6 +38,7 @@
                     <g:include view="/layouts/_footer.gsp" />
                 </div>
             </div>
+
         </div>
         <script>
             var contextPath = "${request.contextPath}", encodedURL = "${encodedURL()}";
