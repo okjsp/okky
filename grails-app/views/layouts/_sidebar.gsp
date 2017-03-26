@@ -13,7 +13,7 @@
         <li class="nav-sidebar-search"><a href="javascript://" class="link" id="search-google" data-toggle="popover" data-trigger="click"><i class="fa fa-search"></i></a></li>
     </ul>
 
-    <form id="search-google-form" name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search">
+    <form id="search-google-form" name="searchMain" class="nav-sidebar-form" action="https://www.google.com/search">
         <div class="input-group">
             <input type="text" name="qt" class="form-control input-sm" placeholder="Google 검색" />
             <input type="hidden" name="q" />
@@ -67,7 +67,7 @@
                 <div class="popover popover-fixed" role="tooltip"><div class="arrow"></div>
                     <h3 class="popover-title">Google 검색</h3>
                     <div class="popover-content" id="search-google-popover">
-                        <form id="search-google-form" name="searchMain" class="nav-sidebar-form" action="http://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.qt.value;">
+                        <form id="search-google-form" name="searchMain" class="nav-sidebar-form" action="https://www.google.com/search" onsubmit="searchMain.q.value='site:okky.kr '+searchMain.qt.value;">
                             <div class="input-group">
                                 <input type="text" name="qt" class="form-control input-sm" placeholder="Google 검색" />
                                 <input type="hidden" name="q" />
