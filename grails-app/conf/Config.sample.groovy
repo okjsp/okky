@@ -103,9 +103,9 @@ environments {
     production {
         grails.logging.jul.usebridge = false
         grails.serverURL = "http://okky.kr"
-        grails.fileURL = "http://file.okky.kr"
+        grails.fileURL = "//file.okky.kr"
         grails.app.context = "/"
-        grails.assets.url = "http://okky.kr/assets/"
+        grails.assets.url = "//okky.kr/assets/"
         grails.filePath = "/var/www"
     }
 }
@@ -187,6 +187,7 @@ environments {
             debug = false
             providers {
                 facebook {
+                    api = net.okjsp.api.FacebookApi
                     key = '892426937476416'
                     secret = '3a607e0138aa2251156702c5234f31d7'
                     successUri = '/oauth/facebook/success'
@@ -211,6 +212,7 @@ environments {
             debug = true
             providers {
                 facebook {
+                    api = net.okjsp.api.FacebookApi
                     key = ''
                     secret = ''
                     successUri = '/oauth/facebook/success'
