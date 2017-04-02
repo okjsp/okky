@@ -162,17 +162,17 @@ class RecruitController {
         Person person = Person.get(springSecurityService.principal.personId)
 
         if(!person.company) {
-            redirect(url: '/recruits/company')
+            redirect(url: '/company/create')
             return
         }
 
         if(!person.company.enabled) {
-            redirect(url: '/recruits/company/wait')
+            redirect(url: '/company/wait')
             return
         }
 
         if(person.company.locked) {
-            redirect(url: '/recruits/company/locked')
+            redirect(url: '/company/locked')
             return
         }
 
@@ -216,17 +216,17 @@ class RecruitController {
         Person person = Person.get(springSecurityService.principal.personId)
 
         if(!person.company) {
-            redirect(url: '/recruits/company')
+            redirect(url: '/company/create')
             return
         }
 
         if(!person.company.enabled) {
-            redirect(url: '/recruits/company/wait')
+            redirect(url: '/company/wait')
             return
         }
 
         if(person.company.locked) {
-            redirect(url: '/recruits/company/locked')
+            redirect(url: '/company/locked')
             return
         }
 
@@ -608,75 +608,6 @@ class RecruitController {
         }
 
         respond article, model: [content: content, changeLogs: changeLogs]
-    }
-
-
-    def createCompany() {
-        Person person = Person.get(springSecurityService.principal.personId)
-
-        if(person.company)
-            redirect uri: '/recruit/create'
-        else
-            respond new Company(params)
-    }
-
-    @Transactional
-    def saveCompany(Company company) {
-
-        Person person = Person.get(springSecurityService.principal.personId)
-
-        if (company == null) {
-            notFound()
-            return
-        }
-
-        MultipartFile logoFile = request.getFile("logoFile")
-
-        if(!logoFile.empty) {
-            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
-            def mil = System.currentTimeMillis()
-            logoFile.transferTo(new File("${grailsApplication.config.grails.filePath}/logo", "${mil}${ext}"))
-
-            company.logo = "${mil}${ext}"
-        }
-
-        company.manager = person
-
-        company.save()
-
-        company.addToMembers(person)
-
-        if (company.hasErrors()) {
-            respond company.errors, view:'createCompany'
-            return
-        }
-
-        def companyInfo = new CompanyInfo()
-
-        bindData(companyInfo, params, 'companyInfo')
-
-        companyInfo.company = company
-        companyInfo.save flush:true
-
-        if (companyInfo.hasErrors()) {
-            respond companyInfo.errors, view:'createCompany'
-            return
-        }
-
-        person.company = company
-        person.save flush:true
-
-        println companyInfo
-
-        request.withFormat {
-            form multipartForm {
-                flash.tel = companyInfo.tel
-                flash.email = companyInfo.email
-                flash.name = company.name
-                redirect uri: '/recruits/company/registered'
-            }
-            '*' { respond company, [status: CREATED] }
-        }
     }
 
     protected void notFound() {

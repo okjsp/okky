@@ -1,11 +1,5 @@
 <%@ page import="net.okjsp.Company" %>
 
-<div class="alert alert-info">
-	아직 회사정보가 등록되지 않았습니다. <br/><br/>
-	<b>회사등록은 기재하신 연락처를 통해 관리자의 인증이 진행되며, 인증 완료 후 구인게시판 이용이 가능합니다.</b> <br/>
-	모든 정보를 정확히 입력해 주시기 바랍니다.
-</div>
-
 
 <div class="row">
 	<div class="col-sm-6">
@@ -17,7 +11,7 @@
 	<div class="col-sm-6">
 		<div class="form-group ${hasErrors(bean: company, field: 'registerNumber', 'error')} required">
 			<label>사업자등록번호</label>
-			<g:textField name="registerNumber" required="" value="${company?.name}" placeholder="사업자등록번호를 입력해 주세요." class="form-control"/>
+			<g:textField name="registerNumber" required="" value="${company?.registerNumber}" placeholder="사업자등록번호를 입력해 주세요." class="form-control"/>
 		</div>
 	</div>
 </div>
@@ -46,7 +40,7 @@
 	<div class="col-sm-6">
 		<div class="form-group ${hasErrors(bean: companyInfo, field: 'homepageUrl', 'error')} required">
 			<label>회사 홈페이지</label>
-			<input type="url" name="companyInfo.homepageUrl" value="${companyInfo?.homepageUrl ?: 'http://'}" class="form-control" placeholder="홈페이지 URL을 입력해 주세요."/>
+			<input type="url" name="companyInfo.homepageUrl" value="${companyInfo?.homepageUrl}" class="form-control" placeholder="홈페이지 URL을 입력해 주세요."/>
 		</div>
 	</div>
 	<div class="col-sm-6">

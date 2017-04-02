@@ -1,11 +1,15 @@
 package net.okjsp
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
+import org.springframework.web.multipart.MultipartFile
 
 import static org.springframework.http.HttpStatus.*
 
 @Transactional(readOnly = true)
 class CompanyController {
+
+    SpringSecurityService springSecurityService
 
     def info(Company companyInstance) {
         def companyInfo = CompanyInfo.findByCompany(companyInstance)
@@ -20,6 +24,70 @@ class CompanyController {
         }
 
         respond companyInstance, model:[companyInfo:companyInfo, recruits: recruitQuery.list(params), recruitCount: recruitQuery.count()]
+    }
+
+    def create() {
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if(person.company)
+            redirect uri: '/recruit/create'
+        else
+            respond new Company(params)
+    }
+
+    @Transactional
+    def save(Company company) {
+
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if (company == null) {
+            notFound()
+            return
+        }
+
+        MultipartFile logoFile = request.getFile("logoFile")
+
+        if(!logoFile.empty) {
+            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+            logoFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/logo", "${mil}${ext}"))
+
+            company.logo = "${mil}${ext}"
+        }
+
+        company.manager = person
+
+        company.save()
+
+        company.addToMembers(person)
+
+        def companyInfo = new CompanyInfo()
+
+        bindData(companyInfo, params, 'companyInfo')
+
+        companyInfo.company = company
+        companyInfo.save flush:true
+
+
+        if (company.hasErrors() || companyInfo.hasErrors()) {
+            respond company, model:[companyInfo: companyInfo], view:'create'
+            return
+        }
+
+        person.company = company
+        person.save flush:true
+
+        println companyInfo
+
+        request.withFormat {
+            form multipartForm {
+                flash.tel = companyInfo.tel
+                flash.email = companyInfo.email
+                flash.name = company.name
+                redirect uri: '/company/registered'
+            }
+            '*' { respond company, [status: CREATED] }
+        }
     }
 
     protected void notFound() {
