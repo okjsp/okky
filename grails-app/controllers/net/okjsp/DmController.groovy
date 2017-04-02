@@ -28,6 +28,7 @@ class DmController {
         render view: "reject", model: ['rejectCount' : rejectCount]
     }
 
+    @Transactional
     def updateReject() {
 
         MultipartFile rejectFile = request.getFile("rejectFile")
