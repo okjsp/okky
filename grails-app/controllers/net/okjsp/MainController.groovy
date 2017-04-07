@@ -17,12 +17,6 @@ class MainController {
 
         def mainBanner = mainBanners ? randomService.draw(mainBanners) : null
 
-        def promoteArticles = mainService.getPromoteArticles().clone().unique{ a, b -> a.authorId <=> b.authorId }
-
-        Collections.shuffle(promoteArticles)
-
-//        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
-        if(promoteArticles?.size() > 6) promoteArticles = promoteArticles.subList(0, 5)
 
 //        def techArticles = mainService.getTechArticles().clone().sort { Math.random() }
 //        if(techArticles?.size() > 2) techArticles = techArticles.subList(0, 2)
@@ -36,7 +30,7 @@ class MainController {
             columnArticle: mainService.getColumnArticle(),
 //            techArticle: mainService.getTechArticle(),
             techArticles: mainService.getTechArticles(),
-            promoteArticles: promoteArticles,
+            promoteArticles: mainService.getPromoteArticles(),
             mainBanner : mainBanner
         ]
     }
