@@ -48,18 +48,6 @@ class MainService {
         }.findAll()
     }
 
-    @Cacheable("techArticleCache")
-    def getTechArticle() {
-        Article.withCriteria() {
-            fetchMode 'content', FetchMode.JOIN
-            fetchMode 'author', FetchMode.JOIN
-            fetchMode 'category', FetchMode.JOIN
-            'in'('category', Category.get('tech').children)
-            eq('enabled', true)
-            order('id', 'desc')
-            maxResults(1)
-        }.find()
-    }
     @Cacheable("techArticlesCache")
     def getTechArticles() {
         Article.withCriteria() {
