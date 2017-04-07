@@ -35,7 +35,9 @@ class ArticleService {
 
         article.content.save(failOnError: true)
 
-        article.save(failOnError: true)
+        article.save(failOnError: true, flush: true)
+
+        article.attach()
 
         if(article.anonymity) {
             new Anonymous(

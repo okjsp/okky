@@ -19,6 +19,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             eq('choice', true)
             eq('enabled', true)
             ne('category', Category.get('recruit'))
@@ -36,6 +37,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             ne('category', Category.get('promote'))
             ne('category', Category.get('recruit'))
             eq('enabled', true)
@@ -51,6 +53,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             'in'('category', Category.get('tech').children)
             eq('enabled', true)
             order('id', 'desc')
@@ -62,6 +65,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             'in'('category', Category.get('tech').children)
             eq('enabled', true)
             order('id', 'desc')
@@ -74,6 +78,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             eq('category', Category.get('questions'))
             eq('enabled', true)
             order('id', 'desc')
@@ -89,6 +94,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             'in'('category', categories)
             eq('enabled', true)
             order('id', 'desc')
@@ -101,6 +107,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             eq('category', Category.get('columns'))
             eq('enabled', true)
             order('id', 'desc')
@@ -116,6 +123,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
+            fetchMode 'category', FetchMode.JOIN
             'in'('category', Category.get('promote'))
             eq('enabled', true)
             gt('dateCreated', diff)
