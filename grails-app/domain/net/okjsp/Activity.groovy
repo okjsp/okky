@@ -72,16 +72,16 @@ class Activity {
         }
 
         if(this.pointType == ActivityPointType.TAKE)
-            this.avatar.updateActivityPoint(this.point)
+            this.avatar?.updateActivityPoint(this.point)
         else if(this.pointType == ActivityPointType.GIVE)
-            this.content.author.updateActivityPoint(this.point)
+            this.content.author?.updateActivityPoint(this.point)
     }
 
     def beforeDelete() {
         println this.pointType
         if(this.pointType == ActivityPointType.TAKE)
-            this.avatar.updateActivityPoint(-this.point)
+            this.avatar?.updateActivityPoint(-this.point)
         else if(this.pointType == ActivityPointType.GIVE)
-            this.content.author.updateActivityPoint(-this.point)
+            this.content.author?.updateActivityPoint(-this.point)
     }
 }
