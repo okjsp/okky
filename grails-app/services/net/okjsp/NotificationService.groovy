@@ -7,7 +7,7 @@ class NotificationService {
 
     def createFromNote(Content content) {
 
-        if(content.article.author != content.author) {
+        if(content.article.author && content.author && content.article.author != content.author) {
 
             Notification notification =
                 Notification.findOrCreateWhere(type: ActivityType.NOTED, article: content.article,
@@ -49,7 +49,7 @@ class NotificationService {
 
     def createFromAccent(ContentVote contentVote) {
 
-        if(contentVote.content.author == contentVote.voter) return
+        if(contentVote.content.author && contentVote.voter && contentVote.content.author == contentVote.voter) return
 
         ActivityType activityType
         Notification notification
@@ -85,7 +85,7 @@ class NotificationService {
 
     def removeFromAccent(ContentVote contentVote) {
 
-        if(contentVote.content.author == contentVote.voter) return
+        if(contentVote.content.author && contentVote.voter && contentVote.content.author == contentVote.voter) return
 
         ActivityType activityType
 
