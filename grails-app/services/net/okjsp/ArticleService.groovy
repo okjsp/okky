@@ -61,8 +61,6 @@ class ArticleService {
      */
     def update(Article article, Avatar editor, Category category) {
 
-        article.anonymity = category.anonymity
-
         article.category = category
 
         article.lastEditor = editor
@@ -122,8 +120,8 @@ class ArticleService {
 
         content.type = ContentType.NOTE
         content.author = author
-        content.anonymity = article.anonymity
-        content.aNickName = article.anonymity ? generateNickname(user, article.createIp) : author.nickname
+        content.anonymity = content.anonymity
+        content.aNickName = content.anonymity ? generateNickname(user, content.createIp) : author.nickname
         content.save(failOnError: true)
 
         article.noteCount++
