@@ -66,10 +66,8 @@
         <asset:script type="text/javascript">
             $('#category').change(function() {
                 var $opt = $(this).find(':selected');
-
-                if(this.value && ($opt.data('external') !== true || confirm('외부 링크로 이동합니다. 이동하시겠습니까?'))) {
-                    $('#article-form').attr('action', contextPath+'/articles/'+$opt.val()+'/create')
-                        .submit();
+                if($opt.val() == 'recruit') {
+                  location.href=contextPath+'/recruits/create';
                 }
             });
         </asset:script>

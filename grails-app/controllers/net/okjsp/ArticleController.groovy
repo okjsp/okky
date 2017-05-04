@@ -73,11 +73,16 @@ class ArticleController {
 
         }
 
-        if(SpringSecurityUtils.ifAnyGranted("ROLE_ADMIN")) {
+        def articles = articlesQuery.list(params)
 
+        articles.each {
+            if(articles.isRecruit) {
+                Recruit recruit = Recruit.findByArticle(it)
+                it.recruit = recruit
+            }
         }
 
-        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
+        respond articles, model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
     }
 
 
@@ -121,6 +126,10 @@ class ArticleController {
             return
         }
 
+        if(article.category.code == 'recruit') {
+            redirect uri: "/recruit/$article.id"
+        }
+
         article.updateViewCount(1)
 
         if(springSecurityService.loggedIn) {
@@ -154,6 +163,10 @@ class ArticleController {
         if(category == null) {
             notFound()
             return
+        }
+
+        if(category.code == 'recruit') {
+            redirect uri: '/recruits/create'
         }
 
         params.category = category
@@ -237,6 +250,10 @@ class ArticleController {
                 notAcceptable()
                 return
             }
+        }
+
+        if(article.category.code == 'recruit') {
+            redirect uri: "/recruit/edit/$article.id"
         }
 
         def categories

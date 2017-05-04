@@ -67,36 +67,71 @@
 
     <hr/>
 
-    <label><g:message code="jobPosition.jobPositionType.label" default="직급"/></label>
+    <label><g:message code="jobPosition.jobPositionType.label" default="직무정보"/></label>
+
+    <div class="form-group has-feedback">
+        <div>
+            <g:textField name="recruit.jobPositions.title" value="${jobPosition?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="row">
-            <div class="col col-sm-6">
-                <select id="jobPositionType" name="jobPosition.jobPositionType" class="form-control">
-                    <option value=""><g:message code="jobPosition.jobPositionType.label" default="직무" /></option>
-                    <option value="JUNIOR" <g:if test="${jobPosition.jobPositionType == JobPositionType.valueOf('JUNIOR')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPositionType.JUNIOR', default: 'JUNIOR')}</option>
-                    <option value="SENIOR" <g:if test="${jobPosition.jobPositionType == JobPositionType.valueOf('SENIOR')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPositionType.SENIOR', default: 'SENIOR')}</option>
-                    <option value="MANAGER" <g:if test="${jobPosition.jobPositionType == JobPositionType.valueOf('MANAGER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPositionType.MANAGER', default: 'MANAGER')}</option>
+            <div class="col col-sm-6 ${jobPosition.minCareer == 99 || jobPosition.minCareer == 0 || jobPosition.minCareer == 15 || jobPosition.minCareer == '' ? '' : ' form-inline'} ">
+                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                    <option value=""><g:message code="jobPosition.minCareer.label" default="경력" /></option>
+                    <option value="99" <g:if test="${jobPosition.minCareer == 99}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.99')}</option>
+                    <option value="0" <g:if test="${jobPosition.minCareer == 0}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.0')}</option>
+                    <option value="1" <g:if test="${jobPosition.minCareer == 1}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.1')}</option>
+                    <option value="2" <g:if test="${jobPosition.minCareer == 2}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.2')}</option>
+                    <option value="3" <g:if test="${jobPosition.minCareer == 3}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.3')}</option>
+                    <option value="4" <g:if test="${jobPosition.minCareer == 4}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.4')}</option>
+                    <option value="5" <g:if test="${jobPosition.minCareer == 5}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.5')}</option>
+                    <option value="6" <g:if test="${jobPosition.minCareer == 6}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.6')}</option>
+                    <option value="7" <g:if test="${jobPosition.minCareer == 7}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.7')}</option>
+                    <option value="8" <g:if test="${jobPosition.minCareer == 8}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.8')}</option>
+                    <option value="9" <g:if test="${jobPosition.minCareer == 9}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.9')}</option>
+                    <option value="10" <g:if test="${jobPosition.minCareer == 10}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.10')}</option>
+                    <option value="11" <g:if test="${jobPosition.minCareer == 11}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.11')}</option>
+                    <option value="12" <g:if test="${jobPosition.minCareer == 12}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.12')}</option>
+                    <option value="13" <g:if test="${jobPosition.minCareer == 13}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.13')}</option>
+                    <option value="14" <g:if test="${jobPosition.minCareer == 14}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.14')}</option>
+                    <option value="15" <g:if test="${jobPosition.minCareer == 15}">selected="selected"</g:if>>${message(code: 'jobPosition.minCareer.15')}</option>
+                </select>
+                <select name="recruit.jobPositions.maxCareer" class="form-control form-control-inline-half" style="display: ${jobPosition.minCareer == 99 || jobPosition.minCareer == 0 || jobPosition.minCareer == 15 || jobPosition.minCareer == '' ? 'none' : 'inline'};">
+                    <option value="2" <g:if test="${jobPosition.maxCareer == 2}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.2')}</option>
+                    <option value="3" <g:if test="${jobPosition.maxCareer == 3}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.3')}</option>
+                    <option value="4" <g:if test="${jobPosition.maxCareer == 4}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.4')}</option>
+                    <option value="5" <g:if test="${jobPosition.maxCareer == 5}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.5')}</option>
+                    <option value="6" <g:if test="${jobPosition.maxCareer == 6}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.6')}</option>
+                    <option value="7" <g:if test="${jobPosition.maxCareer == 7}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.7')}</option>
+                    <option value="8" <g:if test="${jobPosition.maxCareer == 8}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.8')}</option>
+                    <option value="9" <g:if test="${jobPosition.maxCareer == 9}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.9')}</option>
+                    <option value="10" <g:if test="${jobPosition.maxCareer == 10}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.10')}</option>
+                    <option value="11" <g:if test="${jobPosition.maxCareer == 11}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.11')}</option>
+                    <option value="12" <g:if test="${jobPosition.maxCareer == 12}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.12')}</option>
+                    <option value="13" <g:if test="${jobPosition.maxCareer == 13}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.13')}</option>
+                    <option value="14" <g:if test="${jobPosition.maxCareer == 14}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.14')}</option>
+                    <option value="15" <g:if test="${jobPosition.maxCareer == 15}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.15')}</option>
+                    <option value="99" <g:if test="${jobPosition.maxCareer == 99}">selected="selected"</g:if>>${message(code: 'jobPosition.maxCareer.99')}</option>
                 </select>
             </div>
             <div class="col col-sm-6">
                 <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
-                <select id="jobPayType" name="jobPosition.jobPayType" class="form-control">
+                <select id="jobPayType" required="required" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
                     <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
-                    <option value="Y_25_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_25_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_25_30', default: '2500만 ~ 3000만')}</option>
-                    <option value="Y_30_35" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_30_35')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_30_35', default: '3000만 ~ 3500만')}</option>
-                    <option value="Y_35_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_35_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_35_40', default: '3500만 ~ 4000만')}</option>
-                    <option value="Y_40_45" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_40_45')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_40_45', default: '4000만 ~ 4500만')}</option>
-                    <option value="Y_45_50" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_45_50')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_45_50', default: '4500만 ~ 5000만')}</option>
-                    <option value="Y_50_55" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_50_55')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_50_55', default: '5000만 ~ 5500만')}</option>
-                    <option value="Y_55_60" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_55_60')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_55_60', default: '5500만 ~ 6000만')}</option>
-                    <option value="Y_60_70" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_60_70')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_60_70', default: '6000만 ~ 7000만')}</option>
-                    <option value="Y_70_80" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_70_80')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_70_80', default: '7000만 ~ 8000만')}</option>
-                    <option value="Y_80_90" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_80_90')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_80_90', default: '8000만 ~ 9000만')}</option>
-                    <option value="Y_90_OVER" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_90_OVER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
+                    <option value="Y_20_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_20_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_20_30')}</option>
+                    <option value="Y_30_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_30_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_30_40')}</option>
+                    <option value="Y_40_50" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_40_50')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_40_50')}</option>
+                    <option value="Y_50_60" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_50_60')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_50_60')}</option>
+                    <option value="Y_60_70" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_60_70')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_60_70')}</option>
+                    <option value="Y_70_80" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_70_80')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_70_80')}</option>
+                    <option value="Y_80_90" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_80_90')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_80_90')}</option>
+                    <option value="Y_90_OVER" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_90_OVER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_90_OVER')}</option>
                 </select>
                 </g:if>
                 <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
-                <select id="jobPayType" name="jobPosition.jobPayType" class="form-control">
+                <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
                     <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
                     <option value="M_20_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_20_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
                     <option value="M_30_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_30_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
@@ -114,8 +149,11 @@
 
     <div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
         <div>
-            <g:textField name="jobPositions.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control"/>
+            <g:textField name="recruit.jobPositions.tagString" value="${jobPosition?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control form-dynamic"/>
         </div>
+    </div>
+    <div class="form-group has-feedback">
+        <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
     </div>
 </g:each>
 
@@ -123,7 +161,7 @@
 
 </div>
 
-<g:if test="${recruit.jobPositions?.size() < 2}">
+<g:if test="${recruit.jobPositions?.size() < 3}">
 <div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
     <buttom type="button" id="addJobPositionFormButton" class="btn btn-sm btn-default btn-block"><i class="fa fa-plus-square-o"></i> 직무정보 추가</buttom>
 </div>
@@ -139,11 +177,11 @@
         <div class="row">
             <div class="col col-sm-6">
                 <div id="datepicker" class="input-group date">
-                    <input type="text" id="startDate" name="recruit.startDate" class="form-control" placeholder="투입시기"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                    <input type="text" id="startDate" required="required" name="recruit.startDate" class="form-control" placeholder="투입시기"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                 </div>
             </div>
             <div class="col col-sm-6">
-                <select id="workingMonth" name="recruit.workingMonth" class="form-control form-inline">
+                <select id="workingMonth" name="recruit.workingMonth" required="required" class="form-control form-inline">
                     <option value="">투입기간</option>
                     <option value="1">1개월</option>
                     <option value="2">2개월</option>
@@ -168,7 +206,7 @@
 <div class="form-group ${hasErrors(bean: recruit, field: 'city', 'has-error')} has-feedback">
     <div class="row">
         <div class="col col-sm-6">
-            <select id="city" name="recruit.city" class="form-control">
+            <select id="city" name="recruit.city" class="form-control" required="required">
                 <option value=""><g:message code="recruit.city.label" default="시/도" /></option>
                 <option value="서울" <g:if test="${recruit.city == '서울'}">selected="selected"</g:if>>서울</option>
                 <option value="부산" <g:if test="${recruit.city == '부산'}">selected="selected"</g:if>>부산</option>
@@ -189,7 +227,7 @@
             </select>
         </div>
         <div class="col col-sm-6">
-            <select id="district" name="recruit.district" class="form-control">
+            <select id="district" name="recruit.district" class="form-control" required="required" data-value="${recruit.district}">
                 <option value=""><g:message code="recruit.district.label" default="구/군" /></option>
             </select>
         </div>
@@ -208,13 +246,13 @@
         <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
     </g:else>
     <g:if test="${article?.content?.textType == ContentTextType.MD}">
-        <g:textArea name="content.text" id="summernote" value="${markdown.renderHtml([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
+        <g:textArea name="content.text" required="required" id="summernote" value="${markdown.renderHtml([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
     </g:if>
     <g:elseif test="${article?.content?.textType == ContentTextType.HTML}">
-        <g:textArea name="content.text" id="summernote" value="${filterHtml([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
+        <g:textArea name="content.text" required="required" id="summernote" value="${filterHtml([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
     </g:elseif>
     <g:else>
-        <g:textArea name="content.text" id="summernote" value="${lineToBr([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
+        <g:textArea name="content.text" required="required" id="summernote" value="${lineToBr([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
     </g:else>
 
 </div>
@@ -244,64 +282,61 @@
 
     <div class="form-group has-feedback">
         <div>
-            <g:textField name="recruit.jobPosition.title" value="${jobPositions?.title}" placeholder="직무명을 입력해 주세요." class="form-control"/>
+            <input name="recruit.jobPositions.title" value="${jobPositions?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
         </div>
     </div>
 
     <div class="form-group">
         <div class="row">
             <div class="col col-sm-6">
-                <select name="recruit.jobPosition.minCareer" class="form-control form-control-inline-half">
-                    <option value=""><g:message code="recruit.minCareer.label" default="경력" /></option>
-                    <option value="99">${message(code: 'recruit.minCareer.99', default: '무관')}</option>
-                    <option value="0">${message(code: 'recruit.minCareer.0', default: '신입')}</option>
-                    <option value="1">${message(code: 'recruit.minCareer.1', default: '1년 이상')}</option>
-                    <option value="2">${message(code: 'recruit.minCareer.2', default: '2년 이상')}</option>
-                    <option value="3">${message(code: 'recruit.minCareer.3', default: '3년 이상')}</option>
-                    <option value="4">${message(code: 'recruit.minCareer.4', default: '4년 이상')}</option>
-                    <option value="5">${message(code: 'recruit.minCareer.5', default: '5년 이상')}</option>
-                    <option value="6">${message(code: 'recruit.minCareer.6', default: '6년 이상')}</option>
-                    <option value="7">${message(code: 'recruit.minCareer.7', default: '7년 이상')}</option>
-                    <option value="8">${message(code: 'recruit.minCareer.8', default: '8년 이상')}</option>
-                    <option value="9">${message(code: 'recruit.minCareer.9', default: '9년 이상')}</option>
-                    <option value="10">${message(code: 'recruit.minCareer.10', default: '10년 이상')}</option>
-                    <option value="11">${message(code: 'recruit.minCareer.11', default: '11년 이상')}</option>
-                    <option value="12">${message(code: 'recruit.minCareer.12', default: '12년 이상')}</option>
-                    <option value="13">${message(code: 'recruit.minCareer.13', default: '13년 이상')}</option>
-                    <option value="14">${message(code: 'recruit.minCareer.14', default: '14년 이상')}</option>
-                    <option value="15">${message(code: 'recruit.minCareer.15', default: '15년 이상')}</option>
+                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                    <option value=""><g:message code="jobPosition.minCareer.label" default="경력" /></option>
+                    <option value="99">${message(code: 'jobPosition.minCareer.99')}</option>
+                    <option value="0">${message(code: 'jobPosition.minCareer.0')}</option>
+                    <option value="1">${message(code: 'jobPosition.minCareer.1')}</option>
+                    <option value="2">${message(code: 'jobPosition.minCareer.2')}</option>
+                    <option value="3">${message(code: 'jobPosition.minCareer.3')}</option>
+                    <option value="4">${message(code: 'jobPosition.minCareer.4')}</option>
+                    <option value="5">${message(code: 'jobPosition.minCareer.5')}</option>
+                    <option value="6">${message(code: 'jobPosition.minCareer.6')}</option>
+                    <option value="7">${message(code: 'jobPosition.minCareer.7')}</option>
+                    <option value="8">${message(code: 'jobPosition.minCareer.8')}</option>
+                    <option value="9">${message(code: 'jobPosition.minCareer.9')}</option>
+                    <option value="10">${message(code: 'jobPosition.minCareer.10')}</option>
+                    <option value="11">${message(code: 'jobPosition.minCareer.11')}</option>
+                    <option value="12">${message(code: 'jobPosition.minCareer.12')}</option>
+                    <option value="13">${message(code: 'jobPosition.minCareer.13')}</option>
+                    <option value="14">${message(code: 'jobPosition.minCareer.14')}</option>
+                    <option value="15">${message(code: 'jobPosition.minCareer.15')}</option>
                 </select>
-                <select name="recruit.jobPosition.maxCareer" class="form-control form-control-inline-half" style="display: none;">
+                <select name="recruit.jobPositions.maxCareer" class="form-control form-control-inline-half" style="display: none;">
                 </select>
             </div>
             <div class="col col-sm-6">
-                <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
-                    <select id="jobPayType" name="recruit.jobPosition.jobPayType" class="form-control">
+                <g:if test="${recruit?.jobType == JobType.valueOf('FULLTIME')}">
+                    <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
                         <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
-                        <option value="Y_25_30">${message(code: 'jobPosition.jobPayType.Y_25_30', default: '2500만 ~ 3000만')}</option>
-                        <option value="Y_30_35">${message(code: 'jobPosition.jobPayType.Y_30_35', default: '3000만 ~ 3500만')}</option>
-                        <option value="Y_35_40">${message(code: 'jobPosition.jobPayType.Y_35_40', default: '3500만 ~ 4000만')}</option>
-                        <option value="Y_40_45">${message(code: 'jobPosition.jobPayType.Y_40_45', default: '4000만 ~ 4500만')}</option>
-                        <option value="Y_45_50">${message(code: 'jobPosition.jobPayType.Y_45_50', default: '4500만 ~ 5000만')}</option>
-                        <option value="Y_50_55">${message(code: 'jobPosition.jobPayType.Y_50_55', default: '5000만 ~ 5500만')}</option>
-                        <option value="Y_55_60">${message(code: 'jobPosition.jobPayType.Y_55_60', default: '5500만 ~ 6000만')}</option>
-                        <option value="Y_60_70">${message(code: 'jobPosition.jobPayType.Y_60_70', default: '6000만 ~ 7000만')}</option>
-                        <option value="Y_70_80">${message(code: 'jobPosition.jobPayType.Y_70_80', default: '7000만 ~ 8000만')}</option>
-                        <option value="Y_80_90">${message(code: 'jobPosition.jobPayType.Y_80_90', default: '8000만 ~ 9000만')}</option>
+                        <option value="Y_20_30">${message(code: 'jobPosition.jobPayType.Y_20_30')}</option>
+                        <option value="Y_30_40">${message(code: 'jobPosition.jobPayType.Y_30_40')}</option>
+                        <option value="Y_40_50">${message(code: 'jobPosition.jobPayType.Y_40_50')}</option>
+                        <option value="Y_50_60">${message(code: 'jobPosition.jobPayType.Y_50_60')}</option>
+                        <option value="Y_60_70">${message(code: 'jobPosition.jobPayType.Y_60_70')}</option>
+                        <option value="Y_70_80">${message(code: 'jobPosition.jobPayType.Y_70_80')}</option>
+                        <option value="Y_80_90">${message(code: 'jobPosition.jobPayType.Y_80_90')}</option>
                         <option value="Y_90_OVER">${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
                     </select>
                 </g:if>
-                <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
-                    <select id="jobPayType" name="recruit.jobPosition.jobPayType" class="form-control">
+                <g:if test="${recruit?.jobType == JobType.valueOf('CONTRACT')}">
+                    <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
                         <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
-                        <option value="M_20_30">${message(code: 'recruit.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
-                        <option value="M_30_40">${message(code: 'recruit.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
-                        <option value="M_40_50">${message(code: 'recruit.jobPayType.M_40_50', default: '400만 ~ 500만')}</option>
-                        <option value="M_50_60">${message(code: 'recruit.jobPayType.M_50_60', default: '500만 ~ 600만')}</option>
-                        <option value="M_60_70">${message(code: 'recruit.jobPayType.M_60_70', default: '600만 ~ 700만')}</option>
-                        <option value="M_70_80">${message(code: 'recruit.jobPayType.M_70_80', default: '700만 ~ 800만')}</option>
-                        <option value="M_80_90">${message(code: 'recruit.jobPayType.M_80_90', default: '800만 ~ 900만')}</option>
-                        <option value="M_90_OVER">${message(code: 'recruit.jobPayType.M_90_OVER', default: '900만 이상')}</option>
+                        <option value="M_20_30">${message(code: 'jobPosition.jobPayType.M_20_30')}</option>
+                        <option value="M_30_40">${message(code: 'jobPosition.jobPayType.M_30_40')}</option>
+                        <option value="M_40_50">${message(code: 'jobPosition.jobPayType.M_40_50')}</option>
+                        <option value="M_50_60">${message(code: 'jobPosition.jobPayType.M_50_60')}</option>
+                        <option value="M_60_70">${message(code: 'jobPosition.jobPayType.M_60_70')}</option>
+                        <option value="M_70_80">${message(code: 'jobPosition.jobPayType.M_70_80')}</option>
+                        <option value="M_80_90">${message(code: 'jobPosition.jobPayType.M_80_90')}</option>
+                        <option value="M_90_OVER">${message(code: 'jobPosition.jobPayType.M_90_OVER', default: '900만 이상')}</option>
                     </select>
                 </g:if>
             </div>
@@ -309,11 +344,11 @@
     </div>
 
     <div class="form-group has-feedback">
-        <g:textField name="recruit.jobPosition.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control tag-input"/>
+        <g:textField name="recruit.jobPositions.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control tag-input form-dynamic"/>
     </div>
 
     <div class="form-group has-feedback">
-        <g:textArea name="recruit.jobPosition.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level" />
+        <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
     </div>
 </script>
 </g:if>
@@ -360,13 +395,19 @@
 
       $district.find('option.district').detach();
 
+      var districtVal = $district.data('value');
+
       if(city) {
         var districts = districtsInCity[city];
         $.each(districts, function(i, d){
           $district.append('<option value="'+d+'" class="district">'+d+'</option>');
         });
+
+        $district.val(districtVal);
       }
     });
+
+    $('#city').change();
 
     $('#datepicker').datepicker({
         format: "yyyy/mm",
@@ -376,12 +417,14 @@
         autoclose: true
     });
 
+    var validator;
+
     var template = $('#jobPositionFormTemplate').html();
     Mustache.parse(template);
 
     function addJobPositionForm() {
         jobPositionCount++;
-        var rendered = Mustache.render(template);
+        var rendered = Mustache.render(template, {index : jobPositionCount});
 
         var $rendered = $(rendered);
 
@@ -404,32 +447,32 @@
     });
 
     var maxCareerList = [
-        {value : 2, label: '${message(code: 'recruit.maxCareer.2', default: '2년 미만')}'},
-        {value : 3, label: '${message(code: 'recruit.maxCareer.3', default: '3년 미만')}'},
-        {value : 4, label: '${message(code: 'recruit.maxCareer.4', default: '4년 미만')}'},
-        {value : 5, label: '${message(code: 'recruit.maxCareer.5', default: '5년 미만')}'},
-        {value : 6, label: '${message(code: 'recruit.maxCareer.6', default: '6년 미만')}'},
-        {value : 7, label: '${message(code: 'recruit.maxCareer.7', default: '7년 미만')}'},
-        {value : 8, label: '${message(code: 'recruit.maxCareer.8', default: '8년 미만')}'},
-        {value : 9, label: '${message(code: 'recruit.maxCareer.9', default: '9년 미만')}'},
-        {value : 10, label: '${message(code: 'recruit.maxCareer.10', default: '10년 미만')}'},
-        {value : 11, label: '${message(code: 'recruit.maxCareer.11', default: '11년 미만')}'},
-        {value : 12, label: '${message(code: 'recruit.maxCareer.12', default: '12년 미만')}'},
-        {value : 13, label: '${message(code: 'recruit.maxCareer.13', default: '13년 미만')}'},
-        {value : 14, label: '${message(code: 'recruit.maxCareer.14', default: '14년 미만')}'},
-        {value : 15, label: '${message(code: 'recruit.maxCareer.15', default: '15년 미만')}'},
-        {value : 99, label: '${message(code: 'recruit.maxCareer.99', default: '무관')}'}
+        {value : 2, label: '${message(code: 'jobPosition.maxCareer.2')}'},
+        {value : 3, label: '${message(code: 'jobPosition.maxCareer.3')}'},
+        {value : 4, label: '${message(code: 'jobPosition.maxCareer.4')}'},
+        {value : 5, label: '${message(code: 'jobPosition.maxCareer.5')}'},
+        {value : 6, label: '${message(code: 'jobPosition.maxCareer.6')}'},
+        {value : 7, label: '${message(code: 'jobPosition.maxCareer.7')}'},
+        {value : 8, label: '${message(code: 'jobPosition.maxCareer.8')}'},
+        {value : 9, label: '${message(code: 'jobPosition.maxCareer.9')}'},
+        {value : 10, label: '${message(code: 'jobPosition.maxCareer.10')}'},
+        {value : 11, label: '${message(code: 'jobPosition.maxCareer.11')}'},
+        {value : 12, label: '${message(code: 'jobPosition.maxCareer.12')}'},
+        {value : 13, label: '${message(code: 'jobPosition.maxCareer.13')}'},
+        {value : 14, label: '${message(code: 'jobPosition.maxCareer.14')}'},
+        {value : 15, label: '${message(code: 'jobPosition.maxCareer.15')}'},
+        {value : 99, label: '${message(code: 'jobPosition.maxCareer.99')}'}
     ];
 
-    $('select[name="recruit.jobPosition.minCareer"]').change(function() {
+    $('.content').delegate('select[name="recruit.jobPositions.minCareer"]','change', function() {
       var value = $(this).val();
 
-      if(value == '99' || value == '0' || value == '15') {
+      if(value == '99' || value == '0' || value == '15' || value == '') {
         $(this).parent().removeClass('form-inline');
-        $(this).next().hide();
+        $(this).nextAll('select').hide();
       } else {
         $(this).parent().addClass('form-inline');
-        var $maxCareerEl = $(this).next().css({'display':'inline-block'}).focus();
+        var $maxCareerEl = $(this).nextAll('select').css({'display':'inline-block'}).focus();
 
         $maxCareerEl.find('option').detach();
 
@@ -438,6 +481,24 @@
             $maxCareerEl.append('<option value="'+career.value+'">'+career.label+'</option>');
           }
         });
+      }
+    });
+
+    validator = $("#article-form").validate({
+      errorClass : 'validError',
+      submitHandler: function(form) {
+        var valid = true;
+        $(form).find('.form-dynamic').each(function() {
+          if($(this).val() == '') {
+            alert('모든 정보를 정확히 입력해 주세요.');
+            valid = false;
+            $(this).focus();
+            return false;
+          }
+        });
+
+        if(valid)
+          form.submit();
       }
     });
 

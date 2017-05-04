@@ -35,6 +35,7 @@ class UrlMappings {
 
         "/recruit/$id(.$format)?"(controller: "recruit", action: "show")
         "/recruit/$action/$id(.$format)?"(controller: "recruit")
+        "/recruit/delete/$id(.$format)?"(controller: "recruit", action: "delete")
         "/recruit/$id/$action/$contentId(.$format)?"(controller: "recruit")
 
         "/notification(.$format)?"(controller: "notification", action: "index")
@@ -56,6 +57,8 @@ class UrlMappings {
 
         "/company/create"(controller: "company", action: "create")
         "/company/save"(controller: "company", action: "save")
+        "/company/edit"(controller: "company", action: "edit")
+        "/company/update"(controller: "company", action: "update")
         "/company/registered"(view: "/company/registered")
         "/company/wait"(view: "/company/wait")
 

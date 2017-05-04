@@ -25,7 +25,7 @@
 						모든 정보를 정확히 입력해 주시기 바랍니다.
 					</div>
 
-					<g:if test="${company.hasErrors() || companyInfo.hasErrors()}">
+					<g:if test="${company?.hasErrors() || companyInfo?.hasErrors()}">
 						<div class="alert alert-danger alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 							<ul>

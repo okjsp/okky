@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <g:form id="article-form" url="[resource:article, action:'update']" useToken="true" method="PUT" class="article-form" role="form" onsubmit="return postForm()">
+                    <g:form id="article-form" url="[resource:article, uri:'/recruit/update/'+article.id]" useToken="true" method="PUT" class="article-form" role="form" onsubmit="return postForm()">
                         <fieldset class="form">
                             <g:render template="form"/>
 

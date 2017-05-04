@@ -16,6 +16,7 @@ class CompanyInfo {
         company nullable: true
         description nullable: true
         welfare nullable: true
+        homepageUrl nullable: true
     }
 
     static mapping = {

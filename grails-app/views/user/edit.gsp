@@ -6,7 +6,7 @@
 </head>
 <body>
 <g:sidebar/>
-<div id="create-user" class="content" role="main">
+<div id="create-user" class="content clearfix" role="main">
     <h3 class="content-header">회원 정보 수정</h3>
     <div class="col-md-6 main-block-left">
         <div class="panel panel-default">
@@ -53,6 +53,39 @@
             </g:form>
 
         </div>
+        <g:if test="${company != null}">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-header">회사정보</h4>
+                </div>
+                <div class="panel-body">
+
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="avatar avatar-big text-center">
+                                <a href="${request.contextPath}/company/info/${company.id}" class="avatar-photo avatar-company">
+                                    <g:if test="${company?.logo}">
+                                        <img src="${grailsApplication.config.grails.fileURL}/logo/${company.logo}"></a>
+                                    </g:if>
+                                    <g:else>
+                                        <img src="${assetPath(src: 'company-default.png')}">
+                                    </g:else>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="person.email">회사명</label>
+                            <input type="text" value="${company.name}" class="form-control" disabled />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="person.email">사업자등록번호</label>
+                            <input type="text" value="${company.registerNumber}" class="form-control" disabled />
+                        </div>
+                    </fieldset>
+                    <g:link uri="/company/edit/${company.id}" class="btn btn-info btn-block" ><g:message code="user.button.edit.label" default="회사 정보 수정"/></g:link>
+                </div>
+            </div>
+        </g:if>
     </div>
     <div class="col-md-6 main-block-right">
         <div class="panel panel-default">

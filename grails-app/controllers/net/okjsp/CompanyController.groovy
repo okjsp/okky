@@ -90,6 +90,58 @@ class CompanyController {
         }
     }
 
+    def edit(Company company) {
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        CompanyInfo companyInfo = CompanyInfo.findByCompany(company)
+
+        respond company, model: [companyInfo: companyInfo]
+    }
+
+    @Transactional
+    def update(Long id) {
+
+        Company company = Company.get(id)
+
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if (company == null) {
+            notFound()
+            return
+        }
+
+        MultipartFile logoFile = request.getFile("logoFile")
+
+        if(!logoFile.empty) {
+            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+            logoFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/logo", "${mil}${ext}"))
+
+            company.logo = "${mil}${ext}"
+        }
+
+        company.save()
+
+        CompanyInfo companyInfo = CompanyInfo.findByCompany(company)
+
+        bindData(companyInfo, params, 'companyInfo')
+
+        companyInfo.save flush:true
+
+
+        if (company.hasErrors() || companyInfo.hasErrors()) {
+            respond company, model:[companyInfo: companyInfo], view:'create'
+            return
+        }
+
+        request.withFormat {
+            form multipartForm {
+                redirect uri: '/user/edit'
+            }
+            '*' { respond company, [status: CREATED] }
+        }
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {

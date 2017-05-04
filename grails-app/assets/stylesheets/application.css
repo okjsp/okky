@@ -1871,6 +1871,23 @@ blockquote {
     font-weight: bold;
 }
 
+.content .company-info {
+    max-height: 190px;
+    overflow: hidden;
+}
+
+.content .company-info h2 a {
+    color: #000;
+}
+
+.link-sm {
+    font-size: 11px;
+}
+
+.validError {
+    color: red;
+}
+
 @-webkit-keyframes note-alert-animation {
     0%   {background: #e1eafe;}
     100% {background: white;}
