@@ -1888,6 +1888,13 @@ blockquote {
     color: red;
 }
 
+.required-indicator {
+    color: red;
+    display: inline-block;
+    font-weight: bold;
+    position: relative;
+}
+
 @-webkit-keyframes note-alert-animation {
     0%   {background: #e1eafe;}
     100% {background: white;}

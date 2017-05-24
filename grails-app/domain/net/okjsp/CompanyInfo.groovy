@@ -11,6 +11,7 @@ class CompanyInfo {
     String email
     String homepageUrl
     Integer employeeNumber
+    AttachedFile introFile
 
     static constraints = {
         company nullable: true

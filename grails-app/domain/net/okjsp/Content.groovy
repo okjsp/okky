@@ -1,7 +1,6 @@
 package net.okjsp
 
 import grails.transaction.Transactional
-import sun.security.x509.AVA
 
 class Content {
     transient sanitizeService
@@ -24,7 +23,7 @@ class Content {
     Date dateCreated
     Date lastUpdated
 
-    static hasMany = [files: File, contetnVotes : ContentVote]
+    static hasMany = [files: AttachedFile, contetnVotes: ContentVote]
 
     static belongsTo = [article: Article]
 
@@ -69,7 +68,7 @@ class Content {
 
     def getAttachedFiles() {
         this.files.findAll {
-            it.attachType == FileAttachType.ATTACHED
+            it.attachType == AttachedFileType.ATTACHED
         }
     }
 

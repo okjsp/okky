@@ -7,6 +7,9 @@ class JobPosition {
     Integer minCareer
     Integer maxCareer
 
+    Integer minPay
+    Integer maxPay
+
     JobPayType jobPayType
     String tagString
 

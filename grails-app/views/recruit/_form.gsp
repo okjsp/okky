@@ -275,80 +275,84 @@
 </div>
 
 <script id="jobPositionFormTemplate" type="script/mustache-template">
+    <div class="position-form">
+        <hr/>
 
-    <hr/>
-
-    <label><g:message code="jobPosition.jobPositionType.label" default="직무정보"/></label>
-
-    <div class="form-group has-feedback">
-        <div>
-            <input name="recruit.jobPositions.title" value="${jobPositions?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
+        <div class="col">
+            <label><g:message code="jobPosition.jobPositionType.label" default="직무정보"/></label>
+            <a href="#" class="pull-right delete-position-form" style="display: none;"><i class="fa fa-remove" />삭제</a>
         </div>
-    </div>
 
-    <div class="form-group">
-        <div class="row">
-            <div class="col col-sm-6">
-                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
-                    <option value=""><g:message code="jobPosition.minCareer.label" default="경력" /></option>
-                    <option value="99">${message(code: 'jobPosition.minCareer.99')}</option>
-                    <option value="0">${message(code: 'jobPosition.minCareer.0')}</option>
-                    <option value="1">${message(code: 'jobPosition.minCareer.1')}</option>
-                    <option value="2">${message(code: 'jobPosition.minCareer.2')}</option>
-                    <option value="3">${message(code: 'jobPosition.minCareer.3')}</option>
-                    <option value="4">${message(code: 'jobPosition.minCareer.4')}</option>
-                    <option value="5">${message(code: 'jobPosition.minCareer.5')}</option>
-                    <option value="6">${message(code: 'jobPosition.minCareer.6')}</option>
-                    <option value="7">${message(code: 'jobPosition.minCareer.7')}</option>
-                    <option value="8">${message(code: 'jobPosition.minCareer.8')}</option>
-                    <option value="9">${message(code: 'jobPosition.minCareer.9')}</option>
-                    <option value="10">${message(code: 'jobPosition.minCareer.10')}</option>
-                    <option value="11">${message(code: 'jobPosition.minCareer.11')}</option>
-                    <option value="12">${message(code: 'jobPosition.minCareer.12')}</option>
-                    <option value="13">${message(code: 'jobPosition.minCareer.13')}</option>
-                    <option value="14">${message(code: 'jobPosition.minCareer.14')}</option>
-                    <option value="15">${message(code: 'jobPosition.minCareer.15')}</option>
-                </select>
-                <select name="recruit.jobPositions.maxCareer" class="form-control form-control-inline-half" style="display: none;">
-                </select>
-            </div>
-            <div class="col col-sm-6">
-                <g:if test="${recruit?.jobType == JobType.valueOf('FULLTIME')}">
-                    <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
-                        <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
-                        <option value="Y_20_30">${message(code: 'jobPosition.jobPayType.Y_20_30')}</option>
-                        <option value="Y_30_40">${message(code: 'jobPosition.jobPayType.Y_30_40')}</option>
-                        <option value="Y_40_50">${message(code: 'jobPosition.jobPayType.Y_40_50')}</option>
-                        <option value="Y_50_60">${message(code: 'jobPosition.jobPayType.Y_50_60')}</option>
-                        <option value="Y_60_70">${message(code: 'jobPosition.jobPayType.Y_60_70')}</option>
-                        <option value="Y_70_80">${message(code: 'jobPosition.jobPayType.Y_70_80')}</option>
-                        <option value="Y_80_90">${message(code: 'jobPosition.jobPayType.Y_80_90')}</option>
-                        <option value="Y_90_OVER">${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
-                    </select>
-                </g:if>
-                <g:if test="${recruit?.jobType == JobType.valueOf('CONTRACT')}">
-                    <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
-                        <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
-                        <option value="M_20_30">${message(code: 'jobPosition.jobPayType.M_20_30')}</option>
-                        <option value="M_30_40">${message(code: 'jobPosition.jobPayType.M_30_40')}</option>
-                        <option value="M_40_50">${message(code: 'jobPosition.jobPayType.M_40_50')}</option>
-                        <option value="M_50_60">${message(code: 'jobPosition.jobPayType.M_50_60')}</option>
-                        <option value="M_60_70">${message(code: 'jobPosition.jobPayType.M_60_70')}</option>
-                        <option value="M_70_80">${message(code: 'jobPosition.jobPayType.M_70_80')}</option>
-                        <option value="M_80_90">${message(code: 'jobPosition.jobPayType.M_80_90')}</option>
-                        <option value="M_90_OVER">${message(code: 'jobPosition.jobPayType.M_90_OVER', default: '900만 이상')}</option>
-                    </select>
-                </g:if>
+        <div class="form-group has-feedback">
+            <div>
+                <input name="recruit.jobPositions.title" value="${jobPositions?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
             </div>
         </div>
-    </div>
 
-    <div class="form-group has-feedback">
-        <g:textField name="recruit.jobPositions.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control tag-input form-dynamic"/>
-    </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-sm-6">
+                    <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                        <option value=""><g:message code="jobPosition.minCareer.label" default="경력" /></option>
+                        <option value="99">${message(code: 'jobPosition.minCareer.99')}</option>
+                        <option value="0">${message(code: 'jobPosition.minCareer.0')}</option>
+                        <option value="1">${message(code: 'jobPosition.minCareer.1')}</option>
+                        <option value="2">${message(code: 'jobPosition.minCareer.2')}</option>
+                        <option value="3">${message(code: 'jobPosition.minCareer.3')}</option>
+                        <option value="4">${message(code: 'jobPosition.minCareer.4')}</option>
+                        <option value="5">${message(code: 'jobPosition.minCareer.5')}</option>
+                        <option value="6">${message(code: 'jobPosition.minCareer.6')}</option>
+                        <option value="7">${message(code: 'jobPosition.minCareer.7')}</option>
+                        <option value="8">${message(code: 'jobPosition.minCareer.8')}</option>
+                        <option value="9">${message(code: 'jobPosition.minCareer.9')}</option>
+                        <option value="10">${message(code: 'jobPosition.minCareer.10')}</option>
+                        <option value="11">${message(code: 'jobPosition.minCareer.11')}</option>
+                        <option value="12">${message(code: 'jobPosition.minCareer.12')}</option>
+                        <option value="13">${message(code: 'jobPosition.minCareer.13')}</option>
+                        <option value="14">${message(code: 'jobPosition.minCareer.14')}</option>
+                        <option value="15">${message(code: 'jobPosition.minCareer.15')}</option>
+                    </select>
+                    <select name="recruit.jobPositions.maxCareer" class="form-control form-control-inline-half" style="display: none;">
+                    </select>
+                </div>
+                <div class="col col-sm-6">
+                    <g:if test="${recruit?.jobType == JobType.valueOf('FULLTIME')}">
+                        <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
+                            <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
+                            <option value="Y_20_30">${message(code: 'jobPosition.jobPayType.Y_20_30')}</option>
+                            <option value="Y_30_40">${message(code: 'jobPosition.jobPayType.Y_30_40')}</option>
+                            <option value="Y_40_50">${message(code: 'jobPosition.jobPayType.Y_40_50')}</option>
+                            <option value="Y_50_60">${message(code: 'jobPosition.jobPayType.Y_50_60')}</option>
+                            <option value="Y_60_70">${message(code: 'jobPosition.jobPayType.Y_60_70')}</option>
+                            <option value="Y_70_80">${message(code: 'jobPosition.jobPayType.Y_70_80')}</option>
+                            <option value="Y_80_90">${message(code: 'jobPosition.jobPayType.Y_80_90')}</option>
+                            <option value="Y_90_OVER">${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
+                        </select>
+                    </g:if>
+                    <g:if test="${recruit?.jobType == JobType.valueOf('CONTRACT')}">
+                        <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
+                            <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
+                            <option value="M_20_30">${message(code: 'jobPosition.jobPayType.M_20_30')}</option>
+                            <option value="M_30_40">${message(code: 'jobPosition.jobPayType.M_30_40')}</option>
+                            <option value="M_40_50">${message(code: 'jobPosition.jobPayType.M_40_50')}</option>
+                            <option value="M_50_60">${message(code: 'jobPosition.jobPayType.M_50_60')}</option>
+                            <option value="M_60_70">${message(code: 'jobPosition.jobPayType.M_60_70')}</option>
+                            <option value="M_70_80">${message(code: 'jobPosition.jobPayType.M_70_80')}</option>
+                            <option value="M_80_90">${message(code: 'jobPosition.jobPayType.M_80_90')}</option>
+                            <option value="M_90_OVER">${message(code: 'jobPosition.jobPayType.M_90_OVER', default: '900만 이상')}</option>
+                        </select>
+                    </g:if>
+                </div>
+            </div>
+        </div>
 
-    <div class="form-group has-feedback">
-        <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
+        <div class="form-group has-feedback">
+            <g:textField name="recruit.jobPositions.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control tag-input form-dynamic"/>
+        </div>
+
+        <div class="form-group has-feedback">
+            <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
+        </div>
     </div>
 </script>
 </g:if>
@@ -432,6 +436,10 @@
 
         $rendered.appendTo('#jobPositionForm');
 
+        if(jobPositionCount != 1) {
+          $('.delete-position-form').show();
+        }
+
         if(jobPositionCount >= 3) $('#addJobPositionFormButton').hide();
     }
 
@@ -482,6 +490,16 @@
           }
         });
       }
+    });
+
+    $('.content').delegate('.delete-position-form', 'click', function() {
+      if(confirm('해당 직무 정보를 삭제하시겠습니까?'))
+        $(this).parents('.position-form').detach();
+        jobPositionCount--;
+
+        if(jobPositionCount == 1) {
+          $('.delete-position-form').hide();
+        }
     });
 
     validator = $("#article-form").validate({

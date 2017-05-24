@@ -22,7 +22,8 @@
 					<div class="alert alert-info">
 						아직 회사정보가 등록되지 않았습니다. <br/><br/>
 						<b>회사등록은 기재하신 연락처를 통해 관리자의 인증이 진행되며, 인증 완료 후 구인게시판 이용이 가능합니다.</b> <br/>
-						모든 정보를 정확히 입력해 주시기 바랍니다.
+						모든 정보를 정확히 입력해 주시기 바랍니다.<br/><br/>
+						<span class="required-indicator">*</span> 항목은 필수 입력 입니다.
 					</div>
 
 					<g:if test="${company?.hasErrors() || companyInfo?.hasErrors()}">

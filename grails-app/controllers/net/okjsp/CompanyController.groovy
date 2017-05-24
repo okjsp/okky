@@ -45,14 +45,22 @@ class CompanyController {
             return
         }
 
+        def year = Calendar.getInstance().get(Calendar.YEAR)
+
         MultipartFile logoFile = request.getFile("logoFile")
+        MultipartFile introFile = request.getFile("introFile")
 
         if(!logoFile.empty) {
             def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
             def mil = System.currentTimeMillis()
-            logoFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/logo", "${mil}${ext}"))
 
-            company.logo = "${mil}${ext}"
+            File directory = new File("${grailsApplication.config.grails.filePath}/logo/${year}")
+
+            directory.mkdirs()
+
+            logoFile.transferTo(new File(directory, "${mil}${ext}"))
+
+            company.logo = "${year}/${mil}${ext}"
         }
 
         company.manager = person
@@ -64,6 +72,23 @@ class CompanyController {
         def companyInfo = new CompanyInfo()
 
         bindData(companyInfo, params, 'companyInfo')
+
+        if(!introFile.empty) {
+            def ext = introFile.originalFilename.substring(introFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+
+            File directory = new File("${grailsApplication.config.grails.filePath}/intro/${year}")
+            directory.mkdirs()
+
+            introFile.transferTo(new File("${grailsApplication.config.grails.filePath}/intro/${year}", "${mil}${ext}"))
+
+            companyInfo.introFile = new AttachedFile(
+                    name: "${year}/${mil}${ext}",
+                    orgName: introFile.originalFilename,
+                    byteSize: introFile.size,
+                    mimeType: introFile.contentType,
+                    type : AttachedFileType.ATTACHED).save()
+        }
 
         companyInfo.company = company
         companyInfo.save flush:true

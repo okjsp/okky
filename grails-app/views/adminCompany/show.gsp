@@ -88,6 +88,15 @@
 				</li>
 
 				<li class="fieldcontain">
+					<span id="employeeNumber-label" class="property-label"><g:message code="companyInfo.employeeNumber.label" default="직원 수" /></span>
+
+					<span class="property-value" aria-labelledby="employeeNumber-label">
+						<g:message code="companyInfo.emplayeeNumber.value_${companyInfo.employeeNumber}" />
+					</span>
+
+				</li>
+
+				<li class="fieldcontain">
 					<span id="email-label" class="property-label"><g:message code="companyInfo.email.label" default="이메일" /></span>
 
 					<span class="property-value" aria-labelledby="email-label"><g:fieldValue bean="${companyInfo}" field="email" /></span>
@@ -102,13 +111,19 @@
 				</li>
 
 				<li class="fieldcontain">
-					<span id="employeeNumber-label" class="property-label"><g:message code="companyInfo.employeeNumber.label" default="직원 수" /></span>
+					<span id="introFile-label" class="property-label"><g:message code="companyInfo.introFile.label" default="회사소개서" /></span>
 
-					<span class="property-value" aria-labelledby="employeeNumber-label">
-						<g:message code="companyInfo.emplayeeNumber.value_${companyInfo.employeeNumber}" />
+					<span class="property-value" aria-labelledby="introFile-label">
+						<g:if test="${companyInfo.introFile != null}">
+							<a href="${grailsApplication.config.grails.fileURL}/intro/${companyInfo.introFile.name}">${companyInfo.introFile.orgName}</a>
+						</g:if>
+						<g:else>
+							없음
+						</g:else>
 					</span>
 
 				</li>
+
 
 				<li class="fieldcontain">
 					<span id="introduce-label" class="property-label"><g:message code="companyInfo.introduce.label" default="회사소개" /></span>
