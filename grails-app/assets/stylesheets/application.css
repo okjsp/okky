@@ -1872,6 +1872,9 @@ blockquote {
 }
 
 .content .company-info {
+}
+
+.content .company-info-description {
     max-height: 190px;
     overflow: hidden;
 }

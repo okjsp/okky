@@ -10,7 +10,6 @@ class JobPosition {
     Integer minPay
     Integer maxPay
 
-    JobPayType jobPayType
     String tagString
 
     String description
@@ -23,5 +22,6 @@ class JobPosition {
         tagString nullable: true
         tags maxSize: 10, nullable: true
         maxCareer nullable: true
+        maxPay nullable: true
     }
 }

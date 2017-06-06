@@ -197,18 +197,24 @@ class RecruitController {
         def titles = params.list("recruit.jobPositions.title")
         def minCareers = params.list("recruit.jobPositions.minCareer")
         def maxCareers = params.list("recruit.jobPositions.maxCareer")
-        def jobPayTypes = params.list("recruit.jobPositions.jobPayType")
+        def minPay = params.list("recruit.jobPositions.minPay")
+        def maxPay = params.list("recruit.jobPositions.maxPay") ?: []
         def tagStrings = params.list("recruit.jobPositions.tagString")
         def descriptions = params.list("recruit.jobPositions.description")
 
         titles.eachWithIndex { title, i ->
+
+            if(recruit.jobType == JobType.CONTRACT) {
+                maxPay << minPay[i]  + 10
+            }
 
             recruit.addToJobPositions(new JobPosition(
                     title: title,
                     recruit: recruit,
                     minCareer: minCareers[i],
                     maxCareer: maxCareers[i],
-                    jobPayType: jobPayTypes[i],
+                    minPay: minPay[i],
+                    maxPay: maxPay[i],
                     tagString: tagStrings[i],
                     description: descriptions[i]
             ))
@@ -313,26 +319,31 @@ class RecruitController {
             recruit.removeFromJobPositions(it)
         }
 
+
         def titles = params.list("recruit.jobPositions.title")
         def minCareers = params.list("recruit.jobPositions.minCareer")
         def maxCareers = params.list("recruit.jobPositions.maxCareer")
-        def jobPayTypes = params.list("recruit.jobPositions.jobPayType")
+        def minPay = params.list("recruit.jobPositions.minPay")
+        def maxPay = params.list("recruit.jobPositions.maxPay") ?: []
         def tagStrings = params.list("recruit.jobPositions.tagString")
         def descriptions = params.list("recruit.jobPositions.description")
 
         titles.eachWithIndex { title, i ->
 
-            def jobPosition = new JobPosition(
+            if(recruit.jobType == JobType.CONTRACT) {
+                maxPay << minPay[i]  + 10
+            }
+
+            recruit.addToJobPositions(new JobPosition(
                     title: title,
                     recruit: recruit,
                     minCareer: minCareers[i],
                     maxCareer: maxCareers[i],
-                    jobPayType: jobPayTypes[i],
+                    minPay: minPay[i],
+                    maxPay: maxPay[i],
                     tagString: tagStrings[i],
                     description: descriptions[i]
-            )
-
-            jobPosition.save(failOnError: true)
+            ))
 
         }
 

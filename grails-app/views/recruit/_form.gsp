@@ -81,7 +81,7 @@
         <div>
             <g:textField name="recruit.jobPositions.title" value="${jobPosition?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
         </div>
-        <g:if test="${index.index == 0}">
+        <g:if test="${index == 0}">
         <br/>
         <div class="alert alert-info">
         <small><strong>직무명 예시)</strong><br/>
@@ -135,29 +135,44 @@
             </div>
             <div class="col col-sm-6">
                 <g:if test="${recruit.jobType == JobType.valueOf('FULLTIME')}">
-                <select id="jobPayType" required="required" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
-                    <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
-                    <option value="Y_20_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_20_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_20_30')}</option>
-                    <option value="Y_30_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_30_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_30_40')}</option>
-                    <option value="Y_40_50" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_40_50')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_40_50')}</option>
-                    <option value="Y_50_60" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_50_60')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_50_60')}</option>
-                    <option value="Y_60_70" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_60_70')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_60_70')}</option>
-                    <option value="Y_70_80" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_70_80')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_70_80')}</option>
-                    <option value="Y_80_90" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_80_90')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_80_90')}</option>
-                    <option value="Y_90_OVER" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('Y_90_OVER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.Y_90_OVER')}</option>
-                </select>
+                    <div class="form-inline">
+                        <select name="recruit.jobPositions.minPay" class="form-control form-dynamic form-control-inline-half">
+                            <option value=""><g:message code="jobPosition.minPay.label" default="최소연봉" /></option>
+                            <option value="20" <g:if test="${jobPosition.minPay == 20}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.20')}</option>
+                            <option value="30" <g:if test="${jobPosition.minPay == 30}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.30')}</option>
+                            <option value="40" <g:if test="${jobPosition.minPay == 40}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.40')}</option>
+                            <option value="50" <g:if test="${jobPosition.minPay == 50}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.50')}</option>
+                            <option value="60" <g:if test="${jobPosition.minPay == 60}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.60')}</option>
+                            <option value="70" <g:if test="${jobPosition.minPay == 70}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.70')}</option>
+                            <option value="80" <g:if test="${jobPosition.minPay == 80}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.80')}</option>
+                            <option value="90" <g:if test="${jobPosition.minPay == 90}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.90')}</option>
+                            <option value="100" <g:if test="${jobPosition.minPay == 100}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.year.100')}</option>
+                        </select>
+                        <select name="recruit.jobPositions.maxPay" class="form-control form-dynamic form-control-inline-half">
+                            <option value=""><g:message code="jobPosition.maxPay.label" default="최대연봉" /></option>
+                            <option value="30" <g:if test="${jobPosition.maxPay == 30}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.30')}</option>
+                            <option value="40" <g:if test="${jobPosition.maxPay == 40}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.40')}</option>
+                            <option value="50" <g:if test="${jobPosition.maxPay == 50}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.50')}</option>
+                            <option value="60" <g:if test="${jobPosition.maxPay == 60}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.60')}</option>
+                            <option value="70" <g:if test="${jobPosition.maxPay == 70}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.70')}</option>
+                            <option value="80" <g:if test="${jobPosition.maxPay == 80}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.80')}</option>
+                            <option value="90" <g:if test="${jobPosition.maxPay == 90}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.90')}</option>
+                            <option value="100" <g:if test="${jobPosition.maxPay == 100}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.100')}</option>
+                            <option value="999" <g:if test="${jobPosition.maxPay == 999}">selected="selected"</g:if>>${message(code: 'jobPosition.maxPay.year.999')}</option>
+                        </select>
+                    </div>
                 </g:if>
                 <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
-                <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
-                    <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
-                    <option value="M_20_30" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_20_30')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_20_30', default: '200만 ~ 300만')}</option>
-                    <option value="M_30_40" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_30_40')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_30_40', default: '300만 ~ 400만')}</option>
-                    <option value="M_40_50" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_40_50')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_40_50', default: '400만 ~ 500만')}</option>
-                    <option value="M_50_60" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_50_60')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_50_60', default: '500만 ~ 600만')}</option>
-                    <option value="M_60_70" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_60_70')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_60_70', default: '600만 ~ 700만')}</option>
-                    <option value="M_70_80" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_70_80')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_70_80', default: '700만 ~ 800만')}</option>
-                    <option value="M_80_90" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_80_90')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_80_90', default: '800만 ~ 900만')}</option>
-                    <option value="M_90_OVER" <g:if test="${jobPosition.jobPayType == JobPayType.valueOf('M_90_OVER')}">selected="selected"</g:if>>${message(code: 'jobPosition.jobPayType.M_90_OVER', default: '900만 이상')}</option>
+                <select id="minPay" name="recruit.jobPositions.minPay" class="form-control form-dynamic">
+                    <option value=""><g:message code="jobPosition.minPay.label" default="급여" /></option>
+                    <option value="20" <g:if test="${jobPosition.minPay == 20}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.20')}</option>
+                    <option value="30" <g:if test="${jobPosition.minPay == 30}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.30')}</option>
+                    <option value="40" <g:if test="${jobPosition.minPay == 40}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.40')}</option>
+                    <option value="50" <g:if test="${jobPosition.minPay == 50}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.50')}</option>
+                    <option value="60" <g:if test="${jobPosition.minPay == 60}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.60')}</option>
+                    <option value="70" <g:if test="${jobPosition.minPay == 70}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.70')}</option>
+                    <option value="80" <g:if test="${jobPosition.minPay == 80}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.80')}</option>
+                    <option value="90" <g:if test="${jobPosition.minPay == 90}">selected="selected"</g:if>>${message(code: 'jobPosition.minPay.month.90')}</option>
                 </select>
                 </g:if>
             </div>
@@ -332,7 +347,7 @@
                 <div class="col col-sm-6">
                     <g:if test="${recruit?.jobType == JobType.valueOf('FULLTIME')}">
                         <div class="form-inline">
-                            <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic form-control-inline-half">
+                            <select name="recruit.jobPositions.minPay" class="form-control form-dynamic form-control-inline-half">
                                 <option value=""><g:message code="jobPosition.minPay.label" default="최소연봉" /></option>
                                 <option value="20">${message(code: 'jobPosition.minPay.year.20')}</option>
                                 <option value="30">${message(code: 'jobPosition.minPay.year.30')}</option>
@@ -344,7 +359,7 @@
                                 <option value="90">${message(code: 'jobPosition.minPay.year.90')}</option>
                                 <option value="100">${message(code: 'jobPosition.minPay.year.100')}</option>
                             </select>
-                            <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic form-control-inline-half">
+                            <select name="recruit.jobPositions.maxPay" class="form-control form-dynamic form-control-inline-half">
                                 <option value=""><g:message code="jobPosition.maxPay.label" default="최대연봉" /></option>
                                 <option value="30">${message(code: 'jobPosition.maxPay.year.30')}</option>
                                 <option value="40">${message(code: 'jobPosition.maxPay.year.40')}</option>
@@ -359,16 +374,16 @@
                         </div>
                     </g:if>
                     <g:if test="${recruit?.jobType == JobType.valueOf('CONTRACT')}">
-                        <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
-                            <option value=""><g:message code="jobPosition.jobPayType.label" default="급여" /></option>
-                            <option value="M_20_30">${message(code: 'jobPosition.jobPayType.M_20_30')}</option>
-                            <option value="M_30_40">${message(code: 'jobPosition.jobPayType.M_30_40')}</option>
-                            <option value="M_40_50">${message(code: 'jobPosition.jobPayType.M_40_50')}</option>
-                            <option value="M_50_60">${message(code: 'jobPosition.jobPayType.M_50_60')}</option>
-                            <option value="M_60_70">${message(code: 'jobPosition.jobPayType.M_60_70')}</option>
-                            <option value="M_70_80">${message(code: 'jobPosition.jobPayType.M_70_80')}</option>
-                            <option value="M_80_90">${message(code: 'jobPosition.jobPayType.M_80_90')}</option>
-                            <option value="M_90_OVER">${message(code: 'jobPosition.jobPayType.M_90_OVER', default: '900만 이상')}</option>
+                        <select name="recruit.jobPositions.minPay" class="form-control form-dynamic">
+                            <option value=""><g:message code="jobPosition.minPay.label" default="급여" /></option>
+                            <option value="20">${message(code: 'jobPosition.minPay.month.20')}</option>
+                            <option value="30">${message(code: 'jobPosition.minPay.month.30')}</option>
+                            <option value="40">${message(code: 'jobPosition.minPay.month.40')}</option>
+                            <option value="50">${message(code: 'jobPosition.minPay.month.50')}</option>
+                            <option value="60">${message(code: 'jobPosition.minPay.month.60')}</option>
+                            <option value="70">${message(code: 'jobPosition.minPay.month.70')}</option>
+                            <option value="80">${message(code: 'jobPosition.minPay.month.80')}</option>
+                            <option value="90">${message(code: 'jobPosition.minPay.month.90')}</option>
                         </select>
                     </g:if>
                 </div>

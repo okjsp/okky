@@ -68,7 +68,16 @@
                                             </g:if>
 
                                         </div>
-                                        <div class="detail-info-row"><span class="info-label">급여:</span> <span><g:message code="jobPosition.jobPayType.${jobPosition.jobPayType}"/></span></div>
+                                        <div class="detail-info-row"><span class="info-label">급여:</span>
+                                            <g:if test="${article.recruit.jobType == JobType.valueOf('FULLTIME')}">
+                                                <span><g:message code="jobPosition.minPay.year.${jobPosition.minPay}"/></span>
+                                                ~
+                                                <span><g:message code="jobPosition.maxPay.year.${jobPosition.maxPay}"/></span>
+                                            </g:if>
+                                            <g:elseif test="${article.recruit.jobType == JobType.valueOf('CONTRACT')}">
+                                                <span><g:message code="jobPosition.minPay.${jobPosition.minPay}"/></span>
+                                            </g:elseif>
+                                        </div>
                                         <div class="detail-info-row"><span class="info-label">Skills:</span> <g:tags tags="${jobPosition.tagString}" /></div>
                                         <hr/>
                                         <div class="detail-info-row"><g:lineToBr text="${jobPosition.description}" /></div>
@@ -169,10 +178,10 @@
                                 </g:if>
                             </div>
                             <hr/>
-                            <div class="clearfix">
+                            <div class="clearfix company-info-description" style="max-height: 100px;">
                                 <g:filterHtml text="${companyInfo.description}" />
-                                <div class="expend-content link-sm"><a href="${request.contextPath}/company/info/${article.recruit.company.id}" class="expend-content-btn">더보기</a></div>
                             </div>
+                            <div class="expend-content link-sm"><a href="${request.contextPath}/company/info/${article.recruit.company.id}" class="expend-content-btn">더보기</a></div>
                         </div>
                     </div>
                 </li>
