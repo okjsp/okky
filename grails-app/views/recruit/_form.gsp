@@ -60,6 +60,14 @@
 <div class="form-group ${hasErrors(bean: article, field: 'title', 'has-error')} has-feedback">
     <div>
         <g:textField name="title" required="" value="${article?.title}" placeholder="제목을 입력해 주세요." class="form-control"/>
+    </div><br/>
+    <div class="alert alert-info">
+        <small><strong>제목 예시)</strong><br/>
+        - XXX 서비스 안드로이드/서버 개발자 모집<br/>
+        - 201X 상반기 공개 채용<br/>
+        - Java 신입/경력 개발자 모집<br/>
+        - 201X 인턴쉽
+        </small>
     </div>
 </div>
 
@@ -73,6 +81,15 @@
         <div>
             <g:textField name="recruit.jobPositions.title" value="${jobPosition?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
         </div>
+        <g:if test="${index.index == 0}">
+        <br/>
+        <div class="alert alert-info">
+        <small><strong>직무명 예시)</strong><br/>
+                - 안드로이드/iOS 앱 개발 <br/>
+                - Java/Spring 웹서비스 개발/운영 <br/>
+                - 온라인 서비스 품질관리 부문 <br/></small>
+        </div>
+        </g:if>
     </div>
 
     <div class="form-group">
@@ -242,18 +259,9 @@
     <g:elseif test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
         <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
     </g:elseif>
-    <g:else>
-        <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
-    </g:else>
-    <g:if test="${article?.content?.textType == ContentTextType.MD}">
-        <g:textArea name="content.text" required="required" id="summernote" value="${markdown.renderHtml([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
-    </g:if>
-    <g:elseif test="${article?.content?.textType == ContentTextType.HTML}">
-        <g:textArea name="content.text" required="required" id="summernote" value="${filterHtml([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
-    </g:elseif>
-    <g:else>
-        <g:textArea name="content.text" required="required" id="summernote" value="${lineToBr([text: article?.content?.text])}" rows="20" class="form-control input-block-level" />
-    </g:else>
+
+    <g:textArea name="content.text" required="required" id="summernote" value="${filterHtml([text: article?.content?.text])}" rows="20" placeholder="기타 계약정보, 특이사항, 회사소개, 복리후생 등 상세한 정보를 입력해 주세요." class="form-control input-block-level" />
+
 
 </div>
 
@@ -286,6 +294,12 @@
         <div class="form-group has-feedback">
             <div>
                 <input name="recruit.jobPositions.title" value="${jobPositions?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
+            </div><br/>
+            <div class="alert alert-info">
+                <small><strong>직무명 예시)</strong><br/>
+                - 안드로이드/iOS 앱 개발 <br/>
+                - Java/Spring 웹서비스 개발/운영 <br/>
+                - 온라인 서비스 품질관리<br/></small>
             </div>
         </div>
 
@@ -317,17 +331,32 @@
                 </div>
                 <div class="col col-sm-6">
                     <g:if test="${recruit?.jobType == JobType.valueOf('FULLTIME')}">
-                        <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
-                            <option value=""><g:message code="jobPosition.jobPayType.label" default="연봉" /></option>
-                            <option value="Y_20_30">${message(code: 'jobPosition.jobPayType.Y_20_30')}</option>
-                            <option value="Y_30_40">${message(code: 'jobPosition.jobPayType.Y_30_40')}</option>
-                            <option value="Y_40_50">${message(code: 'jobPosition.jobPayType.Y_40_50')}</option>
-                            <option value="Y_50_60">${message(code: 'jobPosition.jobPayType.Y_50_60')}</option>
-                            <option value="Y_60_70">${message(code: 'jobPosition.jobPayType.Y_60_70')}</option>
-                            <option value="Y_70_80">${message(code: 'jobPosition.jobPayType.Y_70_80')}</option>
-                            <option value="Y_80_90">${message(code: 'jobPosition.jobPayType.Y_80_90')}</option>
-                            <option value="Y_90_OVER">${message(code: 'jobPosition.jobPayType.Y_90_OVER', default: '9000만 이상')}</option>
-                        </select>
+                        <div class="form-inline">
+                            <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic form-control-inline-half">
+                                <option value=""><g:message code="jobPosition.minPay.label" default="최소연봉" /></option>
+                                <option value="20">${message(code: 'jobPosition.minPay.year.20')}</option>
+                                <option value="30">${message(code: 'jobPosition.minPay.year.30')}</option>
+                                <option value="40">${message(code: 'jobPosition.minPay.year.40')}</option>
+                                <option value="50">${message(code: 'jobPosition.minPay.year.50')}</option>
+                                <option value="60">${message(code: 'jobPosition.minPay.year.60')}</option>
+                                <option value="70">${message(code: 'jobPosition.minPay.year.70')}</option>
+                                <option value="80">${message(code: 'jobPosition.minPay.year.80')}</option>
+                                <option value="90">${message(code: 'jobPosition.minPay.year.90')}</option>
+                                <option value="100">${message(code: 'jobPosition.minPay.year.100')}</option>
+                            </select>
+                            <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic form-control-inline-half">
+                                <option value=""><g:message code="jobPosition.maxPay.label" default="최대연봉" /></option>
+                                <option value="30">${message(code: 'jobPosition.maxPay.year.30')}</option>
+                                <option value="40">${message(code: 'jobPosition.maxPay.year.40')}</option>
+                                <option value="50">${message(code: 'jobPosition.maxPay.year.50')}</option>
+                                <option value="60">${message(code: 'jobPosition.maxPay.year.60')}</option>
+                                <option value="70">${message(code: 'jobPosition.maxPay.year.70')}</option>
+                                <option value="80">${message(code: 'jobPosition.maxPay.year.80')}</option>
+                                <option value="90">${message(code: 'jobPosition.maxPay.year.90')}</option>
+                                <option value="100">${message(code: 'jobPosition.maxPay.year.100')}</option>
+                                <option value="999">${message(code: 'jobPosition.maxPay.year.999')}</option>
+                            </select>
+                        </div>
                     </g:if>
                     <g:if test="${recruit?.jobType == JobType.valueOf('CONTRACT')}">
                         <select id="jobPayType" name="recruit.jobPositions.jobPayType" class="form-control form-dynamic">
@@ -363,6 +392,7 @@
 <g:hiddenField name="content.textType" value="HTML"/>
 <asset:script type="text/javascript">
     $('#summernote').summernote({minHeight: 300, lang: 'ko-KR',
+      placeholder: "기타 계약정보, 특이사항, 회사소개, 복리후생 등 상세한 정보를 입력해 주세요.",
       onInit: function() {
         if($(window).height() > 400)
             $('.note-editable').css('max-height', $(window).height()-100);
