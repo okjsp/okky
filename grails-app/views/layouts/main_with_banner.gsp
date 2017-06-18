@@ -35,6 +35,8 @@
                 <g:layoutBody/>
                 <div class="right-banner-wrapper">
 
+                    <g:banner type="${isIndex ? "MAIN_RIGHT" : "SUB_RIGHT"}" />
+
                 </div>
                 <div id="footer" class="footer" role="contentinfo">
                     <g:include view="/layouts/_footer.gsp" />

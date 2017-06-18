@@ -230,7 +230,8 @@ blockquote {
 }
 
 .main-banner-wrapper {
-    width: 100%;
+    width: 805px;
+    text-align: center;
     margin-bottom: 30px;
 }
 
@@ -245,8 +246,9 @@ blockquote {
 }
 
 .sub-banner-wrapper {
-    width: 100%;
+    width: 805px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .sub-banner {
@@ -696,11 +698,11 @@ blockquote {
 }
 
 .right-banner-wrapper {
-    position: absolute;
+    position: fixed;
     top: 65px;
     width: 180px;
     height: 550px;
-    right: -10px;
+    left: 1070px;
 }
 
 .right-banner {
@@ -2163,6 +2165,10 @@ blockquote {
     }
 
     .sub-banner {
+        width: 100%;
+    }
+
+    .main-banner-wrapper, .sub-banner-wrapper {
         width: 100%;
     }
 

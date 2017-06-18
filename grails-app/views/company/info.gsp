@@ -10,7 +10,7 @@
 </head>
 <body>
 <g:sidebar/>
-<div id="user" class="content clearfix" role="main">
+<div id="user" class="content clearfix" role="main_with_banner">
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="avatar avatar-big clearfix col-sm-3 text-center">
