@@ -16,11 +16,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-xs-3">
           <a href="?jobType=FULLTIME" class="btn btn-block btn-success">${message(code: 'recruit.jobType.FULLTIME', default: '정규직')}</a>
         </div>
-        <div class="col-xs-6">
-          <a href="?jobType=CONTRACT" class="btn btn-block btn-primary">${message(code: 'recruit.jobType.CONTRACT', default: '계약직(프리랜서)')}</a>
+        <div class="col-xs-3">
+          <a href="?jobType=CONTRACT" class="btn btn-block btn-primary">${message(code: 'recruit.jobType.CONTRACT.DISPATCH', default: '계약직(프리랜서)')}</a>
+        </div>
+        <div class="col-xs-3">
+            <a href="?jobType=CONTRACT" class="btn btn-block btn-primary">${message(code: 'recruit.jobType.CONTRACT.INHOUSE', default: '계약직(프리랜서)')}</a>
+        </div>
+        <div class="col-xs-3">
+            <a href="?jobType=CONTRACT" class="btn btn-block btn-primary">${message(code: 'recruit.jobType.CONTRACT.REMOTE', default: '계약직(프리랜서)')}</a>
         </div>
     </div>
 </div>

@@ -5,13 +5,13 @@
 	<div class="col-sm-6">
 		<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
 			<label>회사명 <span class="required-indicator">*</span></label>
-			<g:textField name="name" value="${company?.name}" placeholder="회사명을 입력해 주세요." class="form-control"/>
+			<g:textField name="name" value="${company?.name}" placeholder="사업자등록증 상의 회사명을 입력해 주세요." class="form-control"/>
 		</div>
 	</div>
 	<div class="col-sm-6">
 		<div class="form-group ${hasErrors(bean: company, field: 'registerNumber', 'error')} required">
 			<label>사업자등록번호 <span class="required-indicator">*</span></label>
-			<g:textField name="registerNumber" value="${company?.registerNumber}" placeholder="사업자등록번호를 입력해 주세요." class="form-control"/>
+			<g:textField name="registerNumber" value="${company?.registerNumber}" placeholder="숫자만 입력해 주세요." class="form-control"/>
 		</div>
 	</div>
 </div>
@@ -30,6 +30,29 @@
 	</div>
 </div>
 
+<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'tel', 'error')} required">
+			<label>담당자 연락처 <span class="required-indicator">*</span></label>
+			<input type="tel" name="companyInfo.tel" value="${companyInfo?.tel}" class="form-control" placeholder="000-0000-0000"/>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'email', 'error')} required">
+			<label>담당자 이메일 <span class="required-indicator">*</span></label>
+			<input type="email" name="companyInfo.email" value="${companyInfo?.email}" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'tel', 'error')} required">
+			<label>담당자명 <span class="required-indicator">*</span></label>
+			<input type="tel" name="companyInfo.tel" value="${companyInfo?.tel}" class="form-control" />
+		</div>
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-sm-6">

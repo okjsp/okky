@@ -1027,6 +1027,27 @@ blockquote {
 .list-filter-form .btn {
 }
 
+.job-filter-wrapper {
+    clear: both;
+    padding-top: 20px;
+}
+
+.job-filter-form {
+
+}
+
+.job-filter-form .label {
+    font-size: 12px;
+}
+
+.job-filter-form .row {
+}
+
+.job-filter-input label {
+    font-weight: 300;
+    margin-right: 10px;
+}
+
 .list-group-no-note {
     border-left: 3px #ddd solid !important;
 }
