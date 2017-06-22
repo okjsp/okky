@@ -68,6 +68,7 @@
         <g:textField name="title" required="" value="${article?.title}" placeholder="제목을 입력해 주세요." class="form-control"/>
     </div><br/>
     <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <small><strong>제목 예시)</strong><br/>
         - XXX 서비스 안드로이드/서버 개발자 모집<br/>
         - 201X 상반기 공개 채용<br/>
@@ -83,14 +84,32 @@
 
     <label><g:message code="jobPosition.jobPositionType.label" default="직무정보"/></label>
 
+    <div class="form-group">
+
+        <div class="row">
+            <div class="col col-sm-6">
+                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                    <option value=""><g:message code="jobPosition.group.label" default="직군" /></option>
+                </select>
+            </div>
+            <div class="col col-sm-6">
+                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                    <option value=""><g:message code="jobPosition.job.label" default="직무" /></option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
     <div class="form-group has-feedback">
         <div>
-            <g:textField name="recruit.jobPositions.title" value="${jobPosition?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
+            <g:textField name="recruit.jobPositions.title" value="${jobPosition?.title}" placeholder="업무명을 입력해 주세요." class="form-control form-dynamic"/>
         </div>
         <g:if test="${index == 0}">
         <br/>
         <div class="alert alert-info">
-        <small><strong>직무명 예시)</strong><br/>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <small><strong>업무명 예시)</strong><br/>
                 - 안드로이드/iOS 앱 개발 <br/>
                 - Java/Spring 웹서비스 개발/운영 <br/>
                 - 온라인 서비스 품질관리 부문 <br/></small>
@@ -187,12 +206,15 @@
 
     <div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
         <div>
-            <g:textField name="recruit.jobPositions.tagString" value="${jobPosition?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control form-dynamic"/>
+            <g:textField name="recruit.jobPositions.tagString" value="${jobPosition?.tagString}" placeholder="Skill tag 를 입력하면 검색시 정확도가 향상됩니다." data-role="tagsinput" class="form-control form-dynamic"/>
+            <p class="form-control-static input-guide">- Skill tag 를 입력하면 검색시 정확도가 향상됩니다.</p>
         </div>
     </div>
     <div class="form-group has-feedback">
         <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
     </div>
+
+    <hr/>
 </g:each>
 
 <div id="jobPositionForm">
@@ -201,11 +223,10 @@
 
 <g:if test="${recruit.jobPositions?.size() < 3}">
 <div class="form-group ${hasErrors(bean: article, field: 'tagString', 'has-error')} has-feedback">
-    <buttom type="button" id="addJobPositionFormButton" class="btn btn-sm btn-default btn-block"><i class="fa fa-plus-square-o"></i> 직무정보 추가</buttom>
+    <buttom type="button" id="addJobPositionFormButton" class="btn btn-sm btn-default btn-block"><i class="fa fa-plus-square-o"></i> 업무정보 추가</buttom>
 </div>
 </g:if>
 
-<hr/>
 
 <g:if test="${recruit.jobType == JobType.valueOf('CONTRACT')}">
 
@@ -308,16 +329,34 @@
         <hr/>
 
         <div class="col">
-            <label><g:message code="jobPosition.jobPositionType.label" default="직무정보"/></label>
+            <label><g:message code="jobPosition.jobPositionType.label" default="업무정보"/></label>
             <a href="#" class="pull-right delete-position-form" style="display: none;"><i class="fa fa-remove" />삭제</a>
+        </div>
+
+        <div class="form-group">
+
+            <div class="row">
+                <div class="col col-sm-6">
+                    <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                        <option value=""><g:message code="jobPosition.group.label" default="직군" /></option>
+                    </select>
+                </div>
+                <div class="col col-sm-6">
+                    <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                        <option value=""><g:message code="jobPosition.job.label" default="직무" /></option>
+                    </select>
+                </div>
+            </div>
+
         </div>
 
         <div class="form-group has-feedback">
             <div>
-                <input name="recruit.jobPositions.title" value="${jobPositions?.title}" placeholder="직무명을 입력해 주세요." class="form-control form-dynamic"/>
+                <input name="recruit.jobPositions.title" value="${jobPositions?.title}" placeholder="업무명을 입력해 주세요." class="form-control form-dynamic"/>
             </div><br/>
             <div class="alert alert-info">
-                <small><strong>직무명 예시)</strong><br/>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <small><strong>업무명 예시)</strong><br/>
                 - 안드로이드/iOS 앱 개발 <br/>
                 - Java/Spring 웹서비스 개발/운영 <br/>
                 - 온라인 서비스 품질관리<br/></small>
@@ -398,6 +437,7 @@
 
         <div class="form-group has-feedback">
             <g:textField name="recruit.jobPositions.tagString" value="${jobPositions?.tagString}" placeholder="Skill Tags," data-role="tagsinput" class="form-control tag-input form-dynamic"/>
+            <p class="form-control-static input-guide">- Skill tag 를 입력하면 검색시 정확도가 향상됩니다.</p>
         </div>
 
         <div class="form-group has-feedback">

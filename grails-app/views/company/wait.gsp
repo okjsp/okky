@@ -13,7 +13,7 @@
     <div class="panel panel-default panel-margin-10">
         <div class="panel-body panel-body-content text-center">
             <p class="lead">회사 인증 진행 중입니다.</p>
-            <p>인증 완료후 구인게시물을 작성 하실 수 있습니다. <br/> 정보 검토 후 인증이 완료되면 입력해주신 정보로 연락 드리겠습니다.</p>
+            <p>인증 완료후 구인게시물을 작성 하실 수 있습니다. <br/> 영업일 기준 3일 내에 안내 드리오니, 조금만 기다려 주세요.</p>
 
             <g:link controller="main" action="index" class="btn btn-primary">확인</g:link>
 

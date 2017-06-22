@@ -39,7 +39,7 @@
                     </g:form>
                 </div>
 
-                <div class="job-filter-wrapper">
+                %{--<div class="job-filter-wrapper">
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="job-filter-form">
@@ -166,7 +166,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--}%
 
             </div>
 

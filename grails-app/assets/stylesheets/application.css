@@ -82,6 +82,11 @@ pre code {
     border-radius: 0;
 }
 
+.input-guide {
+    font-size: 12px;
+    color: #999999;
+}
+
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
