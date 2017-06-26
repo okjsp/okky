@@ -32,24 +32,24 @@
 
 <div class="row">
 	<div class="col-sm-6">
-		<div class="form-group ${hasErrors(bean: companyInfo, field: 'tel', 'error')} required">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'managerTel', 'error')} required">
 			<label>담당자 연락처 <span class="required-indicator">*</span></label>
-			<input type="tel" name="companyInfo.tel" value="${companyInfo?.tel}" class="form-control" placeholder="000-0000-0000"/>
+			<input type="tel" name="companyInfo.managerTel" value="${companyInfo?.managerTel}" class="form-control" placeholder="000-0000-0000"/>
 		</div>
 	</div>
 	<div class="col-sm-6">
-		<div class="form-group ${hasErrors(bean: companyInfo, field: 'email', 'error')} required">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'managerEmail', 'error')} required">
 			<label>담당자 이메일 <span class="required-indicator">*</span></label>
-			<input type="email" name="companyInfo.email" value="${companyInfo?.email}" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
+			<input type="email" name="companyInfo.managerEmail" value="${companyInfo?.managerEmail}" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
 		</div>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-sm-6">
-		<div class="form-group ${hasErrors(bean: companyInfo, field: 'tel', 'error')} required">
+		<div class="form-group ${hasErrors(bean: companyInfo, field: 'managerName', 'error')} required">
 			<label>담당자명 <span class="required-indicator">*</span></label>
-			<input type="tel" name="companyInfo.tel" value="${companyInfo?.tel}" class="form-control" />
+			<input type="tel" name="companyInfo.managerName" value="${companyInfo?.managerName}" class="form-control" />
 		</div>
 	</div>
 </div>
@@ -57,8 +57,9 @@
 <div class="row">
 	<div class="col-sm-6">
 		<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
-			<label>직원 수 <span class="required-indicator">*</span></label>
+			<label>직원 수</label>
 			<select class="form-control" name="companyInfo.employeeNumber">
+				<option value="5"><g:message code="companyInfo.emplayeeNumber.value_5"/></option>
 				<option value="5"><g:message code="companyInfo.emplayeeNumber.value_5"/></option>
 				<option value="10"><g:message code="companyInfo.emplayeeNumber.value_10"/></option>
 				<option value="20"><g:message code="companyInfo.emplayeeNumber.value_20"/></option>
@@ -84,6 +85,7 @@
 		<div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} ">
 			<label>회사 로고</label>
 			<input type="file" name="logoFile" class="form-control" placeholder="회사로고를 첨부해 주세요."/>
+			<p class="form-control-static input-guide">- 1024 X 1024 이하의 정사각형 이미지</p>
 		</div>
 	</div>
 	<div class="col-sm-6">
@@ -95,10 +97,9 @@
 </div>
 
 
-
 <div class="form-group ${hasErrors(bean: companyInfo, field: 'name', 'error')} required">
 	<label>회사 소개 <span class="required-indicator">*</span></label>
-	<g:textArea name="companyInfo.description" required="" rows="20" class="summernote form-control input-block-level"/>
+	<g:textArea name="companyInfo.description" rows="20" class="summernote form-control input-block-level"/>
 </div>
 
 

@@ -9,6 +9,11 @@ class CompanyInfo {
 
     String tel
     String email
+
+    String managerTel
+    String managerEmail
+    String managerName
+
     String homepageUrl
     Integer employeeNumber
     AttachedFile introFile

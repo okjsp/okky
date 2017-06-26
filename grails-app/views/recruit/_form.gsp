@@ -88,13 +88,33 @@
 
         <div class="row">
             <div class="col col-sm-6">
-                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                <select name="recruit.jobPositions.group" class="form-control form-control-inline-half form-dynamic">
                     <option value=""><g:message code="jobPosition.group.label" default="직군" /></option>
+                    <option value="DEVELOPER">${message(code: 'jobPosition.group.DEVELOPER')}</option>
+                    <option value="PLANNER">${message(code: 'jobPosition.group.PLANNER')}</option>
+                    <option value="DESGINER">${message(code: 'jobPosition.group.DESGINER')}</option>
+                    <option value="MARKETER">${message(code: 'jobPosition.group.MARKETER')}</option>
+                    <option value="ETC">${message(code: 'jobPosition.group.ETC')}</option>
                 </select>
             </div>
             <div class="col col-sm-6">
-                <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                <select name="recruit.jobPositions.job" class="form-control form-control-inline-half form-dynamic">
                     <option value=""><g:message code="jobPosition.job.label" default="직무" /></option>
+                    <option value="CTO">${message(code: 'jobPosition.job.CTO')}</option>
+                    <option value="TEAM_LEADER">${message(code: 'jobPosition.job.TEAM_LEADER')}</option>
+                    <option value="DBA">${message(code: 'jobPosition.job.DBA')}</option>
+                    <option value="SERVER_DEVELOPER">${message(code: 'jobPosition.job.SERVER_DEVELOPER')}</option>
+                    <option value="WEB_DEVELOPER">${message(code: 'jobPosition.job.WEB_DEVELOPER')}</option>
+                    <option value="MOBILE_DEVELOPER">${message(code: 'jobPosition.job.MOBILE_DEVELOPER')}</option>
+                    <option value="FULL_STACK">${message(code: 'jobPosition.job.FULL_STACK')}</option>
+                    <option value="QA">${message(code: 'jobPosition.job.QA')}</option>
+                    <option value="PM_SI">${message(code: 'jobPosition.job.PM_SI')}</option>
+                    <option value="DS">${message(code: 'jobPosition.job.DS')}</option>
+                    <option value="SE">${message(code: 'jobPosition.job.SE')}</option>
+                    <option value="PLATFORM_DEVELOPER">${message(code: 'jobPosition.job.PLATFORM_DEVELOPER')}</option>
+                    <option value="EMBED_DEVELOPER">${message(code: 'jobPosition.job.EMBED_DEVELOPER')}</option>
+                    <option value="SOLUTION_DEVELOPER">${message(code: 'jobPosition.job.SOLUTION_DEVELOPER')}</option>
+                    <option value="CLIENT_DEVELOPER">${message(code: 'jobPosition.job.CLIENT_DEVELOPER')}</option>
                 </select>
             </div>
         </div>
@@ -337,13 +357,34 @@
 
             <div class="row">
                 <div class="col col-sm-6">
-                    <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                    <select name="recruit.jobPositions.group" class="form-control form-control-inline-half form-dynamic">
                         <option value=""><g:message code="jobPosition.group.label" default="직군" /></option>
+                        <option value="DEVELOPER">${message(code: 'jobPosition.group.DEVELOPER')}</option>
+                        <option value="PLANNER">${message(code: 'jobPosition.group.PLANNER')}</option>
+                        <option value="DESGINER">${message(code: 'jobPosition.group.DESGINER')}</option>
+                        <option value="MARKETER">${message(code: 'jobPosition.group.MARKETER')}</option>
+                        <option value="ETC">${message(code: 'jobPosition.group.ETC')}</option>
                     </select>
                 </div>
                 <div class="col col-sm-6">
-                    <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                    <select name="recruit.jobPositions.job" class="form-control form-control-inline-half form-dynamic">
                         <option value=""><g:message code="jobPosition.job.label" default="직무" /></option>
+                        <option value="CTO">${message(code: 'jobPosition.job.CTO')}</option>
+                        <option value="TEAM_LEADER">${message(code: 'jobPosition.job.TEAM_LEADER')}</option>
+                        <option value="DBA">${message(code: 'jobPosition.job.DBA')}</option>
+                        <option value="SERVER_DEVELOPER">${message(code: 'jobPosition.job.SERVER_DEVELOPER')}</option>
+                        <option value="WEB_DEVELOPER">${message(code: 'jobPosition.job.WEB_DEVELOPER')}</option>
+                        <option value="MOBILE_DEVELOPER">${message(code: 'jobPosition.job.MOBILE_DEVELOPER')}</option>
+                        <option value="FULL_STACK">${message(code: 'jobPosition.job.FULL_STACK')}</option>
+                        <option value="QA">${message(code: 'jobPosition.job.QA')}</option>
+                        <option value="PM_SI">${message(code: 'jobPosition.job.PM_SI')}</option>
+                        <option value="DS">${message(code: 'jobPosition.job.DS')}</option>
+                        <option value="SE">${message(code: 'jobPosition.job.SE')}</option>
+                        <option value="PLATFORM_DEVELOPER">${message(code: 'jobPosition.job.PLATFORM_DEVELOPER')}</option>
+                        <option value="EMBED_DEVELOPER">${message(code: 'jobPosition.job.EMBED_DEVELOPER')}</option>
+                        <option value="SOLUTION_DEVELOPER">${message(code: 'jobPosition.job.SOLUTION_DEVELOPER')}</option>
+                        <option value="CLIENT_DEVELOPER">${message(code: 'jobPosition.job.CLIENT_DEVELOPER')}</option>
+                        <option value="ETC_DEVELOPER">${message(code: 'jobPosition.job.ETC_DEVELOPER')}</option>
                     </select>
                 </div>
             </div>

@@ -64,14 +64,19 @@ class CompanyController {
         }
 
         company.manager = person
-
         company.save()
-
-        company.addToMembers(person)
 
         def companyInfo = new CompanyInfo()
 
         bindData(companyInfo, params, 'companyInfo')
+
+        company.addToMembers(person)
+
+        if (company.hasErrors()) {
+            Company.withTransaction { it.setRollbackOnly() }
+            respond company, model:[companyInfo: companyInfo], view:'create'
+            return
+        }
 
         if(!introFile.empty) {
             def ext = introFile.originalFilename.substring(introFile.originalFilename.lastIndexOf('.'))
@@ -91,10 +96,13 @@ class CompanyController {
         }
 
         companyInfo.company = company
-        companyInfo.save flush:true
+        companyInfo.save()
 
 
         if (company.hasErrors() || companyInfo.hasErrors()) {
+
+            Company.withTransaction { it.setRollbackOnly() }
+
             respond company, model:[companyInfo: companyInfo], view:'create'
             return
         }
