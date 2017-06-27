@@ -3,7 +3,7 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'company.label', default: '회사')}" />
-    <title><g:message code="default.create.label" args="[entityName]" /></title>
+    <title><g:message code="default.create.label" args  ="[entityName]" /></title>
 </head>
 <body>
 <g:sidebar/>
