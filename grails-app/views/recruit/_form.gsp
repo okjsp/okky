@@ -1,4 +1,4 @@
-<%@ page import="net.okjsp.Article" %>
+<%@ page import="net.okjsp.JobPositionGroup; net.okjsp.Article" %>
 <%@ page import="net.okjsp.Content" %>
 <%@ page import="net.okjsp.ContentTextType" %>
 <%@ page import="net.okjsp.JobType" %>
@@ -82,40 +82,16 @@
 
     <hr/>
 
-    <label><g:message code="jobPosition.jobPositionType.label" default="직무정보"/></label>
+    <label><g:message code="jobPosition.jobPositionType.label" default="업무정보"/></label>
 
     <div class="form-group">
 
         <div class="row">
             <div class="col col-sm-6">
-                <select name="recruit.jobPositions.group" class="form-control form-control-inline-half form-dynamic">
-                    <option value=""><g:message code="jobPosition.group.label" default="직군" /></option>
-                    <option value="DEVELOPER">${message(code: 'jobPosition.group.DEVELOPER')}</option>
-                    <option value="PLANNER">${message(code: 'jobPosition.group.PLANNER')}</option>
-                    <option value="DESGINER">${message(code: 'jobPosition.group.DESGINER')}</option>
-                    <option value="MARKETER">${message(code: 'jobPosition.group.MARKETER')}</option>
-                    <option value="ETC">${message(code: 'jobPosition.group.ETC')}</option>
-                </select>
+                <g:select id="recruit.jobPositions.group" name="recruit.jobPositions.group" from="${net.okjsp.JobPositionGroup.list()}" optionKey="id" optionValue="name" value="${jobPosition?.group?.id}" class="form-control form-control-inline-half form-dynamic"/>
             </div>
             <div class="col col-sm-6">
-                <select name="recruit.jobPositions.job" class="form-control form-control-inline-half form-dynamic">
-                    <option value=""><g:message code="jobPosition.job.label" default="직무" /></option>
-                    <option value="CTO">${message(code: 'jobPosition.job.CTO')}</option>
-                    <option value="TEAM_LEADER">${message(code: 'jobPosition.job.TEAM_LEADER')}</option>
-                    <option value="DBA">${message(code: 'jobPosition.job.DBA')}</option>
-                    <option value="SERVER_DEVELOPER">${message(code: 'jobPosition.job.SERVER_DEVELOPER')}</option>
-                    <option value="WEB_DEVELOPER">${message(code: 'jobPosition.job.WEB_DEVELOPER')}</option>
-                    <option value="MOBILE_DEVELOPER">${message(code: 'jobPosition.job.MOBILE_DEVELOPER')}</option>
-                    <option value="FULL_STACK">${message(code: 'jobPosition.job.FULL_STACK')}</option>
-                    <option value="QA">${message(code: 'jobPosition.job.QA')}</option>
-                    <option value="PM_SI">${message(code: 'jobPosition.job.PM_SI')}</option>
-                    <option value="DS">${message(code: 'jobPosition.job.DS')}</option>
-                    <option value="SE">${message(code: 'jobPosition.job.SE')}</option>
-                    <option value="PLATFORM_DEVELOPER">${message(code: 'jobPosition.job.PLATFORM_DEVELOPER')}</option>
-                    <option value="EMBED_DEVELOPER">${message(code: 'jobPosition.job.EMBED_DEVELOPER')}</option>
-                    <option value="SOLUTION_DEVELOPER">${message(code: 'jobPosition.job.SOLUTION_DEVELOPER')}</option>
-                    <option value="CLIENT_DEVELOPER">${message(code: 'jobPosition.job.CLIENT_DEVELOPER')}</option>
-                </select>
+                <g:select id="recruit.jobPositions.duty" name="recruit.jobPositions.duty" from="${jobPosition?.group?.duties}" optionKey="id" optionValue="name" value="${jobPosition?.duty?.id}" class="form-control form-control-inline-half form-dynamic"/>
             </div>
         </div>
 
@@ -231,7 +207,7 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
+        <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="업무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
     </div>
 
     <hr/>
@@ -294,6 +270,7 @@
                 <option value="광주" <g:if test="${recruit.city == '광주'}">selected="selected"</g:if>>광주</option>
                 <option value="대전" <g:if test="${recruit.city == '대전'}">selected="selected"</g:if>>대전</option>
                 <option value="울산" <g:if test="${recruit.city == '울산'}">selected="selected"</g:if>>울산</option>
+                <option value="세종" <g:if test="${recruit.city == '세종'}">selected="selected"</g:if>>세종</option>
                 <option value="강원" <g:if test="${recruit.city == '강원'}">selected="selected"</g:if>>강원</option>
                 <option value="경기" <g:if test="${recruit.city == '경기'}">selected="selected"</g:if>>경기</option>
                 <option value="경남" <g:if test="${recruit.city == '경남'}">selected="selected"</g:if>>경남</option>
@@ -357,35 +334,10 @@
 
             <div class="row">
                 <div class="col col-sm-6">
-                    <select name="recruit.jobPositions.group" class="form-control form-control-inline-half form-dynamic">
-                        <option value=""><g:message code="jobPosition.group.label" default="직군" /></option>
-                        <option value="DEVELOPER">${message(code: 'jobPosition.group.DEVELOPER')}</option>
-                        <option value="PLANNER">${message(code: 'jobPosition.group.PLANNER')}</option>
-                        <option value="DESGINER">${message(code: 'jobPosition.group.DESGINER')}</option>
-                        <option value="MARKETER">${message(code: 'jobPosition.group.MARKETER')}</option>
-                        <option value="ETC">${message(code: 'jobPosition.group.ETC')}</option>
-                    </select>
+                    <g:select id="recruit.jobPositions.group" name="recruit.jobPositions.group" from="${JobPositionGroup.list()}" optionKey="id" optionValue="name" class="form-control form-control-inline-half form-dynamic"/>
                 </div>
                 <div class="col col-sm-6">
-                    <select name="recruit.jobPositions.job" class="form-control form-control-inline-half form-dynamic">
-                        <option value=""><g:message code="jobPosition.job.label" default="직무" /></option>
-                        <option value="CTO">${message(code: 'jobPosition.job.CTO')}</option>
-                        <option value="TEAM_LEADER">${message(code: 'jobPosition.job.TEAM_LEADER')}</option>
-                        <option value="DBA">${message(code: 'jobPosition.job.DBA')}</option>
-                        <option value="SERVER_DEVELOPER">${message(code: 'jobPosition.job.SERVER_DEVELOPER')}</option>
-                        <option value="WEB_DEVELOPER">${message(code: 'jobPosition.job.WEB_DEVELOPER')}</option>
-                        <option value="MOBILE_DEVELOPER">${message(code: 'jobPosition.job.MOBILE_DEVELOPER')}</option>
-                        <option value="FULL_STACK">${message(code: 'jobPosition.job.FULL_STACK')}</option>
-                        <option value="QA">${message(code: 'jobPosition.job.QA')}</option>
-                        <option value="PM_SI">${message(code: 'jobPosition.job.PM_SI')}</option>
-                        <option value="DS">${message(code: 'jobPosition.job.DS')}</option>
-                        <option value="SE">${message(code: 'jobPosition.job.SE')}</option>
-                        <option value="PLATFORM_DEVELOPER">${message(code: 'jobPosition.job.PLATFORM_DEVELOPER')}</option>
-                        <option value="EMBED_DEVELOPER">${message(code: 'jobPosition.job.EMBED_DEVELOPER')}</option>
-                        <option value="SOLUTION_DEVELOPER">${message(code: 'jobPosition.job.SOLUTION_DEVELOPER')}</option>
-                        <option value="CLIENT_DEVELOPER">${message(code: 'jobPosition.job.CLIENT_DEVELOPER')}</option>
-                        <option value="ETC_DEVELOPER">${message(code: 'jobPosition.job.ETC_DEVELOPER')}</option>
-                    </select>
+                    <g:select id="recruit.jobPositions.duty" name="recruit.jobPositions.duty" from="${JobPositionGroup.get(1L).duties.sort{a,b -> a.id <=> b.id }}" optionKey="id" optionValue="name" value="${jobPosition?.duty?.id}" class="form-control form-control-inline-half form-dynamic"/>
                 </div>
             </div>
 
@@ -482,7 +434,7 @@
         </div>
 
         <div class="form-group has-feedback">
-            <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="직무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
+            <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="업무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
         </div>
     </div>
 </script>
@@ -514,6 +466,7 @@
     	'광주' : ['광산구','남구','동구','북구','서구'],
     	'대전' : ['대덕구','동구','서구','유성구','중구'],
     	'울산' : ['남구','동구','북구','중구','울주군'],
+    	'세종' : ['조치원읍', '연기면', '연동면', '부강면', '금남면', '장군면', '연서면', '전의면', '전동면', '소정면', '한솔동', '도담동', '아름동', '종촌동', '고운동', '보람동'],
     	'강원' : ['강릉시','동해시','삼척시','속초시','원주시','춘천시','태백시','고성군','양구군','양양군','영월군','인제군','정선군','철원군','평창군','홍천군','화천군','횡성군'],
     	'경기' : ['고양시 덕양구','고양시 일산동구','고양시 일산서구','과천시','광명시','광주시','구리시','군포시','김포시','남양주시','동두천시','부천시 소사구','부천시 오정구','부천시 원미구','성남시 분당구','성남시 수정구','성남시 중원구','수원시 권선구','수원시 영통구','수원시 장안구','수원시 팔달구','시흥시','안산시 단원구','안산시 상록구','안성시','안양시 동안구','안양시 만안구','양주시','오산시','용인시 기흥구','용인시 수지구','용인시 처인구','의왕시','의정부시','이천시','파주시','평택시','포천시','하남시','화성시','가평군','양평군','여주군','연천군'],
     	'경남' : ['거제시','김해시','마산시','밀양시','사천시','양산시','진주시','진해시','창원시','통영시','거창군','고성군','남해군','산청군','의령군','창녕군','하동군','함안군','함양군','합천군'],
@@ -604,6 +557,38 @@
         {value : 99, label: '${message(code: 'jobPosition.maxCareer.99')}'}
     ];
 
+    var jobDuty = {
+      1: {},
+      2: {},
+      3: {},
+      4: {},
+      5: {}
+    };
+
+    <g:each in="${1..5}" var="groupId">
+        <g:each in="${JobPositionGroup.get(groupId).duties.sort{a,b -> a.id <=> b.id }}" var="duty">
+            jobDuty[${groupId}][${duty.id}] = "${duty.name}";
+        </g:each>
+    </g:each>
+
+
+
+    $('.content').delegate('select[name="recruit.jobPositions.group"]', 'change', function() {
+      var group = $(this).val();
+      var $duty = $(this).parent().next().find('select');
+
+      $duty.find('option').detach();
+
+      if(group) {
+        var duties = jobDuty[group];
+        $.each(duties, function(i, d){
+          $duty.append('<option value="'+i+'" class="district">'+d+'</option>');
+        });
+      }
+    });
+
+
+
     $('.content').delegate('select[name="recruit.jobPositions.minCareer"]','change', function() {
       var value = $(this).val();
 
@@ -625,7 +610,7 @@
     });
 
     $('.content').delegate('.delete-position-form', 'click', function() {
-      if(confirm('해당 직무 정보를 삭제하시겠습니까?'))
+      if(confirm('해당 업무 정보를 삭제하시겠습니까?'))
         $(this).parents('.position-form').detach();
         jobPositionCount--;
 

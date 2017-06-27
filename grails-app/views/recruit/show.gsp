@@ -60,7 +60,12 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="position-info">
-                                        <div class="detail-info-row"><span class="info-label">경력:</span>
+                                        <div class="detail-info-row"><span class="info-label">직무 :</span>
+                                            <span>${jobPosition?.group?.name}</span>
+                                            /
+                                            <span>${jobPosition?.duty?.name}</span>
+                                        </div>
+                                        <div class="detail-info-row"><span class="info-label">경력 : </span>
                                             <span><g:message code="jobPosition.minCareer.${jobPosition.minCareer}"/></span>
 
                                             <g:if test="${jobPosition.minCareer != 99 && jobPosition.minCareer != 0}">
@@ -68,7 +73,7 @@
                                             </g:if>
 
                                         </div>
-                                        <div class="detail-info-row"><span class="info-label">급여:</span>
+                                        <div class="detail-info-row"><span class="info-label">급여 : </span>
                                             <g:if test="${article.recruit.jobType == JobType.valueOf('FULLTIME')}">
                                                 <span><g:message code="jobPosition.minPay.year.${jobPosition.minPay}"/></span>
                                                 ~
@@ -78,7 +83,7 @@
                                                 <span><g:message code="jobPosition.minPay.${jobPosition.minPay}"/></span>
                                             </g:elseif>
                                         </div>
-                                        <div class="detail-info-row"><span class="info-label">Skills:</span> <g:tags tags="${jobPosition.tagString}" /></div>
+                                        <div class="detail-info-row"><span class="info-label">Skills : </span> <g:tags tags="${jobPosition.tagString}" /></div>
                                         <hr/>
                                         <div class="detail-info-row"><g:lineToBr text="${jobPosition.description}" /></div>
                                     </div>
@@ -157,7 +162,7 @@
             <div class="panel panel-default clearfix">
                 <ul class="list-group">
                 <li class="list-group-item note-title">
-                    <h3 class="panel-title">업체정보</h3>
+                    <h3 class="panel-title">회사정보</h3>
                 </li>
                 <li class="list-group-item note-item clearfix">
                     <div class="panel-body">

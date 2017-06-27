@@ -14,6 +14,10 @@ class JobPosition {
 
     String description
 
+
+    JobPositionGroup group
+    JobPositionDuty duty
+
     static belongsTo = [recruit: Recruit]
 
     static hasMany = [tags : Tag]

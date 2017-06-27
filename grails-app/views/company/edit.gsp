@@ -96,9 +96,9 @@
 							<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
 								<label>직원 수</label>
 								<select class="form-control" name="companyInfo.employeeNumber">
-									<option value="5"><g:message code="companyInfo.emplayeeNumber.value_5"/></option>
-									<option value="10"><g:message code="companyInfo.emplayeeNumber.value_10"/></option>
-									<option value="20"><g:message code="companyInfo.emplayeeNumber.value_20"/></option>
+									<option value="5"><g:message code="companyInfo.employeeNumber.value_5"/></option>
+									<option value="10"><g:message code="companyInfo.employeeNumber.value_10"/></option>
+									<option value="20"><g:message code="companyInfo.employeeNumber.value_20"/></option>
 									<option value="30"><g:message code="companyInfo.emplayeeNumber.value_30"/></option>
 									<option value="40"><g:message code="companyInfo.emplayeeNumber.value_40"/></option>
 									<option value="50"><g:message code="companyInfo.emplayeeNumber.value_50"/></option>

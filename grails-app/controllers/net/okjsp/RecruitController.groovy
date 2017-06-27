@@ -201,6 +201,8 @@ class RecruitController {
         def maxPay = params.list("recruit.jobPositions.maxPay") ?: []
         def tagStrings = params.list("recruit.jobPositions.tagString")
         def descriptions = params.list("recruit.jobPositions.description")
+        def jobGroups = params.list("recruit.jobPositions.group")
+        def jobDuties = params.list("recruit.jobPositions.duty")
 
         titles.eachWithIndex { title, i ->
 
@@ -216,6 +218,8 @@ class RecruitController {
                     minPay: minPay[i],
                     maxPay: maxPay[i],
                     tagString: tagStrings[i],
+                    group: jobGroups[i],
+                    duty: jobDuties[i],
                     description: descriptions[i]
             ))
 
@@ -327,6 +331,8 @@ class RecruitController {
         def maxPay = params.list("recruit.jobPositions.maxPay") ?: []
         def tagStrings = params.list("recruit.jobPositions.tagString")
         def descriptions = params.list("recruit.jobPositions.description")
+        def jobGroups = params.list("recruit.jobPositions.group")
+        def jobDuties = params.list("recruit.jobPositions.duty")
 
         titles.eachWithIndex { title, i ->
 
@@ -342,6 +348,8 @@ class RecruitController {
                     minPay: minPay[i],
                     maxPay: maxPay[i],
                     tagString: tagStrings[i],
+                    group: jobGroups[i],
+                    duty: jobDuties[i],
                     description: descriptions[i]
             ))
 

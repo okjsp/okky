@@ -91,7 +91,7 @@
 					<span id="employeeNumber-label" class="property-label"><g:message code="companyInfo.employeeNumber.label" default="직원 수" /></span>
 
 					<span class="property-value" aria-labelledby="employeeNumber-label">
-						<g:message code="companyInfo.emplayeeNumber.value_${companyInfo.employeeNumber}" />
+						<g:message code="companyInfo.employeeNumber.value_${companyInfo.employeeNumber}" />
 					</span>
 
 				</li>

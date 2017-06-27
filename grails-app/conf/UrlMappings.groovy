@@ -70,6 +70,8 @@ class UrlMappings {
         "/_admin/spamWord/$action?/$id?(.$format)?"(controller: "spamWord")
         "/_admin/user/$action?/$id?(.$format)?"(controller: "adminUser")
         "/_admin/company/$action?/$id?(.$format)?"(controller: "adminCompany")
+        "/_admin/job/group/$action?/$id?(.$format)?"(controller: "jobPositionGroup")
+        "/_admin/job/duty/$action?/$id?(.$format)?"(controller: "jobPositionDuty")
         "/_admin/dm/export"(controller: "dm", action: 'export')
         "/_admin/dm/reject"(controller: "dm", action: 'reject')
         "/_admin/dm/updateReject"(controller: "dm", action: 'updateReject')

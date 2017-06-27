@@ -18,7 +18,7 @@
                     <g:form name="category-filter-form" method="get" uri="/articles/${category.code}">
                         <div class="category-filter-query pull-right">
                             <div class="input-group input-group-sm">
-                                <input type="search" name="query" class="form-control" placeholder="검색어" value="${params.query}" />
+                                <input type="search" name="query" id="search-field" class="form-control" placeholder="검색어" value="${params.query}" />
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                                     <g:if test="${params.query}">
@@ -39,7 +39,7 @@
                     </g:form>
                 </div>
 
-                %{--<div class="job-filter-wrapper">
+                <div id="job-filter" class="job-filter-wrapper" style="display: none;">
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="job-filter-form">
@@ -90,22 +90,23 @@
                                 <div class="row">
                                     <div class="col col-sm-2"><label>지역</label></div>
                                     <div class="col col-sm-10 job-filter-input">
-                                        <label><input type="checkbox"/> 서울</label>
-                                        <label><input type="checkbox"/> 부산</label>
-                                        <label><input type="checkbox"/> 대구</label>
-                                        <label><input type="checkbox"/> 인천</label>
-                                        <label><input type="checkbox"/> 광주</label>
-                                        <label><input type="checkbox"/> 대전</label>
-                                        <label><input type="checkbox"/> 울산</label>
-                                        <label><input type="checkbox"/> 강원</label>
-                                        <label><input type="checkbox"/> 경기</label>
-                                        <label><input type="checkbox"/> 경남</label>
-                                        <label><input type="checkbox"/> 경북</label>
-                                        <label><input type="checkbox"/> 전남</label>
-                                        <label><input type="checkbox"/> 전북</label>
-                                        <label><input type="checkbox"/> 제주</label>
-                                        <label><input type="checkbox"/> 충남</label>
-                                        <label><input type="checkbox"/> 충북</label>
+                                        <label><input type="checkbox" name="filter.city" value="서울"/> 서울</label>
+                                        <label><input type="checkbox" name="filter.city" value="부산"/> 부산</label>
+                                        <label><input type="checkbox" name="filter.city" value="대구"/> 대구</label>
+                                        <label><input type="checkbox" name="filter.city" value="인천"/> 인천</label>
+                                        <label><input type="checkbox" name="filter.city" value="광주"/> 광주</label>
+                                        <label><input type="checkbox" name="filter.city" value="대전"/> 대전</label>
+                                        <label><input type="checkbox" name="filter.city" value="울산"/> 울산</label>
+                                        <label><input type="checkbox" name="filter.city" value="세종"/> 세종</label>
+                                        <label><input type="checkbox" name="filter.city" value="강원"/> 강원</label>
+                                        <label><input type="checkbox" name="filter.city" value="경기"/> 경기</label>
+                                        <label><input type="checkbox" name="filter.city" value="경남"/> 경남</label>
+                                        <label><input type="checkbox" name="filter.city" value="경북"/> 경북</label>
+                                        <label><input type="checkbox" name="filter.city" value="전남"/> 전남</label>
+                                        <label><input type="checkbox" name="filter.city" value="전북"/> 전북</label>
+                                        <label><input type="checkbox" name="filter.city" value="충남"/> 충남</label>
+                                        <label><input type="checkbox" name="filter.city" value="충북"/> 충북</label>
+                                        <label><input type="checkbox" name="filter.city" value="제주"/> 제주</label>
                                     </div>
                                 </div>
 
@@ -162,11 +163,11 @@
                             </div>
                             <div class="pull-right">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 검색</button>
-                                <button type="submit" class="btn btn-default">닫기</button>
+                                <button type="button" id="job-filter-close" class="btn btn-default">닫기</button>
                             </div>
                         </div>
                     </div>
-                </div>--}%
+                </div>
 
             </div>
 
@@ -297,6 +298,14 @@
                     e.preventDefault();
                     $('#category-filter-form')[0].submit();
                 });
+
+                $('#search-field').focus(function() {
+                  $('#job-filter').show();
+                });
+
+                  $('#job-filter-close').focus(function() {
+                    $('#job-filter').hide();
+                  });
             });
             </script>
         </content>

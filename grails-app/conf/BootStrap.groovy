@@ -135,6 +135,58 @@ class BootStrap {
         }
 
         /**
+         * 기본 직종/직무 추가
+         */
+
+        if(JobPositionGroup.count() == 0) {
+            def jobDeveloper = new JobPositionGroup(name : "개발").save(flush: true)
+            def jobPlanner = new JobPositionGroup(name : "기획").save(flush: true)
+            def jobDesigner = new JobPositionGroup(name : "디자인").save(flush: true)
+            def jobMarketer = new JobPositionGroup(name : "마케팅").save(flush: true)
+            def jobEtc = new JobPositionGroup(name : "기타").save(flush: true)
+
+            jobDeveloper.addToDuties(name: "CTO")
+            jobDeveloper.addToDuties(name: "개발팀장")
+            jobDeveloper.addToDuties(name: "DBA")
+            jobDeveloper.addToDuties(name: "서버개발")
+            jobDeveloper.addToDuties(name: "웹개발")
+            jobDeveloper.addToDuties(name: "모바일개발")
+            jobDeveloper.addToDuties(name: "Full Stack")
+            jobDeveloper.addToDuties(name: "QA")
+            jobDeveloper.addToDuties(name: "PM-SI")
+            jobDeveloper.addToDuties(name: "DS")
+            jobDeveloper.addToDuties(name: "시스템엔지니어")
+            jobDeveloper.addToDuties(name: "플랫폼개발")
+            jobDeveloper.addToDuties(name: "임베디드개발")
+            jobDeveloper.addToDuties(name: "솔루션개발")
+            jobDeveloper.addToDuties(name: "클라이언트개발")
+            jobDeveloper.addToDuties(name: "기타개발")
+
+            jobPlanner.addToDuties(name: "PM")
+            jobPlanner.addToDuties(name: "UI/UX 기획")
+            jobPlanner.addToDuties(name: "사업기획")
+            jobPlanner.addToDuties(name: "전략기획")
+            jobPlanner.addToDuties(name: "서비스기획")
+
+            jobDesigner.addToDuties(name: "디자인")
+            jobDesigner.addToDuties(name: "UI 디자인")
+            jobDesigner.addToDuties(name: "UX 디자인")
+            jobDesigner.addToDuties(name: "웹디자인")
+            jobDesigner.addToDuties(name: "모바일디자인")
+            jobDesigner.addToDuties(name: "서비스디자인")
+
+            jobMarketer.addToDuties(name: "마케팅")
+            jobMarketer.addToDuties(name: "영업")
+            jobMarketer.addToDuties(name: "Digital Marketer")
+            jobMarketer.addToDuties(name: "Growth Hacker")
+            jobMarketer.addToDuties(name: "전략수석")
+
+            jobEtc.addToDuties(name: "기타")
+            jobEtc.addToDuties(name: "MD")
+
+        }
+
+        /**
          * Register Custom Object Marshaller
          */
         JSON.registerObjectMarshaller(Notification) { notification ->
