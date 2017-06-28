@@ -20,7 +20,7 @@
 				<fieldset class="form">
 
 					<div class="alert alert-info">
-						<strong>2017년 7월 3일</strong>부터는 <strong style="text-decoration: underline">회사 정보 등록 및 인증을 받은 회원만</strong> 구인 게시판에 등록이 가능합니다.<br/> (7/3 이전까지는 '건너뛰기'로 회사 정보 등록 없이 작성 가능)<br/>
+						<strong>2017년 7월 5일</strong>부터는 <strong style="text-decoration: underline">회사 정보 등록 및 인증을 받은 회원만</strong> 구인 게시판에 등록이 가능합니다.<br/> (7/5 이전까지는 '건너뛰기'로 회사 정보 등록 없이 작성 가능)<br/>
 						별도의 인증 절차가 필요하오니 구인 게시판을 이용하실 기업 회원분들은 사전에 등록 및 인증을 받으시기를 바랍니다.
 						<br/><br/>
 						구인 게시판을 이용하시는 모든 회원분들께 보다 많은 혜택과 서비스를 제공하기 위함이니 적극적으로 협조해 주시면 고맙겠습니다.<br/><br/>
