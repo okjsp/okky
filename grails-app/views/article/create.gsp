@@ -66,9 +66,9 @@
         <asset:script type="text/javascript">
             $('#category').change(function() {
                 var $opt = $(this).find(':selected');
-                if($opt.val() == 'recruit') {
+                /*if($opt.val() == 'recruit') {
                   location.href=contextPath+'/recruits/create';
-                }
+                }*/
             });
         </asset:script>
 

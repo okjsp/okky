@@ -46,7 +46,7 @@
 					<div class="nav" role="navigation">
 						<fieldset class="buttons">
 							%{--<g:link uri="/recruits" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')">취소</g:link>--}%
-							<g:link uri="/articles/recruit/create?skipCompanyRegister=Y" class="btn btn-default btn-wide" onclick="return confirm('2017년 7월 3일부터는 필수 등록으로 변경됩니다? 나중에 등록하시겠습니까?')">건너뛰기</g:link>
+							<g:link uri="/articles/recruit/create?skipCompanyRegister=Y" class="btn btn-default btn-wide" onclick="return confirm('2017년 7월 5일부터는 필수 등록으로 변경됩니다? 나중에 등록하시겠습니까?')">건너뛰기</g:link>
 							<g:submitButton name="create" class="create btn btn-success btn-wide pull-right" value="${message(code: 'default.button.create.label', default: 'Create')}" />
 						</fieldset>
 					</div>

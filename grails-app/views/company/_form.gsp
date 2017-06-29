@@ -90,8 +90,8 @@
 	</div>
 	<div class="col-sm-6">
 		<div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} ">
-			<label>회사 소개서</label>
-			<input type="file" name="introFile" class="form-control" placeholder="회사소개서를 첨부해 주세요."/>
+			<label>사업자등록증</label>
+			<input type="file" name="introFile" class="form-control" placeholder="사업자등록증을 첨부해 주세요."/>
 		</div>
 	</div>
 </div>
