@@ -126,7 +126,7 @@ class ArticleController {
             return
         }
 
-        if(article.category.code == 'recruit') {
+        if(article.isRecruit) {
             redirect uri: "/recruit/$article.id"
         }
 
