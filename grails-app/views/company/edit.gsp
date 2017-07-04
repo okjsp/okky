@@ -87,25 +87,34 @@
 
 					<div class="row">
 						<div class="col-sm-6">
+							<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
+								<label>직원 수</label>
+								<select class="form-control" name="companyInfo.employeeNumber">
+									<option value="5" ${companyInfo?.employeeNumber == '5' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_5"/></option>
+									<option value="10" ${companyInfo?.employeeNumber == '10' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_10"/></option>
+									<option value="20" ${companyInfo?.employeeNumber == '20' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_20"/></option>
+									<option value="30" ${companyInfo?.employeeNumber == '30' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_30"/></option>
+									<option value="40" ${companyInfo?.employeeNumber == '40' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_40"/></option>
+									<option value="50" ${companyInfo?.employeeNumber == '50' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_50"/></option>
+									<option value="100" ${companyInfo?.employeeNumber == '100' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_100"/></option>
+									<option value="200" ${companyInfo?.employeeNumber == '200' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_200"/></option>
+									<option value="999" ${companyInfo?.employeeNumber == '999' ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_999"/></option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
 							<div class="form-group ${hasErrors(bean: companyInfo, field: 'homepageUrl', 'error')} required">
 								<label>회사 홈페이지</label>
 								<input type="url" name="companyInfo.homepageUrl" value="${companyInfo?.homepageUrl}" class="form-control" placeholder="홈페이지 URL을 입력해 주세요."/>
 							</div>
 						</div>
+					</div>
+
+					<div class="row">
 						<div class="col-sm-6">
-							<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
-								<label>직원 수</label>
-								<select class="form-control" name="companyInfo.employeeNumber">
-									<option value="5"><g:message code="companyInfo.employeeNumber.value_5"/></option>
-									<option value="10"><g:message code="companyInfo.employeeNumber.value_10"/></option>
-									<option value="20"><g:message code="companyInfo.employeeNumber.value_20"/></option>
-									<option value="30"><g:message code="companyInfo.emplayeeNumber.value_30"/></option>
-									<option value="40"><g:message code="companyInfo.emplayeeNumber.value_40"/></option>
-									<option value="50"><g:message code="companyInfo.emplayeeNumber.value_50"/></option>
-									<option value="100"><g:message code="companyInfo.emplayeeNumber.value_100"/></option>
-									<option value="200"><g:message code="companyInfo.emplayeeNumber.value_200"/></option>
-									<option value="999"><g:message code="companyInfo.emplayeeNumber.value_999"/></option>
-								</select>
+							<div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} ">
+								<label>사업자등록증</label>
+								<input type="file" name="introFile" class="form-control" placeholder="사업자등록증을 첨부해 주세요."/>
 							</div>
 						</div>
 					</div>
