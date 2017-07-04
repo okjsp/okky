@@ -274,11 +274,11 @@
                     </g:if>
 
                     <g:each in="${articleList}" status="i" var="article">
-                        <g:if test="${article.recruit == null}">
-                            <g:render template="article" model="[article : article]"/>
+                        <g:if test="${article.isRecruit}">
+                            <g:render template="recruit" model="[article : article]"/>
                         </g:if>
                         <g:else>
-                            <g:render template="recruit" model="[article : article]"/>
+                            <g:render template="article" model="[article : article]"/>
                         </g:else>
                     </g:each>
                 </ul>
