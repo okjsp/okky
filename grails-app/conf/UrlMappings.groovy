@@ -60,6 +60,7 @@ class UrlMappings {
         "/company/edit"(controller: "company", action: "edit")
         "/company/update"(controller: "company", action: "update")
         "/company/registered"(view: "/company/registered")
+        "/company/updated"(view: "/company/updated")
         "/company/wait"(view: "/company/wait")
 
         "/banner/stats/$id(.$format)?"(controller: "banner", action: "stats")
