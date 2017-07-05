@@ -16,7 +16,26 @@ class AdminCompanyController {
         params.max = Math.min(max ?: 10, 100)
         params.order = params.order ?: 'desc'
         params.sort = params.sort ?: 'id'
-        respond Company.list(params), model:[companyCount: Company.count()]
+
+
+        def list, count
+
+        if(params.where) {
+
+            def companies = Company.where {
+                name =~ "%${params.where}%" ||
+                registerNumber =~ "%${params.where}%"
+            }
+
+            list = companies.list(params)
+            count = companies.count()
+
+        } else {
+            list = Company.list(params)
+            count = Company.count()
+        }
+
+        respond list, model:[companyCount: count]
     }
 
     def show(Company company) {
