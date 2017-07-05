@@ -21,12 +21,8 @@
                 </div>
             </div>
             <div class="about-text">
-                <p>‘삶의 진솔한 얘기와 기술이 함께하는 커뮤니티’</p>
-                <p>‘개발자를 행복하게 해주는 커뮤니티’</p>
-                <p>’항상 개발자 편에 서서 환경을 바꾸려 노력하는 커뮤니티’</p>
-                <p>‘14년의 정보가 녹아있는 사이트’</p>
-                <p>’일 방문자 20,000명의 사이트’</p>
-                <p>okky.kr 입니다.</p>
+                <p>OKKY는 대한민국 대표 개발자 커뮤니티로서,</p>
+                <p>개발자의 권익을 보호하고 소통의 통로 역할을 함으로써 S/W 개발 문화를 활성화하는데 목적이 있습니다.</p>
             </div>
         </div>
     </div>
@@ -62,6 +58,15 @@
                     <p class="about-member-pos">Kenny</p>
                     <p class="about-member-name">강윤신</p>
                 </div>
+            </div>
+        </div>
+        <div class="about-list clearfix">
+            <div class="about-list-head">1기 운영 회원</div>
+            <div class="about-list-body">
+                <div class="about-member">
+                    <p class="about-member-pos">쌀맛</p>
+                    <p class="about-member-name">우광명</p>
+                </div>
                 <div class="about-member">
                     <p class="about-member-pos">jongkwang</p>
                     <p class="about-member-name">김종광</p>
@@ -80,6 +85,25 @@
                         <p class="about-member-pos">랑겔한스</p>
                         <p class="about-member-name">정병태</p>
                     </div>
+                    <div class="about-member">
+                        <p class="about-member-pos">Karen</p>
+                        <p class="about-member-name">조혜현</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="about-list clearfix">
+            <div class="about-list-head">2기 운영 회원</div>
+            <div class="about-list-body">
+                <div class="clearfix">
+                    <div class="about-member">
+                        <p class="about-member-pos">zepinos</p>
+                        <p class="about-member-name">김종화</p>
+                    </div>
+                    <div class="about-member">
+                        <p class="about-member-pos">창천향로</p>
+                        <p class="about-member-name">이동욱</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,10 +111,33 @@
     <div class="about-wrapper">
         <h3 class="content-header">History</h3>
         <div class="about-list clearfix">
+            <div class="about-list-head">2017</div>
+            <div class="about-list-body">
+                <p>Data Talk Concert 개최</p>
+                <p>취준생 멘토링 5회 개최</p>
+            </div>
+        </div>
+        <div class="about-list clearfix">
+            <div class="about-list-head">2016</div>
+            <div class="about-list-body">
+                <p>취준생 멘토링 3,4회 개최</p>
+                <p>JavaScript 컨퍼런스 3회 개최</p>
+                <p>OKKY 기술 세미나 개최(박재성)</p>
+            </div>
+        </div>
+        <div class="about-list clearfix">
+            <div class="about-list-head">2015</div>
+            <div class="about-list-body">
+                <p>JavaScript 컨퍼런스 2회 개최</p>
+                <p>OKKY 기술 세미나 개최(박성철,신정호,김민태)</p>
+                <p>취업 세미나 개최</p>
+                <p>취준생 멘토링 1,2회 개최</p>
+            </div>
+        </div>
+        <div class="about-list clearfix">
             <div class="about-list-head">2014</div>
             <div class="about-list-body">
-                <p>OKJSP 13주년 컨퍼런스 개최</p>
-                <p>JavaScript 컨퍼런스 개최</p>
+                <p>JavaScript 컨퍼런스 1회 개최</p>
                 <p>SW 살리기 토론회 주최</p>
                 <p>SI 프리랜서를 위한 컨퍼런스 개최</p>
             </div>
@@ -101,6 +148,7 @@
                 <p>방문 20,000 UV의 국내 최대 트래픽 자바 개발자 커뮤니티</p>
                 <p>okjsp.net 도메인 변경</p>
                 <p>서울시 IT개발자를 위한 청책 토론회 주관</p>
+                <p>개발자의 삶 세미나 개최</p>
                 <p>OKJSP 13주년 컨퍼런스 개최</p>
             </div>
         </div>
@@ -113,7 +161,7 @@
         <div class="about-list clearfix">
             <div class="about-list-head">2009</div>
             <div class="about-list-body">
-                <p>HTML5 페이지 오픈</p>
+                <p>HTML5 페이지 오픈 프로젝트</p>
             </div>
         </div>
         <div class="about-list clearfix">
@@ -127,7 +175,7 @@
             <div class="about-list-body">
                 <p>Jakarta Seoul project 톰캣 부문 리드</p>
                 <p>강좌(설치, 활용, FAQ), 번역문서(Tomcat 중심), TIPS(jsp/servlet,oracle, js/dhtml),<br/>
-                소스자료실, 머리 식히는 곳 게시판이 활발하게 정보공유</p>
+                    소스자료실, 머리 식히는 곳 게시판이 활발하게 정보공유</p>
             </div>
         </div>
         <div class="about-list clearfix">
@@ -142,8 +190,8 @@
             <div class="about-list-head">2000</div>
             <div class="about-list-body">
                 <p>http://my.dreamwiz.com/heogn/  무료계정과<br/>
-                포워딩 도메인(http://jspstudy.zoa.to) jsp 와<br/>
-                tomcat 서버 문서 번역, 강좌, jsp 메일링 서비스 등을 중심으로 개발 정보공유 사이트 시작</p>
+                    포워딩 도메인(http://jspstudy.zoa.to) jsp 와<br/>
+                    tomcat 서버 문서 번역, 강좌, jsp 메일링 서비스 등을 중심으로 개발 정보공유 사이트 시작</p>
             </div>
         </div>
     </div>

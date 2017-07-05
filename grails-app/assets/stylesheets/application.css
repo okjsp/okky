@@ -592,17 +592,17 @@ blockquote {
 }
 
 .sponsor-banner-head {
-  margin-bottom: 7px;
-  font-size: 10px;
+    margin-bottom: 7px;
+    font-size: 10px;
 }
 
 .sponsor-banner-images {
-  vertical-align: bottom;
+    vertical-align: bottom;
 }
 
 .sponsor-banner-images a {
-  margin-left: 15px;
-  vertical-align: bottom;
+    margin-left: 15px;
+    vertical-align: bottom;
 }
 
 /* Sidebar navigation */
@@ -1171,13 +1171,13 @@ blockquote {
 }
 
 .detail-info {
-  margin: 6px 0 5px;
-  font-size: 12px;
-  color: #0f0f0f0;
+    margin: 6px 0 5px;
+    font-size: 12px;
+    color: #0f0f0f0;
 }
 
 .detail-info-row {
-  padding: 3px 0;
+    padding: 3px 0;
 }
 
 .position-name {
@@ -1190,7 +1190,7 @@ blockquote {
 }
 
 .content-body .detail-info {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .list-recruit .list-group-item-heading {
@@ -1562,8 +1562,8 @@ blockquote {
 }
 
 .content-body label {
-  font-size: 16px;
-  margin-bottom: 15px;
+    font-size: 16px;
+    margin-bottom: 15px;
 }
 
 .content-function {
@@ -1829,7 +1829,7 @@ blockquote {
 }
 
 .about-list-head {
-    width: 130px;
+    width: 150px;
     float: left;
     text-align: right;
     font-weight: 100;
