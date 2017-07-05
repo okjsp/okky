@@ -113,6 +113,12 @@
 
     function postForm() {
         $('textarea[name="content.text"]').val($('#summernote').code());
+
+        if($('input[name="introFile"]').val() == '') {
+          alert('사업자 등록증은 필수 입니다.');
+          $('input[name="introFile"]').focus();
+          return false;
+        }
     }
 
     var districtsInCity ={
