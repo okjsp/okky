@@ -1,5 +1,6 @@
 package net.okjsp
 
+import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -10,6 +11,8 @@ import static org.springframework.http.HttpStatus.*
 class CompanyController {
 
     SpringSecurityService springSecurityService
+
+    MailService mailService
 
     def info(Company companyInstance) {
         def companyInfo = CompanyInfo.findByCompany(companyInstance)
@@ -136,6 +139,8 @@ class CompanyController {
 
         Company company = Company.get(id)
 
+        def year = Calendar.getInstance().get(Calendar.YEAR)
+
         Person person = Person.get(springSecurityService.principal.personId)
 
         if (company == null) {
@@ -144,6 +149,9 @@ class CompanyController {
         }
 
         MultipartFile logoFile = request.getFile("logoFile")
+        MultipartFile introFile = request.getFile("introFile")
+
+        def prevEnabled = company.enabled
 
         if(!logoFile.empty) {
             def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
@@ -152,14 +160,43 @@ class CompanyController {
 
             company.logo = "${mil}${ext}"
         }
-
+        company.enabled = false
         company.save()
 
         CompanyInfo companyInfo = CompanyInfo.findByCompany(company)
 
         bindData(companyInfo, params, 'companyInfo')
 
+
+        if(!introFile.empty) {
+            def ext = introFile.originalFilename.substring(introFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+
+            File directory = new File("${grailsApplication.config.grails.filePath}/intro/${year}")
+            directory.mkdirs()
+
+            introFile.transferTo(new File("${grailsApplication.config.grails.filePath}/intro/${year}", "${mil}${ext}"))
+
+            companyInfo.introFile = new AttachedFile(
+                    name: "${year}/${mil}${ext}",
+                    orgName: introFile.originalFilename,
+                    byteSize: introFile.size,
+                    mimeType: introFile.contentType,
+                    type : AttachedFileType.ATTACHED).save()
+        }
+
         companyInfo.save flush:true
+
+        if(prevEnabled) {
+
+            mailService.sendMail {
+                async true
+                to "jobs@okky.kr"
+                subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
+                body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
+            }
+
+        }
 
 
         if (company.hasErrors() || companyInfo.hasErrors()) {
@@ -169,7 +206,7 @@ class CompanyController {
 
         request.withFormat {
             form multipartForm {
-                redirect uri: '/user/edit'
+                redirect uri: '/company/updated'
             }
             '*' { respond company, [status: CREATED] }
         }

@@ -19,6 +19,13 @@
 			<g:form id="article-form" url="[resource:company, uri: '/company/update/'+company.id]" enctype="multipart/form-data" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
 				<fieldset class="form">
 
+					<g:if test="${company?.enabled}">
+					<div class="alert alert-warning" role="alert">
+						인증이 완료된 회사정보를 수정할 경우에는 해당 정보로 <strong>재인증</strong>후 구인등록이 가능합니다. <br/>
+						인증 처리는 업무일 기준 3일 이내로 처리됩니다.
+					</div>
+					</g:if>
+
 					<g:if test="${company?.hasErrors() || companyInfo?.hasErrors()}">
 						<div class="alert alert-danger alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -35,21 +42,6 @@
 
 					<%@ page import="net.okjsp.Company" %>
 
-
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
-								<label>회사명</label>
-								<input value="${company?.name}" class="form-control" disabled/>
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="form-group ${hasErrors(bean: company, field: 'registerNumber', 'error')} required">
-								<label>사업자등록번호</label>
-								<input value="${company?.registerNumber}" class="form-control" disabled/>
-							</div>
-						</div>
-					</div>
 
 					<div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} ">
 						<label>회사 로고</label>
@@ -72,6 +64,21 @@
 
 					<div class="row">
 						<div class="col-sm-6">
+							<div class="form-group ${hasErrors(bean: company, field: 'name', 'error')} required">
+								<label>회사명</label>
+								<input name="name" value="${company?.name}" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group ${hasErrors(bean: company, field: 'registerNumber', 'error')} required">
+								<label>사업자등록번호</label>
+								<input name="registerNumber" value="${company?.registerNumber}" class="form-control" />
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
 							<div class="form-group ${hasErrors(bean: companyInfo, field: 'tel', 'error')} required">
 								<label>대표 연락처</label>
 								<input type="tel" name="companyInfo.tel" value="${companyInfo?.tel}" required="" class="form-control" placeholder="000-0000-0000"/>
@@ -87,25 +94,59 @@
 
 					<div class="row">
 						<div class="col-sm-6">
-							<div class="form-group ${hasErrors(bean: companyInfo, field: 'homepageUrl', 'error')} required">
-								<label>회사 홈페이지</label>
-								<input type="url" name="companyInfo.homepageUrl" value="${companyInfo?.homepageUrl}" class="form-control" placeholder="홈페이지 URL을 입력해 주세요."/>
+							<div class="form-group ${hasErrors(bean: companyInfo, field: 'managerTel', 'error')} required">
+								<label>담당자 연락처 <span class="required-indicator">*</span></label>
+								<input type="tel" name="companyInfo.managerTel" value="${companyInfo?.managerTel}" class="form-control" placeholder="000-0000-0000"/>
 							</div>
 						</div>
+						<div class="col-sm-6">
+							<div class="form-group ${hasErrors(bean: companyInfo, field: 'managerEmail', 'error')} required">
+								<label>담당자 이메일 <span class="required-indicator">*</span></label>
+								<input type="email" name="companyInfo.managerEmail" value="${companyInfo?.managerEmail}" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group ${hasErrors(bean: companyInfo, field: 'managerName', 'error')} required">
+								<label>담당자명 <span class="required-indicator">*</span></label>
+								<input type="tel" name="companyInfo.managerName" value="${companyInfo?.managerName}" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div id="intro-file" class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} " style="display: ${companyInfo?.introFile ? 'block' : 'none'};">
+								<label>사업자등록증</label>
+								<p class="form-control-static" style="overflow: hidden;text-overflow: ellipsis;"><a href="${grailsApplication.config.grails.fileURL}/intro/${companyInfo?.introFile?.name}">${companyInfo?.introFile?.orgName}</a> <button type="button" class="btn btn-xs btn-warning pull-right" id="intro-change-btn">변경</button></p>
+							</div>
+							<div id="intro-input" class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} " style="display: ${!companyInfo?.introFile ? 'block' : 'none'};">
+								<label>사업자등록증</label>
+								<input type="file" name="introFile" class="form-control" placeholder="사업자등록증을 첨부해 주세요."/>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
 						<div class="col-sm-6">
 							<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
 								<label>직원 수</label>
 								<select class="form-control" name="companyInfo.employeeNumber">
-									<option value="5"><g:message code="companyInfo.employeeNumber.value_5"/></option>
-									<option value="10"><g:message code="companyInfo.employeeNumber.value_10"/></option>
-									<option value="20"><g:message code="companyInfo.employeeNumber.value_20"/></option>
-									<option value="30"><g:message code="companyInfo.emplayeeNumber.value_30"/></option>
-									<option value="40"><g:message code="companyInfo.emplayeeNumber.value_40"/></option>
-									<option value="50"><g:message code="companyInfo.emplayeeNumber.value_50"/></option>
-									<option value="100"><g:message code="companyInfo.emplayeeNumber.value_100"/></option>
-									<option value="200"><g:message code="companyInfo.emplayeeNumber.value_200"/></option>
-									<option value="999"><g:message code="companyInfo.emplayeeNumber.value_999"/></option>
+									<option value="5" ${companyInfo?.employeeNumber == 5 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_5"/></option>
+									<option value="10" ${companyInfo?.employeeNumber == 10 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_10"/></option>
+									<option value="20" ${companyInfo?.employeeNumber == 20 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_20"/></option>
+									<option value="30" ${companyInfo?.employeeNumber == 30 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_30"/></option>
+									<option value="40" ${companyInfo?.employeeNumber == 40 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_40"/></option>
+									<option value="50" ${companyInfo?.employeeNumber == 50 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_50"/></option>
+									<option value="100" ${companyInfo?.employeeNumber == 100 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_100"/></option>
+									<option value="200" ${companyInfo?.employeeNumber == 200 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_200"/></option>
+									<option value="999" ${companyInfo?.employeeNumber == 999 ? 'selected':''}><g:message code="companyInfo.employeeNumber.value_999"/></option>
 								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group ${hasErrors(bean: companyInfo, field: 'homepageUrl', 'error')} required">
+								<label>회사 홈페이지</label>
+								<input type="url" name="companyInfo.homepageUrl" value="${companyInfo?.homepageUrl}" class="form-control" placeholder="홈페이지 URL을 입력해 주세요."/>
 							</div>
 						</div>
 					</div>
@@ -166,12 +207,19 @@
 						  }
 						});
 
+                        $('#intro-change-btn').click(function() {
+
+                          $('#intro-file').hide();
+                          $('#intro-input').show();
+
+                        });
+
 					</asset:script>
 
 					<div class="nav" role="navigation">
 						<fieldset class="buttons">
 							<g:link uri="/recruits" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')"><g:message code="default.button.cancel.label" default="Cancel"/></g:link>
-							<g:submitButton name="update" class="create btn btn-success btn-wide pull-right" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+							<g:submitButton name="update" class="create btn btn-success btn-wide pull-right" value="${message(code: 'default.button.create.label', default: 'Create')}" onclick="${company?.enabled ? "return confirm('정보 변경후에는 재인증을 받으셔야 합니다. 계속 진행하시겠습니까?');" : ""} " />
 						</fieldset>
 					</div>
 				</fieldset>

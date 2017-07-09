@@ -9,6 +9,9 @@ class Company {
 
     Person manager
 
+    Date dateCreated = new Date()
+    Date lastUpdated
+
     boolean enabled = false
     boolean locked = false
 
