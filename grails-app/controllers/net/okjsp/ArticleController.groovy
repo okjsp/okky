@@ -64,12 +64,23 @@ class ArticleController {
         if(category.code == 'community') 
             categories = categories.findAll { it.code != 'promote' }
 
+        def recruits
+
+        /*if(category.code == 'recruit') {
+            recruits = Recruit.where {
+            }
+        }*/
+
         def articlesQuery = Article.where {
             category in categories
-            if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
+            if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
                 enabled == true
-            if(params.query && params.query != '')
+            if (params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+
+            if(recruits) {
+                id in recruits*.article
+            }
 
         }
 

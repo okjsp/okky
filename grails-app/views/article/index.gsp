@@ -14,8 +14,8 @@
                 <g:link class="create btn btn-success btn-wide pull-right" uri="/articles/${params.code}/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
                 
                 <h4><g:message code="${category.labelCode}" default="${category.defaultLabel}" /></h4>
+                <g:form name="category-filter-form" method="get" uri="/articles/${category.code}">
                 <div class="category-filter-wrapper">
-                    <g:form name="category-filter-form" method="get" uri="/articles/${category.code}">
                         <div class="category-filter-query pull-right">
                             <div class="input-group input-group-sm">
                                 <input type="search" name="query" id="search-field" class="form-control" placeholder="검색어" value="${params.query}" />
@@ -36,10 +36,9 @@
                         </ul>
                         <input type="hidden" name="sort" id="category-sort-input" value="${params.sort}"/>
                         <input type="hidden" name="order" id="category-order-input" value="${params.order}"/>
-                    </g:form>
                 </div>
 
-                %{--<div id="job-filter" class="job-filter-wrapper" style="display: none;">
+                <div id="job-filter" class="job-filter-wrapper" style="display: none;">
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="job-filter-form">
@@ -167,11 +166,13 @@
                             </div>
                         </div>
                     </div>
-                </div>--}%
+                </div>
+                </g:form>
 
             </div>
 
-            <g:if test="${choiceJobs && choiceJobs?.size() > 0}">
+
+        <g:if test="${choiceJobs && choiceJobs?.size() > 0}">
             <div class="okkys-choice">
                 <div class="panel panel-default">
 
@@ -300,12 +301,12 @@
                 });
 
                 $('#search-field').focus(function() {
-                  $('#job-filter').show();
+                    $('#job-filter').show();
                 });
 
-                  $('#job-filter-close').focus(function() {
+                $('#job-filter-close').focus(function() {
                     $('#job-filter').hide();
-                  });
+                });
             });
             </script>
         </content>

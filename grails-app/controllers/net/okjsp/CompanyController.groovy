@@ -113,7 +113,13 @@ class CompanyController {
         person.company = company
         person.save flush:true
 
-        println companyInfo
+
+        mailService.sendMail {
+            async true
+            to grailsApplication.config.grails.mail.default.to
+            subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
+            body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
+        }
 
         request.withFormat {
             form multipartForm {
@@ -191,7 +197,7 @@ class CompanyController {
 
             mailService.sendMail {
                 async true
-                to "jobs@okky.kr"
+                to grailsApplication.config.grails.mail.default.to
                 subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
                 body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
             }
