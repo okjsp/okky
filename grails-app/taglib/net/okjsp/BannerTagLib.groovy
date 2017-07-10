@@ -45,6 +45,7 @@ class BannerTagLib {
 
                     break
                 case BannerType.MAIN :
+                case BannerType.JOBS_TOP :
                     bannerHTML = """<div class="main-banner-wrapper">
                                         <div class="main-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
                                     </div>"""
