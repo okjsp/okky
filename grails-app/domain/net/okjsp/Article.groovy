@@ -2,6 +2,8 @@ package net.okjsp
 
 import grails.transaction.Transactional
 
+import java.text.Normalizer
+
 class Article {
 
     transient articleService
@@ -34,6 +36,8 @@ class Article {
     Integer best = 0
 
     boolean disabled
+
+    boolean isRecruit = false
 
     Recruit recruit
 

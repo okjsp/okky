@@ -20,12 +20,14 @@
 				<fieldset class="form">
 
 					<div class="alert alert-info">
-						아직 회사정보가 등록되지 않았습니다. <br/><br/>
-						<b>회사등록은 기재하신 연락처를 통해 관리자의 인증이 진행되며, 인증 완료 후 구인게시판 이용이 가능합니다.</b> <br/>
-						모든 정보를 정확히 입력해 주시기 바랍니다.
+						<strong>2017년 7월 13일</strong>부터는 <strong style="text-decoration: underline">회사 정보 등록 및 인증을 받은 회원만</strong> 구인 게시판에 등록이 가능합니다.<br/> (7/13 이전까지는 '건너뛰기'로 회사 정보 등록 없이 작성 가능)<br/>
+						별도의 인증 절차가 필요하오니 구인 게시판을 이용하실 기업 회원분들은 사전에 등록 및 인증을 받으시기를 바랍니다.
+						<br/><br/>
+						구인 게시판을 이용하시는 모든 회원분들께 보다 많은 혜택과 서비스를 제공하기 위함이니 적극적으로 협조해 주시면 고맙겠습니다.<br/><br/>
+						<span class="required-indicator">*</span> 항목은 필수 입력 입니다.
 					</div>
 
-					<g:if test="${company.hasErrors() || companyInfo.hasErrors()}">
+					<g:if test="${company?.hasErrors() || companyInfo?.hasErrors()}">
 						<div class="alert alert-danger alert-dismissible" role="alert">
 							<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 							<ul>
@@ -43,7 +45,8 @@
 
 					<div class="nav" role="navigation">
 						<fieldset class="buttons">
-							<g:link uri="/recruits" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')"><g:message code="default.button.cancel.label" default="Cancel"/></g:link>
+							%{--<g:link uri="/recruits" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')">취소</g:link>--}%
+							<g:link uri="/articles/recruit/create?skipCompanyRegister=Y" class="btn btn-default btn-wide" onclick="return confirm('2017년 7월 13일부터는 필수 등록으로 변경됩니다? 나중에 등록하시겠습니까?')">건너뛰기</g:link>
 							<g:submitButton name="create" class="create btn btn-success btn-wide pull-right" value="${message(code: 'default.button.create.label', default: 'Create')}" />
 						</fieldset>
 					</div>

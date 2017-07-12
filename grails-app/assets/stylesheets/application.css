@@ -82,6 +82,11 @@ pre code {
     border-radius: 0;
 }
 
+.input-guide {
+    font-size: 12px;
+    color: #999999;
+}
+
 .sub-header {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
@@ -230,7 +235,8 @@ blockquote {
 }
 
 .main-banner-wrapper {
-    width: 100%;
+    width: 805px;
+    text-align: center;
     margin-bottom: 30px;
 }
 
@@ -245,8 +251,9 @@ blockquote {
 }
 
 .sub-banner-wrapper {
-    width: 100%;
+    width: 805px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .sub-banner {
@@ -585,17 +592,17 @@ blockquote {
 }
 
 .sponsor-banner-head {
-  margin-bottom: 7px;
-  font-size: 10px;
+    margin-bottom: 7px;
+    font-size: 10px;
 }
 
 .sponsor-banner-images {
-  vertical-align: bottom;
+    vertical-align: bottom;
 }
 
 .sponsor-banner-images a {
-  margin-left: 15px;
-  vertical-align: bottom;
+    margin-left: 15px;
+    vertical-align: bottom;
 }
 
 /* Sidebar navigation */
@@ -696,11 +703,11 @@ blockquote {
 }
 
 .right-banner-wrapper {
-    position: absolute;
+    position: fixed;
     top: 65px;
     width: 180px;
     height: 550px;
-    right: -10px;
+    left: 1070px;
 }
 
 .right-banner {
@@ -1025,6 +1032,27 @@ blockquote {
 .list-filter-form .btn {
 }
 
+.job-filter-wrapper {
+    clear: both;
+    padding-top: 20px;
+}
+
+.job-filter-form {
+
+}
+
+.job-filter-form .label {
+    font-size: 12px;
+}
+
+.job-filter-form .row {
+}
+
+.job-filter-input label {
+    font-weight: 300;
+    margin-right: 10px;
+}
+
 .list-group-no-note {
     border-left: 3px #ddd solid !important;
 }
@@ -1143,13 +1171,13 @@ blockquote {
 }
 
 .detail-info {
-  margin: 6px 0 5px;
-  font-size: 12px;
-  color: #0f0f0f0;
+    margin: 6px 0 5px;
+    font-size: 12px;
+    color: #0f0f0f0;
 }
 
 .detail-info-row {
-  padding: 3px 0;
+    padding: 3px 0;
 }
 
 .position-name {
@@ -1162,7 +1190,7 @@ blockquote {
 }
 
 .content-body .detail-info {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .list-recruit .list-group-item-heading {
@@ -1534,8 +1562,8 @@ blockquote {
 }
 
 .content-body label {
-  font-size: 16px;
-  margin-bottom: 15px;
+    font-size: 16px;
+    margin-bottom: 15px;
 }
 
 .content-function {
@@ -1801,7 +1829,7 @@ blockquote {
 }
 
 .about-list-head {
-    width: 130px;
+    width: 150px;
     float: left;
     text-align: right;
     font-weight: 100;
@@ -1869,6 +1897,33 @@ blockquote {
 
 .okkys-choice .list-group-item-heading {
     font-weight: bold;
+}
+
+.content .company-info {
+}
+
+.content .company-info-description {
+    max-height: 190px;
+    overflow: hidden;
+}
+
+.content .company-info h2 a {
+    color: #000;
+}
+
+.link-sm {
+    font-size: 11px;
+}
+
+.validError {
+    color: red;
+}
+
+.required-indicator {
+    color: red;
+    display: inline-block;
+    font-weight: bold;
+    position: relative;
 }
 
 @-webkit-keyframes note-alert-animation {
@@ -2136,6 +2191,10 @@ blockquote {
     }
 
     .sub-banner {
+        width: 100%;
+    }
+
+    .main-banner-wrapper, .sub-banner-wrapper {
         width: 100%;
     }
 

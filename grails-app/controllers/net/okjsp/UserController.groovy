@@ -184,7 +184,10 @@ class UserController {
 
     def edit() {
         User user = springSecurityService.currentUser
-        respond user
+
+        Company company = Company.findByManager(user.person)
+
+        respond user, model: [company: company]
     }
 
     @Transactional

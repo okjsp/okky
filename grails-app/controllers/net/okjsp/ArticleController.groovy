@@ -64,20 +64,36 @@ class ArticleController {
         if(category.code == 'community') 
             categories = categories.findAll { it.code != 'promote' }
 
+        def recruits
+
+        /*if(category.code == 'recruit') {
+            recruits = Recruit.where {
+            }
+        }*/
+
         def articlesQuery = Article.where {
             category in categories
-            if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
+            if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
                 enabled == true
-            if(params.query && params.query != '')
+            if (params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
 
+            if(recruits) {
+                id in recruits*.article
+            }
+
         }
 
-        if(SpringSecurityUtils.ifAnyGranted("ROLE_ADMIN")) {
+        def articles = articlesQuery.list(params)
 
+        articles.each {
+            if(articles.isRecruit) {
+                Recruit recruit = Recruit.findByArticle(it)
+                it.recruit = recruit
+            }
         }
 
-        respond articlesQuery.list(params), model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
+        respond articles, model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
     }
 
 
@@ -121,6 +137,10 @@ class ArticleController {
             return
         }
 
+        if(article.isRecruit) {
+            redirect uri: "/recruit/$article.id"
+        }
+
         article.updateViewCount(1)
 
         if(springSecurityService.loggedIn) {
@@ -154,6 +174,10 @@ class ArticleController {
         if(category == null) {
             notFound()
             return
+        }
+
+        if(category.code == 'recruit') {
+            redirect uri: '/recruits/create'
         }
 
         params.category = category
@@ -237,6 +261,10 @@ class ArticleController {
                 notAcceptable()
                 return
             }
+        }
+
+        if(article.category.code == 'recruit') {
+            redirect uri: "/recruit/edit/$article.id"
         }
 
         def categories

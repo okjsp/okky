@@ -19,7 +19,7 @@ class MainArticlesJob {
         simple name: 'weeklyArticlesCacheTrigger', startDelay: 50000, repeatInterval: 70000
         simple name: 'techArticlesCacheTrigger', startDelay: 60000, repeatInterval: 70000
         
-        simple name: 'promoteArticlesCacheTrigger', startDelay: 60000 * 30, repeatInterval: 60000 * 60
+        simple name: 'promoteArticlesCacheTrigger', startDelay: 70000, repeatInterval: 70000
     }
 
     void execute(JobExecutionContext context){

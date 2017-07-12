@@ -46,17 +46,6 @@ class MainService {
         }.findAll()
     }
 
-    @Cacheable("techArticleCache")
-    def getTechArticle() {
-        Article.withCriteria() {
-            fetchMode 'content', FetchMode.JOIN
-            fetchMode 'author', FetchMode.JOIN
-            'in'('category', Category.get('tech').children)
-            eq('enabled', true)
-            order('id', 'desc')
-            maxResults(1)
-        }.find()
-    }
     @Cacheable("techArticlesCache")
     def getTechArticles() {
         Article.withCriteria() {
@@ -113,7 +102,7 @@ class MainService {
 
         def diff = new Date() - 7
 
-        Article.withCriteria() {
+        def promoteArticles = Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
             'in'('category', Category.get('promote'))
@@ -123,6 +112,14 @@ class MainService {
             maxResults(50)
         }.findAll()
 
+        promoteArticles = promoteArticles.unique{ a, b -> a.authorId <=> b.authorId }
+
+        Collections.shuffle(promoteArticles)
+
+//        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
+        if(promoteArticles?.size() > 6) promoteArticles = promoteArticles.subList(0, 5)
+
+        promoteArticles
     }
 
 }

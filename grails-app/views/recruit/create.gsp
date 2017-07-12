@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="main_with_banner">
 		<g:set var="entityName" value="${message(code: 'article.label', default: 'Article')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
@@ -37,11 +37,17 @@
             </g:hasErrors>
             <div class="panel panel-default clearfix">
                 <div class="panel-heading clearfix">
-                    <div class="avatar avatar-list clearfix"><a href="/okky/user/info/2" class="avatar-photo avatar-company"><img
-                            src="${grailsApplication.config.grails.fileURL}/logo/${company.logo}">
+                    <div class="avatar avatar-list clearfix"><a href="${request.contextPath}/user/info/2" class="avatar-photo avatar-company">
+
+                        <g:if test="${company?.logo}">
+                            <img src="${grailsApplication.config.grails.fileURL}/logo/${company.logo}"></a>
+                        </g:if>
+                        <g:else>
+                            <img src="${assetPath(src: 'company-default.png')}">
+                        </g:else>
                     </a>
 
-                        <div class="avatar-info"><a class="nickname" href="/okky/company/info/${company.id}">${company.name}</a></div>
+                        <div class="avatar-info"><a class="nickname" href="${request.contextPath}/company/info/${company.id}">${company.name}</a></div>
                     </div>
                 </div>
                 <div class="panel-body">

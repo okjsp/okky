@@ -95,6 +95,27 @@
 				</li>
 
 				<li class="fieldcontain">
+					<span id="managerName-label" class="property-label"><g:message code="companyInfo.managerName.label" default="담당자명" /></span>
+
+					<span class="property-value" aria-labelledby="managerName-label"><g:fieldValue bean="${companyInfo}" field="managerName" /></span>
+
+				</li>
+
+				<li class="fieldcontain">
+					<span id="managerTel-label" class="property-label"><g:message code="companyInfo.managerTel.label" default="담당자 연락처" /></span>
+
+					<span class="property-value" aria-labelledby="managerTel-label"><g:fieldValue bean="${companyInfo}" field="managerTel"/></span>
+
+				</li>
+
+				<li class="fieldcontain">
+					<span id="managerEmail-label" class="property-label"><g:message code="companyInfo.managerEmail.label" default="이메일" /></span>
+
+					<span class="property-value" aria-labelledby="managerEmail-label"><g:fieldValue bean="${companyInfo}" field="managerEmail" /></span>
+
+				</li>
+
+				<li class="fieldcontain">
 					<span id="homepageUrl-label" class="property-label"><g:message code="companyInfo.homepageUrl.label" default="홈페이지" /></span>
 
 					<span class="property-value" aria-labelledby="homepageUrl-label"><g:fieldValue bean="${companyInfo}" field="homepageUrl" /></span>
@@ -105,10 +126,25 @@
 					<span id="employeeNumber-label" class="property-label"><g:message code="companyInfo.employeeNumber.label" default="직원 수" /></span>
 
 					<span class="property-value" aria-labelledby="employeeNumber-label">
-						<g:message code="companyInfo.emplayeeNumber.value_${companyInfo.employeeNumber}" />
+						<g:message code="companyInfo.employeeNumber.value_${companyInfo.employeeNumber}" />
 					</span>
 
 				</li>
+
+				<li class="fieldcontain">
+					<span id="introFile-label" class="property-label"><g:message code="companyInfo.introFile.label" default="사업자등록증" /></span>
+
+					<span class="property-value" aria-labelledby="introFile-label">
+						<g:if test="${companyInfo.introFile != null}">
+							<a href="${grailsApplication.config.grails.fileURL}/intro/${companyInfo.introFile.name}">${companyInfo.introFile.orgName}</a>
+						</g:if>
+						<g:else>
+							없음
+						</g:else>
+					</span>
+
+				</li>
+
 
 				<li class="fieldcontain">
 					<span id="introduce-label" class="property-label"><g:message code="companyInfo.introduce.label" default="회사소개" /></span>
@@ -128,10 +164,10 @@
 					<g:actionSubmit class="delete" controller="adminCompany" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 					|
 					<g:if test="${company.enabled}">
-						<g:link class="delete" uri="/_admin/company/disable/${company.id}" ><g:message code="company.button.disable.label" default="Disable" /></g:link>
+						<g:link class="delete" uri="/_admin/company/disable/${company.id}" ><g:message code="company.button.disable.label" default="Disable" onClick="return confirm('해당 회사 인증을 취소 하시겠습니까?');"/></g:link>
 					</g:if>
 					<g:else>
-						<g:link class="save" uri="/_admin/company/enable/${company.id}" ><g:message code="company.button.enable.label" default="Enable" /></g:link>
+						<g:link class="save" uri="/_admin/company/enable/${company.id}"  onClick="return confirm('해당 회사 인증을 하시겠습니까?');"><g:message code="company.button.enable.label" default="Enable"  /></g:link>
 					</g:else>
 				</fieldset>
 			</g:form>

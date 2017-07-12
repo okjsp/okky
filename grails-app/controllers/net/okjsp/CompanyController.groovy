@@ -1,5 +1,6 @@
 package net.okjsp
 
+import grails.plugin.mail.MailService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -10,6 +11,8 @@ import static org.springframework.http.HttpStatus.*
 class CompanyController {
 
     SpringSecurityService springSecurityService
+
+    MailService mailService
 
     def info(Company companyInstance) {
         def companyInfo = CompanyInfo.findByCompany(companyInstance)
@@ -45,7 +48,116 @@ class CompanyController {
             return
         }
 
+        def year = Calendar.getInstance().get(Calendar.YEAR)
+
         MultipartFile logoFile = request.getFile("logoFile")
+        MultipartFile introFile = request.getFile("introFile")
+
+        if(!logoFile.empty) {
+            def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+
+            File directory = new File("${grailsApplication.config.grails.filePath}/logo/${year}")
+
+            directory.mkdirs()
+
+            logoFile.transferTo(new File(directory, "${mil}${ext}"))
+
+            company.logo = "${year}/${mil}${ext}"
+        }
+
+        company.manager = person
+        company.save()
+
+        def companyInfo = new CompanyInfo()
+
+        bindData(companyInfo, params, 'companyInfo')
+
+        company.addToMembers(person)
+
+        if (company.hasErrors()) {
+            Company.withTransaction { it.setRollbackOnly() }
+            respond company, model:[companyInfo: companyInfo], view:'create'
+            return
+        }
+
+        if(!introFile.empty) {
+            def ext = introFile.originalFilename.substring(introFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+
+            File directory = new File("${grailsApplication.config.grails.filePath}/intro/${year}")
+            directory.mkdirs()
+
+            introFile.transferTo(new File("${grailsApplication.config.grails.filePath}/intro/${year}", "${mil}${ext}"))
+
+            companyInfo.introFile = new AttachedFile(
+                    name: "${year}/${mil}${ext}",
+                    orgName: introFile.originalFilename,
+                    byteSize: introFile.size,
+                    mimeType: introFile.contentType,
+                    type : AttachedFileType.ATTACHED).save()
+        }
+
+        companyInfo.company = company
+        companyInfo.save()
+
+
+        if (company.hasErrors() || companyInfo.hasErrors()) {
+
+            Company.withTransaction { it.setRollbackOnly() }
+
+            respond company, model:[companyInfo: companyInfo], view:'create'
+            return
+        }
+
+        person.company = company
+        person.save flush:true
+
+
+        mailService.sendMail {
+            async true
+            to grailsApplication.config.grails.mail.default.to
+            subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
+            body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
+        }
+
+        request.withFormat {
+            form multipartForm {
+                flash.tel = companyInfo.tel
+                flash.email = companyInfo.email
+                flash.name = company.name
+                redirect uri: '/company/registered'
+            }
+            '*' { respond company, [status: CREATED] }
+        }
+    }
+
+    def edit(Company company) {
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        CompanyInfo companyInfo = CompanyInfo.findByCompany(company)
+
+        respond company, model: [companyInfo: companyInfo]
+    }
+
+    @Transactional
+    def update(Long id) {
+
+        Company company = Company.get(id)
+
+        def year = Calendar.getInstance().get(Calendar.YEAR)
+
+        Person person = Person.get(springSecurityService.principal.personId)
+
+        if (company == null) {
+            notFound()
+            return
+        }
+
+        MultipartFile logoFile = request.getFile("logoFile")
+        MultipartFile introFile = request.getFile("introFile")
+
+        def prevEnabled = company.enabled
 
         if(!logoFile.empty) {
             def ext = logoFile.originalFilename.substring(logoFile.originalFilename.lastIndexOf('.'))
@@ -54,19 +166,43 @@ class CompanyController {
 
             company.logo = "${mil}${ext}"
         }
-
-        company.manager = person
-
+        company.enabled = false
         company.save()
 
-        company.addToMembers(person)
-
-        def companyInfo = new CompanyInfo()
+        CompanyInfo companyInfo = CompanyInfo.findByCompany(company)
 
         bindData(companyInfo, params, 'companyInfo')
 
-        companyInfo.company = company
+
+        if(!introFile.empty) {
+            def ext = introFile.originalFilename.substring(introFile.originalFilename.lastIndexOf('.'))
+            def mil = System.currentTimeMillis()
+
+            File directory = new File("${grailsApplication.config.grails.filePath}/intro/${year}")
+            directory.mkdirs()
+
+            introFile.transferTo(new File("${grailsApplication.config.grails.filePath}/intro/${year}", "${mil}${ext}"))
+
+            companyInfo.introFile = new AttachedFile(
+                    name: "${year}/${mil}${ext}",
+                    orgName: introFile.originalFilename,
+                    byteSize: introFile.size,
+                    mimeType: introFile.contentType,
+                    type : AttachedFileType.ATTACHED).save()
+        }
+
         companyInfo.save flush:true
+
+        if(prevEnabled) {
+
+            mailService.sendMail {
+                async true
+                to grailsApplication.config.grails.mail.default.to
+                subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
+                body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
+            }
+
+        }
 
 
         if (company.hasErrors() || companyInfo.hasErrors()) {
@@ -74,17 +210,9 @@ class CompanyController {
             return
         }
 
-        person.company = company
-        person.save flush:true
-
-        println companyInfo
-
         request.withFormat {
             form multipartForm {
-                flash.tel = companyInfo.tel
-                flash.email = companyInfo.email
-                flash.name = company.name
-                redirect uri: '/company/registered'
+                redirect uri: '/company/updated'
             }
             '*' { respond company, [status: CREATED] }
         }

@@ -55,17 +55,45 @@ class BannerTagLib {
                                     </div>"""
                     break
             }
+        } else {
+
+            if(!device.isMobile()) {
+                switch (bannerType) {
+                    case BannerType.MAIN:
+                        bannerHTML += """
+                            <div class="main-banner-wrapper">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <ins class="adsbygoogle adslot_1"
+                                style="display:inline-block;width:728px;height:90px"
+                                data-ad-client="ca-pub-1191230850516122"
+                                data-ad-slot="6710356887"></ins>
+                            <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                            </div>"""
+                        break
+                    case BannerType.CONTENT:
+                        bannerHTML += """
+                            <div class="sub-banner-wrapper">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                                <ins class="adsbygoogle adslot_1"
+                                style="display:inline-block;width:728px;height:90px"
+                                data-ad-client="ca-pub-1191230850516122"
+                                data-ad-slot="6710356887"></ins>
+                            <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                            </div>"""
+                        break
+                }
+            }
         }
 
         if(bannerType == BannerType.MAIN_RIGHT || bannerType == BannerType.SUB_RIGHT) {
 
-            /* if(device.isMobile()) {
-                 bannerHTML = """
-                             <script type="text/javascript" src="http://ad.appsary.com/ad/22019/tag.js"></script>
-                         """
-             } else {*/
+            if(!device.isMobile()) {
 
-            bannerHTML += """<div class="google-ad">
+                bannerHTML += """<div class="google-ad">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- 광고 -->
                         <ins class="adsbygoogle adslot_1"
@@ -76,7 +104,8 @@ class BannerTagLib {
                         (adsbygoogle = window.adsbygoogle || []).push({});
                         </script>
                      </div>"""
-//            }
+
+            }
         }
 
         out << bannerHTML

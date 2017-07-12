@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="main_with_banner">
 		<g:set var="entityName" value="${message(code: 'article.label', default: 'Article')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
 	</head>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <g:form id="article-form" url="[resource:article, action:'update']" useToken="true" method="PUT" class="article-form" role="form" onsubmit="return postForm()">
+                    <g:form id="article-form" url="[resource:article, uri:'/recruit/update/'+article.id]" useToken="true" method="PUT" class="article-form" role="form" onsubmit="return postForm()">
                         <fieldset class="form">
                             <g:render template="form"/>
 

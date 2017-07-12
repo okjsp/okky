@@ -35,6 +35,7 @@ class UrlMappings {
 
         "/recruit/$id(.$format)?"(controller: "recruit", action: "show")
         "/recruit/$action/$id(.$format)?"(controller: "recruit")
+        "/recruit/delete/$id(.$format)?"(controller: "recruit", action: "delete")
         "/recruit/$id/$action/$contentId(.$format)?"(controller: "recruit")
 
         "/notification(.$format)?"(controller: "notification", action: "index")
@@ -56,7 +57,10 @@ class UrlMappings {
 
         "/company/create"(controller: "company", action: "create")
         "/company/save"(controller: "company", action: "save")
+        "/company/edit"(controller: "company", action: "edit")
+        "/company/update"(controller: "company", action: "update")
         "/company/registered"(view: "/company/registered")
+        "/company/updated"(view: "/company/updated")
         "/company/wait"(view: "/company/wait")
 
         "/banner/stats/$id(.$format)?"(controller: "banner", action: "stats")
@@ -67,6 +71,8 @@ class UrlMappings {
         "/_admin/spamWord/$action?/$id?(.$format)?"(controller: "spamWord")
         "/_admin/user/$action?/$id?(.$format)?"(controller: "adminUser")
         "/_admin/company/$action?/$id?(.$format)?"(controller: "adminCompany")
+        "/_admin/job/group/$action?/$id?(.$format)?"(controller: "jobPositionGroup")
+        "/_admin/job/duty/$action?/$id?(.$format)?"(controller: "jobPositionDuty")
         "/_admin/dm/export"(controller: "dm", action: 'export')
         "/_admin/dm/reject"(controller: "dm", action: 'reject')
         "/_admin/dm/updateReject"(controller: "dm", action: 'updateReject')

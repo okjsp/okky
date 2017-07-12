@@ -31,50 +31,7 @@ class RecruitController {
     }
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 20, 100)
-        params.sort = params.sort ?: 'id'
-        params.order = params.order ?: 'desc'
-        params.query = params.query?.trim()
-
-        def category = Category.get('recruit')
-
-        if(category == null) {
-            notFound()
-            return
-        }
-
-        def choiceJobs
-
-        def diff = new Date() - 30
-
-        choiceJobs = Article.withCriteria() {
-            eq('choice', true)
-            eq('enabled', true)
-            'in'('category', [Category.get('recruit'), Category.get('resumes'), Category.get('evalcom')])
-            gt('dateCreated', diff)
-            order('id', 'desc')
-
-            maxResults(3)
-        }.findAll()
-
-//        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
-
-        def articlesQuery = Article.where {
-            category == category
-            if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
-                enabled == true
-            if(params.query && params.query != '')
-                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
-        }
-
-        def articles = articlesQuery.list(params)
-
-        articles.each {
-          Recruit recruit = Recruit.findByArticle(it)
-          it.recruit = recruit
-        }
-
-        respond articles, model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
+        redirect uri: "/articles/recruit"
     }
 
 
@@ -237,6 +194,38 @@ class RecruitController {
 
         recruit.jobType = params.jobType
 
+        def titles = params.list("recruit.jobPositions.title")
+        def minCareers = params.list("recruit.jobPositions.minCareer")
+        def maxCareers = params.list("recruit.jobPositions.maxCareer")
+        def minPay = params.list("recruit.jobPositions.minPay")
+        def maxPay = params.list("recruit.jobPositions.maxPay") ?: []
+        def tagStrings = params.list("recruit.jobPositions.tagString")
+        def descriptions = params.list("recruit.jobPositions.description")
+        def jobGroups = params.list("recruit.jobPositions.group")
+        def jobDuties = params.list("recruit.jobPositions.duty")
+
+        titles.eachWithIndex { title, i ->
+
+            if(recruit.jobType == JobType.CONTRACT) {
+                maxPay << minPay[i]  + 10
+            }
+
+            recruit.addToJobPositions(new JobPosition(
+                    title: title,
+                    recruit: recruit,
+                    minCareer: minCareers[i],
+                    maxCareer: maxCareers[i],
+                    minPay: minPay[i],
+                    maxPay: maxPay[i],
+                    tagString: tagStrings[i],
+                    group: jobGroups[i],
+                    duty: jobDuties[i],
+                    description: descriptions[i]
+            ))
+
+        }
+
+
         def category = Category.get('recruit')
 
         try {
@@ -252,6 +241,7 @@ class RecruitController {
 
                 }
 
+                article.isRecruit = true
                 article.createIp = userService.getRealIp(request)
 
                 articleService.save(article, author, category)
@@ -286,6 +276,8 @@ class RecruitController {
 
         Article article = Article.get(id)
 
+        Recruit recruit = Recruit.findByArticle(article)
+
         if(article == null) {
             notFound()
             return
@@ -310,7 +302,7 @@ class RecruitController {
             article.category = Category.get(params.categoryCode)
         }
 
-        respond article, model: [categories: categories]
+        respond article, model: [categories: categories, recruit: recruit]
     }
 
     @Transactional
@@ -323,13 +315,53 @@ class RecruitController {
             }
         }
 
+        Recruit recruit = Recruit.findByArticle(article)
+
+        bindData(recruit, params, 'recruit')
+
+        recruit.jobPositions.collect().each {
+            recruit.removeFromJobPositions(it)
+        }
+
+
+        def titles = params.list("recruit.jobPositions.title")
+        def minCareers = params.list("recruit.jobPositions.minCareer")
+        def maxCareers = params.list("recruit.jobPositions.maxCareer")
+        def minPay = params.list("recruit.jobPositions.minPay")
+        def maxPay = params.list("recruit.jobPositions.maxPay") ?: []
+        def tagStrings = params.list("recruit.jobPositions.tagString")
+        def descriptions = params.list("recruit.jobPositions.description")
+        def jobGroups = params.list("recruit.jobPositions.group")
+        def jobDuties = params.list("recruit.jobPositions.duty")
+
+        titles.eachWithIndex { title, i ->
+
+            if(recruit.jobType == JobType.CONTRACT) {
+                maxPay << minPay[i]  + 10
+            }
+
+            recruit.addToJobPositions(new JobPosition(
+                    title: title,
+                    recruit: recruit,
+                    minCareer: minCareers[i],
+                    maxCareer: maxCareers[i],
+                    minPay: minPay[i],
+                    maxPay: maxPay[i],
+                    tagString: tagStrings[i],
+                    group: jobGroups[i],
+                    duty: jobDuties[i],
+                    description: descriptions[i]
+            ))
+
+        }
+
+        Category category = Category.get("recruit")
+
         try {
 
             withForm {
 
                 Avatar editor = Avatar.get(springSecurityService.principal.avatarId)
-
-                Category category = Category.get(params.categoryCode)
 
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
 
@@ -338,6 +370,8 @@ class RecruitController {
                     article.enabled = !params.disabled
 
                 }
+
+                recruit.save(failOnError: true, flush: true)
 
                 articleService.update(article, editor, category)
 
@@ -354,7 +388,12 @@ class RecruitController {
             }
 
         } catch (ValidationException e) {
-            respond article.errors, view: 'edit'
+
+            def categories = category.children ?: category.parent?.children ?: [category]
+
+            println recruit.errors
+
+            respond article.errors, view: 'edit', model: [categories: categories, category: category, recruit: recruit, company: person.company]
         }
     }
 
@@ -376,6 +415,12 @@ class RecruitController {
                 return
             }
         }
+
+        Recruit recruit = Recruit.findByArticle(article)
+
+        recruit.jobPositions.clear()
+
+        recruit.delete()
 
         articleService.delete(article)
 

@@ -9,8 +9,7 @@ class Recruit {
 
     Company company
 
-    Date startDate
-    Date endDate
+    String startDate
 
     Integer workingMonth
 
@@ -21,10 +20,13 @@ class Recruit {
 
     static hasMany = [jobPositions: JobPosition]
 
+    static mapping = {
+        jobPositions sort: 'id', order: 'asc', cascade: "all-delete-orphan"
+    }
+
     static constraints = {
       company nullable: true
       startDate nullable: true
-      endDate nullable: true
       workingMonth nullable: true
     }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main"/>
+		<meta name="layout" content="main_with_banner"/>
 		<title>All That Developer</title>
         <meta name="google-site-verification" content="DkGncyJVqYFVekHithdbYnKgklkyKVwruPZ18WUDjr0" />
 	</head>

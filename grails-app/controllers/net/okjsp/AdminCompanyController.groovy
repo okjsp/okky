@@ -1,6 +1,6 @@
 package net.okjsp
 
-
+import grails.plugin.mail.MailService
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -10,9 +10,32 @@ class AdminCompanyController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    MailService mailService
+
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Company.list(params), model:[companyCount: Company.count()]
+        params.order = params.order ?: 'desc'
+        params.sort = params.sort ?: 'id'
+
+
+        def list, count
+
+        if(params.where) {
+
+            def companies = Company.where {
+                name =~ "%${params.where}%" ||
+                registerNumber =~ "%${params.where}%"
+            }
+
+            list = companies.list(params)
+            count = companies.count()
+
+        } else {
+            list = Company.list(params)
+            count = Company.count()
+        }
+
+        respond list, model:[companyCount: count]
     }
 
     def show(Company company) {
@@ -111,8 +134,19 @@ class AdminCompanyController {
             return
         }
 
+        def companyInfo = CompanyInfo.findByCompany(company)
+
         company.enabled = true
         company.save flush: true
+
+
+        mailService.sendMail {
+            async true
+            to companyInfo?.email, companyInfo.managerEmail
+            from "OKKY JOBS <jobs@okky.kr>"
+            subject "["+message(code:'email.company.enabled.subject')+"] ${company.name}의 회사정보 인증이 완료되었습니다."
+            body(view:'/email/company_enabled', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
+        }
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'Company.label', default: 'Company'), company.id])
         redirect uri: '/_admin/company/show/'+company.id

@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="main_with_banner">
 		<g:set var="entityName" value="${message(code: 'article.label', default: 'Article')}" />
         <title>${article.title}</title>
         <meta property="og:type"		content="article">
@@ -42,25 +42,50 @@
                         <g:if test="${article.recruit}">
                             <div class="detail-info">
                                 <div class="detail-info-row">
-                                    <span class="info-label">종류 :</span> <span class="label ${article.recruit.jobType == JobType.valueOf('FULLTIME') ? 'label-primary' : 'label-success'}"><g:message code="recruit.jobType.${article.recruit.jobType}"/></span>
+                                    <span class="info-label">종류 :</span> <span class="label ${article.recruit.jobType == JobType.valueOf('FULLTIME') ? 'label-success' : 'label-primary'}"><g:message code="recruit.jobType.${article.recruit.jobType}"/></span>
                                 </div>
                                 <div class="detail-info-row"><span class="info-label">지역 :</span> <span>${article.recruit.city}</span> <span>${article.recruit.district}</span></div>
                                 <g:if test="${article.recruit.jobType == JobType.CONTRACT}">
-                                    <div class="detail-info-row"><span class="info-label">투입시기 :</span> <span><g:formatDate format="yyyy년 MM월" date="${article.recruit.startDate}"/></span></div>
+                                    <div class="detail-info-row"><span class="info-label">투입시기 :</span> <span>${article.recruit.startDate}</span></div>
                                     <div class="detail-info-row"><span class="info-label">투입기간 :</span> <span>${article.recruit.workingMonth} 개월</span></div>
                                 </g:if>
                             </div>
                         <hr/>
                         </g:if>
+                        <label>∙ <g:message code="recruit.content.label" default="직무 정보"/></label>
                         <g:each in="${article.recruit.jobPositions}" var="jobPosition">
                             <div class="panel panel-default position-info">
                                 <div class="panel-heading">
-                                    <div class="panel-title">직급 : <span class="position-name">${jobPosition.jobPositionType}</span></div>
+                                    <div class="panel-title"><h4>${jobPosition.title}</h4></div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="position-info">
-                                        <div class="detail-info-row"><span class="info-label">급여:</span> <span><g:message code="jobPosition.jobPayType.${jobPosition.jobPayType}"/></span></div>
-                                        <div class="detail-info-row"><span class="info-label">Skills:</span> <g:tags tags="${jobPosition.tagString}" /></div>
+                                        <div class="detail-info-row"><span class="info-label">직무 :</span>
+                                            <span>${jobPosition?.group?.name}</span>
+                                            /
+                                            <span>${jobPosition?.duty?.name}</span>
+                                        </div>
+                                        <div class="detail-info-row"><span class="info-label">경력 : </span>
+                                            <span><g:message code="jobPosition.minCareer.${jobPosition.minCareer}"/></span>
+
+                                            <g:if test="${jobPosition.minCareer != 99 && jobPosition.minCareer != 0}">
+                                                ~ <span><g:message code="jobPosition.maxCareer.${jobPosition.maxCareer}"/></span>
+                                            </g:if>
+
+                                        </div>
+                                        <div class="detail-info-row"><span class="info-label">급여 : </span>
+                                            <g:if test="${article.recruit.jobType == JobType.valueOf('FULLTIME')}">
+                                                <span><g:message code="jobPosition.minPay.year.${jobPosition.minPay}"/></span>
+                                                ~
+                                                <span><g:message code="jobPosition.maxPay.year.${jobPosition.maxPay}"/></span>
+                                            </g:if>
+                                            <g:elseif test="${article.recruit.jobType == JobType.valueOf('CONTRACT')}">
+                                                <span><g:message code="jobPosition.minPay.${jobPosition.minPay}"/></span>
+                                            </g:elseif>
+                                        </div>
+                                        <div class="detail-info-row"><span class="info-label">Skills : </span> <g:tags tags="${jobPosition.tagString}" /></div>
+                                        <hr/>
+                                        <div class="detail-info-row"><g:lineToBr text="${jobPosition.description}" /></div>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +94,7 @@
 
                         <article class="content-text">
                         <g:if test="${article.recruit.jobType == JobType.valueOf('FULLTIME')}">
-                            <label>∙ <g:message code="recruit.content.label" default="직무 정보"/></label>
+                            <label>∙ <g:message code="recruit.content.label" default="기타 정보"/></label>
                         </g:if>
                         <g:elseif test="${article.recruit.jobType == JobType.valueOf('CONTRACT')}">
                             <label>∙ <g:message code="recruit.content.label" default="프로젝트 정보"/></label>
@@ -113,7 +138,7 @@
 
                         <g:isAuthorOrAdmin author="${article.author}">
                         <div class="dropdown">
-                            <g:form url="[resource:article, action:'delete']" name="article-delete-form" method="DELETE">
+                            <g:form uri="/recruit/delete/${article.id}" name="article-delete-form" method="DELETE">
                                 <div class="dropdown">
                                     <a href="javascript://" data-toggle="dropdown"><i class="fa fa-cog" data-toggle="tooltip" data-placement="left" title="게시물 설정"></i></a>
                                     <ul class="dropdown-menu" role="menu">
@@ -137,27 +162,31 @@
             <div class="panel panel-default clearfix">
                 <ul class="list-group">
                 <li class="list-group-item note-title">
-                    <h3 class="panel-title">업체정보</h3>
+                    <h3 class="panel-title">회사정보</h3>
                 </li>
                 <li class="list-group-item note-item clearfix">
-                    <div class="panel-body pull-left">
-                        <div class="avatar avatar-big clearfix col-sm-3 text-center"><a href="/okky/company/info/${article.recruit.company.id}" class="avatar-photo avatar-company"><img src="${grailsApplication.config.grails.fileURL}/logo/${article.recruit.company.logo}"></a> </div>
-                        <div class="user-info col-sm-9">
+                    <div class="panel-body">
+                        <div class="avatar avatar-big clearfix col-sm-3 text-center"><a href="${conte}/company/info/${article.recruit.company.id}" class="avatar-photo avatar-company">
+                            <g:if test="${article.recruit.company?.logo}">
+                                <img src="${grailsApplication.config.grails.fileURL}/logo/${article.recruit.company.logo}"></a>
+                            </g:if>
+                            <g:else>
+                                <img src="${assetPath(src: 'company-default.png')}">
+                            </g:else>
+                            </a>
+                        </div>
+                        <div class="company-info col-sm-9">
                             <div class="clearfix">
-                                <h2 class="pull-left">${article.recruit.company.name}</h2>
+                                <h2><a href="${request.contextPath}/company/info/${article.recruit.company.id}">${article.recruit.company.name}</a></h2>
+                                <g:if test="${companyInfo.homepageUrl != null || companyInfo.homepageUrl != ''}">
+                                    <a href="${companyInfo.homepageUrl}" class="link-sm" target="_blank">${companyInfo.homepageUrl}</a>
+                                </g:if>
                             </div>
                             <hr/>
-                            <div class="clearfix">
-                                <h2>회사 소개</h2>
+                            <div class="clearfix company-info-description" style="max-height: 100px;">
                                 <g:filterHtml text="${companyInfo.description}" />
                             </div>
-                            <g:if test="${article.recruit.jobType == JobType.FULLTIME && companyInfo.welfare}">
-                                <hr/>
-                                <div class="clearfix">
-                                    <h2>복지/복리후생</h2>
-                                    <g:filterHtml text="${companyInfo.welfare}" />
-                                </div>
-                            </g:if>
+                            <div class="expend-content link-sm"><a href="${request.contextPath}/company/info/${article.recruit.company.id}" class="expend-content-btn">더보기</a></div>
                         </div>
                     </div>
                 </li>
@@ -326,6 +355,11 @@
                         }, 500, function() {
                             $('#note-${params.note}').addClass('note-alert');
                         });
+
+
+                        if($('.company-info')[0].scrollHeight > 180) {
+                          $(this).next().show();
+                        }
                     });
                 </script>
             </g:if>

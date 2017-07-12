@@ -50,7 +50,7 @@ class FindUserController {
 
         def user = User.findByPerson(person)
 
-        if(user.withdraw || !user.enabled || user.accountLocked) {
+        if(user.withdraw || user.accountLocked) {
             flash.message = message(code: 'email.not.found.message')
             redirect action: 'index'
             return

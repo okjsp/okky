@@ -20,6 +20,8 @@
 //= require libs/mustache
 //= require libs/jquery.timeago
 //= require libs/jquery.timeago-ko-KR
+//= require libs/jquery.validate
+//= require libs/messages_ko
 //= require apps/utils
 //= require_self
 

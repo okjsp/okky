@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="main_with_banner">
 		<g:set var="entityName" value="${message(code: 'article.label', default: 'Article')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
@@ -65,11 +65,12 @@
 
         <asset:script type="text/javascript">
             $('#category').change(function() {
-                var $opt = $(this).find(':selected');
-
-                if(this.value && ($opt.data('external') !== true || confirm('외부 링크로 이동합니다. 이동하시겠습니까?'))) {
-                    $('#article-form').attr('action', contextPath+'/articles/'+$opt.val()+'/create')
-                        .submit();
+                if(this.value && confirm('게시판 변경시 수정된 내용은 초기화 됩니다. 변경 하시겠습니까?')) {
+                  /*if(this.value == 'recruit') {
+                    location.href=contextPath+'/recruit/create';
+                  } else {*/
+                    location.href=contextPath+'/articles/'+this.value+'/create';
+                  // }
                 }
             });
         </asset:script>
