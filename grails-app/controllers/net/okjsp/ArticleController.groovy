@@ -66,10 +66,14 @@ class ArticleController {
 
         def recruits
 
-        /*if(category.code == 'recruit') {
-            recruits = Recruit.where {
+        if(category.code == 'recruit') {
+
+            def jobTypes = params.list('filter.jobType').asList().collect { JobType.valueOf(it as String) }
+
+            recruits = Recruit.createCriteria().list {
+                    'in'('jobType' , jobTypes)
             }
-        }*/
+        }
 
         def articlesQuery = Article.where {
             category in categories
@@ -78,8 +82,8 @@ class ArticleController {
             if (params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
 
-            if(recruits) {
-                id in recruits*.article
+            if(params['filter.act'] == 'Y') {
+                id in recruits*.article.id
             }
 
         }

@@ -38,17 +38,16 @@
                         <input type="hidden" name="order" id="category-order-input" value="${params.order}"/>
                 </div>
 
-                <div id="job-filter" class="job-filter-wrapper" style="display: none;">
+                <div id="job-filter" class="job-filter-wrapper" <g:if test="${params['filter.act'] != 'Y'}">style="display: none;"</g:if>>
+                    <input type="hidden" name="filter.act" value="Y" />
                     <div class="panel panel-info">
                         <div class="panel-body">
                             <div class="job-filter-form">
                                 <div class="row">
                                     <div class="col col-sm-2"><label>계약 형태</label></div>
                                     <div class="col col-sm-10">
-                                        <label class="label label-success label"><input type="checkbox"/> 정규직</label>
-                                        <label class="label label-primary"><input type="checkbox"/> 계약직 - 파견</label>
-                                        <label class="label label-primary"><input type="checkbox"/> 계약직 - 상근</label>
-                                        <label class="label label-primary"><input type="checkbox"/> 계약직 - 재택</label>
+                                        <label class="label label-success label"><input type="checkbox" name="filter.jobType" value="${net.okjsp.JobType.FULLTIME}" <g:if test="${params.list('filter.jobType').contains(net.okjsp.JobType.FULLTIME.name())}">checked</g:if>> 정규직</label>
+                                        <label class="label label-primary"><input type="checkbox" name="filter.jobType" value="${net.okjsp.JobType.CONTRACT}" <g:if test="${params.list('filter.jobType').contains(net.okjsp.JobType.CONTRACT.name())}">checked</g:if>/> 계약직</label>
                                     </div>
                                 </div>
                                 <hr>
@@ -56,32 +55,21 @@
                                     <div class="col col-sm-2"><label>직무</label></div>
                                     <div class="col col-sm-10">
                                         <ul id="filter-job-group" class="nav nav-tabs">
-                                            <g:each in="${net.okjsp.JobPositionGroup.findAll()}" var="group" status="index">
-                                            <li role="presentation" <g:if test="${index == 0}">class="active"</g:if>><a href="javascript://">${group.name}</a></li>
+                                            <g:each in="${net.okjsp.JobPositionGroup.findAll().sort { a, b -> a.id <=> b.id}}" var="group" status="index">
+                                            <li role="presentation" data-id="${group.id}" <g:if test="${index == 0}">class="active"</g:if>><a href="javascript://">${group.name}</a></li>
                                             </g:each>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col col-sm-2"><label></label></div>
-                                    <div class="col col-sm-10 job-filter-input">
-                                        <label><input type="checkbox"/> CTO</label>
-                                        <label><input type="checkbox"/> 개발팀장</label>
-                                        <label><input type="checkbox"/> DBA</label>
-                                        <label><input type="checkbox"/> 서버개발</label>
-                                        <label><input type="checkbox"/> 웹개발</label>
-                                        <label><input type="checkbox"/> 모바일개발</label>
-                                        <label><input type="checkbox"/> Full Stack</label>
-                                        <label><input type="checkbox"/> QA</label>
-                                        <label><input type="checkbox"/> PM-SI</label>
-                                        <label><input type="checkbox"/> DS</label>
-                                        <label><input type="checkbox"/> 시스템엔지니어</label>
-                                        <label><input type="checkbox"/> 플랫폼개발</label>
-                                        <label><input type="checkbox"/> 임베디드개발</label>
-                                        <label><input type="checkbox"/> 솔루션개발</label>
-                                        <label><input type="checkbox"/> 클라이언트개발</label>
-                                        <label><input type="checkbox"/> 기타개발</label>
+                                    <g:each in="${net.okjsp.JobPositionGroup.findAll().sort { a, b -> a.id <=> b.id}}" var="group" status="index">
+                                    <div id="filter-duty-${group.id}" class="col col-sm-10 job-filter-input filter-duty" <g:if test="${index != 0}">style="display: none;" </g:if>>
+                                        <g:each in="${group.duties.sort { a, b -> a.id <=> b.id}}" var="duty" status="index2">
+                                            <label><input type="checkbox"/> ${duty.name}</label>
+                                        </g:each>
                                     </div>
+                                    </g:each>
                                 </div>
 
                                 <hr>
@@ -113,7 +101,7 @@
                                 <div class="row">
                                     <div class="col col-sm-2"><label>경력</label></div>
                                     <div class="col col-sm-10 job-filter-input form-inline">
-                                        <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                                        <select name="filter.minCareer" class="form-control form-control-inline-half form-dynamic">
                                             <option value=""><g:message code="jobPosition.minCareer.label" default="최소 경력" /></option>
                                             <option value="99">${message(code: 'jobPosition.minCareer.99')}</option>
                                             <option value="0">${message(code: 'jobPosition.minCareer.0')}</option>
@@ -133,7 +121,7 @@
                                             <option value="14">${message(code: 'jobPosition.minCareer.14')}</option>
                                             <option value="15">${message(code: 'jobPosition.minCareer.15')}</option>
                                         </select>
-                                        <select name="recruit.jobPositions.minCareer" class="form-control form-control-inline-half form-dynamic">
+                                        <select name="filter.maxCareer" class="form-control form-control-inline-half form-dynamic">
                                             <option value=""><g:message code="jobPosition.maxCareer.label" default="최대 경력" /></option>
                                             <option value="99">${message(code: 'jobPosition.maxCareer.99')}</option>
                                             <option value="2">${message(code: 'jobPosition.maxCareer.2')}</option>
@@ -310,6 +298,11 @@
                 $('#filter-job-group li').click(function() {
                   $('#filter-job-group li').removeClass('active');
                   $(this).addClass('active');
+
+                  var id = $(this).data('id');
+
+                  $('.filter-duty').hide();
+                  $('#filter-duty-'+id).show();
                 });
             });
             </script>
