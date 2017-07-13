@@ -55,12 +55,11 @@
                                 <div class="row">
                                     <div class="col col-sm-2"><label>직무</label></div>
                                     <div class="col col-sm-10">
-                                    <ul class="nav nav-tabs">
-                                        <li role="presentation" class="active"><a href="#">개발</a></li>
-                                        <li role="presentation"><a href="#">기획</a></li>
-                                        <li role="presentation"><a href="#">디자인</a></li>
-                                        <li role="presentation"><a href="#">마케팅</a></li>
-                                    </ul>
+                                        <ul id="filter-job-group" class="nav nav-tabs">
+                                            <g:each in="${net.okjsp.JobPositionGroup.findAll()}" var="group" status="index">
+                                            <li role="presentation" <g:if test="${index == 0}">class="active"</g:if>><a href="javascript://">${group.name}</a></li>
+                                            </g:each>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -306,6 +305,11 @@
 
                 $('#job-filter-close').focus(function() {
                     $('#job-filter').hide();
+                });
+
+                $('#filter-job-group li').click(function() {
+                  $('#filter-job-group li').removeClass('active');
+                  $(this).addClass('active');
                 });
             });
             </script>
