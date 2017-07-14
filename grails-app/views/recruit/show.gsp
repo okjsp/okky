@@ -103,6 +103,7 @@
                             <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
                         </g:else>
 
+                        <div>
                         <g:if test="${article.content}">
                             <g:if test="${article.content?.textType == ContentTextType.MD}">
                                 <markdown:renderHtml text="${article.content.text}"/>
@@ -114,6 +115,7 @@
                                 <g:lineToBr text="${article.content?.text}" />
                             </g:else>
                         </g:if>
+                        </div>
                         </article>
 
                         <hr/>
