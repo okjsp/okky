@@ -146,6 +146,8 @@ class RecruitController {
             params.anonymity = category?.anonymity ?: false
         }
 
+        CompanyInfo companyInfo = CompanyInfo.findByCompany(person.company)
+
         def article = new Article(params)
 
         Recruit recruit = new Recruit(
@@ -161,7 +163,7 @@ class RecruitController {
         if(goExternalLink) {
             redirect(url: category.externalLink)
         } else {
-            respond article, model: [categories: categories, category: category, recruit: new Recruit(params), company: person.company]
+            respond article, model: [categories: categories, category: category, recruit: new Recruit(params), company: person.company, companyInfo: companyInfo]
         }
 
 
@@ -268,7 +270,9 @@ class RecruitController {
 
             println recruit.errors
 
-            respond article.errors, view: 'create', model: [categories: categories, category: category, recruit: recruit, company: person.company]
+            CompanyInfo companyInfo = CompanyInfo.findByCompany(person.company)
+
+            respond article.errors, view: 'create', model: [categories: categories, category: category, recruit: recruit, company: person.company, companyInfo: companyInfo]
         }
     }
 

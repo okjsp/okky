@@ -303,19 +303,24 @@
 
 
 </div>
-
 <div class="form-group ${hasErrors(bean: recruit, field: 'tel', 'has-error')} has-feedback">
     <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group ${hasErrors(bean: recruit, field: 'tel', 'error')} required">
-                <label>담당자 연락처</label>
-                <input type="tel" name="recruit.tel" value="${recruit?.tel}" required="" class="form-control" placeholder="000-0000-0000"/>
+        <div class="col-sm-4">
+            <div class="form-group ${hasErrors(bean: recruit, field: 'name', 'error')} required">
+                <label>담당자명</label>
+                <input type="tel" name="recruit.name" value="${recruit?.name ?: companyInfo?.managerName}" required="" class="form-control" placeholder="담당자명을 입력해 주세요."/>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
+            <div class="form-group ${hasErrors(bean: recruit, field: 'tel', 'error')} required">
+                <label>담당자 연락처</label>
+                <input type="tel" name="recruit.tel" value="${recruit?.tel ?: companyInfo?.managerTel}" required="" class="form-control" placeholder="000-0000-0000"/>
+            </div>
+        </div>
+        <div class="col-sm-4">
             <div class="form-group ${hasErrors(bean: recruit, field: 'email', 'error')} required">
                 <label>담당자 이메일</label>
-                <input type="email" name="recruit.email" value="${recruit?.email}" required="" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
+                <input type="email" name="recruit.email" value="${recruit?.email ?: companyInfo?.managerEmail}" required="" class="form-control" placeholder="이메일주소를 입력해 주세요."/>
             </div>
         </div>
     </div>

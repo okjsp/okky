@@ -68,10 +68,30 @@ class ArticleController {
 
         if(category.code == 'recruit') {
 
-            def jobTypes = params.list('filter.jobType').asList().collect { JobType.valueOf(it as String) }
+            def jobTypes = params.list('filter.jobType').collect { JobType.valueOf(it as String) }
+            def jobDuties = params.list('filter.jobDuty').collect { JobPositionDuty.get(it as Long) }
+            def cities = params.list('filter.city').collect { it as String }
+            def minCareer = params['filter.minCareer']
+            def maxCareer = params['filter.maxCareer']
+
+            def jobPositions = JobPosition.createCriteria().list {
+                if(jobDuties)
+                    'in'('duty', jobDuties)
+                if(minCareer)
+                    ge('minCareer', minCareer as Integer)
+                if(maxCareer)
+                    le('maxCareer', maxCareer as Integer)
+            }
+
+            def jobPositionFilter = (jobDuties || minCareer || maxCareer)
 
             recruits = Recruit.createCriteria().list {
+                if(jobTypes)
                     'in'('jobType' , jobTypes)
+                if(jobPositionFilter)
+                    'in'('id' , jobPositions*.recruitId)
+                if(cities)
+                    'in'('city', cities)
             }
         }
 

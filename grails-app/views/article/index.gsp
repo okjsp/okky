@@ -55,8 +55,9 @@
                                     <div class="col col-sm-2"><label>직무</label></div>
                                     <div class="col col-sm-10">
                                         <ul id="filter-job-group" class="nav nav-tabs">
+                                            <input type="hidden" name="filter.group" id="filter-group-input" value="" />
                                             <g:each in="${net.okjsp.JobPositionGroup.findAll().sort { a, b -> a.id <=> b.id}}" var="group" status="index">
-                                            <li role="presentation" data-id="${group.id}" <g:if test="${index == 0}">class="active"</g:if>><a href="javascript://">${group.name}</a></li>
+                                            <li role="presentation" data-id="${group.id}" <g:if test="${params['filter.group'] == group.id as String || (!params['filter.group'] && index == 0)}">class="active"</g:if>><a href="javascript://">${group.name}</a></li>
                                             </g:each>
                                         </ul>
                                     </div>
@@ -64,9 +65,9 @@
                                 <div class="row">
                                     <div class="col col-sm-2"><label></label></div>
                                     <g:each in="${net.okjsp.JobPositionGroup.findAll().sort { a, b -> a.id <=> b.id}}" var="group" status="index">
-                                    <div id="filter-duty-${group.id}" class="col col-sm-10 job-filter-input filter-duty" <g:if test="${index != 0}">style="display: none;" </g:if>>
+                                    <div id="filter-duty-${group.id}" class="col col-sm-10 job-filter-input filter-duty" <g:if test="${params['filter.group'] != group.id as String || (!params['filter.group'] && index != 0)}">style="display: none;" </g:if>>
                                         <g:each in="${group.duties.sort { a, b -> a.id <=> b.id}}" var="duty" status="index2">
-                                            <label><input type="checkbox"/> ${duty.name}</label>
+                                            <label><input type="checkbox" name="filter.jobDuty" value="${duty.id}" <g:if test="${params.list('filter.jobDuty').contains(duty.id as String)}">checked</g:if>/> ${duty.name}</label>
                                         </g:each>
                                     </div>
                                     </g:each>
@@ -76,23 +77,23 @@
                                 <div class="row">
                                     <div class="col col-sm-2"><label>지역</label></div>
                                     <div class="col col-sm-10 job-filter-input">
-                                        <label><input type="checkbox" name="filter.city" value="서울"/> 서울</label>
-                                        <label><input type="checkbox" name="filter.city" value="부산"/> 부산</label>
-                                        <label><input type="checkbox" name="filter.city" value="대구"/> 대구</label>
-                                        <label><input type="checkbox" name="filter.city" value="인천"/> 인천</label>
-                                        <label><input type="checkbox" name="filter.city" value="광주"/> 광주</label>
-                                        <label><input type="checkbox" name="filter.city" value="대전"/> 대전</label>
-                                        <label><input type="checkbox" name="filter.city" value="울산"/> 울산</label>
-                                        <label><input type="checkbox" name="filter.city" value="세종"/> 세종</label>
-                                        <label><input type="checkbox" name="filter.city" value="강원"/> 강원</label>
-                                        <label><input type="checkbox" name="filter.city" value="경기"/> 경기</label>
-                                        <label><input type="checkbox" name="filter.city" value="경남"/> 경남</label>
-                                        <label><input type="checkbox" name="filter.city" value="경북"/> 경북</label>
-                                        <label><input type="checkbox" name="filter.city" value="전남"/> 전남</label>
-                                        <label><input type="checkbox" name="filter.city" value="전북"/> 전북</label>
-                                        <label><input type="checkbox" name="filter.city" value="충남"/> 충남</label>
-                                        <label><input type="checkbox" name="filter.city" value="충북"/> 충북</label>
-                                        <label><input type="checkbox" name="filter.city" value="제주"/> 제주</label>
+                                        <label><input type="checkbox" name="filter.city" value="서울" <g:if test="${params.list('filter.city').contains("서울")}">checked</g:if>/> 서울</label>
+                                        <label><input type="checkbox" name="filter.city" value="부산" <g:if test="${params.list('filter.city').contains("부산")}">checked</g:if>/> 부산</label>
+                                        <label><input type="checkbox" name="filter.city" value="대구" <g:if test="${params.list('filter.city').contains("대구")}">checked</g:if>/> 대구</label>
+                                        <label><input type="checkbox" name="filter.city" value="인천" <g:if test="${params.list('filter.city').contains("인천")}">checked</g:if>/> 인천</label>
+                                        <label><input type="checkbox" name="filter.city" value="광주" <g:if test="${params.list('filter.city').contains("광주")}">checked</g:if>/> 광주</label>
+                                        <label><input type="checkbox" name="filter.city" value="대전" <g:if test="${params.list('filter.city').contains("대전")}">checked</g:if>/> 대전</label>
+                                        <label><input type="checkbox" name="filter.city" value="울산" <g:if test="${params.list('filter.city').contains("울산")}">checked</g:if>/> 울산</label>
+                                        <label><input type="checkbox" name="filter.city" value="세종" <g:if test="${params.list('filter.city').contains("세종")}">checked</g:if>/> 세종</label>
+                                        <label><input type="checkbox" name="filter.city" value="강원" <g:if test="${params.list('filter.city').contains("강원")}">checked</g:if>/> 강원</label>
+                                        <label><input type="checkbox" name="filter.city" value="경기" <g:if test="${params.list('filter.city').contains("경기")}">checked</g:if>/> 경기</label>
+                                        <label><input type="checkbox" name="filter.city" value="경남" <g:if test="${params.list('filter.city').contains("경남")}">checked</g:if>/> 경남</label>
+                                        <label><input type="checkbox" name="filter.city" value="경북" <g:if test="${params.list('filter.city').contains("경북")}">checked</g:if>/> 경북</label>
+                                        <label><input type="checkbox" name="filter.city" value="전남" <g:if test="${params.list('filter.city').contains("전남")}">checked</g:if>/> 전남</label>
+                                        <label><input type="checkbox" name="filter.city" value="전북" <g:if test="${params.list('filter.city').contains("전북")}">checked</g:if>/> 전북</label>
+                                        <label><input type="checkbox" name="filter.city" value="충남" <g:if test="${params.list('filter.city').contains("충남")}">checked</g:if>/> 충남</label>
+                                        <label><input type="checkbox" name="filter.city" value="충북" <g:if test="${params.list('filter.city').contains("충북")}">checked</g:if>/> 충북</label>
+                                        <label><input type="checkbox" name="filter.city" value="제주" <g:if test="${params.list('filter.city').contains("제주")}">checked</g:if>/> 제주</label>
                                     </div>
                                 </div>
 
@@ -103,7 +104,6 @@
                                     <div class="col col-sm-10 job-filter-input form-inline">
                                         <select name="filter.minCareer" class="form-control form-control-inline-half form-dynamic">
                                             <option value=""><g:message code="jobPosition.minCareer.label" default="최소 경력" /></option>
-                                            <option value="99">${message(code: 'jobPosition.minCareer.99')}</option>
                                             <option value="0">${message(code: 'jobPosition.minCareer.0')}</option>
                                             <option value="1">${message(code: 'jobPosition.minCareer.1')}</option>
                                             <option value="2">${message(code: 'jobPosition.minCareer.2')}</option>
@@ -302,7 +302,9 @@
                   var id = $(this).data('id');
 
                   $('.filter-duty').hide();
+//                  $('.filter-duty input').prop('checked', false);
                   $('#filter-duty-'+id).show();
+                  $('#filter-group-input').val(id);
                 });
             });
             </script>

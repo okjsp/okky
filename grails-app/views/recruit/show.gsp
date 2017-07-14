@@ -80,7 +80,7 @@
                                                 <span><g:message code="jobPosition.maxPay.year.${jobPosition.maxPay}"/></span>
                                             </g:if>
                                             <g:elseif test="${article.recruit.jobType == JobType.valueOf('CONTRACT')}">
-                                                <span><g:message code="jobPosition.minPay.${jobPosition.minPay}"/></span>
+                                                <span><g:message code="jobPosition.minPay.month.${jobPosition.minPay}"/></span>
                                             </g:elseif>
                                         </div>
                                         <div class="detail-info-row"><span class="info-label">Skills : </span> <g:tags tags="${jobPosition.tagString}" /></div>
@@ -102,6 +102,7 @@
                         <g:else>
                             <label><g:message code="recruit.content.label" default="프로젝트 정보"/></label>
                         </g:else>
+
                         <g:if test="${article.content}">
                             <g:if test="${article.content?.textType == ContentTextType.MD}">
                                 <markdown:renderHtml text="${article.content.text}"/>
@@ -115,6 +116,19 @@
                         </g:if>
                         </article>
 
+                        <hr/>
+                        <label>∙ <g:message code="recruit.content.label" default="담당자 정보"/></label>
+                        <div class="detail-info">
+                            <div class="detail-info-row">
+                                <span class="info-label">담당자명 :</span> ${article.recruit.name}
+                            </div>
+                            <div class="detail-info-row">
+                                <span class="info-label">이메일 :</span> ${article.recruit.email}
+                            </div>
+                            <div class="detail-info-row">
+                                <span class="info-label">연락처 :</span> ${article.recruit.tel}
+                            </div>
+                        </div>
                     </div>
 
                     <div id="content-function" class="content-function pull-right text-center">
