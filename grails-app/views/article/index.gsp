@@ -65,7 +65,7 @@
                                 <div class="row">
                                     <div class="col col-sm-2"><label></label></div>
                                     <g:each in="${net.okjsp.JobPositionGroup.findAll().sort { a, b -> a.id <=> b.id}}" var="group" status="index">
-                                    <div id="filter-duty-${group.id}" class="col col-sm-10 job-filter-input filter-duty" <g:if test="${params['filter.group'] != group.id as String || (!params['filter.group'] && index != 0)}">style="display: none;" </g:if>>
+                                    <div id="filter-duty-${group.id}" class="col col-sm-10 job-filter-input filter-duty <g:if test="${params['filter.group'] == group.id as String || (!params['filter.group'] && index == 0)}">active</g:if>" >
                                         <g:each in="${group.duties.sort { a, b -> a.id <=> b.id}}" var="duty" status="index2">
                                             <label><input type="checkbox" name="filter.jobDuty" value="${duty.id}" <g:if test="${params.list('filter.jobDuty').contains(duty.id as String)}">checked</g:if>/> ${duty.name}</label>
                                         </g:each>
@@ -166,82 +166,13 @@
                     <!-- Table -->
 
                     <ul class="list-group">
-
                         <g:each in="${choiceJobs}" status="i" var="article">
-
-                            <g:set var="evaluateClass" value="no-note" />
-
-                            <g:if test="${article.selectedNote}">
-                                <g:set var="evaluateClass" value="success" />
+                            <g:if test="${article.isRecruit}">
+                                <g:render template="recruit" model="[article : article]"/>
                             </g:if>
-                            <g:elseif test="${article.noteCount > 0}">
-                                <g:set var="evaluateClass" value="has-note" />
-                            </g:elseif>
-
-                            <li class="list-group-item ${category?.useEvaluate ? 'list-group-item-question':''} list-group-${evaluateClass} clearfix">
-
-                                <div class="list-title-wrapper clearfix">
-                                    <div class="list-tag clearfix">
-                                        <span class="list-group-item-text article-id">#${article.id}</span>
-                                        <a href="${request.contextPath}/articles/tagged/${tag}" class="list-group-item-text item-tag label label-success">Editor's Choice</a>
-                                        <g:categoryLabel category="${article.category}" />
-                                        <g:tags tags="${article.tagString}" />
-                                    </div>
-
-                                    <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''}">
-                                        <g:link controller="article" action="show" id="${article.id}">
-                                            <g:if test="${!article.enabled}">
-                                                <span class="fa fa-ban" style="color:red;"></span>
-                                            </g:if>
-                                            ${fieldValue(bean: article, field: "title")}
-                                        </g:link>
-                                    </h5>
-                                </div>
-
-                                <div class="list-summary-wrapper clearfix">
-                                    <g:if test="${category?.useEvaluate}">
-                                        <div class="item-evaluate-wrapper pull-right clearfix">
-                                            <div class="item-evaluate">
-                                                <div class="item-evaluate-icon">
-                                                    <i class="item-icon fa fa-thumbs-o-up"></i>
-                                                </div>
-                                                <div class="item-evaluate-count">
-                                                    <span><g:shorten number="${article.voteCount}" />
-                                                </div>
-                                            </div>
-                                            <div class="item-evaluate item-evaluate-${evaluateClass}">
-                                                <div class="item-evaluate-icon">
-                                                    <g:if test="${evaluateClass == 'no-note'}">
-                                                        <i class="item-icon fa fa-question-circle"></i>
-                                                    </g:if>
-                                                    <g:elseif test="${evaluateClass == 'has-note'}">
-                                                        <i class="item-icon fa fa-exclamation-circle"></i>
-                                                    </g:elseif>
-                                                    <g:elseif test="${evaluateClass == 'success'}">
-                                                        <i class="item-icon fa fa-check-circle"></i>
-                                                    </g:elseif>
-                                                </div>
-                                                <div class="item-evaluate-count">
-                                                    <g:shorten number="${article.noteCount}" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </g:if>
-                                    <g:else>
-                                        <div class="list-group-item-summary clearfix">
-                                            <ul>
-                                                <li class="${article.noteCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-comment "></i> <g:shorten number="${article.noteCount}" /></li>
-                                                <li class="${article.voteCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-thumbs-up"></i> <g:shorten number="${article.voteCount}" /></li>
-                                                <li class="${article.viewCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></li>
-                                            </ul>
-                                        </div>
-                                    </g:else>
-                                </div>
-
-                                <div class="list-group-item-author clearfix">
-                                    <g:avatar avatar="${article.displayAuthor}" size="list" dateCreated="${article.dateCreated}" />
-                                </div>
-                            </li>
+                            <g:else>
+                                <g:render template="article" model="[article : article]"/>
+                            </g:else>
                         </g:each>
                     </ul>
                 </div>
@@ -291,7 +222,7 @@
                     $('#job-filter').show();
                 });
 
-                $('#job-filter-close').focus(function() {
+                $('#job-filter-close').click(function() {
                     $('#job-filter').hide();
                 });
 
