@@ -52,6 +52,12 @@
 			<input type="tel" name="companyInfo.managerName" value="${companyInfo?.managerName}" class="form-control" />
 		</div>
 	</div>
+	<div class="col-sm-6">
+		<div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} required">
+			<label>사업자등록증 <span class="required-indicator">*</span></label>
+			<input type="file" name="introFile" class="form-control" placeholder="사업자등록증을 첨부해 주세요."/>
+		</div>
+	</div>
 </div>
 
 <div class="row">
@@ -59,7 +65,6 @@
 		<div class="form-group ${hasErrors(bean: companyInfo, field: 'employeeNumber', 'error')} required">
 			<label>직원 수</label>
 			<select class="form-control" name="companyInfo.employeeNumber">
-				<option value="5"><g:message code="companyInfo.employeeNumber.value_5"/></option>
 				<option value="5"><g:message code="companyInfo.employeeNumber.value_5"/></option>
 				<option value="10"><g:message code="companyInfo.employeeNumber.value_10"/></option>
 				<option value="20"><g:message code="companyInfo.employeeNumber.value_20"/></option>
@@ -86,12 +91,6 @@
 			<label>회사 로고</label>
 			<input type="file" name="logoFile" class="form-control" placeholder="회사로고를 첨부해 주세요."/>
 			<p class="form-control-static input-guide">- 1024 X 1024 이하의 정사각형 이미지</p>
-		</div>
-	</div>
-	<div class="col-sm-6">
-		<div class="form-group ${hasErrors(bean: company, field: 'logo', 'error')} ">
-			<label>회사 소개서</label>
-			<input type="file" name="introFile" class="form-control" placeholder="회사소개서를 첨부해 주세요."/>
 		</div>
 	</div>
 </div>

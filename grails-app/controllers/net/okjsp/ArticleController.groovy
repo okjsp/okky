@@ -126,9 +126,9 @@ class ArticleController {
             return
         }
 
-        if(article.category.code == 'recruit') {
+        /*if(article.category.code == 'recruit') {
             redirect uri: "/recruit/$article.id"
-        }
+        }*/
 
         article.updateViewCount(1)
 
@@ -165,8 +165,14 @@ class ArticleController {
             return
         }
 
-        if(category.code == 'recruit') {
-            redirect uri: '/recruits/create'
+        if(category.code == 'recruit' && params.skipCompanyRegister != "Y") {
+
+            Person person = Person.get(springSecurityService.principal.personId)
+
+            if(!person.company) {
+                redirect(url: '/company/create')
+                return
+            }
         }
 
         params.category = category
@@ -250,10 +256,6 @@ class ArticleController {
                 notAcceptable()
                 return
             }
-        }
-
-        if(article.category.code == 'recruit') {
-            redirect uri: "/recruit/edit/$article.id"
         }
 
         def categories

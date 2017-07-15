@@ -12,6 +12,8 @@ class AdminCompanyController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
+        params.order = params.order ?: 'desc'
+        params.sort = params.sort ?: 'id'
         respond Company.list(params), model:[companyCount: Company.count()]
     }
 
