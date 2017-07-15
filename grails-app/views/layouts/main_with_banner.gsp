@@ -16,10 +16,6 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="${assetPath(src: 'icon_114x114.png')}">
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
         <meta property="og:image" content="${resource(dir: 'images', file: 'okky_logo_fb.png')}">
-        <style type="text/css">
-            .adslot_1 { width: 160px; height: 600px; }
-            @media (max-width:1240px) { .adslot_1 { display: none; } }
-        </style>
         
         <asset:stylesheet src="application.css"/>
 
