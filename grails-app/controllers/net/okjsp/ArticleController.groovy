@@ -65,6 +65,7 @@ class ArticleController {
             categories = categories.findAll { it.code != 'promote' }
 
         def recruits
+        def recruitFilter = false
 
         if(category.code == 'recruit') {
 
@@ -85,6 +86,8 @@ class ArticleController {
 
             def jobPositionFilter = (jobDuties || minCareer || maxCareer)
 
+            recruitFilter = (jobTypes || cities || jobPositionFilter)
+
             recruits = Recruit.createCriteria().list {
                 if(jobTypes)
                     'in'('jobType' , jobTypes)
@@ -102,8 +105,11 @@ class ArticleController {
             if (params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
 
-            if(params['filter.act'] == 'Y') {
-                id in recruits*.article*.id
+            if(recruitFilter) {
+                if(recruits)
+                    id in recruits*.article*.id
+                else
+                    id in [Long.MAX_VALUE]
             }
 
         }

@@ -43,6 +43,7 @@
                         <input type="hidden" name="order" id="category-order-input" value="${params.order}"/>
                 </div>
 
+                <g:if test="${category?.code == 'recruit'}">
                 <div id="job-filter" class="job-filter-wrapper" <g:if test="${params['filter.act'] != 'Y'}">style="display: none;"</g:if>>
                     <input type="hidden" name="filter.act" value="Y" />
                     <div class="panel panel-info">
@@ -159,6 +160,7 @@
                         </div>
                     </div>
                 </div>
+                </g:if>
                 </g:form>
 
             </div>
