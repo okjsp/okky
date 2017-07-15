@@ -39,8 +39,10 @@ class Avatar implements Comparable {
             case AvatarPictureType.FACEBOOK :
                 picture = user.oAuthIDs.find { it.provider == FacebookOAuthToken.PROVIDER_NAME}.accessToken
                 break
-            default:
+            case AvatarPictureType.GRAVATAR :
                 picture = user.person.email.encodeAsMD5()
+                break
+            default:
                 break
         }
     }

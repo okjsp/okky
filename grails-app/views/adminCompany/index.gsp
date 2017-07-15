@@ -17,6 +17,19 @@
 		</div>
 		<div id="list-company" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			<div class="search-form">
+				<form name="searchForm">
+					<div class="input-group">
+						<input type="search" class="form-control" name="where" value="${params.where}" placeholder="검색어 (회사명, 사업자등록번호)" />
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default">검색</button>
+							<g:if test="${params.where}">
+								<g:link action="index" class="btn btn-warning">clear</g:link>
+							</g:if>
+						</span>
+					</div>
+				</form>
+			</div>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>

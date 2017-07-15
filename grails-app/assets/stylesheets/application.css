@@ -1053,6 +1053,14 @@ blockquote {
     margin-right: 10px;
 }
 
+.filter-duty {
+    display: none;
+}
+
+.filter-duty.active {
+    display: block;
+}
+
 .list-group-no-note {
     border-left: 3px #ddd solid !important;
 }

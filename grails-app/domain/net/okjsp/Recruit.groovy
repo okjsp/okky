@@ -15,6 +15,7 @@ class Recruit {
 
     String tel
     String email
+    String name
 
     boolean closed = false
 

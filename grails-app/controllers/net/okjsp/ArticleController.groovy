@@ -64,12 +64,47 @@ class ArticleController {
         if(category.code == 'community') 
             categories = categories.findAll { it.code != 'promote' }
 
+        def recruits
+
+        if(category.code == 'recruit') {
+
+            def jobTypes = params.list('filter.jobType').collect { JobType.valueOf(it as String) }
+            def jobDuties = params.list('filter.jobDuty').collect { JobPositionDuty.get(it as Long) }
+            def cities = params.list('filter.city').collect { it as String }
+            def minCareer = params['filter.minCareer']
+            def maxCareer = params['filter.maxCareer']
+
+            def jobPositions = JobPosition.createCriteria().list {
+                if(jobDuties)
+                    'in'('duty', jobDuties)
+                if(minCareer)
+                    ge('minCareer', minCareer as Integer)
+                if(maxCareer)
+                    le('maxCareer', maxCareer as Integer)
+            }
+
+            def jobPositionFilter = (jobDuties || minCareer || maxCareer)
+
+            recruits = Recruit.createCriteria().list {
+                if(jobTypes)
+                    'in'('jobType' , jobTypes)
+                if(jobPositionFilter)
+                    'in'('id' , jobPositions*.recruitId)
+                if(cities)
+                    'in'('city', cities)
+            }
+        }
+
         def articlesQuery = Article.where {
             category in categories
-            if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
+            if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
                 enabled == true
-            if(params.query && params.query != '')
+            if (params.query && params.query != '')
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+
+            if(params['filter.act'] == 'Y') {
+                id in recruits*.article*.id
+            }
 
         }
 
@@ -126,9 +161,9 @@ class ArticleController {
             return
         }
 
-        /*if(article.category.code == 'recruit') {
+        if(article.isRecruit) {
             redirect uri: "/recruit/$article.id"
-        }*/
+        }
 
         article.updateViewCount(1)
 
@@ -165,14 +200,8 @@ class ArticleController {
             return
         }
 
-        if(category.code == 'recruit' && params.skipCompanyRegister != "Y") {
-
-            Person person = Person.get(springSecurityService.principal.personId)
-
-            if(!person.company) {
-                redirect(url: '/company/create')
-                return
-            }
+        if(category.code == 'recruit') {
+            redirect uri: '/recruits/create'
         }
 
         params.category = category
@@ -256,6 +285,10 @@ class ArticleController {
                 notAcceptable()
                 return
             }
+        }
+
+        if(article.category.code == 'recruit') {
+            redirect uri: "/recruit/edit/$article.id"
         }
 
         def categories
