@@ -91,8 +91,13 @@ class ArticleController {
             recruits = Recruit.createCriteria().list {
                 if(jobTypes)
                     'in'('jobType' , jobTypes)
-                if(jobPositionFilter)
-                    'in'('id' , jobPositions*.recruitId)
+                if(jobPositionFilter) {
+                    if(jobPositions) {
+                        'in'('id' , jobPositions*.recruitId)
+                    } else {
+                        'in'('id' , Long.MAX_VALUE)
+                    }
+                }
                 if(cities)
                     'in'('city', cities)
             }
