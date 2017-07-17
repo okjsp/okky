@@ -103,7 +103,7 @@ class ArticleController {
                 title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
 
             if(params['filter.act'] == 'Y') {
-                id in recruits*.article.id
+                id in recruits*.article*.id
             }
 
         }
