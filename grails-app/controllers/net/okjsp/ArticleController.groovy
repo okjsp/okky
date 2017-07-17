@@ -244,6 +244,10 @@ class ArticleController {
 
         Category category = Category.get(params.categoryCode)
 
+        if(category.code == 'recruit') {
+            redirect uri: '/recruits/create'
+        }
+
         try {
 
             withForm {
@@ -325,6 +329,10 @@ class ArticleController {
                 notAcceptable()
                 return
             }
+        }
+
+        if(article.category.code == 'recruit') {
+            redirect uri: '/recruits/create'
         }
 
         try {

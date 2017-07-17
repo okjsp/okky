@@ -94,7 +94,7 @@
             <div class="avatar-info"><a class="nickname" href="${request.contextPath}/company/info/${article.recruit?.company?.id}">${article.recruit?.company?.name}</a>
 
                 <div class="date-created"><span class="timeago"
-                                                title="2016-12-01 12:44:28.594">4분 전</span></div></div>
+                                                title="${article.dateCreated}">${article.dateCreated}</span></div></div>
         </div>
     </div>
 </li>
