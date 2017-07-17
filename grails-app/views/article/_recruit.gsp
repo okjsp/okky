@@ -82,7 +82,7 @@
     </div>
 
     <div class="list-group-item-author clearfix">
-        <div class="avatar avatar-list clearfix"><a href="${request.contextPath}/user/info/2" class="avatar-photo avatar-company">
+        <div class="avatar avatar-list clearfix"><a href="${request.contextPath}/company/info/${article.recruit?.company?.id}" class="avatar-photo avatar-company">
             <g:if test="${article.recruit?.company?.logo}">
                 <img src="${grailsApplication.config.grails.fileURL}/logo/${article.recruit?.company?.logo}">
             </g:if>
