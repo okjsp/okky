@@ -213,6 +213,7 @@ class ArticleController {
 
         if(category.code == 'recruit') {
             redirect uri: '/recruits/create'
+            return
         }
 
         params.category = category
@@ -246,6 +247,7 @@ class ArticleController {
 
         if(category.code == 'recruit') {
             redirect uri: '/recruits/create'
+            return
         }
 
         try {
@@ -304,6 +306,7 @@ class ArticleController {
 
         if(article.category.code == 'recruit') {
             redirect uri: "/recruit/edit/$article.id"
+            return
         }
 
         def categories
@@ -333,6 +336,7 @@ class ArticleController {
 
         if(article.category.code == 'recruit') {
             redirect uri: '/recruits/create'
+            return
         }
 
         try {
