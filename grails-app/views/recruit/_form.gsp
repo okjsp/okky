@@ -232,25 +232,25 @@
         <div class="row">
             <div class="col col-sm-6">
                 <div id="datepicker" class="input-group date">
-                    <input type="text" id="startDate" required="required" name="recruit.startDate" class="form-control" placeholder="투입시기"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                    <input type="text" id="startDate" required="required" name="recruit.startDate" value="${recruit.startDate}" class="form-control" placeholder="투입시기"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                 </div>
             </div>
             <div class="col col-sm-6">
                 <select id="workingMonth" name="recruit.workingMonth" required="required" class="form-control form-inline">
                     <option value="">투입기간</option>
-                    <option value="1">1개월</option>
-                    <option value="2">2개월</option>
-                    <option value="3">3개월</option>
-                    <option value="4">4개월</option>
-                    <option value="5">5개월</option>
-                    <option value="6">6개월</option>
-                    <option value="7">7개월</option>
-                    <option value="8">8개월</option>
-                    <option value="9">9개월</option>
-                    <option value="10">10개월</option>
-                    <option value="11">11개월</option>
-                    <option value="12">12개월</option>
-                    <option value="99">13개월 이상</option>
+                    <option value="1" <g:if test="${recruit.workingMonth == 1}">selected="selected"</g:if>>1개월</option>
+                    <option value="2" <g:if test="${recruit.workingMonth == 2}">selected="selected"</g:if>>2개월</option>
+                    <option value="3" <g:if test="${recruit.workingMonth == 3}">selected="selected"</g:if>>3개월</option>
+                    <option value="4" <g:if test="${recruit.workingMonth == 4}">selected="selected"</g:if>>4개월</option>
+                    <option value="5" <g:if test="${recruit.workingMonth == 5}">selected="selected"</g:if>>5개월</option>
+                    <option value="6" <g:if test="${recruit.workingMonth == 6}">selected="selected"</g:if>>6개월</option>
+                    <option value="7" <g:if test="${recruit.workingMonth == 7}">selected="selected"</g:if>>7개월</option>
+                    <option value="8" <g:if test="${recruit.workingMonth == 8}">selected="selected"</g:if>>8개월</option>
+                    <option value="9" <g:if test="${recruit.workingMonth == 9}">selected="selected"</g:if>>9개월</option>
+                    <option value="10" <g:if test="${recruit.workingMonth == 10}">selected="selected"</g:if>>10개월</option>
+                    <option value="11" <g:if test="${recruit.workingMonth == 11}">selected="selected"</g:if>>11개월</option>
+                    <option value="12" <g:if test="${recruit.workingMonth == 12}">selected="selected"</g:if>>12개월</option>
+                    <option value="99" <g:if test="${recruit.workingMonth == 99}">selected="selected"</g:if>>13개월 이상</option>
                 </select>
             </div>
         </div>

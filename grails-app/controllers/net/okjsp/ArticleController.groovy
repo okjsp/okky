@@ -56,6 +56,14 @@ class ArticleController {
 
                 maxResults(3)
             }.findAll()
+
+
+            choiceJobs.each {
+                if(it.isRecruit) {
+                    Recruit recruit = Recruit.findByArticle(it)
+                    it.recruit = recruit
+                }
+            }
         }
 
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
@@ -116,13 +124,12 @@ class ArticleController {
                 else
                     id in [Long.MAX_VALUE]
             }
-
         }
 
         def articles = articlesQuery.list(params)
 
         articles.each {
-            if(articles.isRecruit) {
+            if(it.isRecruit) {
                 Recruit recruit = Recruit.findByArticle(it)
                 it.recruit = recruit
             }

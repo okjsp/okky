@@ -23,6 +23,7 @@ class JobPosition {
     static hasMany = [tags : Tag]
 
     static constraints = {
+        description type: 'text'
         tagString nullable: true
         tags maxSize: 10, nullable: true
         maxCareer nullable: true
