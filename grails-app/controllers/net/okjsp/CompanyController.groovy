@@ -132,8 +132,10 @@ class CompanyController {
         }
     }
 
-    def edit(Company company) {
+    def edit() {
         Person person = Person.get(springSecurityService.principal.personId)
+
+        Company company = person.company
 
         CompanyInfo companyInfo = CompanyInfo.findByCompany(company)
 
@@ -141,13 +143,13 @@ class CompanyController {
     }
 
     @Transactional
-    def update(Long id) {
-
-        Company company = Company.get(id)
+    def update() {
 
         def year = Calendar.getInstance().get(Calendar.YEAR)
 
         Person person = Person.get(springSecurityService.principal.personId)
+
+        Company company = person.company
 
         if (company == null) {
             notFound()

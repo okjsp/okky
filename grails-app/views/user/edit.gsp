@@ -82,7 +82,7 @@
                             <input type="text" value="${company.registerNumber}" class="form-control" disabled />
                         </div>
                     </fieldset>
-                    <g:link uri="/company/edit/${company.id}" class="btn btn-info btn-block" ><g:message code="user.button.edit.label" default="회사 정보 수정"/></g:link>
+                    <g:link uri="/company/edit" class="btn btn-info btn-block" ><g:message code="user.button.edit.label" default="회사 정보 수정"/></g:link>
                 </div>
             </div>
         </g:if>
