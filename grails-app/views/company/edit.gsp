@@ -16,7 +16,7 @@
 
 	<div class="panel panel-default clearfix">
 		<div class="panel-body">
-			<g:form id="article-form" url="[resource:company, uri: '/company/update/'+company.id]" enctype="multipart/form-data" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
+			<g:form id="article-form" url="[resource:company, uri: '/company/update']" enctype="multipart/form-data" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
 				<fieldset class="form">
 
 					<g:if test="${company?.enabled}">
