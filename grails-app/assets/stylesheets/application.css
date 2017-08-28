@@ -1867,6 +1867,8 @@ blockquote {
     margin-left: 70px;
     font-size: 16px;
     color: #333333;
+    max-width: 575px;
+    word-break: keep-all;
 }
 
 .article-middle-block {
