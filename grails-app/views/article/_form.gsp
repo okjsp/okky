@@ -27,6 +27,11 @@
                     <g:checkBox name="disabled" value="${!article?.enabled}"  />
                     <g:message code="article.disabled.label" default="게시물 비공개 (관리자만 접근가능)" />
                 </label>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label>
+                    <g:checkBox name="ignore" value="${article?.ignoreBest}"  />
+                    <g:message code="article.ignore.label" default="Weekly Best 제외" />
+                </label>
             </div>
         </div>
 

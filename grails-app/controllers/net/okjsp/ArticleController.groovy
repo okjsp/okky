@@ -263,11 +263,9 @@ class ArticleController {
                 Avatar author = Avatar.load(springSecurityService.principal.avatarId)
 
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
-
                     article.choice = params.choice?:false
-
                     article.enabled = !params.disabled
-
+                    article.ignoreBest = params.ignore
                 }
 
                 article.createIp = userService.getRealIp(request)
@@ -355,11 +353,9 @@ class ArticleController {
                 Category category = Category.get(params.categoryCode)
                 
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
-                    
                     article.choice = params.choice?:false
-
                     article.enabled = !params.disabled
-                    
+                    article.ignoreBest = params.ignore
                 }
 
                 articleService.update(article, editor, category)

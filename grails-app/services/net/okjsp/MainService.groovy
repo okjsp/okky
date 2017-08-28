@@ -40,6 +40,7 @@ class MainService {
             ne('category', Category.get('recruit'))
             eq('enabled', true)
             eq('choice', false)
+            eq('ignoreBest', false)
             gt('dateCreated', diff)
             order('best', 'desc')
             maxResults(5)

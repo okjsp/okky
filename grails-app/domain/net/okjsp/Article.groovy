@@ -38,6 +38,7 @@ class Article {
     boolean disabled
 
     boolean isRecruit = false
+    boolean ignoreBest = false
 
     Recruit recruit
 
@@ -70,6 +71,7 @@ class Article {
         content nullable: true
         choice bindable: false, nullable: true
         createIp bindable: false, nullable: true
+        ignoreBest bindable: false, nullable: true
     }
 
     def getDisplayAuthor() {
