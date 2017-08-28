@@ -36,6 +36,7 @@ class Article {
     Integer best = 0
 
     boolean disabled
+    boolean ignore
 
     boolean isRecruit = false
     boolean ignoreBest = false
@@ -46,7 +47,7 @@ class Article {
 
     static hasMany = [tags : Tag, notes: Content]
 
-    static transients = ['disabled', 'recruit']
+    static transients = ['disabled', 'recruit', 'ignore']
 
     static mapping = {
         notes sort: 'id', order: 'asc'

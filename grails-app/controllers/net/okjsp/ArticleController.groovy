@@ -265,7 +265,7 @@ class ArticleController {
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
                     article.choice = params.choice?:false
                     article.enabled = !params.disabled
-                    article.ignoreBest = params.ignore
+                    article.ignoreBest = params.ignore ?: false
                 }
 
                 article.createIp = userService.getRealIp(request)
@@ -355,7 +355,7 @@ class ArticleController {
                 if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
                     article.choice = params.choice?:false
                     article.enabled = !params.disabled
-                    article.ignoreBest = params.ignore
+                    article.ignoreBest = params.ignore ?: false
                 }
 
                 articleService.update(article, editor, category)
