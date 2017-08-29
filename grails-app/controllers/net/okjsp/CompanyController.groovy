@@ -168,6 +168,8 @@ class CompanyController {
 
             company.logo = "${mil}${ext}"
         }
+        company.registerNumber = params.registerNumber
+        company.name = params.name
         company.enabled = false
         company.save()
 
