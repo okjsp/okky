@@ -36,7 +36,7 @@ class User {
 		username(blank: false, unique: true, size: 5..15, matches: /^[a-z0-9]*[a-z]+[a-z0-9]*$/, validator: {
             if(disAllowUsernameFilter(it)) return ['default.invalid.disallow.message']
         })
-		password blank: false, minSize: 6, matches: /^.*(?=.*[0-9])(?=.*[a-z]).*$/
+		password blank: false, minSize: 6, matches: /^(?=.*[0-9])(?=.*[a-zA-Z]).*$/
         person unique: true
         avatar unique: true
         enabled bindable: false
