@@ -55,7 +55,7 @@ class MainService {
             'in'('category', Category.get('tech').children)
             eq('enabled', true)
             order('id', 'desc')
-            maxResults(5)
+            maxResults(3)
         }.findAll()
     }
 
@@ -118,7 +118,7 @@ class MainService {
         Collections.shuffle(promoteArticles)
 
 //        promoteArticles = promoteArticles.unique { a, b -> a.createIp <=> b.createIp }
-        if(promoteArticles?.size() > 6) promoteArticles = promoteArticles.subList(0, 5)
+        if(promoteArticles?.size() > 4) promoteArticles = promoteArticles.subList(0, 3)
 
         promoteArticles
     }

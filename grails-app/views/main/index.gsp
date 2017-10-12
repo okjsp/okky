@@ -56,6 +56,9 @@
                         </div>
                     </g:if>
                 </div>
+
+                <g:banner type="MAIN_BLOCK" />
+
                 <div class="main-block">
                     <h4 class="main-header"><i class="fa fa-quote-left"></i> 칼럼 <a href="${request.contextPath}/articles/columns" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
                     <g:if test="${columnArticle}">
