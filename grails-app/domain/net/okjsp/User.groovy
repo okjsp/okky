@@ -28,6 +28,8 @@ class User {
 
 	String dateJoined
 
+	String oid
+
     static hasMany = [loggedIns: LoggedIn, oAuthIDs: OAuthID]
 
 	static transients = ['springSecurityService']
@@ -49,6 +51,7 @@ class User {
         lastUpdateIp nullable: true, bindable: false
 		dateWithdraw bindable: false, nullable: true
 		withdraw bindable: false, nullable: true
+		oid bindable: false, nullable: true
 	}
 
 	static mapping = {
