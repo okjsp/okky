@@ -5,14 +5,14 @@
 	<g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
 
 	<asset:stylesheet src="style.css"/>
-	<asset:stylesheet src="APW-style.css.css"/>
+	<asset:stylesheet src="APW-style.css"/>
 </head>
 <body>
 <g:sidebar/>
 
 <div id="edit-user" class="content" role="main">
 
-	<input type="text" name="corp_user_id" id="corp_user_id" />
+	<input type="hidden" name="corp_user_id" id="corp_user_id" />
 	<h3 class="content-header">AutoPassword&trade; 설정</h3>
 	<div class="col-md-12 APW-setting-tab">
 		<div class="panel panel-default">
@@ -122,7 +122,7 @@
 			var result = {result : false, msg : "Unknown Error", code : "000.1"};	
 			$.ajax({
 				type: "POST",
-				url: "./action/userOID.jsp",
+				url: "${request.contextPath}/autoPassword/userOID",
 				dataType : "json",
 				async : false,
 				success : function(data) {

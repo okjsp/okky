@@ -136,7 +136,7 @@
                 <div class="APW-setting-panel">
                     <p>비밀번호 관리가 힘들다면 <span class="APW-blue">AutoPassword™</span>를 사용하세요!</p>
                     <p>사용자 대신 스마트폰에서 일회용 비밀번호를 생성하고 입력해주는 <span class="APW-underline">비밀번호 대체 서비스</span>입니다.</p>
-                </div
+                </div>
                 <button class="btn btn-primary" type="submit" id="btnAdd">설정하기</button>
             </div>
         </div>
@@ -168,10 +168,10 @@
       $(function($) {
 
         $("[id=btnAdd]").click(function(e) {
-          location.href = "/autopassword/joinStep.jsp";
+          location.href = "/okky/autoPassword/joinStep";
         });
         $("[id=btnCancel]").click(function(e) {
-          location.href = "./action/delUserAutopassword.jsp";
+          location.href = "./action/delUserAutopassword";
         });
 
       })
