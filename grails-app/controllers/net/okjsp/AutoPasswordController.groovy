@@ -6,6 +6,10 @@ import com.estorm.framework.util.OTPUtiles
 import grails.transaction.Transactional
 import net.okjsp.encoding.OldPasswordEncoder
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.authority.AuthorityUtils
+import org.springframework.security.core.context.SecurityContextHolder
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -18,6 +22,24 @@ class AutoPasswordController {
     def springSecurityService
 
     def randomService
+
+    def customUserDetailService
+
+    static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: "DELETE"]
+
+    def auth() {
+        String oid = params.corp_user_id
+
+        def user = User.findByOid(oid)
+
+        if(user) {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, oid,
+                    AuthorityUtils.createAuthorityList("ROLE_USER"))
+            SecurityContextHolder.getContext().setAuthentication(authentication)
+        }
+
+        return user != null
+    }
 
     def autoCheck() {
 
