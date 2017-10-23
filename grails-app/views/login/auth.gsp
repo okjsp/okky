@@ -219,7 +219,7 @@
               var result = {result : false, msg : "Unknown Error", code : "000.1"};;
               $.ajax({
                 type: "POST",
-                url: "./action/checkUserPassword.jsp",
+                url: "${request.contextPath}/autoPassword/checkUserPassword",
                 data : "corp_user_id=" + corp_user_id + "&user_password=" + user_password,
                 dataType : "json",
                 async : false,
@@ -236,7 +236,7 @@
               var result = {result : false, msg : "Unknown Error", code : "000.1"};;
               $.ajax({
                 type: "POST",
-                url: "./action/checkServiceSecureOTP.jsp",
+                url: "${request.contextPath}/autoPassword/checkServiceSecureOTP",
                 data : "corp_user_id=" + corp_user_id + "&user_otp=" + user_otp,
                 dataType : "json",
                 async : false,
@@ -254,7 +254,7 @@
               var result = {result : false, msg : "Unknown Error", code : "000.1"};;
               $.ajax({
                 type: "POST",
-                url: "./action/checkServiceOTP.jsp",
+                url: "${request.contextPath}/autoPassword/checkServiceOTP",
                 data : "corp_user_id=" + corp_user_id + "&user_otp=" + user_otp,
                 dataType : "json",
                 async : false,
@@ -272,7 +272,7 @@
               var result = {result : false, msg : "Unknown Error", code : "000.1"};;
               $.ajax({
                 type: "POST",
-                url: "./action/cancelSession.jsp",
+                url: "${request.contextPath}/autoPassword/cancelSession",
                 dataType : "json",
                 async : false,
                 success : function(data) {
@@ -288,7 +288,7 @@
               var result = {result : false, msg : "Unknown Error", code : "000.1"};;
               $.ajax({
                 type: "POST",
-                url: "./action/cancelCD.jsp",
+                url: "${request.contextPath}/autoPassword/cancelCD",
                 data : "corp_user_id=" + corp_user_id,
                 dataType : "json",
                 async : false,
@@ -307,7 +307,7 @@
           },			//callback 함수들
           null,
           maxWaitingSec,
-          "./autoPassword/autoCheck",
+          "${request.contextPath}/autoPassword/autoCheck",
           "./auth"
         ); //id 입력 받고 난 후의 데어터
 
