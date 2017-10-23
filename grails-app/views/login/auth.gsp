@@ -194,7 +194,7 @@
 
               $.ajax({
                 type: "POST",
-                url: "./action/checkID.jsp",
+                url: "${request.contextPath}/autoPassword/checkID",
                 data : "corp_user_id=" + corp_user_id + "&service_type=" + service_type + "&session_term=" + maxWaitingSec,
                 dataType : "json",
                 async : false,
