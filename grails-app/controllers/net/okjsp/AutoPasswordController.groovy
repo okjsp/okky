@@ -17,6 +17,8 @@ class AutoPasswordController {
 
     def springSecurityService
 
+    def randomService
+
     def autoCheck() {
 
         def config = grailsApplication.config
@@ -133,8 +135,6 @@ class AutoPasswordController {
     }
 
     def checkAdded() {
-
-        def config = grailsApplication.config
 
         String corp_user_id = getUserInfo(params.user_id)
 
@@ -344,29 +344,24 @@ class AutoPasswordController {
     }
 
     def corpUserID() {
-        def config = grailsApplication.config
 
 
         String user_pw = params.user_pw		//AutoPassword Server에서 전달되는 본인확인 번호
 
 
+
         /****************************** 기능구현  시작**********************************/
         //사용자 본인확인 번호 확인
         //user_pw 정보(본인확인 번호)를 이용하여 OID 정보 추출 (Temp Table에 있는 정보)
-        String ServiceUrl = config.grails.serverURL;								//Service Site의 Domain으로 변경
-        String service_url = ServiceUrl + "/autoPassword/auatopasswordTemp.do"		//Service Site의 처리 URL으로 변경
-        HttpParameter service_params = new HttpParameter()
-                .add("userNO", user_pw)
 
-        String service_result = new HttpConnection().sendPost(service_url, service_params);
-        JSONObject service_json = new JSONObject(service_result);
+        AutoPasswordOID autoPasswordOID = AutoPasswordOID.findByUserNo(user_pw)
 
         boolean isID = true;					//정보 변경(존재할 경우 true, 존재하지 않을 경우 false)
         String corp_user_id = "";				//정보 변경(Temp Table에서 본인확인 번호로 사용자 OID 정보 확인)
         String user_id = "";
-        if (service_json.getBoolean("result")) {
-            corp_user_id		= service_json.get("userOID").toString();
-            user_id              = service_json.get("userID").toString();
+        if (autoPasswordOID) {
+            corp_user_id		= autoPasswordOID.oid
+            user_id              = autoPasswordOID.user.username
         } else{
             isID = false;
         }
@@ -375,14 +370,12 @@ class AutoPasswordController {
 
 	    if (isID) {
 
-            /****************************** 기능구현  시작**********************************/
-            //사용자 정보 Table에 사용자 OID 저장
-            service_url = ServiceUrl + "/autuPassword/userInfoUpdate";        //Service Site의 처리 URL으로 변경
-            service_params = new HttpParameter()
-                    .add("userID", user_id)
-                    .add("userOID", corp_user_id);
+            User user = autoPasswordOID.user
 
-            service_result = new HttpConnection().sendPost(service_url, service_params);
+            user.oid = autoPasswordOID.oid
+            user.save(flush: true)
+
+            autoPasswordOID.delete(flush: true)
 
             /****************************** 기능구현 종료**********************************/
 
@@ -399,51 +392,31 @@ class AutoPasswordController {
 
         String user_id = params.corp_user_id	//로그인 페이지의 AutoPassword 사용자 아이디 입력 필드
 
-        /****************************** 기능구현  시작**********************************/
-        //사용자 아이디가 존재하는지 확인
-        //사용자 OID 정보 확인(기존 사용자 Table에 있는 정보)
-        String ServiceUrl = config.grails.serverURL				            //Service Site의 Domain으로 변경
-        String service_url = ServiceUrl + "/autopw/userInfo.do";			//Service Site의 처리 URL으로 변경
-        HttpParameter service_params = new HttpParameter()
-                .add("user_id", user_id);
-
-        String service_result = new HttpConnection().sendPost(service_url, service_params);
-        JSONObject service_json = new JSONObject(service_result);
-
-        boolean isID = true;										//정보 변경(존재할 경우 true, 존재하지 않을 경우 false)
-        String corp_user_id = "";								//정보 변경(사용자의 OID 정보)
-        if (service_json.getBoolean("result")) {
-            isID = true;
-            corp_user_id = service_json.get("userOID").toString();
-        }else{
-            isID = false;
-        }
-
-            //용자 정보 Table에 사용자 OID 삭제(사용자 Table에 있는 정보)
-        service_url = ServiceUrl + "/autopw/userInfoUpdate.do";			//Service Site의 처리 URL으로 변경
-        service_params = new HttpParameter()
-                .add("userID", user_id)
-                .add("userOID", corp_user_id);
-
-        //JSONObject service_json = new JSONObject(service_result);
+        User user = User.findByUsername(user_id)
 
 
         /****************************** 기능구현 종료**********************************/
 
 
-        if (isID) {
+        if (user) {
             JSONObject json = null;
 
-            String url = "http://localhost:11040/otp/rest/autopassword/delCorpUserInfo";
+            String url = "http://localhost:11040/otp/rest/autopassword/delCorpUserInfo"
             HttpParameter params = new HttpParameter()
-                    .add("corp_user_id", corp_user_id)
+                    .add("corp_user_id", user.oid)
                     .add("corp_id", config.autoPassword.corpId)
                     .add("token", config.autoPassword.managerToken)
                     .add("site_user_id", user_id);
 
-            String result = new HttpConnection().sendPost(url, params);
-            json = new JSONObject(result);
+            String result = new HttpConnection().sendPost(url, params)
+            json = new JSONObject(result)
+
+
             if (json.getBoolean("result")) {
+
+                user.oid = null
+                user.save(flush: true)
+
                 render """<script>
                         alert("해지 완료");
                         location.href = "${request.contextPath}/user/auth";
@@ -479,33 +452,15 @@ class AutoPasswordController {
 
     private String getUserInfo(String user_id) {
 
-        def config = grailsApplication.config
+        User user = User.findByUsername(user_id)
 
-        /****************************** 기능구현  시작**********************************/
-        //사용자 아이디가 존재하는지 확인
-        //사용자 OID 정보 확인(기존 사용자 Table에 있는 정보)
-        String ServiceUrl = config.grails.serverURL				            //Service Site의 Domain으로 변경
-        String service_url = ServiceUrl + "/autoPassword/userInfo"			//Service Site의 처리 URL으로 변경
-        HttpParameter service_params = new HttpParameter()
-                .add("user_id", user_id);
-
-        String service_result = new HttpConnection().sendPost(service_url, service_params);
-        JSONObject service_json = new JSONObject(service_result);
-
-        boolean isID = true;										//정보 변경(존재할 경우 true, 존재하지 않을 경우 false)
-        String corp_user_id = "";								//정보 변경(사용자의 OID 정보)
-        if (service_json.getBoolean("result")) {
-            isID = true;
-            corp_user_id = service_json.get("userOID").toString()
-        }
-
-        return corp_user_id
+        return user.oid
     }
 
     def userOID() {
         def config = grailsApplication.config
 
-        String user_serviceKey = "123456"; // formatter.format(new java.util.Date());			//정보 변경
+        String user_serviceKey = randomService.nextInteger(100000, 999999).toString() // formatter.format(new java.util.Date());			//정보 변경
 
         JSONObject json = null;
         String token = config.autoPassword.managerToken;
@@ -533,6 +488,11 @@ class AutoPasswordController {
 
             //AutoPassword Server에서 사용자 OID를 받아오면
             //사용자 Temp Table에 저장한다.
+
+            User user = springSecurityService.currentUser
+
+            def autoPasswordOID = new AutoPasswordOID(user: user, oid: corp_user_id, userNo: user_serviceKey)
+            autoPasswordOID.save(flush: true)
 
             render "{\"result\":true, \"code\": \"Z10.1\", \"msg\":\"Check Your ID\", \"user_serviceKey\":\"${user_serviceKey}\", \"corp_user_id\":\"${corp_user_id}\", \"period_ms\":\"${period_ms}\"}"
         } else {
