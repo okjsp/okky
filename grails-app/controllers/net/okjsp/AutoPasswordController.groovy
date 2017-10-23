@@ -10,7 +10,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-@Transactional(readOnly = true)
+@Transactional
 class AutoPasswordController {
 
     def grailsApplication
@@ -44,7 +44,7 @@ class AutoPasswordController {
         def config = grailsApplication.config
 
 
-        String corp_user_id = getUserInfo(params.user_id)
+        String corp_user_id = getUserInfo(params.corp_user_id)
         if(corp_user_id == null) {
             render "{\"result\":false, \"code\": \"001.4\", \"msg\":\"미등록\", \"data\":\"\"}"
             return
@@ -136,9 +136,9 @@ class AutoPasswordController {
 
     def checkAdded() {
 
-        String corp_user_id = getUserInfo(params.user_id)
+        User user = User.findByOid(params.corp_user_id)
 
-        render "{\"result\":true, \"msg\":\"OK\", \"code\": \"000.0\", \"data\":{\"is_added\":${corp_user_id != null}}"
+        render "{\"result\":true, \"msg\":\"OK\", \"code\": \"000.0\", \"data\":{\"is_added\":${user != null}}}"
 
     }
 

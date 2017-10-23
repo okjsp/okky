@@ -5,7 +5,7 @@
     <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
 
     <asset:stylesheet src="style.css"/>
-    <asset:stylesheet src="APW-style.css.css"/>
+    <asset:stylesheet src="APW-style.css"/>
 </head>
 <body>
 <g:sidebar/>
@@ -40,30 +40,30 @@
                         <div id="AutoPassword">
                             <div class="aplogo"></div>
                         </div>
-                        <div class="otpNum">
+                        <div class="otpNum" style="display:none">
                             <ul>
                                 <li>
-                                    <img id="otpNum0" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <img id="otpNum0" src="/images/AutoPassword/num_00.png" alt="Number0">
                                     <span class="ir">0</span>
                                 </li>
                                 <li>
-                                    <img id="otpNum1" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <img id="otpNum1" src="/images/AutoPassword/num_00.png" alt="Number0">
                                     <span class="ir">0</span>
                                 </li>
                                 <li>
-                                    <img id="otpNum2" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <img id="otpNum2" src="/images/AutoPassword/num_00.png" alt="Number0">
                                     <span class="ir">0</span>
                                 </li>
                                 <li class="Right">
-                                    <img id="otpNum3" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <img id="otpNum3" src="/images/AutoPassword/num_00.png" alt="Number0">
                                     <span class="ir">0</span>
                                 </li>
                                 <li>
-                                    <img id="otpNum4" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <img id="otpNum4" src="/images/AutoPassword/num_00.png" alt="Number0">
                                     <span class="ir">0</span>
                                 </li>
                                 <li>
-                                    <img id="otpNum5" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <img id="otpNum5" src="/images/AutoPassword/num_00.png" alt="Number0">
                                     <span class="ir">0</span>
                                 </li>
                             </ul>
@@ -96,7 +96,12 @@
                     </div>
                 </div>
                 <div class="signup-block">
-                    <g:link controller="findUser">계정 찾기</g:link> <span class="inline-saperator">/</span> <g:link controller="user" action="register">회원 가입</g:link>
+                    <g:link controller="findUser">계정 찾기</g:link>
+                    <span class="inline-saperator">/</span>
+                    <!-- AutoPassword 추가 -->
+                    <g:link controller="findUser">AutoPassword 재설정</g:link>
+                    <span class="inline-saperator">/</span>
+                    <g:link controller="user" action="register">회원 가입</g:link>
                 </div>
             </form>
         </div>

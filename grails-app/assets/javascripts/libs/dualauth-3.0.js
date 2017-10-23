@@ -63,50 +63,49 @@ var DualAuth = (function(app,$){
 			 
 			$("#username").attr("readonly", "readonly");
 			$("#btnOTPLogin").hide();
-            $("#btnOTPCancel").show();            
-            
-            if(second_data.login_type == "0"){
-                //$(".loginBody .box_3 input").hide();
-                //$(".loginBody .box_2").show();    
-                
-                if (second_data.service_type == "service_password") {   
-	                makepollingObj();
+			$("#btnOTPCancel").show();
+			$(".otpNum").show();
+
+			if(second_data.login_type == "0"){
+				//$(".loginBody .box_3 input").hide();
+				//$(".loginBody .box_2").show();
+				if (second_data.service_type == "service_password") {
+					makepollingObj();
 				}
 				
-                // * OTP 정보 출력
-				for (var i = 0; i < second_data.rotp.length; i++) {	
-					alert(second_data.rotp.substring(i, i+1));
-					$(".otpNum ul li:eq("+i+") img").attr("src", "./images/Num_0" + second_data.rotp.substring(i, i+1) + ".png");	
-				}				
+				// * OTP 정보 출력
+				for (var i = 0; i < second_data.rotp.length; i++) {
+					$(".otpNum ul li:eq("+i+") img").attr("src", contextPath+"/images/AutoPassword/num_0" + second_data.rotp.substring(i, i+1) + ".png");
+				}
                 
-                $("#btnOTPCancel").unbind("click").click(function(e){
-                	callback.cancelCD($("#username").val());
-                 	callback.cancelSession();
-                 	location.href = initURL
-                 });
+				$("#btnOTPCancel").unbind("click").click(function(e){
+					callback.cancelCD($("#username").val());
+					callback.cancelSession();
+					location.href = initURL
+				});
                 
-                try{
+				try{
 					DualAuth.progressCollectorClear();
 				}catch(e){}
-				
-				 // * Progress Bar 
-                $("#progressTimer").progressTimer({
-                	startDate : new Date() - 1000 * (maxWaitingSec - second_data.resttime),
-    				//startDate : new Date(),
-    				timeLimit : maxWaitingSec,
-    				warningThreshold : 10,
-    				baseStyle : 'progress-bar-info',
-    				warningStyle : 'progress-bar-info',
-    				completeStyle : 'progress-bar-info',
-    				onFinish : function() {
-    					/*alert(DualAuthErr.getMsg("Z10.1"));
-    					callback.cancelCD();
-	                  	callback.cancelSession();	                  	
-	                  	location.href = initURL*/
-    				}
-    			});              
-          
-            } 
+
+				// * Progress Bar
+				$("#AutoPassword").progressTimer({
+					startDate : new Date() - 1000 * (maxWaitingSec - second_data.resttime),
+					//startDate : new Date(),
+					timeLimit : maxWaitingSec,
+					warningThreshold : 10,
+					baseStyle : 'progress-bar-info',
+					warningStyle : 'progress-bar-info',
+					completeStyle : 'progress-bar-info',
+					onFinish : function() {
+						/*alert(DualAuthErr.getMsg("Z10.1"));
+						callback.cancelCD();
+           	callback.cancelSession();
+	         	location.href = initURL*/
+					}
+				});
+
+			}
 		
 		};		
 		
@@ -208,7 +207,8 @@ var DualAuth = (function(app,$){
 						if (limited_time > new Date().getTime()) {
 							$.ajax({
 								 type: "POST",
-								 url: "./action/checkAdded.jsp",
+								 url: contextPath+"/autoPassword/checkAdded",
+								 //url: "./action/checkAdded.jsp",
 								 data : "corp_user_id=" + corp_user_id ,
 								 dataType : "json",
 								 async : false,
