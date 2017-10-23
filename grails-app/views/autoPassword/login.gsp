@@ -294,28 +294,28 @@
 
       $(function ($) {
 
-        $("#AutoPassword-social").progressTimer({
-          timeLimit: 60,
-          warningThreshold: 10,
-          baseStyle: 'progress-bar-info',
-          warningStyle: 'progress-bar-info',
-          completeStyle: 'progress-bar-info',
-          onFinish: function () {
-            console.log("I'm done");
-          }
-        });
-
-        //기본 설정값
-        $("#AutoPassword").progressTimer({
-          timeLimit: 60,
-          warningThreshold: 10,
-          baseStyle: 'progress-bar-info',
-          warningStyle: 'progress-bar-info',
-          completeStyle: 'progress-bar-info',
-          onFinish: function () {
-            console.log("I'm done");
-          }
-        });
+//        $("#AutoPassword-social").progressTimer({
+//          timeLimit: 60,
+//          warningThreshold: 10,
+//          baseStyle: 'progress-bar-info',
+//          warningStyle: 'progress-bar-info',
+//          completeStyle: 'progress-bar-info',
+//          onFinish: function () {
+//            console.log("I'm done");
+//          }
+//        });
+//
+//        //기본 설정값
+//        $("#AutoPassword").progressTimer({
+//          timeLimit: 60,
+//          warningThreshold: 10,
+//          baseStyle: 'progress-bar-info',
+//          warningStyle: 'progress-bar-info',
+//          completeStyle: 'progress-bar-info',
+//          onFinish: function () {
+//            console.log("I'm done");
+//          }
+//        });
 
         $("[name=j_password]").show();
         $(".AutoPassword-bar").hide();

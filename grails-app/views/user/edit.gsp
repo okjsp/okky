@@ -111,6 +111,11 @@
                 <g:else>
                     <oauth:connect provider="google" id="google-connect-link" class="btn btn-google btn-block"><i class="fa fa-google fa-fw"></i> Google 연결하기</oauth:connect>
                 </g:else>
+
+                <!-- AutoPassword 추가 -->
+                <a href="#;" class="btn btn-block APW-blue">AutoPassword&trade; 2차 인증 활성화</a>
+                <a href="#;" class="btn btn-block APW-disabled">AutoPassword&trade; 2차 인증 비활성화</a>
+
             </div>
         </div>
         <div class="panel panel-default">
@@ -122,6 +127,57 @@
         </div>
     </div>
 
+    <div class="col-md-12 APW-setting">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="panel-header">AutoPassword™ 설정</h5>
+            </div>
+            <div class="panel-body panel-margin">
+                <div class="APW-setting-panel">
+                    <p>비밀번호 관리가 힘들다면 <span class="APW-blue">AutoPassword™</span>를 사용하세요!</p>
+                    <p>사용자 대신 스마트폰에서 일회용 비밀번호를 생성하고 입력해주는 <span class="APW-underline">비밀번호 대체 서비스</span>입니다.</p>
+                </div
+                <button class="btn btn-primary" type="submit" id="btnAdd">설정하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AutoPassword 사용중일때 -->
+    <div class="col-md-12 APW-setting">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="panel-header">AutoPassword™ 설정</h5>
+            </div>
+            <div class="panel-body panel-margin">
+                <div class="APW-setting-panel">
+                    <p><span class="APW-blue">AutoPassword™</span>를 사용중입니다.</p>
+                    <p>스마트폰을 교체하거나 스마트폰에서 AutoPassword™ 애플리케이션을
+                    재설치 했을 경우 사용 해지 후 애플리케이션에서 웹사이트 재등록이 필요합니다.</p>
+                </div>
+                <button class="btn btn-primary APW-disabled" type="submit" id="btnCansel">해지</button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+
+<content tag="script">
+    <script>
+
+      $(function($) {
+
+        $("[id=btnAdd]").click(function(e) {
+          location.href = "/autopassword/joinStep.jsp";
+        });
+        $("[id=btnCancel]").click(function(e) {
+          location.href = "./action/delUserAutopassword.jsp";
+        });
+
+      })
+
+    </script>
+</content>
+
 </body>
 </html>

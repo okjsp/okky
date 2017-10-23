@@ -83,4 +83,8 @@ class AutoPasswordController {
 
         render "{\"result\":true, \"code\": \"000.0\", \"msg\":\"성공\", \"data\":\"\"}"
     }
+
+    def checkID() {
+
+    }
 }

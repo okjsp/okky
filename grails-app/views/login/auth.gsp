@@ -41,32 +41,32 @@
                             <div class="aplogo"></div>
                         </div>
                         <div class="otpNum">
-                            %{--<ul>--}%
-                                %{--<li>--}%
-                                    %{--<img id="otpNum0" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
-                                    %{--<span class="ir">0</span>--}%
-                                %{--</li>--}%
-                                %{--<li>--}%
-                                    %{--<img id="otpNum1" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
-                                    %{--<span class="ir">0</span>--}%
-                                %{--</li>--}%
-                                %{--<li>--}%
-                                    %{--<img id="otpNum2" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
-                                    %{--<span class="ir">0</span>--}%
-                                %{--</li>--}%
-                                %{--<li class="Right">--}%
-                                    %{--<img id="otpNum3" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
-                                    %{--<span class="ir">0</span>--}%
-                                %{--</li>--}%
-                                %{--<li>--}%
-                                    %{--<img id="otpNum4" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
-                                    %{--<span class="ir">0</span>--}%
-                                %{--</li>--}%
-                                %{--<li>--}%
-                                    %{--<img id="otpNum5" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
-                                    %{--<span class="ir">0</span>--}%
-                                %{--</li>--}%
-                            %{--</ul>--}%
+                            <ul>
+                                <li>
+                                    <img id="otpNum0" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <span class="ir">0</span>
+                                </li>
+                                <li>
+                                    <img id="otpNum1" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <span class="ir">0</span>
+                                </li>
+                                <li>
+                                    <img id="otpNum2" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <span class="ir">0</span>
+                                </li>
+                                <li class="Right">
+                                    <img id="otpNum3" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <span class="ir">0</span>
+                                </li>
+                                <li>
+                                    <img id="otpNum4" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <span class="ir">0</span>
+                                </li>
+                                <li>
+                                    <img id="otpNum5" src="./assets/images/AutoPassword/num_00.png" alt="Number0">
+                                    <span class="ir">0</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,18 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <button class="btn btn-primary btn-block" type="submit"><g:message code="springSecurity.login.button"/></button>
+
+                <!--button class="btn btn-primary btn-block" type="submit"><g:message code="springSecurity.login.button"/></button-->
+
+                <div id="divUserLogin">
+                    <button class="btn btn-primary btn-block" type="submit" id="btnUserLogin"><g:message code="springSecurity.login.button"/></button>
+                </div>
+                <div id="divOTPLogin">
+                    <button class="btn btn-primary btn-block" type="submit" id="btnOTPLogin">AutoPassword 로그인</button>
+                    <div class="btn btn-primary btn-block APW-login-cancel" id="btnOTPCancel">
+                        <a href="#;">취소</a>
+                    </div>
+                </div>
                 <div class="signup-block">
                     <g:link controller="findUser">계정 찾기</g:link> <span class="inline-saperator">/</span> <g:link controller="user" action="register">회원 가입</g:link>
                 </div>
@@ -143,6 +154,8 @@
         $(".AutoPassword-bar").hide();
         $("[id=divUserLogin]").show();
         $("[id=divOTPLogin]").hide();
+        $("[id=btnOTPLogin]").hide();
+        $("[id=btnOTPCancel]").hide();
 
 
         //이벤트 function
@@ -153,12 +166,15 @@
             $(".AutoPassword-bar").show();
             $("[id=divUserLogin]").hide();
             $("[id=divOTPLogin]").show();
-            $(".btn btn-primary btn-block APW-login-cancel").hide();
+            $("[id=btnOTPLogin]").show();
+            $("[id=btnOTPCancel]").hide();
           }else{
             $("[name=j_password]").show();
             $(".AutoPassword-bar").hide();
             $("[id=divUserLogin]").show();
             $("[id=divOTPLogin]").hide();
+            $("[id=btnOTPLogin]").hide();
+            $("[id=btnOTPCancel]").hide();
           }
         });
 
