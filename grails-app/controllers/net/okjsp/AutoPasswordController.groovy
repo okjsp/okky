@@ -87,4 +87,8 @@ class AutoPasswordController {
     def checkID() {
 
     }
+
+    def joinStep() {
+        render view: "joinStep"
+    }
 }
