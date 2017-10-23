@@ -12,7 +12,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
     '/*.html':                  ['permitAll'],
     '/css/*':                   ['permitAll'],
     '/js/*':                    ['permitAll'],
-    '/iamges/*':                ['permitAll'],
+    '/images/*/**':                ['permitAll'],
     '/robots.txt':              ['permitAll'],
 
     '/articles/*':              ['permitAll'],
@@ -85,6 +85,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
     '/banner/stats/**':         ['permitAll'],
 
     '/ads/**':                  ['permitAll'],
+    '/autoPassword/**':         ['permitAll'],
 
     '/_admin/**':               ['ROLE_ADMIN']
 ]

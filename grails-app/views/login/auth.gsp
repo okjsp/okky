@@ -3,6 +3,9 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
+
+    <asset:stylesheet src="style.css"/>
+    <asset:stylesheet src="APW-style.css.css"/>
 </head>
 <body>
 <g:sidebar/>
@@ -28,9 +31,56 @@
                 </g:if>
                 <input type="text" name="j_username" autocorrect="off" autocapitalize="off" id="username" class="username form-control input-sm" placeholder="${message(code: "springSecurity.login.username.label")}" required autofocus>
                 <input type="password" name='j_password' class="password form-control input-sm" placeholder="${message(code: "springSecurity.login.password.label")}" required>
+                <!-- AutoPassword 추가 -->
+                <div class="AutoPassword-bar" id="otp_login" style="display: none;">
+                    <div class="pwBar">
+                        <div class="aplogo"></div>
+                        <input type="hidden" id="user_otp" name="user_otp"/>
+                        <!-- progress bar 실행 -->
+                        <div id="AutoPassword">
+                            <div class="aplogo"></div>
+                        </div>
+                        <div class="otpNum">
+                            %{--<ul>--}%
+                                %{--<li>--}%
+                                    %{--<img id="otpNum0" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
+                                    %{--<span class="ir">0</span>--}%
+                                %{--</li>--}%
+                                %{--<li>--}%
+                                    %{--<img id="otpNum1" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
+                                    %{--<span class="ir">0</span>--}%
+                                %{--</li>--}%
+                                %{--<li>--}%
+                                    %{--<img id="otpNum2" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
+                                    %{--<span class="ir">0</span>--}%
+                                %{--</li>--}%
+                                %{--<li class="Right">--}%
+                                    %{--<img id="otpNum3" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
+                                    %{--<span class="ir">0</span>--}%
+                                %{--</li>--}%
+                                %{--<li>--}%
+                                    %{--<img id="otpNum4" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
+                                    %{--<span class="ir">0</span>--}%
+                                %{--</li>--}%
+                                %{--<li>--}%
+                                    %{--<img id="otpNum5" src="${request.contextPath}/images/AutoPassword/num_00.png" alt="Number0">--}%
+                                    %{--<span class="ir">0</span>--}%
+                                %{--</li>--}%
+                            %{--</ul>--}%
+                        </div>
+                    </div>
+                </div>
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" name='${rememberMeParameter}' id='remember_me' <g:if test='${hasCookie}'>checked='checked'</g:if>> <g:message code="springSecurity.login.remember.me.label"/>
+                    </label>
+                </div>
+                <!-- AutoPassword 추가 -->
+                <div class="APW-login">
+                    <span>AutoPassword&trade;</span>
+                    <label class="switch">
+                        <input type="checkbox" id="btnAutoPW">
+                        <span class="slider round"></span>
                     </label>
                 </div>
                 <button class="btn btn-primary btn-block" type="submit"><g:message code="springSecurity.login.button"/></button>
@@ -55,12 +105,202 @@
 
 </div>
 
-<script type='text/javascript'>
-    <!--
-    (function() {
+<content tag="script">
+    <asset:javascript src="libs/jquery.progressTimer.js" />
+    <asset:javascript src="libs/dualauth.error-3.0.js" />
+    <asset:javascript src="libs/dualauth-3.0.js" />
+
+    <script type='text/javascript'>
+      <!--
+      (function() {
         document.forms['loginForm'].elements['j_username'].focus();
-    })();
-    // -->
-</script>
+
+
+//        //기본 설정값
+//        $("#AutoPassword").progressTimer({
+//          timeLimit: 60,
+//          warningThreshold: 10,
+//          baseStyle: 'progress-bar-info',
+//          warningStyle: 'progress-bar-info',
+//          completeStyle: 'progress-bar-info',
+//          onFinish: function() {
+//            console.log("I'm done");
+//          }
+//        });
+//
+//        $("#AutoPassword-social").progressTimer({
+//          timeLimit: 60,
+//          warningThreshold: 10,
+//          baseStyle: 'progress-bar-info',
+//          warningStyle: 'progress-bar-info',
+//          completeStyle: 'progress-bar-info',
+//          onFinish: function() {
+//            console.log("I'm done");
+//          }
+//        });
+
+        $("[name=j_password]").show();
+        $(".AutoPassword-bar").hide();
+        $("[id=divUserLogin]").show();
+        $("[id=divOTPLogin]").hide();
+
+
+        //이벤트 function
+        $("[id=btnAutoPW]").click(function(e) {
+
+          if ($(this).is(":checked") == true){
+            $("[name=j_password]").hide();
+            $(".AutoPassword-bar").show();
+            $("[id=divUserLogin]").hide();
+            $("[id=divOTPLogin]").show();
+            $(".btn btn-primary btn-block APW-login-cancel").hide();
+          }else{
+            $("[name=j_password]").show();
+            $(".AutoPassword-bar").hide();
+            $("[id=divUserLogin]").show();
+            $("[id=divOTPLogin]").hide();
+          }
+        });
+
+        $("[id=btnAdd]").click(function(e) {
+          location.href = "./joinStep.jsp";
+        });
+
+
+        // * AutoPassword 관련 script 시작 ##########################################
+        var maxWaitingSec = 60;
+        $("#otp_login").dualauth(
+          false,
+          {
+            checkID : function (corp_user_id, service_type) {
+              var result = {result : false, msg : "Unknown Error", code : "000.1"};
+              service_type = "<%=request.getParameter("service_type") == null ? "service_password"  : request.getParameter("service_type")%>";		// 강제로 타입을 결정한다.
+
+              $.ajax({
+                type: "POST",
+                url: "./action/checkID.jsp",
+                data : "corp_user_id=" + corp_user_id + "&service_type=" + service_type + "&session_term=" + maxWaitingSec,
+                dataType : "json",
+                async : false,
+                success : function(data) {
+                  result = data;
+                },
+                error :function(data) {
+                  console.log(data);
+                }
+              })
+              return result;
+            },
+            goNextCheck : function (corp_user_id) {
+              alert("인증성공");
+
+              //로그인 처리 로직 추가
+              //AutoPassword 인증이 완료되면 Service Site에서 Session 등을 생성한 후 페이지 이동한다.
+              location.href = "main.gsp";
+
+            },
+            checkUserPassword : function (corp_user_id, user_password) {
+              var result = {result : false, msg : "Unknown Error", code : "000.1"};;
+              $.ajax({
+                type: "POST",
+                url: "./action/checkUserPassword.jsp",
+                data : "corp_user_id=" + corp_user_id + "&user_password=" + user_password,
+                dataType : "json",
+                async : false,
+                success : function(data) {
+                  result = data;
+                },
+                error :function(data) {
+                  console.log(data);
+                }
+              })
+
+            },
+            checkServiceOTP  : function (corp_user_id, user_otp) {
+              var result = {result : false, msg : "Unknown Error", code : "000.1"};;
+              $.ajax({
+                type: "POST",
+                url: "./action/checkServiceSecureOTP.jsp",
+                data : "corp_user_id=" + corp_user_id + "&user_otp=" + user_otp,
+                dataType : "json",
+                async : false,
+                success : function(data) {
+                  result = data;
+                },
+                error :function(data) {
+                  console.log(data);
+                }
+              })
+              return result;
+
+            },
+            checkUserOTP  : function (corp_user_id, user_otp) {
+              var result = {result : false, msg : "Unknown Error", code : "000.1"};;
+              $.ajax({
+                type: "POST",
+                url: "./action/checkServiceOTP.jsp",
+                data : "corp_user_id=" + corp_user_id + "&user_otp=" + user_otp,
+                dataType : "json",
+                async : false,
+                success : function(data) {
+                  result = data;
+                },
+                error :function(data) {
+                  console.log(data);
+                }
+              })
+              return result;
+
+            },
+            cancelSession : function () {
+              var result = {result : false, msg : "Unknown Error", code : "000.1"};;
+              $.ajax({
+                type: "POST",
+                url: "./action/cancelSession.jsp",
+                dataType : "json",
+                async : false,
+                success : function(data) {
+                  result = data;
+                },
+                error :function(data) {
+                  console.log(data);
+                }
+              })
+              return result;
+            },
+            cancelCD : function(corp_user_id) {
+              var result = {result : false, msg : "Unknown Error", code : "000.1"};;
+              $.ajax({
+                type: "POST",
+                url: "./action/cancelCD.jsp",
+                data : "corp_user_id=" + corp_user_id,
+                dataType : "json",
+                async : false,
+                success : function(data) {
+                  result = data;
+                },
+                error :function(data) {
+                  console.log(data);
+                }
+              })
+              return result;
+            },
+            countTime : function(resttime) {
+              console.log(resttime);
+            }
+          },			//callback 함수들
+          null,
+          maxWaitingSec,
+          "./autoPassword/autoCheck",
+          "./auth"
+        ); //id 입력 받고 난 후의 데어터
+
+        // * AutoPassword 관련 script 시작 ##########################################
+
+      })();
+      // -->
+    </script>
+</content>
+
 </body>
 </html>

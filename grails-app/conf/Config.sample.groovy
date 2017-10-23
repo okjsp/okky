@@ -253,3 +253,7 @@ tomcat.deploy.url=""
 
 grails.encrypt.key = "asdf"
 grails.encrypt.salt = "1234"
+
+autoPassword.managerToken = ""
+autoPassword.corpId = ""
+autoPassword.enckey = ""

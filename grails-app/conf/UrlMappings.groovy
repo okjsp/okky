@@ -80,6 +80,11 @@ class UrlMappings {
 
         "/intro/about"(view: "/intro/about")
 
+        "/autoPassword/$action" (controller: "autoPassword")
+        "/autoPassword/joinStep" (view: "/autoPassword/joinStep")
+        "/autoPassword/login" (view: "/autoPassword/login")
+
+
         "500"(view:'/error')
 	}
 }
