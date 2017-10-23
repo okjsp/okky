@@ -11,8 +11,8 @@ String user_password = request.getParameter("user_password");
 
 /****************************** 구현부분  시작**********************************/
 //사용자 아이디/비밀번호 존재하는지 확인
-boolean isOK = true; 			//정보 변경(존재할 경우 true, 존재하지 않을 경우 false)
-boolean isAutoPW = false; 		//정보 변경(AutoPassword를 사용하는 경우 true, 사용하지 않는 경우 false)
+	boolean isOK = true; 			//정보 변경(존재할 경우 true, 존재하지 않을 경우 false)
+	boolean isAutoPW = false; 		//정보 변경(AutoPassword를 사용하는 경우 true, 사용하지 않는 경우 false)
 
 
 //사용자 정보 확인(기존 사용자 Table에 있는 정보)
