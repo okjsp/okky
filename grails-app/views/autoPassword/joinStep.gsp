@@ -43,9 +43,9 @@
 								<ul>
 									<div id="step2_1">
 									<li>- 웹사이트 주소 : <span class="bold">okky.kr</span></li>
-									<li>- 본인 확인 코드: <a class="APW-blue" href="javascript: userCode();">본인확인 코드 생성</a></li>
+									<li>- 본인 확인 코드: <a class="APW-blue confirm-start" href="javascript: userCode();">본인확인 코드 생성</a></li>
 									<!-- 본인확인코드 생성 시 -->
-									<li class="confirm-code" style="display:none;">- 본인 확인 코드: <span class="APW-blue" id="userCode">00000</span><span class="notice">(<span id="periodMs">180</span>초 후에 자동으로 재생성 됩니다.)</span></li>
+									<li class="confirm-code" style="display:none;">- 본인 확인 코드: <span class="APW-blue" id="userCode">00000</span><span class="notice">(<span id="periodMs">180</span>초 후에 재생성 해야됩니다.)</span></li>
 									</div>
 									<div id="step2_2">
 									<!-- 추가 완료일 때 -->
@@ -83,105 +83,107 @@
 	<asset:javascript src="libs/dualauth.error-3.0.js" />
 	<asset:javascript src="libs/dualauth-3.0.js" />
 
-    <script>
-		
-		/* AutoPassword 설정 */
-		var step = $(".APW-setting-tab .panel-heading .APW-tabmenu ul li");
-		var content = $(".APW-setting-tab .tab-contents>div");
+	<script>
 
-        $(function($) { 		
-			
-			content.hide();
-			content.eq(0).show();
+      /* AutoPassword 설정 */
+      var step = $(".APW-setting-tab .panel-heading .APW-tabmenu ul li");
+      var content = $(".APW-setting-tab .tab-contents>div");
+      var refreshIntervalId = "";
 
-			content.eq(0).children().find("button").click(function(){
-				content.eq(0).hide();
-				content.eq(1).show();
-				step.eq(0).children("button").removeClass("active");
-				step.eq(1).children("button").addClass("active");
-			});
-			
-			content.eq(1).children().find("button.confirm-sucess").click(function(){
-				content.eq(1).hide();
-				content.eq(2).show();
-				step.eq(1).children("button").removeClass("active");
-				step.eq(2).children("button").addClass("active");
-			});
-						
-			/* 본인확인코드 설정 클릭 시 */
-			$(".APW-setting-tab .tab-contents .request-info li a").click(function(){
-				$(this).parent().hide();
-				$(".APW-setting-tab .tab-contents .request-info li.confirm-code").show();
-			});
+      $(function($) {
 
-			$("[id=step2_2]").hide();
+        content.hide();
+        content.eq(0).show();
 
-		})
-			
-		function userCode(){
-			var result = {result : false, msg : "Unknown Error", code : "000.1"};	
-			$.ajax({
-				type: "POST",
-				url: "${request.contextPath}/autoPassword/userOID?uid=${uid}",
-				dataType : "json",
-				async : false,
-				success : function(data) {
-					result = data;
-					var user_serviceKey = result.user_serviceKey;
-					var corp_user_id = result.corp_user_id;
-					var period_ms = result.period_ms;
-					period_ms = period_ms / 1000
+        content.eq(0).children().find("button").click(function(){
+          content.eq(0).hide();
+          content.eq(1).show();
+          step.eq(0).children("button").removeClass("active");
+          step.eq(1).children("button").addClass("active");
+        });
 
-					$("#periodMs").text(period_ms);
-					$("#corp_user_id").val(corp_user_id);
-					$("#userCode").text(user_serviceKey);
+        content.eq(1).children().find("button.confirm-sucess").click(function(){
+          content.eq(1).hide();
+          content.eq(2).show();
+          step.eq(1).children("button").removeClass("active");
+          step.eq(2).children("button").addClass("active");
+        });
 
-					pool();
-					setInterval("f_period_ms()", 1000);
-					
-				}, 
-				error :function(data) {
-					console.log(data);
-				}
-			})				
-		}
+        /* 본인확인코드 설정 클릭 시 */
+        $(".APW-setting-tab .tab-contents .request-info li a").click(function(){
+          $(this).parent().hide();
+          $(".APW-setting-tab .tab-contents .request-info li.confirm-code").show();
+        });
 
-		function f_period_ms(){
-			var period_ms = $("#periodMs").text();		
-			period_ms = period_ms - 1;
+        $("[id=step2_2]").hide();
 
-			$("#periodMs").html(period_ms);
+      })
 
-			if (period_ms == "0"){
-				$("#fm").attr(	{
-					target:"_self",
-					action:"./joinStep.jsp"
-				}).submit();
-			}
-		}
-		
-		function pool(){
-			var option = {
-				p_corp_user_id : $("#corp_user_id").val(),  //사용자 OID
-				p_resttime : 0,  //남은시단 ms
-				p_per_check_s : 3,			// polling check
-				p_showRest : function(resttime) {
-					//$("#resttime").text(resttime);
-				},
-				p_showTimeout : function(resttime) {
-					 //alert("timeout.");
-				},
-				p_showAdded : function(resttime) {
-					$("[id=step2_1]").hide();
-					$("[id=step2_2]").show();
-					$("[id=step2_btn1]").show();
-					$("[id=step2_btn2]").hide();
-				}
-			};
-			DualAuth.addingPool(option);
-		}
+      function userCode(){
+        var result = {result : false, msg : "Unknown Error", code : "000.1"};
+        $.ajax({
+          type: "POST",
+          url: "${request.contextPath}/autoPassword/userOID?uid=${uid}",
+          dataType : "json",
+          async : false,
+          success : function(data) {
+            result = data;
+            var user_serviceKey = result.user_serviceKey;
+            var corp_user_id = result.corp_user_id;
+            var period_ms = result.period_ms;
+            period_ms = period_ms / 1000
 
-    </script>
+            $("#periodMs").text(period_ms);
+            $("#corp_user_id").val(corp_user_id);
+            $("#userCode").text(user_serviceKey);
+
+            pool();
+            refreshIntervalId = setInterval(f_period_ms, 1000);
+
+          },
+          error :function(data) {
+            console.log(data);
+          }
+        })
+      }
+
+      function f_period_ms(){
+
+        var period_ms = $("#periodMs").text();
+        period_ms = period_ms - 1;
+
+        $("#periodMs").html(period_ms);
+
+        if (period_ms == "0"){
+          $(".APW-setting-tab .tab-contents .request-info li.confirm-code").hide();
+          $(".APW-setting-tab .tab-contents .confirm-start").parent().show();
+
+          clearInterval(refreshIntervalId);
+        }
+      }
+
+      function pool(){
+        var option = {
+          p_corp_user_id : $("#corp_user_id").val(),  //사용자 OID
+          p_resttime : 0,  //남은시단 ms
+          p_per_check_s : 3,   // polling check
+          p_showRest : function(resttime) {
+            //$("#resttime").text(resttime);
+          },
+          p_showTimeout : function(resttime) {
+            //alert("timeout.");
+          },
+          p_showAdded : function(resttime) {
+            $("[id=step2_1]").hide();
+            $("[id=step2_2]").show();
+            $("[id=step2_btn1]").show();
+            $("[id=step2_btn2]").hide();
+          }
+        };
+        DualAuth.addingPool(option);
+      }
+
+	</script>
 
 </content>
 </body>
