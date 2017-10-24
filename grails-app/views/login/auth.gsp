@@ -90,7 +90,7 @@
                     <button class="btn btn-primary btn-block" type="submit" id="btnUserLogin"><g:message code="springSecurity.login.button"/></button>
                 </div>
                 <div id="divOTPLogin">
-                    <button class="btn btn-primary btn-block" type="button" id="btnOTPLogin">AutoPassword 로그인</button>
+                    <button class="btn btn-primary btn-block" type="button" id="btnOTPLogin">AutoPassword™ 로그인</button>
                     <div class="btn btn-primary btn-block APW-login-cancel" id="btnOTPCancel">
                         <a href="#;">취소</a>
                     </div>
@@ -99,7 +99,7 @@
                     <g:link controller="findUser">계정 찾기</g:link>
                     <span class="inline-saperator">/</span>
                     <!-- AutoPassword 추가 -->
-                    <g:link controller="autoPassword" action="reset">AutoPassword 재설정</g:link>
+                    <g:link controller="autoPassword" action="reset">AutoPassword™ 재설정</g:link>
                     <span class="inline-saperator">/</span>
                     <g:link controller="user" action="register">회원 가입</g:link>
                 </div>
@@ -209,27 +209,12 @@
                 error :function(data) {
                   console.log(data);
                 }
-              })
+              });
               return result;
             },
             goNextCheck : function (corp_user_id) {
-              console.log(corp_user_id);
-              $.ajax({
-                type: "POST",
-                url: "${request.contextPath}/autoPassword/auth",
-                data : "corp_user_id=" + corp_user_id,
-                dataType : "json",
-                async : false,
-                success : function(data) {
-                  if(data.result)
-                    location.href = "${request.contextPath}/";
-                  else
-                    alert("회원이 존재하지 않습니다");
-                },
-                error :function(data) {
-                  console.log(data);
-                }
-              })
+
+              location.href = "${request.contextPath}/";
 
             },
             checkUserPassword : function (corp_user_id, user_password) {

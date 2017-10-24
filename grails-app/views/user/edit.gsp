@@ -3,6 +3,9 @@
 <head>
     <meta name="layout" content="main">
     <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
+
+    <asset:stylesheet src="style.css"/>
+    <asset:stylesheet src="APW-style.css"/>
 </head>
 <body>
 <g:sidebar/>
@@ -111,11 +114,6 @@
                 <g:else>
                     <oauth:connect provider="google" id="google-connect-link" class="btn btn-google btn-block"><i class="fa fa-google fa-fw"></i> Google 연결하기</oauth:connect>
                 </g:else>
-
-                <!-- AutoPassword 추가 -->
-                <a href="#;" class="btn btn-block APW-blue">AutoPassword&trade; 2차 인증 활성화</a>
-                <a href="#;" class="btn btn-block APW-disabled">AutoPassword&trade; 2차 인증 비활성화</a>
-
             </div>
         </div>
         <div class="panel panel-default">

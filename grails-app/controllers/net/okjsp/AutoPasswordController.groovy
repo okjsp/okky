@@ -28,22 +28,6 @@ class AutoPasswordController {
 
     def mailService
 
-    def auth() {
-        String oid = params.corp_user_id
-
-        def user = User.findByUsername(oid)
-
-        if(user) {
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user, oid,
-                    AuthorityUtils.createAuthorityList("ROLE_USER"))
-            SecurityContextHolder.getContext().setAuthentication(authentication)
-        }
-
-        def result = [result : user != null]
-
-        render result as JSON
-    }
-
 
     def reset() {
         render view: "reset"
@@ -255,7 +239,15 @@ class AutoPasswordController {
         String result = new HttpConnection().sendPost(url, params);
         JSONObject json = new JSONObject(result);
         if (json.getBoolean("result")) {
-            session.setAttribute("logined", user_id);
+
+            def user = User.findByUsername(user_id)
+
+            if(user) {
+                Authentication authentication = new UsernamePasswordAuthenticationToken(user, corp_user_id,
+                        AuthorityUtils.createAuthorityList("ROLE_USER"))
+                SecurityContextHolder.getContext().setAuthentication(authentication)
+            }
+
         }
 
         render "{\"result\":${json.getBoolean("result")}, \"code\": \"${json.getString("code")}\", \"msg\":\"${json.getString("msg")}\", \"data\":\"\"}"
@@ -301,7 +293,15 @@ class AutoPasswordController {
                 if (session.getId().equals(json.getJSONObject("data").getString("random"))) {
                     String hash_cv = getHash(realresult, config.autoPassword.encKey);
                     if (hash_cv != null && hash_cv.equals(hash)) {
-                        session.setAttribute("logined", user_id)
+
+                        def user = User.findByUsername(user_id)
+
+                        if(user) {
+                            Authentication authentication = new UsernamePasswordAuthenticationToken(user, corp_user_id,
+                                    AuthorityUtils.createAuthorityList("ROLE_USER"))
+                            SecurityContextHolder.getContext().setAuthentication(authentication)
+                        }
+
                     } else {
                         json.put("result", false)
                         json.put("code", "000.2")
@@ -473,9 +473,7 @@ class AutoPasswordController {
 
         def config = grailsApplication.config
 
-        String user_id = params.corp_user_id	//로그인 페이지의 AutoPassword 사용자 아이디 입력 필드
-
-        User user = User.findByUsername(user_id)
+        User user = springSecurityService.currentUser
 
 
         /****************************** 기능구현 종료**********************************/
@@ -489,7 +487,7 @@ class AutoPasswordController {
                     .add("corp_user_id", user.oid)
                     .add("corp_id", config.autoPassword.corpId)
                     .add("token", config.autoPassword.managerToken)
-                    .add("site_user_id", user_id);
+                    .add("site_user_id", user.username);
 
             String result = new HttpConnection().sendPost(url, params)
             json = new JSONObject(result)
@@ -499,18 +497,11 @@ class AutoPasswordController {
 
                 user.oid = null
                 user.save(flush: true)
-
-                render """<script>
-                        alert("해지 완료");
-                        location.href = "${request.contextPath}/user/auth";
-                        </script>"""
-            } else {
-                render """<script>
-                    alert("해지 시 오류가 발생하였습니다.");
-                    </script>"""
             }
 
         }
+
+        redirect controller: "user", action: "edit"
     }
 
     def joinStep() {
