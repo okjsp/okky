@@ -3,6 +3,7 @@ package net.okjsp
 import com.estorm.framework.util.HttpConnection
 import com.estorm.framework.util.HttpParameter
 import com.estorm.framework.util.OTPUtiles
+import grails.converters.JSON
 import grails.transaction.Transactional
 import net.okjsp.encoding.OldPasswordEncoder
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -25,12 +26,12 @@ class AutoPasswordController {
 
     def customUserDetailService
 
-    static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: "DELETE"]
+    def mailService
 
     def auth() {
         String oid = params.corp_user_id
 
-        def user = User.findByOid(oid)
+        def user = User.findByUsername(oid)
 
         if(user) {
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, oid,
@@ -38,7 +39,67 @@ class AutoPasswordController {
             SecurityContextHolder.getContext().setAuthentication(authentication)
         }
 
-        return user != null
+        def result = [result : user != null]
+
+        render result as JSON
+    }
+
+
+    def reset() {
+        render view: "reset"
+    }
+
+    def send(String email) {
+        if(!email || email.isEmpty()) {
+            flash.message = message(code: 'default.blank.message', args: [message(code: 'person.email.label', default: 'email')])
+            redirect action: 'reset'
+            return
+        }
+
+        def persons = Person.findAllByEmail(email)
+
+        if(!persons) {
+            flash.message = message(code: 'email.not.found.message')
+            redirect action: 'reset'
+            return
+        }
+
+        if(persons.size() > 1) {
+            flash.message = message(code: 'email.duplicate.found.message')
+            redirect action: 'reset'
+            return
+        }
+
+        def person = persons[0]
+
+        def user = User.findByPerson(person)
+
+        if(user.withdraw || user.accountLocked) {
+            flash.message = message(code: 'email.not.found.message')
+            redirect action: 'reset'
+            return
+        }
+
+        def key = "test"
+
+        mailService.sendMail {
+            async true
+            to user.person.email
+            subject message(code:'email.autoPassword.reset.subject')
+            body(view:'/email/resetAutoPassword', model: [user: user, email: user.person.email, key: key, grailsApplication: grailsApplication] )
+        }
+
+        session['confirmSecuredKey'] = key
+
+        redirect action: 'complete'
+    }
+
+    def resetStep() {
+        render view: "joinStep", [uid: params.uid]
+    }
+
+    def complete() {
+        render view: "resetComplete"
     }
 
     def autoCheck() {
@@ -482,6 +543,8 @@ class AutoPasswordController {
     def userOID() {
         def config = grailsApplication.config
 
+        def userId = params.uid
+
         String user_serviceKey = randomService.nextInteger(100000, 999999).toString() // formatter.format(new java.util.Date());			//정보 변경
 
         JSONObject json = null;
@@ -511,7 +574,7 @@ class AutoPasswordController {
             //AutoPassword Server에서 사용자 OID를 받아오면
             //사용자 Temp Table에 저장한다.
 
-            User user = springSecurityService.currentUser
+            User user = userId ? User.get(userId as Long) : springSecurityService.currentUser
 
             def autoPasswordOID = new AutoPasswordOID(user: user, oid: corp_user_id, userNo: user_serviceKey)
             autoPasswordOID.save(flush: true)

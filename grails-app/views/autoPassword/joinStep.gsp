@@ -122,7 +122,7 @@
 			var result = {result : false, msg : "Unknown Error", code : "000.1"};	
 			$.ajax({
 				type: "POST",
-				url: "${request.contextPath}/autoPassword/userOID",
+				url: "${request.contextPath}/autoPassword/userOID?uid=${uid}",
 				dataType : "json",
 				async : false,
 				success : function(data) {

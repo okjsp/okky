@@ -126,7 +126,7 @@
             </div>
         </div>
     </div>
-
+    <g:if test="${user.oid == null}">
     <div class="col-md-12 APW-setting">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -137,11 +137,12 @@
                     <p>비밀번호 관리가 힘들다면 <span class="APW-blue">AutoPassword™</span>를 사용하세요!</p>
                     <p>사용자 대신 스마트폰에서 일회용 비밀번호를 생성하고 입력해주는 <span class="APW-underline">비밀번호 대체 서비스</span>입니다.</p>
                 </div>
-                <button class="btn btn-primary" type="submit" id="btnAdd">설정하기</button>
+                <button class="btn btn-primary" type="button" id="btnAdd">설정하기</button>
             </div>
         </div>
     </div>
-
+    </g:if>
+    <g:if test="${user.oid != null}">
     <!-- AutoPassword 사용중일때 -->
     <div class="col-md-12 APW-setting">
         <div class="panel panel-default">
@@ -154,10 +155,11 @@
                     <p>스마트폰을 교체하거나 스마트폰에서 AutoPassword™ 애플리케이션을
                     재설치 했을 경우 사용 해지 후 애플리케이션에서 웹사이트 재등록이 필요합니다.</p>
                 </div>
-                <button class="btn btn-primary APW-disabled" type="submit" id="btnCansel">해지</button>
+                <button class="btn btn-primary APW-disabled" type="button" id="btnCancel">해지</button>
             </div>
         </div>
     </div>
+    </g:if>
 
 </div>
 
@@ -168,10 +170,10 @@
       $(function($) {
 
         $("[id=btnAdd]").click(function(e) {
-          location.href = "/okky/autoPassword/joinStep";
+          location.href = "${request.contextPath}/autoPassword/joinStep";
         });
         $("[id=btnCancel]").click(function(e) {
-          location.href = "./action/delUserAutopassword";
+          location.href = "${request.contextPath}/autoPassword/delUserAutopassword";
         });
 
       })
