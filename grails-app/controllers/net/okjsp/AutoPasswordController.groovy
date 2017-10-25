@@ -174,7 +174,7 @@ class AutoPasswordController {
                 .add("session_id", session.getId())
                 .add("sessionterm", (session_term  * 1000)+"")
                 .add("corp_code",  config.autoPassword.corpId)
-                .add("service_name", URLEncoder.encode("테스트로그인", "utf-8"))
+                .add("service_name", URLEncoder.encode("AutoPassword™", "utf-8"))
                 .add("auth_type", auth_type + "")
                 .add("sso", "N")
                 .add("ahead", "1")
