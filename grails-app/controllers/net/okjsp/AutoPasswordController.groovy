@@ -64,7 +64,7 @@ class AutoPasswordController {
             return
         }
 
-        def key = "test"
+        def key = user.id
 
         mailService.sendMail {
             async true
@@ -79,7 +79,7 @@ class AutoPasswordController {
     }
 
     def resetStep() {
-        render view: "joinStep", [uid: params.uid]
+        render view: "joinStep", model : [uid: params.uid]
     }
 
     def complete() {
