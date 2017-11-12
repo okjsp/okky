@@ -60,7 +60,7 @@ class BannerController {
 
         MultipartFile imageFile = request.getFile("imageFile")
 
-        if(!imageFile.empty) {
+        if(imageFile && !imageFile.empty) {
             def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
             def mil = System.currentTimeMillis()
             imageFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/banner/", "${mil}${ext}"))
@@ -97,7 +97,7 @@ class BannerController {
 
         MultipartFile imageFile = request.getFile("imageFile")
 
-        if(!imageFile.empty) {
+        if(imageFile && !imageFile.empty) {
             def ext = imageFile.originalFilename.substring(imageFile.originalFilename.lastIndexOf('.'));
             def mil = System.currentTimeMillis()
             imageFile.transferTo(new java.io.File("${grailsApplication.config.grails.filePath}/banner/", "${mil}${ext}"))

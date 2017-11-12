@@ -34,27 +34,63 @@ class BannerTagLib {
 
         if(banner) {
 
-            def target = """target=\"${banner.target}\""""
-            switch (bannerType) {
+                def target = """target=\"${banner.target}\""""
+                switch (bannerType) {
 
-                case BannerType.MAIN_RIGHT :
-                case BannerType.SUB_RIGHT :
-                    bannerHTML = """<div class="right-banner">
-                                    <a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
-                                </div>"""
+                    case BannerType.MAIN_RIGHT_TOP :
+                    case BannerType.SUB_RIGHT_TOP :
+                        if(banner.contentType == BannerContentType.TAG) {
+                            if(device.isMobile() && banner.tagMobile) {
+                                bannerHTML = """<div class="right-banner">${banner.tagMobile}</div>"""
+                            } else if(banner.tagDesktop) {
+                                bannerHTML = """<div class="right-banner">${banner.tagDesktop}</div>"""
+                            }
+                        } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
+                            bannerHTML = """<div class="right-banner">
+                                        <a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" style="width:160px;"/></a>
+                                    </div>"""
+                        }
+                        break
+                    case BannerType.MAIN :
+                    case BannerType.JOBS_TOP :
+                        if(banner.contentType == BannerContentType.TAG) {
+                            if(device.isMobile() && banner.tagMobile) {
+                                bannerHTML = """<div class="main-banner-wrapper"><div class="main-banner">${banner.tagMobile}</div></div>"""
+                            } else if(banner.tagDesktop) {
+                                bannerHTML = """<div class="main-banner-wrapper"><div class="main-banner">${banner.tagDesktop}</div></div>"""
+                            }
+                        } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
+                            bannerHTML = """<div class="main-banner-wrapper">
+                                            <div class="main-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
+                                        </div>"""
+                        }
 
-                    break
-                case BannerType.MAIN :
-                case BannerType.JOBS_TOP :
-                    bannerHTML = """<div class="main-banner-wrapper">
-                                        <div class="main-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
-                                    </div>"""
-                    break
-                case BannerType.CONTENT :
-                    bannerHTML = """<div class="sub-banner-wrapper">
-                                        <div class="sub-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
-                                    </div>"""
-                    break
+                        break
+                    case BannerType.CONTENT :
+                        if(banner.contentType == BannerContentType.TAG) {
+                            if(device.isMobile() && banner.tagMobile) {
+                                bannerHTML = """<div class="sub-banner-wrapper"><div class="sub-banner">${banner.tagMobile}</div></div>"""
+                            } else if(banner.tagDesktop) {
+                                bannerHTML = """<div class="sub-banner-wrapper"><div class="sub-banner">${banner.tagDesktop}</div></div>"""
+                            }
+                        } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
+                            bannerHTML = """<div class="sub-banner-wrapper">
+                                            <div class="sub-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>
+                                        </div>"""
+                        }
+                        break
+                    case BannerType.MAIN_RIGHT_BOTTOM :
+                    case BannerType.SUB_RIGHT_BOTTOM :
+                        if(banner.contentType == BannerContentType.TAG) {
+                            if(device.isMobile() && banner.tagMobile) {
+                                bannerHTML = """<div class="google-ad">${banner.tagMobile}</div>"""
+                            } else if(banner.tagDesktop) {
+                                bannerHTML = """<div class="google-ad">${banner.tagDesktop}</div>"""
+                            }
+                        } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
+                            bannerHTML = """<div class="google-ad"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>"""
+                        }
+
             }
         } else {
 
@@ -62,7 +98,7 @@ class BannerTagLib {
                 case BannerType.MAIN:
                 case BannerType.CONTENT:
                     if(!device.isMobile()) {
-                        bannerHTML += """
+                        bannerHTML = """
                         <div class="sub-banner-wrapper">
                         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- okkyad_728x90 -->
@@ -78,7 +114,7 @@ class BannerTagLib {
                     break
                 case BannerType.MAIN_BLOCK:
                     if(!device.isMobile()) {
-                        bannerHTML += """
+                        bannerHTML = """
                             <div class="main-block">
                             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                             <!-- okkyad_250x250 -->
@@ -92,36 +128,36 @@ class BannerTagLib {
                             </div>
                           """
                     }
-            }
-        }
+                    break
+                case BannerType.MAIN_RIGHT_BOTTOM:
+                    if(device.isMobile()) {
+                        bannerHTML = """
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <script>
+                              (adsbygoogle = window.adsbygoogle || []).push({
+                                google_ad_client: "ca-pub-8103607814406874",
+                                enable_page_level_ads: true
+                              });
+                            </script>
+                            """
+                    }
 
-        if(bannerType == BannerType.MAIN_RIGHT || bannerType == BannerType.SUB_RIGHT) {
+                case BannerType.SUB_RIGHT_BOTTOM:
 
-            if(!device.isMobile()) {
-
-                bannerHTML += """<div class="google-ad">
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- okjspad_160x600 -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:160px;height:600px"
-                             data-ad-client="ca-pub-8103607814406874"
-                             data-ad-slot="6573675943"></ins>
-                        <script>
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>"""
-
-            } else if(bannerType == BannerType.MAIN_RIGHT) {
-
-                bannerHTML += """
-                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                    <script>
-                      (adsbygoogle = window.adsbygoogle || []).push({
-                        google_ad_client: "ca-pub-8103607814406874",
-                        enable_page_level_ads: true
-                      });
-                    </script>
-                    """
+                    if(!device.isMobile()) {
+                        bannerHTML = """<div class="google-ad">
+                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- okjspad_160x600 -->
+                            <ins class="adsbygoogle"
+                                 style="display:inline-block;width:160px;height:600px"
+                                 data-ad-client="ca-pub-8103607814406874"
+                                 data-ad-slot="6573675943"></ins>
+                            <script>
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                        </div>"""
+                    }
+                    break
             }
         }
 

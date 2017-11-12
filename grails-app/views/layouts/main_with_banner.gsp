@@ -31,16 +31,8 @@
                 <g:layoutBody/>
                 <div class="right-banner-wrapper">
 
-                    <div class="right-banner">
-                        <ins class='dcmads' style='display:inline-block;width:160px;height:600px'
-                                  data-dcm-placement='N129002.3108127OKKY/B20038948.208107030'
-                                  data-dcm-rendering-mode='script'
-                                  data-dcm-https-only
-                                  data-dcm-resettable-device-id=''
-                                  data-dcm-app-id=''>
-                            <script src='https://www.googletagservices.com/dcm/dcmads.js'></script>
-                        </ins>
-                    </div>
+                    <g:banner type="${isIndex ? "MAIN_RIGHT_TOP" : "SUB_RIGHT_TOP"}" />
+                    <g:banner type="${isIndex ? "MAIN_RIGHT_BOTTOM" : "SUB_RIGHT_BOTTOM"}" />
 
                 </div>
                 <div id="footer" class="footer" role="contentinfo">

@@ -94,6 +94,15 @@
 					
 				</li>
 				</g:if>
+
+				<g:if test="${banner?.contentType}">
+					<li class="fieldcontain">
+						<span id="contentType-label" class="property-label"><g:message code="banner.contentType.label" default="Content Type" /></span>
+
+						<span class="property-value" aria-labelledby="contentType-label"><g:fieldValue bean="${banner}" field="contentType"/></span>
+
+					</li>
+				</g:if>
 			
 				<g:if test="${banner?.url}">
 				<li class="fieldcontain">
@@ -102,6 +111,24 @@
 						<span class="property-value" aria-labelledby="url-label"><g:fieldValue bean="${banner}" field="url"/></span>
 					
 				</li>
+				</g:if>
+
+				<g:if test="${banner?.tagDesktop}">
+					<li class="fieldcontain">
+						<span id="tagDesktop-label" class="property-label"><g:message code="banner.tagDesktop.label" default="tagDesktop" /></span>
+
+						<span class="property-value" aria-labelledby="tagDesktop-label"><g:textArea name="tagDesktop" value="${banner?.tagDesktop}" readonly="true"/></span>
+
+					</li>
+				</g:if>
+
+				<g:if test="${banner?.tagMobile}">
+					<li class="fieldcontain">
+						<span id="tagMobile-label" class="property-label"><g:message code="banner.tagMobile.label" default="tagMobile" /></span>
+
+						<span class="property-value" aria-labelledby="tagMobile-label"><g:textArea name="tagMobile" value="${banner?.tagMobile}" readonly="true"/></span>
+
+					</li>
 				</g:if>
 			
 				<g:if test="${banner?.visible}">

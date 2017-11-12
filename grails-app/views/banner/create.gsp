@@ -25,7 +25,7 @@
 				</g:eachError>
 			</ul>
 			</g:hasErrors>
-			<g:form url="[resource:banner, action:'save']" enctype="multipart/form-data" >
+			<g:form url="[resource:banner, action:'save']" enctype="multipart/form-data" id="bannerForm">
 				<fieldset class="form">
 					<g:render template="form"/>
 				</fieldset>
@@ -33,6 +33,7 @@
 					<g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
 				</fieldset>
 			</g:form>
+
 		</div>
 	</body>
 </html>

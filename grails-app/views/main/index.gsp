@@ -8,19 +8,7 @@
 	<body>
         <g:sidebar/>
 
-        %{--<g:banner type="MAIN" />--}%
-        <div class="main-banner-wrapper">
-            <div class="main-banner">
-                <ins class='dcmads' style='display:inline-block;width:805px;height:150px'
-                      data-dcm-placement='N129002.3108127OKKY/B20038948.208106754'
-                      data-dcm-rendering-mode='script'
-                      data-dcm-https-only
-                      data-dcm-resettable-device-id=''
-                      data-dcm-app-id=''>
-                    <script src='https://www.googletagservices.com/dcm/dcmads.js'></script>
-                </ins>
-            </div>
-        </div>
+        <g:banner type="MAIN" />
 
         <div id="index" class="content scaffold-list clearfix" role="main">
             <div class="col-sm-6 main-block-left">
