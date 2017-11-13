@@ -45,7 +45,7 @@ class Article {
 
     static belongsTo = [content: Content]
 
-    static hasMany = [tags : Tag, notes: Content]
+    static hasMany = [tags : Tag, notes: Content, articleNotices: ArticleNotice]
 
     static transients = ['disabled', 'recruit', 'ignore']
 

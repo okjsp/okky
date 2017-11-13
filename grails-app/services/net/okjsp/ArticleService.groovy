@@ -270,12 +270,12 @@ class ArticleService {
 
         Category parentCategory = category.parent ?: category
 
-        def articleNotices = ArticleNotice.findByCategory(parentCategory)
+        def articleNotices = ArticleNotice.findAllByCategory(parentCategory)
 
         if(articleNotices) {
             notices = Article.withCriteria() {
                 eq('enabled', true)
-                'in'('id', articleNotices*.id)
+                'in'('id', articleNotices*.articleId)
                 order('id', 'desc')
             }.findAll()
         }
