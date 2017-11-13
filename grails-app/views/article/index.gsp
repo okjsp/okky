@@ -166,11 +166,22 @@
             </div>
 
 
-        <g:if test="${choiceJobs && choiceJobs?.size() > 0}">
+        <g:if test="${(choiceJobs && choiceJobs?.size() > 0) || (notices && notices?.size() > 0)}">
             <div class="okkys-choice">
                 <div class="panel panel-default">
 
                     <!-- Table -->
+
+                    <ul class="list-group">
+                        <g:each in="${notices}" status="i" var="article">
+                            <g:if test="${article.isRecruit}">
+                                <g:render template="recruit" model="[article : article]"/>
+                            </g:if>
+                            <g:else>
+                                <g:render template="article" model="[article : article]"/>
+                            </g:else>
+                        </g:each>
+                    </ul>
 
                     <ul class="list-group">
                         <g:each in="${choiceJobs}" status="i" var="article">
