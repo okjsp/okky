@@ -127,7 +127,7 @@ if (typeof jQuery !== 'undefined') {
 
             };
         };
-
+        
         $.extend($.summernote.options, {
             lang: 'ko-KR',
             height: 300,                  // set editable area's height
@@ -135,6 +135,7 @@ if (typeof jQuery !== 'undefined') {
             placeholder: '내용을 입력해 주세요.', // set editable area's placeholder text
             prettifyHtml: false,
             disableLinkTarget: true,
+            shortcuts : false,
             // toolbar
             toolbar: [
                 ['style', ['style']],
