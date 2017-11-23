@@ -42,7 +42,7 @@ class BannerTagLib {
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && banner.tagMobile) {
                                 bannerHTML = """<div class="right-banner">${banner.tagMobile}</div>"""
-                            } else if(banner.tagDesktop) {
+                            } else if(!device.isMobile() && banner.tagDesktop) {
                                 bannerHTML = """<div class="right-banner">${banner.tagDesktop}</div>"""
                             }
                         } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
@@ -56,7 +56,7 @@ class BannerTagLib {
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && banner.tagMobile) {
                                 bannerHTML = """<div class="main-banner-wrapper"><div class="main-banner">${banner.tagMobile}</div></div>"""
-                            } else if(banner.tagDesktop) {
+                            } else if(device.isMobile() && banner.tagDesktop) {
                                 bannerHTML = """<div class="main-banner-wrapper"><div class="main-banner">${banner.tagDesktop}</div></div>"""
                             }
                         } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
@@ -70,7 +70,7 @@ class BannerTagLib {
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && banner.tagMobile) {
                                 bannerHTML = """<div class="sub-banner-wrapper"><div class="sub-banner">${banner.tagMobile}</div></div>"""
-                            } else if(banner.tagDesktop) {
+                            } else if(device.isMobile() && banner.tagDesktop) {
                                 bannerHTML = """<div class="sub-banner-wrapper"><div class="sub-banner">${banner.tagDesktop}</div></div>"""
                             }
                         } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
@@ -82,7 +82,7 @@ class BannerTagLib {
                     case BannerType.MAIN_RIGHT_BOTTOM :
                     case BannerType.SUB_RIGHT_BOTTOM :
                         if(banner.contentType == BannerContentType.TAG) {
-                            if(device.isMobile() && banner.tagMobile) {
+                            if(device.isMobile() && device.isMobile() && banner.tagMobile) {
                                 bannerHTML = """<div class="google-ad">${banner.tagMobile}</div>"""
                             } else if(banner.tagDesktop) {
                                 bannerHTML = """<div class="google-ad">${banner.tagDesktop}</div>"""
