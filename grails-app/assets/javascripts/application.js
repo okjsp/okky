@@ -135,7 +135,7 @@ if (typeof jQuery !== 'undefined') {
             placeholder: '내용을 입력해 주세요.', // set editable area's placeholder text
             prettifyHtml: false,
             disableLinkTarget: true,
-            shortcuts : false,
+            shortcuts : !isMobile(),
             // toolbar
             toolbar: [
                 ['style', ['style']],
