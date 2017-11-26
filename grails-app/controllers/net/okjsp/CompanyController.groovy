@@ -113,14 +113,6 @@ class CompanyController {
         person.company = company
         person.save flush:true
 
-
-        mailService.sendMail {
-            async true
-            to "jwkim@ebrain.kr", "jwjung@ebrain.kr" , "btjung@ebrain.kr"
-            subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
-            body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
-        }
-
         request.withFormat {
             form multipartForm {
                 flash.tel = companyInfo.tel
