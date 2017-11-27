@@ -88,7 +88,11 @@ class BannerTagLib {
                                 bannerHTML = """<div class="google-ad">${banner.tagDesktop}</div>"""
                             }
                         } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
-                            bannerHTML = """<div class="google-ad"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>"""
+                            if(!device.isMobile()) {
+                                bannerHTML = """<div class="google-ad"><a href="${request.contextPath}/banner/stats/${
+                                    banner.id
+                                }" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>"""
+                            }
                         }
 
             }

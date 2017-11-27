@@ -263,4 +263,24 @@ class ArticleService {
         }
     }
 
+
+    def getNotices(Category category) {
+
+        def notices
+
+        Category parentCategory = category.parent ?: category
+
+        def articleNotices = ArticleNotice.findAllByCategory(parentCategory)
+
+        if(articleNotices) {
+            notices = Article.withCriteria() {
+                eq('enabled', true)
+                'in'('id', articleNotices*.articleId)
+                order('id', 'desc')
+            }.findAll()
+        }
+
+        notices
+
+    }
 }

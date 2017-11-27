@@ -66,6 +66,8 @@ class ArticleController {
             }
         }
 
+        def notices = articleService.getNotices(category.parent ?: category)
+
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
         
@@ -135,7 +137,7 @@ class ArticleController {
             }
         }
 
-        respond articles, model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs]
+        respond articles, model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs, notices: notices]
     }
 
 
