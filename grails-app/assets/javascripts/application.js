@@ -135,17 +135,25 @@ if (typeof jQuery !== 'undefined') {
             placeholder: '내용을 입력해 주세요.', // set editable area's placeholder text
             prettifyHtml: false,
             disableLinkTarget: true,
-            shortcuts : !isMobile(),
+            shortcuts : true,
             // toolbar
-            toolbar: [
+            toolbar: !isMobile() ? [
                 ['style', ['style']],
                 ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'table']],
                 ['insert', ['codeblock', 'link', 'picture', 'video', 'hr']],
                 ['view', ['fullscreen', 'codeview', 'help']]
+            ]:[
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph', 'table']],
+                ['insert', ['codeblock', 'link', 'picture', 'video', 'hr']],
+                ['view', ['fullscreen', 'codeview', 'help']]
             ]
         });
+        
 
 	})(jQuery);
 }
