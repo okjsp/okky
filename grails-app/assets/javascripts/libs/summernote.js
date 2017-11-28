@@ -5830,7 +5830,7 @@
      */
     this.attach = function (layoutInfo, options) {
       // handlers for editable
-      if (options.shortcuts) {
+      if (options.shortcuts && !isMobile()) {
         this.bindKeyMap(layoutInfo, options.keyMap[agent.isMac ? 'mac' : 'pc']);
       }
       layoutInfo.editable().on('mousedown', hMousedown);
