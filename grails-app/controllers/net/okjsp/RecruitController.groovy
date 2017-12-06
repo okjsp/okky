@@ -122,6 +122,10 @@ class RecruitController {
             redirect(url: '/company/create')
             return
         }
+        if(!person.company) {
+            redirect(url: '/company/create')
+            return
+        }
 
         if(!person.company.enabled) {
             redirect(url: '/company/wait')

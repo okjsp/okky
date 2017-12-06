@@ -53,16 +53,22 @@
                 <div class="panel-body">
                     <g:form id="article-form" url="[resource:article, uri: '/recruits/save']" useToken="true" class="article-form" role="form" onsubmit="return postForm()">
                         <fieldset class="form">
-                            <g:render template="form"/>
 
-                        <g:if test="${recruit.jobType}">
+                        <g:if test="${params.agree != 'Y'}">
+                            <g:render template="agree"/>
+                        </g:if>
+                        <g:elseif test="${!recruit.jobType && params.agree == 'Y'}">
+                            <g:render template="jobType"/>
+                        </g:elseif>
+                        <g:elseif test="${recruit.jobType && params.agree == 'Y'}">
+                            <g:render template="form"/>
                             <div class="nav" role="navigation">
                                 <fieldset class="buttons">
                                     <g:link uri="/recruits" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')"><g:message code="default.button.cancel.label" default="Cancel"/></g:link>
                                     <g:submitButton name="create" class="create btn btn-success btn-wide pull-right" value="${message(code: 'default.button.create.label', default: 'Create')}" />
                                 </fieldset>
                             </div>
-                        </g:if>
+                        </g:elseif>
                         </fieldset>
                     </g:form>
                 </div>
