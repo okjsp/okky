@@ -39,7 +39,7 @@
 
                         <g:passwordField name="password" class="form-control input-sm" placeholder="${message(code: "user.password.label", default: '비밀번호')}" required="" value="" />
 
-                        <g:textField name="person.email" class="form-control input-sm" placeholder="${message(code: "person.email.label", default: '이메일')}" required="" value="${userInstance?.person?.email}" readonly="readonly"/>
+                        <g:textField name="person.email" class="form-control input-sm" placeholder="${message(code: "person.email.label", default: '이메일')}" required="" value="${userInstance?.person?.email}"/>
 
                         <g:textField name="person.fullName" class="form-control input-sm" placeholder="${message(code: "person.fullName.label", default: '이름')}" required="" value="${userInstance?.person?.fullName}"/>
 
