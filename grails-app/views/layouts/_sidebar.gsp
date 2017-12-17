@@ -120,6 +120,7 @@
     <ul class="nav">
         <li>
             <g:link uri="/user/info/35324">∙ eBrainJobs</g:link>
+            <g:link uri="/articles/recruit?filter.jobType=FULLTIME">∙ 구인 <span class="label label-success label">정규직</span> </g:link>
         </li>
     </ul>
     </g:if>

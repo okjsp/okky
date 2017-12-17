@@ -34,8 +34,6 @@ class RecruitController {
         redirect uri: "/articles/recruit"
     }
 
-
-
     def tagged(String tag, Integer max) {
         params.max = Math.min(max ?: 20, 100)
         params.sort = params.sort ?: 'id'
@@ -141,12 +139,13 @@ class RecruitController {
 
         def categories
         def goExternalLink = false
+        def parentCategories
 
         if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
             categories = Category.findAllByWritableAndEnabled(true, true)
         } else {
             goExternalLink = category.writeByExternalLink
-            categories = category.children ?: category.parent?.children ?: [category]
+            categories = Category.findByParentAndWritableAndEnabled(category?.parent ?: category, true, true)
             params.anonymity = category?.anonymity ?: false
         }
 
