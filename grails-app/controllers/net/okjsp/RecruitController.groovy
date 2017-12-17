@@ -481,7 +481,9 @@ class RecruitController {
     @Transactional
     def addNote(Long id) {
 
-        Article article = Article.get(id)
+        Recruit recruit = Recruit.get(id)
+
+        Article article = recruit.article
 
         try {
 
