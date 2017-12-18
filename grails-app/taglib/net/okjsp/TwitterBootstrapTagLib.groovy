@@ -61,6 +61,14 @@ class TwitterBootstrapTagLib {
         if (params.order) linkParams.order = params.order
         if (params.query) linkParams.query = params.query
 
+        //TODO 다중 선택 검색을 위한 조취 필요
+        if (params['filter.act']) linkParams['filter.act'] = params['filter.act']
+        if (params['filter.group']) linkParams['filter.group'] = params['filter.group']
+        if (params['filter.jobDuty']) linkParams['filter.jobDuty'] = params['filter.jobDuty']
+        if (params['filter.minCareer']) linkParams['filter.minCareer'] = params['filter.minCareer']
+        if (params['filter.maxCareer']) linkParams['filter.maxCareer'] = params['filter.maxCareer']
+        if (params['filter.jobType']) linkParams['filter.jobType'] = params['filter.jobType']
+
         def linkTagAttrs = [action:action]
         if (attrs.namespace) {
             linkTagAttrs.namespace = attrs.namespace
