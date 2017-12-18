@@ -234,7 +234,7 @@ class ArticleController {
             categories = Category.findAllByWritableAndEnabled(true, true)
         } else {
             goExternalLink = category.writeByExternalLink
-            categories = Category.findAllByParentAndWritableAndEnabled(category?.parent ?: category, true, true)
+            categories = Category.findAllByParentAndWritableAndEnabled(category?.parent ?: category, true, true) ?: [category]
             params.anonymity = category?.anonymity ?: false
         }
 
