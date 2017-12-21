@@ -91,7 +91,7 @@
             </g:else>
         </a>
 
-            <div class="avatar-info"><a class="nickname" href="${request.contextPath}/company/info/${article.recruit?.company?.id}">${article.recruit?.company?.name}</a>
+            <div class="avatar-info"><a class="nickname" href="${request.contextPath}/company/info/${article.recruit?.company?.id}" title="${article.recruit?.company?.name}">${article.recruit?.company?.name}</a>
 
                 <div class="date-created"><span class="timeago"
                                                 title="${article.dateCreated}">${article.dateCreated}</span></div></div>

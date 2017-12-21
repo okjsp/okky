@@ -69,9 +69,9 @@ class ArticleTagLib {
             out << """<div class="avatar-info">"""
 
             if(avatar.id)
-                out << """<a class="nickname" href="${request.contextPath}/user/info/${avatar.id}">${avatar.nickname}</a> """
+                out << """<a class="nickname" href="${request.contextPath}/user/info/${avatar.id}"  title="${avatar.nickname}">${avatar.nickname}</a> """
             else
-                out << """<span class="nickname">${avatar.nickname}</span> """
+                out << """<span class="nickname" title="${avatar.nickname}">${avatar.nickname}</span> """
 
             if (attrs.dateCreated != null) {
                 if(avatar.id)
