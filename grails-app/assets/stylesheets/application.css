@@ -1119,7 +1119,7 @@ blockquote {
 
 .list-title-wrapper {
     float: left;
-    width: 480px;
+    width: 450px;
     margin-right: 10px;
 }
 
@@ -1153,7 +1153,7 @@ blockquote {
 
 .list-group-item-author {
     margin-top: 2px;
-    width: 150px;
+    width: 180px;
     float: right;
 }
 
@@ -1417,7 +1417,7 @@ blockquote {
 .avatar-list .nickname {
     font-size: 12px;
     display: inline-block;
-    max-width: 75px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: keep-all;
