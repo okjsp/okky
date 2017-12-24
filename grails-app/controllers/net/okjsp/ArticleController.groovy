@@ -54,7 +54,7 @@ class ArticleController {
                 gt('dateCreated', diff)
                 order('id', 'desc')
 
-                maxResults(3)
+                maxResults(5)
             }.findAll()
 
 
