@@ -13,6 +13,7 @@ class Category implements Serializable {
     boolean writable = true
     boolean enabled = true
     boolean isURL = false
+    boolean adminOnly = false
     Integer level = 1
     Integer sortOrder = 0
 
@@ -45,6 +46,7 @@ class Category implements Serializable {
         anonymity nullable: true
         writeByExternalLink nullable: true
         externalLink nullable: true
+        adminOnly nullable: true
     }
 
     static mapping = {

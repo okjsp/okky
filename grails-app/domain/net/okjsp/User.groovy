@@ -35,7 +35,7 @@ class User {
 	static transients = ['springSecurityService']
 
 	static constraints = {
-		username(blank: false, unique: true, size: 5..15, matches: /^[a-z0-9]*[a-z]+[a-z0-9]*$/, validator: {
+		username(blank: false, unique: true, size: 4..15, matches: /[a-z0-9]{4,15}/, validator: {
             if(disAllowUsernameFilter(it)) return ['default.invalid.disallow.message']
         })
 		password blank: false, minSize: 6, matches: /^(?=.*[0-9])(?=.*[a-zA-Z]).*$/
