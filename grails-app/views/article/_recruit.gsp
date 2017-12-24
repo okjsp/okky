@@ -16,7 +16,7 @@
         <div class="list-tag clearfix">
             <span class="list-group-item-text article-id">#${article.id}</span>
             <g:categoryLabel category="${article.category}" />
-            <g:link href="/articles/recruit?filter.jobType=${article.recruit?.jobType}"><span class="label ${article.recruit?.jobType == JobType.valueOf('FULLTIME') ? 'label-success' : 'label-primary'}"><g:message
+            <g:link uri="/articles/recruit" params="['filter.jobType': article.recruit?.jobType]"><span class="label ${article.recruit?.jobType == JobType.valueOf('FULLTIME') ? 'label-success' : 'label-primary'}"><g:message
                 code="recruit.jobType.${article.recruit?.jobType}"/></span></g:link>
             <span>${article.recruit?.city} ${article.recruit?.district}</span>
         </div>
