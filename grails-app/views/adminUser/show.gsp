@@ -74,15 +74,13 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${user?.accountLocked}">
 				<li class="fieldcontain">
 					<span id="accountLocked-label" class="property-label"><g:message code="user.accountLocked.label" default="Account Locked" /></span>
 					
 						<span class="property-value" aria-labelledby="accountLocked-label"><g:formatBoolean boolean="${user?.accountLocked}" /></span>
 					
 				</li>
-				</g:if>
-			
+
 				<g:if test="${user?.passwordExpired}">
 				<li class="fieldcontain">
 					<span id="passwordExpired-label" class="property-label"><g:message code="user.passwordExpired.label" default="Password Expired" /></span>
@@ -136,7 +134,7 @@
 					
 				</li>
 				</g:if>
-			
+
 				<g:if test="${user?.dateCreated}">
 				<li class="fieldcontain">
 					<span id="dateCreated-label" class="property-label"><g:message code="user.dateCreated.label" default="Date Created" /></span>
@@ -188,11 +186,11 @@
 			
 			</ol>
 			<fieldset class="buttons">
-				<g:if test="${user.enabled}">
-					<g:link class="delete" uri="/_admin/user/disable/${user.id}" ><g:message code="company.button.disable.label" default="Disable" onClick="return confirm('해당 회원 계정을 잠금 하시겠습니까?');"/></g:link>
+				<g:if test="${user.accountLocked}">
+					<g:link class="save" uri="/_admin/user/enable/${user.id}"  onClick="return confirm('해당 회원 계정을 차단 해제 하시겠습니까?');"><g:message code="user.button.enable.label" default="Enable"  /></g:link>
 				</g:if>
 				<g:else>
-					<g:link class="save" uri="/_admin/user/enable/${user.id}"  onClick="return confirm('해당 회원 계정을 잠금 해제 하시겠습니까?');"><g:message code="company.button.enable.label" default="Enable"  /></g:link>
+					<g:link class="delete" uri="/_admin/user/disable/${user.id}" onClick="return confirm('해당 회원 계정을 차단 하시겠습니까?');"><g:message code="user.button.disable.label" default="Disable"/></g:link>
 				</g:else>
 			</fieldset>
 		</div>

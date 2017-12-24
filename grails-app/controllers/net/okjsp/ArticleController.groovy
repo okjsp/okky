@@ -193,7 +193,7 @@ class ArticleController {
             scrapped = Scrap.findByArticleAndAvatar(article, avatar)
         }
 
-        def notes = Content.findAllByArticleAndType(article, ContentType.NOTE)
+        def notes = Content.findAllByArticleAndTypeAndEnabled(article, ContentType.NOTE, true)
 
         def contentBanners = Banner.where {
             type == BannerType.CONTENT && visible == true

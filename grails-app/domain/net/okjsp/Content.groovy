@@ -20,6 +20,8 @@ class Content {
     String aNickName
     String createIp = null
 
+    boolean enabled = true
+
     Date dateCreated
     Date lastUpdated
 
@@ -44,6 +46,7 @@ class Content {
         article nullable: true
         aNickName nullable: true
         createIp nullable: true
+        enabled nullable: true
         text validator: { val ->
             def spam = SpamWord.findAll().find { word ->
                 val.contains(word.text)

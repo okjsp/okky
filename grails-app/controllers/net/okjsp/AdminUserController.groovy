@@ -118,6 +118,60 @@ class AdminUserController {
         }
     }
 
+    @Transactional
+    def disable(User user) {
+
+        if (user == null) {
+            notFound()
+            return
+        }
+
+        user.accountLocked = true
+        user.enabled = false
+        user.accountExpired = true
+
+        Article.executeUpdate("update Article set enabled = false where author = :author", [author : user.avatar])
+
+        Content.executeUpdate("update Content set enabled = false where author = :author", [author : user.avatar])
+
+        user.save(flush: true)
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'User.label', default: 'User'), user.id])
+                redirect user
+            }
+            '*'{ render status: NO_CONTENT }
+        }
+    }
+
+    @Transactional
+    def enable(User user) {
+
+        if (user == null) {
+            notFound()
+            return
+        }
+
+        user.accountLocked = false
+        user.enabled = true
+        user.accountExpired = false
+
+        Article.executeUpdate("update Article set enabled = true where author = :author", [author : user.avatar])
+
+        Content.executeUpdate("update Content set enabled = true where author = :author", [author : user.avatar])
+
+        user.save(flush: true)
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'User.label', default: 'User'), user.id])
+                redirect user
+            }
+            '*'{ render status: NO_CONTENT }
+        }
+    }
+
     protected void notFound() {
         request.withFormat {
             form multipartForm {

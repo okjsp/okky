@@ -45,7 +45,7 @@
 
 						<g:sortableColumn property="enabled" title="${message(code: 'user.enabled.label', default: 'Enabled')}" />
 
-						<g:sortableColumn property="accountLocked" title="${message(code: 'user.accountExpired.label', default: 'Account Expired')}" />
+						<g:sortableColumn property="accountLocked" title="${message(code: 'user.accountLocked.label', default: 'Account Locked')}" />
 
 						<g:sortableColumn property="dateCreated" title="${message(code: 'user.dateCreated.label', default: 'Date Created')}" />
 
@@ -63,7 +63,7 @@
 
 						<td><g:formatBoolean boolean="${user.enabled}" /></td>
 
-						<td><g:formatBoolean boolean="${user.accountExpired}" /></td>
+						<td><g:formatBoolean boolean="${user.accountLocked}" /></td>
 
 						<td>${fieldValue(bean: user, field: "dateCreated")}</td>
 
