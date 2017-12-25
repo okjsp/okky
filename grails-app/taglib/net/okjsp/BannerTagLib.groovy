@@ -101,6 +101,7 @@ class BannerTagLib {
             switch (bannerType) {
                 case BannerType.MAIN:
                 case BannerType.CONTENT:
+                case BannerType.JOBS_TOP :
                     if(!device.isMobile()) {
                         bannerHTML = """
                         <div class="sub-banner-wrapper">
