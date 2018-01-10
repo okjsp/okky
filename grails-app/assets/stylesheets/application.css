@@ -241,8 +241,9 @@ blockquote {
 }
 
 .main-banner {
-    width: 805px;
+    width: 728px;
     max-height: 150px;
+    margin: auto;
 }
 
 .main-banner  img {
@@ -251,7 +252,7 @@ blockquote {
 }
 
 .sub-banner-wrapper {
-    width: 805px;
+    width: 728px;
     margin-bottom: 20px;
     text-align: center;
 }

@@ -102,20 +102,19 @@ class BannerTagLib {
                 case BannerType.MAIN:
                 case BannerType.CONTENT:
                 case BannerType.JOBS_TOP :
-                    if(!device.isMobile()) {
-                        bannerHTML = """
-                        <div class="sub-banner-wrapper">
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                        <!-- okkyad_728x90 -->
-                        <ins class="adsbygoogle"
-                             style="display:inline-block;width:728px;height:90px"
-                             data-ad-client="ca-pub-8103607814406874"
-                             data-ad-slot="4317461060"></ins>
-                        <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                        </div>"""
-                    }
+                    bannerHTML = """
+                    <div class="main-banner-wrapper">
+                    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <!-- 728-90_Ressponsive -->
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-8103607814406874"
+                         data-ad-slot="8622179990"
+                         data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                    </div>"""
                     break
                 case BannerType.MAIN_BLOCK:
                     if(!device.isMobile()) {
