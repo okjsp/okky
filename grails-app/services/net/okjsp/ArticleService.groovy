@@ -2,7 +2,6 @@ package net.okjsp
 
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.transaction.Transactional
-import net.okjsp.diff_match_patch
 
 @Transactional
 class ArticleService {
@@ -81,6 +80,8 @@ class ArticleService {
         activityService.removeAllByArticle(article)
 
         notificationService.removeFromArticle(article)
+
+        removeNotices(article)
 
         Scrap.where { eq('article', article) }.deleteAll()
 
@@ -268,9 +269,13 @@ class ArticleService {
 
         def notices
 
-        Category parentCategory = category.parent ?: category
+        Category parentCategory = category.parent ?: null
 
-        def articleNotices = ArticleNotice.findAllByCategory(parentCategory)
+        def articleNotices = ArticleNotice.findAllByCategory(category)
+
+        if(parentCategory) {
+            articleNotices += ArticleNotice.findAllByCategory(parentCategory)
+        }
 
         if(articleNotices) {
             notices = Article.withCriteria() {
@@ -282,5 +287,30 @@ class ArticleService {
 
         notices
 
+    }
+
+    def saveNotices(Article article, User user, def categories) {
+
+
+        categories.each { String it ->
+            def category =  Category.get(it)
+
+            def existNotice = ArticleNotice.findAllByArticleAndCategory(article, category)
+
+            if(!existNotice) {
+                def articleNotice = new ArticleNotice(article: article, user: user, category:category)
+                articleNotice.save(failOnError: true)
+            }
+        }
+
+
+    }
+
+    def removeNotices(Article article) {
+        def query = ArticleNotice.where {
+            eq('article', article)
+        }
+
+        query.deleteAll()
     }
 }

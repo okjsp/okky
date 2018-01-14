@@ -35,8 +35,20 @@
             </div>
         </div>
 
-        <div class="form-group ${hasErrors(bean: article, field: 'enabled', 'has-error')} has-feedback">
+        <div class="form-group ${hasErrors(bean: article, field: 'choice', 'has-error')} has-feedback">
             <div class="checkbox">
+                <label>
+                    <g:checkBox name="notice" value="${notices?.size() > 0}"  />
+                    <g:message code="article.notice.label" default="카테고리 공지" />
+                </label>
+            </div>
+            <div class="alert alert-info" id="noticeCategoryList" style="display: ${notices?.size() > 0 ? "block" : "none"}">
+                <g:each in="${categories}" var="category">
+                    <label>
+                        <input type="checkbox" name="notices" value="${category.code}" <g:if test="${notices*.category.contains(category)}">checked="checked"</g:if>> ${message(code: category.labelCode, default: category.defaultLabel)}
+                    </label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </g:each>
             </div>
         </div>
 
@@ -114,4 +126,13 @@
     function postForm() {
         $('textarea[name="content.text"]').val($('#summernote').code());
     }
+
+    $('#notice').click(function() {
+      if($(this).is(':checked')) {
+        $('#noticeCategoryList').show();
+      } else {
+        $('#noticeCategoryList').hide();
+        $('input[name="notices"]').prop('checked', false);
+      }
+    });
 </asset:script>

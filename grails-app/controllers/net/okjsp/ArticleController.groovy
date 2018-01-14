@@ -66,7 +66,7 @@ class ArticleController {
             }
         }
 
-        def notices = articleService.getNotices(category.parent ?: category)
+        def notices = articleService.getNotices(category)
 
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
@@ -238,10 +238,12 @@ class ArticleController {
             params.anonymity = category?.anonymity ?: false
         }
 
+        def notices = params.list('notices') ?: []
+
         if(goExternalLink) {
             redirect(url: category.externalLink)
         } else {
-            respond new Article(params), model: [categories: categories, category: category]
+            respond new Article(params), model: [categories: categories, category: category, notices: notices]
         }
 
         
@@ -253,6 +255,8 @@ class ArticleController {
         Article article = new Article(params)
 
         Category category = Category.get(params.categoryCode)
+
+        User user = springSecurityService.loadCurrentUser()
 
         if(category.code == 'recruit') {
             redirect uri: '/recruits/create'
@@ -273,6 +277,8 @@ class ArticleController {
                 article.createIp = userService.getRealIp(request)
                 
                 articleService.save(article, author, category)
+
+                articleService.saveNotices(article, user, params.list('notices'))
 
                 withFormat {
                     html {
@@ -327,12 +333,16 @@ class ArticleController {
         if(params.categoryCode) {
             article.category = Category.get(params.categoryCode)
         }
+
+        def notices = ArticleNotice.findAllByArticle(article)
         
-        respond article, model: [categories: categories]
+        respond article, model: [categories: categories, notices: notices]
     }
 
     @Transactional
     def update(Article article) {
+
+        User user = springSecurityService.loadCurrentUser()
 
         if(SpringSecurityUtils.ifNotGranted("ROLE_ADMIN")) {
             if (article.authorId != springSecurityService.principal.avatarId) {
@@ -361,6 +371,10 @@ class ArticleController {
                 }
 
                 articleService.update(article, editor, category)
+
+                articleService.removeNotices(article)
+
+                articleService.saveNotices(article, user, params.list('notices'))
 
                 withFormat {
                     html {
