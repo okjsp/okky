@@ -45,7 +45,7 @@
             <div class="alert alert-info" id="noticeCategoryList" style="display: ${notices?.size() > 0 ? "block" : "none"}">
                 <g:each in="${categories}" var="category">
                     <label>
-                        <input type="checkbox" name="notices" value="${category.code}" <g:if test="${notices*.category.contains(category)}">checked="checked"</g:if>> ${message(code: category.labelCode, default: category.defaultLabel)}
+                        <input type="checkbox" name="notices" value="${category.code}" <g:if test="${notices*.categoryId.contains(category.code)}">checked="checked"</g:if>> ${message(code: category.labelCode, default: category.defaultLabel)}
                     </label>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                 </g:each>
