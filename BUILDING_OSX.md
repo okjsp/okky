@@ -11,12 +11,12 @@
 1. 다음 프로그램들을 설치합니다.
   - Java SDK:
     http://www.oracle.com/technetwork/java/javase/downloads/index.html
-  - GVM:
-    http://gvmtool.net/
+  - SDKMAN!:
+    http://sdkman.io/install.html
 
 2. Grails를 설치합니다.
   ```sh
-    gvm install grails 2.4.5
+    sdk install grails 2.4.5
   ```
 
 3. 선호하는 IDE 나 편집기를 사용하시면 됩니다.
