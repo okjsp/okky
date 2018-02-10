@@ -79,6 +79,7 @@ class UrlMappings {
         "/_admin"(controller: "statistic")
 
         "/intro/about"(view: "/intro/about")
+        "/intro/ad"(view: "/intro/ad")
 
         "/autoPassword/$action" (controller: "autoPassword")
 
