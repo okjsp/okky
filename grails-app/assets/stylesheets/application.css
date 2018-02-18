@@ -1872,6 +1872,25 @@ blockquote {
     word-break: keep-all;
 }
 
+.ad-body {
+    margin-bottom: 50px;
+}
+
+.ad-wrapper .ad-text {
+    font-size: 18px;
+    padding-top: 20px;
+    padding-left: 30px;
+}
+
+.ad-wrapper .content-header .under-line {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #7acce4;
+}
+
+.ad-btn-wrapper {
+    padding: 40px 0 0 30px;
+}
+
 .article-middle-block {
     margin-top : 10px;
     padding-top : 10px;
@@ -2324,6 +2343,10 @@ blockquote {
         bottom: inherit;
         left: inherit;
         right: inherit;
+    }
+
+    .ad-image img {
+        width: 100%;
     }
 
 }
