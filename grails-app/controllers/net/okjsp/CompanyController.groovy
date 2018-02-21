@@ -17,7 +17,7 @@ class CompanyController {
     def info(Company companyInstance) {
         def companyInfo = CompanyInfo.findByCompany(companyInstance)
 
-        params.max = Math.min(params.max ?: 10, 100)
+        params.max = Math.min(Integer.parseInt(params.max ?: "10") ?: 10, 100)
         params.sort = params.sort ?: 'id'
         params.order = params.order ?: 'desc'
 

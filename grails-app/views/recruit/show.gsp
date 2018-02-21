@@ -30,6 +30,27 @@
             </div>
 
             <div class="panel panel-default clearfix">
+                <div class="panel-heading clearfix">
+                    <div class="avatar avatar-medium clearfix pull-left"><a href="${request.contextPath}/company/info/${article.recruit?.company?.id}" class="avatar-photo avatar-company">
+                        <g:if test="${article.recruit?.company?.logo}">
+                            <img src="${grailsApplication.config.grails.fileURL}/logo/${article.recruit?.company?.logo}">
+                        </g:if>
+                        <g:else>
+                            <img src="${assetPath(src: 'company-default.png')}">
+                        </g:else>
+                    </a>
+
+                    <div class="avatar-info"><a class="nickname" href="${request.contextPath}/company/info/${article.recruit?.company?.id}" title="${article.recruit?.company?.name}">${article.recruit?.company?.name}</a>
+
+                    <div class="date-created"><span class="timeago"
+                                                    title="${article.dateCreated}">${article.dateCreated.format('yyyy-MM-dd hh:mm:ss')}</span></div></div>
+                    </div>
+
+                    <div class="content-identity pull-right">
+                        <div class="content-identity-count"><i class="fa fa-comment"></i> <g:formatNumber number="${article.noteCount}" /></div>
+                        <div class="content-identity-count"><i class="fa fa-eye"></i> <g:formatNumber number="${article.viewCount}" /></div>
+                    </div>
+                </div>
                 <div class="content-container clearfix">
                     <div id="content-body" class="panel-body content-body pull-left">
                         <h2 class="panel-title">

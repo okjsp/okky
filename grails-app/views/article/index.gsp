@@ -12,6 +12,9 @@
 		<div id="list-article" class="content scaffold-list" role="main">
 
             <div class="nav" role="navigation">
+                <sec:ifAllGranted roles="ROLE_ADMIN">
+                    <g:set var="isAdmin" value="${true}"/>
+                </sec:ifAllGranted>
                 <g:link class="create btn btn-success btn-wide pull-right" uri="/articles/${params.code}/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
                 
                 <h4><g:message code="${category.labelCode}" default="${category.defaultLabel}" /></h4>

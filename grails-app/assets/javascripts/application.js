@@ -28,7 +28,7 @@
 
 if (typeof jQuery !== 'undefined') {
 	(function($) {
-        $('.timeago').timeago();
+        // $('.timeago').timeago();
 
         $('[data-toggle="tooltip"]').tooltip();
 

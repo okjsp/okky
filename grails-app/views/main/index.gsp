@@ -77,6 +77,12 @@
                 </div>
             </div>
         </div>
-
+        <content tag="script">
+            <script>
+                $(function () {
+                  $('.timeago').timeago();
+                });
+            </script>
+        </content>
 	</body>
 </html>
