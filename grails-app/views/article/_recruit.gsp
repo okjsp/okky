@@ -94,7 +94,7 @@
             <div class="avatar-info"><a class="nickname" href="${request.contextPath}/company/info/${article.recruit?.company?.id}" title="${article.recruit?.company?.name}">${article.recruit?.company?.name}</a>
 
                 <div class="date-created"><span class="timeago"
-                                                title="${article.dateCreated}">${article.dateCreated.format('yyyy-MM-dd hh:mm:dd')}</span></div></div>
+                                                title="${article.dateCreated}">${article.dateCreated.format('yyyy-MM-dd HH:mm:ss')}</span></div></div>
         </div>
     </div>
 </li>

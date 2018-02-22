@@ -82,14 +82,14 @@ class ArticleTagLib {
 
                 if(attrs.changeLog == null) {
 
-                    out << """<div class="date-created"><span class="timeago" title="${attrs.dateCreated}">${attrs.dateCreated.format('yyyy-MM-dd hh:mm:dd')}</span> """
+                    out << """<div class="date-created"><span class="timeago" title="${attrs.dateCreated}">${attrs.dateCreated.format('yyyy-MM-dd HH:mm:ss')}</span> """
 
 
                 } else {
 
-                    out << """<div class="date-created"><span class="timeago" title="${attrs.dateCreated}">${attrs.dateCreated.format('yyyy-MM-dd hh:mm:dd')}</span> 작성 """
+                    out << """<div class="date-created"><span class="timeago" title="${attrs.dateCreated}">${attrs.dateCreated.format('yyyy-MM-dd HH:mm:ss')}</span> 작성 """
 
-                    out << """  <span class="date-saperate">∙</span> <a href="${request.contextPath}/changes/${attrs.changeLog[2]}"><span class="timeago" title="${attrs.changeLog[1]}">${attrs.changeLog[1].format('yyyy-MM-dd hh:mm:dd')}</span> 수정됨 </a>"""
+                    out << """  <span class="date-saperate">∙</span> <a href="${request.contextPath}/changes/${attrs.changeLog[2]}"><span class="timeago" title="${attrs.changeLog[1]}">${attrs.changeLog[1].format('yyyy-MM-dd HH:mm:ss')}</span> 수정됨 </a>"""
 
                 }
 
