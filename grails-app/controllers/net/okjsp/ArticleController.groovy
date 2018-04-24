@@ -215,6 +215,8 @@ class ArticleController {
 
         def category = Category.get(code)
 
+        User user = springSecurityService.loadCurrentUser()
+
         if(category == null) {
             notFound()
             return
@@ -222,6 +224,11 @@ class ArticleController {
 
         if(category.code == 'recruit') {
             redirect uri: '/recruits/create'
+            return
+        }
+
+        if(user.accountLocked || user.accountExpired) {
+            forbidden()
             return
         }
 
@@ -260,6 +267,11 @@ class ArticleController {
 
         if(category.code == 'recruit') {
             redirect uri: '/recruits/create'
+            return
+        }
+
+        if(user.accountLocked || user.accountExpired) {
+            forbidden()
             return
         }
 
@@ -356,6 +368,11 @@ class ArticleController {
             return
         }
 
+        if(user.accountLocked || user.accountExpired) {
+            forbidden()
+            return
+        }
+
         try {
 
             withForm {
@@ -398,10 +415,17 @@ class ArticleController {
 
         Article article = Article.get(id)
 
+        User user = springSecurityService.loadCurrentUser()
+
         def categoryCode = article.category.code
 
         if (article == null) {
             notFound()
+            return
+        }
+
+        if(user.accountLocked || user.accountExpired) {
+            forbidden()
             return
         }
 
@@ -465,6 +489,13 @@ class ArticleController {
     def addNote(Long id) {
 
         Article article = Article.get(id)
+
+        User user = springSecurityService.loadCurrentUser()
+
+        if(user.accountLocked || user.accountExpired) {
+            forbidden()
+            return
+        }
 
         try {
 
@@ -665,6 +696,17 @@ class ArticleController {
                 redirect uri: '/'
             }
             json { render status: NOT_ACCEPTABLE }
+        }
+    }
+
+    protected void forbidden() {
+
+        withFormat {
+            html {
+                flash.message = message(code: 'default.forbidden.message', args: [message(code: 'article.label', default: 'Article'), params.id])
+                redirect uri: '/'
+            }
+            json { render status: FORBIDDEN }
         }
     }
 }
