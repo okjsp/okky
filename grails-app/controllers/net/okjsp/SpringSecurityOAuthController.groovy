@@ -9,6 +9,7 @@ import grails.plugin.springsecurity.oauth.OAuthLoginException
 import grails.plugin.springsecurity.oauth.OAuthToken
 import grails.plugin.springsecurity.userdetails.GrailsUser
 import grails.validation.ValidationException
+import org.codehaus.groovy.grails.web.util.WebUtils
 import org.grails.plugin.springsecurity.oauth.GoogleApi20Token
 import org.springframework.web.servlet.ModelAndView
 import org.springframework.security.core.context.SecurityContextHolder
@@ -249,6 +250,16 @@ class SpringSecurityOAuthController {
     protected void authenticateAndRedirect(OAuthToken oAuthToken, redirectUrl) {
         session.removeAttribute SPRING_SECURITY_OAUTH_TOKEN
         SecurityContextHolder.context.authentication = oAuthToken
+
+        def remoteAddress =  userService.getRealIp(WebUtils.retrieveGrailsWebRequest().request)
+
+        GrailsUser grailsUser = oAuthToken.principal
+
+        User user = User.findByUsername(grailsUser.getUsername())
+
+        // Login Log 저장
+        new LoggedIn(user: user, remoteAddr: remoteAddress).save(flush: true)
+
         redirect(redirectUrl instanceof Map ? redirectUrl : [uri: redirectUrl])
     }
 

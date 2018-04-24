@@ -7,9 +7,11 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 import net.okjsp.encoding.OldPasswordEncoder
 import org.codehaus.groovy.grails.web.json.JSONObject
+import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.AuthorityUtils
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 
 import javax.crypto.Mac
@@ -27,6 +29,8 @@ class AutoPasswordController {
     def customUserDetailService
 
     def mailService
+
+    def userService
 
 
     def reset() {
@@ -243,9 +247,25 @@ class AutoPasswordController {
             def user = User.findByUsername(user_id)
 
             if(user) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(user, corp_user_id,
-                        AuthorityUtils.createAuthorityList("ROLE_USER"))
+
+                def authorities = user.authorities.collect {
+                    new SimpleGrantedAuthority(it.authority)
+                }
+
+                def userDetails = new CustomUserDetail(user.username, user.password, user.enabled,
+                        !user.accountExpired, !user.passwordExpired,
+                        !user.accountLocked, authorities ?: CustomUserDetailService.NO_ROLES, user.id,
+                        user.avatarId, user.personId)
+
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, corp_user_id,
+                        authorities)
+
                 SecurityContextHolder.getContext().setAuthentication(authentication)
+
+                def remoteAddress =  userService.getRealIp(WebUtils.retrieveGrailsWebRequest().request)
+
+                // Login Log 저장
+                new LoggedIn(user: user, remoteAddr: remoteAddress).save(flush: true)
             }
 
         }
