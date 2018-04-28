@@ -145,7 +145,7 @@ class BannerController {
                 count('clickCount')
                 sum('clickCount')
             }
-            eq('id', banner.id)
+            eq('banner', banner)
             order('dateString', 'desc')
         }
 
