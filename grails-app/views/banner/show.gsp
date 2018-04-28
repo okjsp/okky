@@ -145,6 +145,7 @@
 				<fieldset class="buttons">
 					<g:link class="edit" action="edit" resource="${banner}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
 					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					<g:link class="save" action="export" resource="${banner}"><g:message code="default.button.export.label" default="통계 다운로드" /></g:link>
 				</fieldset>
 			</g:form>
 		</div>
