@@ -1,5 +1,6 @@
 package net.okjsp
 
+import org.hibernate.type.StandardBasicTypes
 import org.springframework.web.multipart.MultipartFile
 
 import static org.springframework.http.HttpStatus.*
@@ -25,6 +26,7 @@ class BannerController {
         def bannerClick = BannerClick.findOrCreateWhere(banner: banner, ip: ip)
 
         bannerClick.clickCount++
+        bannerClick.dateString = new Date().format("yyyy-MM-dd")
         bannerClick.save(flush: true)
 
         redirect url: banner.url
@@ -133,6 +135,30 @@ class BannerController {
             }
             '*'{ render status: NO_CONTENT }
         }
+    }
+
+    def export(Banner banner) {
+
+        def results = BannerClick.createCriteria().list {
+            projections {
+                groupProperty('dateString')
+                count('clickCount')
+                sum('clickCount')
+            }
+            eq('banner', banner)
+            order('dateString', 'desc')
+        }
+
+        String text = "일자,클릭회원수,전체클릭수\n"
+
+        results.each { e ->
+            text += e.join(',') +'\n'
+        }
+
+        response.contentType = "text/csv"
+        response.setHeader("Content-disposition", String.format("attachment; filename=banner_%s_%s.csv", banner.name, new Date().format("yyyy-MM-dd")))
+
+        render (text: text, encoding: "EUC-KR")
     }
 
     protected void notFound() {

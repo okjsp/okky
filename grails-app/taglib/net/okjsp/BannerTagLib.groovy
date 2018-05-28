@@ -79,6 +79,17 @@ class BannerTagLib {
                                         </div>"""
                         }
                         break
+                    case BannerType.MAIN_BLOCK:
+                        if(banner.contentType == BannerContentType.TAG) {
+                            if(device.isMobile() && banner.tagMobile) {
+                                bannerHTML = """<div class="main-block main-block-banner">${banner.tagMobile}</div>"""
+                            } else if(!device.isMobile() && banner.tagDesktop) {
+                                bannerHTML = """<div class="main-block main-block-banner">${banner.tagDesktop}</div>"""
+                            }
+                        } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
+                            bannerHTML = """<div class="main-block main-block-banner"><a href="${request.contextPath}/banner/stats/${banner.id}" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>"""
+                        }
+                        break
                     case BannerType.MAIN_RIGHT_BOTTOM :
                     case BannerType.SUB_RIGHT_BOTTOM :
                         if(banner.contentType == BannerContentType.TAG) {

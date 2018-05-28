@@ -704,11 +704,11 @@ blockquote {
 }
 
 .right-banner-wrapper {
-    position: fixed;
+    position: absolute;
     top: 65px;
     width: 180px;
     height: 550px;
-    left: 1070px;
+    left: 855px;
 }
 
 .right-banner {
@@ -1999,6 +1999,10 @@ blockquote {
     .main-block-right {
         padding-left: 0;
         padding-right: 0;
+    }
+
+    .main-block-banner img {
+        width: 100%;
     }
 
     .content {
