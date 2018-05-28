@@ -29,7 +29,7 @@
                 <p>이메일 : <a href="mailto:ad@okky.kr">ad@okky.kr</a></p>
             </div>
             <div class="ad-btn-wrapper">
-                <g:link uri="/images/OKKY_매체소개서_2018_v4.pdf" class="btn btn-lg btn-primary">매체소개서 다운로드</g:link>
+                <g:link uri="/images/OKKY_매체소개서.pdf" class="btn btn-lg btn-primary">매체소개서 다운로드</g:link>
             </div>
         </div>
     </div>
