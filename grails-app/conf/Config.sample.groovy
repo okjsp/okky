@@ -193,7 +193,7 @@ environments {
                     successUri = '/oauth/facebook/success'
                     failureUri = '/oauth/facebook/failure'
                     callback = "${baseURL}/oauth/facebook/callback"
-                    scope = 'emaiㅣ'
+                    scope = 'email'
                 }
                 google {
                     api = org.grails.plugin.springsecurity.oauth.GoogleApi20
