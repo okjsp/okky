@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
 
+import javax.transaction.Transactional
+
 /**
  * Created by langerhans on 2014. 8. 21..
  */
@@ -26,6 +28,7 @@ class CustomSecurityEventListener implements ApplicationListener<AuthenticationS
     @Autowired
     UserService userService
 
+    @Transactional
     void onApplicationEvent(AuthenticationSuccessEvent event) {
 
         CustomUserDetail userDetail = event.authentication.principal
