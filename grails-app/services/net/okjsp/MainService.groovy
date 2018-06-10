@@ -64,7 +64,7 @@ class MainService {
         Article.withCriteria() {
             fetchMode 'content', FetchMode.JOIN
             fetchMode 'author', FetchMode.JOIN
-            eq('category', Category.get('questions').children)
+            'in'('category', Category.get('questions').children)
             eq('enabled', true)
             order('id', 'desc')
             maxResults(10)
