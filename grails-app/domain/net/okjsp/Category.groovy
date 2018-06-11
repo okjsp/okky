@@ -21,6 +21,7 @@ class Category implements Serializable {
     boolean useEvaluate
     boolean useNote
     boolean useOpinion
+    boolean useSelectSolution = false
     boolean requireTag = false
     Boolean anonymity = false
     

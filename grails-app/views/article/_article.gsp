@@ -29,11 +29,11 @@
     </div>
 
     <div class="list-summary-wrapper clearfix">
-        <g:if test="${category?.useEvaluate}">
+        <g:if test="${category?.useSelectSolution}">
             <div class="item-evaluate-wrapper pull-right clearfix">
                 <div class="item-evaluate">
                     <div class="item-evaluate-icon">
-                        <i class="item-icon fa fa-thumbs-o-up"></i>
+                        <i class="item-icon fa fa-thumbs-o-${article.voteCount >= 0 ? 'up' : 'down'}"></i>
                     </div>
                     <div class="item-evaluate-count">
                         <span><g:shorten number="${article.voteCount}" />
@@ -61,7 +61,9 @@
             <div class="list-group-item-summary clearfix">
                 <ul>
                     <li class="${article.noteCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-comment "></i> <g:shorten number="${article.noteCount}" /></li>
-                    <li class="${article.voteCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-thumbs-up"></i> <g:shorten number="${article.voteCount}" /></li>
+                    <li class="${article.voteCount == 0 ? 'item-icon-disabled' : ''}">
+                        <i class="item-icon fa fa-thumbs-${article.voteCount >= 0 ? 'up' : 'down'}"></i> <g:shorten number="${article.voteCount}" />
+                    </li>
                     <li class="${article.viewCount == 0 ? 'item-icon-disabled' : ''}"><i class="item-icon fa fa-eye"></i> <g:shorten number="${article.viewCount}" /></li>
                 </ul>
             </div>

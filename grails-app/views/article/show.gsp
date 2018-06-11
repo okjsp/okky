@@ -112,7 +112,7 @@
             <div class="panel panel-default clearfix">
                 <!-- List group -->
                 <ul class="list-group">
-                <g:set var="noteTitle" value="${article.category.useEvaluate ? '답변':'댓글'}" />
+                <g:set var="noteTitle" value="${article.category.useSelectSolution ? '답변':'댓글'}" />
                     <li id="note-title" class="list-group-item note-title">
                         <h3 class="panel-title">${noteTitle} <span id="note-count">${article.noteCount}</span></h3>
                     </li>
@@ -120,7 +120,7 @@
                         <li class="list-group-item note-item clearfix" id="note-${note.id}">
                             <g:form url="[resource:note, action:'update']" method="PUT" data-id="${note.id}" class="note-update-form">
                                 <div class="content-body panel-body pull-left">
-                                    <g:if test="${article.category.useEvaluate}">
+                                    <g:if test="${article.category.useSelectSolution}">
                                         <g:isAuthor author="${article.author}">
                                             <g:if test="${article.selectedNote?.id == note.id}">
                                                 <a href="javascript://" class="note-vote-btn note-select-btn note-selected" data-id="${note.id}" data-type="deselect">
@@ -206,7 +206,7 @@
                                 </g:if>
                                 <div class="content-body panel-body pull-left">
                                     <div style="margin-left: 5px;">
-                                        <g:if test="${article.category.useEvaluate}">
+                                        <g:if test="${article.category.useSelectSolution}">
                                             <div class="note-select-indicator note-deselected">
                                                 <i class="fa fa-edit"></i>
                                             </div>
