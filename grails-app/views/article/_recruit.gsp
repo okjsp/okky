@@ -33,7 +33,7 @@
     </div>
 
     <div class="list-summary-wrapper clearfix">
-        <g:if test="${category?.useEvaluate}">
+        <g:if test="${category?.useSelectSolution}">
             <div class="item-evaluate-wrapper pull-right clearfix">
                 <div class="item-evaluate">
                     <div class="item-evaluate-icon">
@@ -71,7 +71,7 @@
                             class="item-icon fa fa-comment "></i> <g:shorten
                             number="${article.noteCount}"/></li>
                     <li class="${article.voteCount == 0 ? 'item-icon-disabled' : ''}"><i
-                            class="item-icon fa fa-thumbs-up"></i> <g:shorten
+                            class="item-icon fa fa-thumbs-${article.voteCount >= 0 ? 'up' : 'down'}"></i> <g:shorten
                             number="${article.voteCount}"/></li>
                     <li class="${article.viewCount == 0 ? 'item-icon-disabled' : ''}"><i
                             class="item-icon fa fa-eye"></i> <g:shorten number="${article.viewCount}"/>
