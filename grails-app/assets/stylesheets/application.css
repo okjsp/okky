@@ -387,6 +387,7 @@ blockquote {
 }
 
 .sidebar-category-nav .nav > li > a:active,
+.sidebar-category-nav .nav > li > a:hover,
 .sidebar-category-nav .nav > li > a:focus {
     color: #9fb0c9;
     background:none;
