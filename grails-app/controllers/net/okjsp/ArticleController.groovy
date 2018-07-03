@@ -265,7 +265,7 @@ class ArticleController {
 
         User user = springSecurityService.loadCurrentUser()
 
-        if(category.code == 'recruit') {
+        if(category?.code == 'recruit') {
             redirect uri: '/recruits/create'
             return
         }
@@ -309,7 +309,9 @@ class ArticleController {
 
             def categories = category.children ?: category.parent?.children ?: [category]
 
-            respond article.errors, view: 'create', model: [categories: categories, category: category]
+            def notices = params.list('notices') ?: []
+
+            respond article.errors, view: 'create', model: [categories: categories, category: category, notices: notices]
         }
     }
 
