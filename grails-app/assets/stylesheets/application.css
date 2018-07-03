@@ -387,14 +387,12 @@ blockquote {
 }
 
 .sidebar-category-nav .nav > li > a:active,
-.sidebar-category-nav .nav > li > a:hover,
 .sidebar-category-nav .nav > li > a:focus {
     color: #9fb0c9;
     background:none;
 }
 
 .sidebar-category-nav .nav > li > a:active > .nav-indicator,
-.sidebar-category-nav .nav > li > a:hover > .nav-indicator,
 .sidebar-category-nav .nav > li > a:focus > .nav-indicator {
     display: inline-block;
 }
