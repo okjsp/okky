@@ -60,7 +60,7 @@ grails.project.dependency.resolution = {
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
 
         compile "org.springframework:spring-orm:$springVersion"
-        compile "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239"
+        compile "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20180219.1"
     }
 
     plugins {
