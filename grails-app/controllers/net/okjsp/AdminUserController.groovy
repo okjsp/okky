@@ -19,10 +19,10 @@ class AdminUserController {
 
         if(params.where) {
             def users = User.where {
-                username =~ "%${params.where}%" ||
-                        person.fullName =~ "%${params.where}%"  ||
-                        person.email =~ "%${params.where}%" ||
-                        avatar.nickname =~ "%${params.where}%"
+                username =~ "${params.where}" ||
+                        person.fullName =~ "${params.where}"  ||
+                        person.email =~ "${params.where}" ||
+                        avatar.nickname =~ "${params.where}"
             }
 
             userList = users.list(params)
