@@ -23,7 +23,7 @@
 				<li class="controller"><g:link controller="statistic">가입현황</g:link></li>
 				<li class="controller"><g:link controller="adminUser">회원관리</g:link></li>
 				<li class="controller"><g:link controller="adminCompany">회사관리</g:link></li>
-                <li class="controller"><g:link controller="banner">베너</g:link></li>
+                <li class="controller"><g:link controller="banner">배너</g:link></li>
                 <li class="controller"><g:link controller="spamWord">스팸문구</g:link></li>
                 <li class="controller"><g:link controller="dm" action="export">DM발송대상</g:link></li>
                 <li class="controller"><g:link controller="dm" action="reject">DM발송제외</g:link></li>
