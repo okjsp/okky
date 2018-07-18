@@ -394,7 +394,6 @@ blockquote {
 }
 
 .sidebar-category-nav .nav > li > a:active > .nav-indicator,
-.sidebar-category-nav .nav > li > a:hover > .nav-indicator,
 .sidebar-category-nav .nav > li > a:focus > .nav-indicator {
     display: inline-block;
 }

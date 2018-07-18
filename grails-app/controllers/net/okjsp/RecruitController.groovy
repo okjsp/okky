@@ -70,12 +70,13 @@ class RecruitController {
 
         Article article = Article.get(id)
 
-        article.recruit = Recruit.findByArticle(article)
-
         if(article == null || (!article.enabled && SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))) {
             notFound()
             return
         }
+
+        article.recruit = Recruit.findByArticle(article)
+
 
         article.updateViewCount(1)
 

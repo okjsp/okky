@@ -94,6 +94,11 @@ class ContentController {
         article.removeFromNotes(content)
         article.updateNoteCount(-1)
 
+        if(article.selectedNoteId == id) {
+            article.selectedNote = null
+            article.save()
+        }
+
         ChangeLog.where{
             eq('article', article)
             eq('content', content)

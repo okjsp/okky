@@ -56,7 +56,7 @@
 
                         <g:set var="evaluateClass" value="no-note" />
 
-                        <g:if test="${article.selectedNote}">
+                        <g:if test="${article.selectedNoteId}">
                             <g:set var="evaluateClass" value="success" />
                         </g:if>
                         <g:elseif test="${article.noteCount > 0}">
@@ -95,19 +95,19 @@
                                     <g:if test="${activity.type == ActivityType.ASSENTED_ARTICLE}">#${article.id} 게시물을 추천 하였습니다.</g:if>
                                     <g:if test="${activity.type == ActivityType.ASSENTED_NOTE}">
                                         #${article.id}
-                                        <g:if test="${article.category.useEvaluate}">질문의 <g:link uri="/user/info/${activity.content.author.id}" class="nickname">${activity.content.author.nickname}</g:link>님의 답변을 추천 하였습니다.</g:if>
-                                        <g:else>게시물의 <g:link uri="/user/info/${activity.content.author.id}" class="nickname">${activity.content.author.nickname}</g:link>님의 댓글을 추천 하였습니다.</g:else>
+                                        <g:if test="${article.category.useEvaluate}">질문의 <g:link uri="/user/info/${activity?.content?.author.id}" class="nickname">${activity?.content?.author?.nickname}</g:link>님의 답변을 추천 하였습니다.</g:if>
+                                        <g:else>게시물의 <g:link uri="/user/info/${activity?.content?.author?.id}" class="nickname">${activity?.content?.author.nickname}</g:link>님의 댓글을 추천 하였습니다.</g:else>
                                     </g:if>
                                     <g:if test="${activity.type == ActivityType.DISSENTED_ARTICLE}">#${article.id} 질문을 반대 하였습니다.</g:if>
-                                    <g:if test="${activity.type == ActivityType.DISSENTED_NOTE}">#${article.id} 질문의 <g:link uri="/user/info/${activity.content.author.id}" class="nickname">${activity.content.author.nickname}</g:link>님의 답변에 반대 하였습니다.</g:if>
+                                    <g:if test="${activity.type == ActivityType.DISSENTED_NOTE}">#${article.id} 질문의 <g:link uri="/user/info/${activity?.content?.author?.id}" class="nickname">${activity?.content?.author?.nickname}</g:link>님의 답변에 반대 하였습니다.</g:if>
                                     <g:if test="${activity.type == ActivityType.SCRAPED}">#${article.id} 게시물을 스크랩 하였습니다.</g:if>
                                     </span>
                                     <span class="timeago" title="${activity.dateCreated}">${activity.dateCreated}</span>
                                 </div>
                                 <h5 class="list-group-item-heading ${category?.useEvaluate ? 'list-group-item-evaluate' : ''}">
                                     <g:set var="linkParams" />
-                                    <g:if test="${activity.content.type == ContentType.NOTE}">
-                                        <g:set var="linkParams" value="[note:activity.content.id]" />
+                                    <g:if test="${activity?.content?.type == ContentType.NOTE}">
+                                        <g:set var="linkParams" value="[note:activity?.content?.id]" />
                                     </g:if>
                                     <g:link controller="article" action="show" id="${article.id}" params="${linkParams}">${fieldValue(bean: article, field: "title")}</g:link>
                                     <div class="list-group-item-author pull-right clearfix">
