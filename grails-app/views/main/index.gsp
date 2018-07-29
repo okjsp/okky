@@ -73,7 +73,7 @@
                     </g:if>
                 </div>
                 <div class="main-block">
-                    <h4 class="main-header"><i class="fa fa-book"></i> 학원 <a href="${request.contextPath}/articles/promote" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
+                    <h4 class="main-header"><i class="fa fa-book"></i> 학원/홍보 <a href="${request.contextPath}/articles/promote" class="main-more-btn pull-right"><i class="fa fa-ellipsis-h"></i></a></h4>
                     <g:render template="article_block" model="[articles:promoteArticles]" />
                 </div>
             </div>
