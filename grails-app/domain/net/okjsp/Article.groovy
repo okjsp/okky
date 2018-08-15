@@ -73,6 +73,13 @@ class Article {
         choice bindable: false, nullable: true
         createIp bindable: false, nullable: true
         ignoreBest bindable: false, nullable: true
+        title validator: { val ->
+            def spam = SpamWord.findAll().find { word ->
+                val.contains(word.text)
+            }
+
+            if(spam) return ["default.invalid.word.message"]
+        }
     }
 
     def getDisplayAuthor() {
