@@ -1,5 +1,6 @@
 package net.okjsp
 
+import com.megatome.grails.RecaptchaService
 import com.memetix.random.RandomService
 import grails.plugin.springsecurity.SpringSecurityService
 import grails.plugin.springsecurity.SpringSecurityUtils
@@ -18,6 +19,7 @@ class ArticleController {
     SpringSecurityService springSecurityService
     UserService userService
     RandomService randomService
+    RecaptchaService recaptchaService
 
     static responseFormats = ['html', 'json']
 
@@ -277,6 +279,15 @@ class ArticleController {
 
         try {
 
+            def realIp = userService.getRealIp(request)
+            def reCaptchaVerified = recaptchaService.verifyAnswer(session, realIp, params)
+
+            if(!reCaptchaVerified) {
+                throw new Exception("invalid captcha")
+            }
+
+            recaptchaService.cleanUp session
+
             withForm {
                 Avatar author = Avatar.load(springSecurityService.principal.avatarId)
 
@@ -303,13 +314,11 @@ class ArticleController {
                 redirect uri: "/articles/${code}", method:"GET"
             }
 
-        } catch (ValidationException e) {
-
-            category = Category.get(code)
+        } catch (Exception e) {
 
             def categories = category.children ?: category.parent?.children ?: [category]
-
             def notices = params.list('notices') ?: []
+            article.category = category
 
             respond article.errors, view: 'create', model: [categories: categories, category: category, notices: notices]
         }

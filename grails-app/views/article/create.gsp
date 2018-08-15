@@ -50,6 +50,22 @@
                         <fieldset class="form">
                             <g:render template="form"/>
 
+                            <div class="recaptcha-wrapper">
+                                <recaptcha:ifEnabled>
+                                    <recaptcha:ifFailed>
+                                        <div  class="alert alert-danger alert-dismissible" role="alert">
+                                            <ul>
+                                                <li><g:message error="CAPTCHA 인증이 실패했습니다."/></li>
+                                            </ul>
+                                        </div>
+                                    </recaptcha:ifFailed>
+                                %{--<script src="https://www.google.com/recaptcha/api.js" async defer></script>--}%
+                                %{--<div class="g-recaptcha" data-sitekey="6Lcvw_gSAAAAAH3zOofJBJOFLpmjx7Vq3hxnYIRw"></div>--}%
+                                    <recaptcha:recaptcha/>
+                                </recaptcha:ifEnabled>
+                            </div>
+
+
                             <div class="nav" role="navigation">
                                 <fieldset class="buttons">
                                     <g:link uri="/articles/${params.code}" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')"><g:message code="default.button.cancel.label" default="Cancel"/></g:link>
