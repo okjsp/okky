@@ -316,7 +316,7 @@ class ArticleController {
 
         } catch (Exception e) {
 
-            def categories = category.children ?: category.parent?.children ?: [category]
+            def categories = category?.children ?: category?.parent?.children ?: [category]
             def notices = params.list('notices') ?: []
             article.category = category
 
