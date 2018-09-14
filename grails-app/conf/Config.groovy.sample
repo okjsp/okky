@@ -196,7 +196,7 @@ environments {
                     scope = 'email'
                 }
                 google {
-                    api = org.grails.plugin.springsecurity.oauth.GoogleApi20
+                    api = net.okjsp.api.GoogleApi20
                     key = '937987783004-1a2ae8nl90502og2sucupolh5g82el7e.apps.googleusercontent.com'
                     secret = 'Q1MtT5Mf-4RYkqm8Swbb0VOE'
                     successUri = '/oauth/google/success'
@@ -221,7 +221,7 @@ environments {
                     scope = 'email'
                 }
                 google {
-                    api = org.grails.plugin.springsecurity.oauth.GoogleApi20
+                    api = net.okjsp.api.GoogleApi20
                     key = ''
                     secret = ''
                     successUri = '/oauth/google/success'
