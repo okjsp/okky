@@ -38,7 +38,7 @@
 
             <div class="panel panel-default clearfix">
                 <div class="panel-heading clearfix">
-                    <g:if test="${category.anonymity}">
+                    <g:if test="${category?.anonymity}">
                         <g:avatar avatar="${article.displayAuthor}" size="medium" class="pull-left" />
                     </g:if>
                     <g:else>

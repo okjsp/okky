@@ -217,6 +217,8 @@ class ArticleController {
 
         def category = Category.get(code)
 
+        recaptchaService.cleanUp session
+
         User user = springSecurityService.loadCurrentUser()
 
         if(category == null) {
@@ -316,6 +318,7 @@ class ArticleController {
 
         } catch (Exception e) {
 
+            category = Category.get(code)
             def categories = category?.children ?: category?.parent?.children ?: [category]
             def notices = params.list('notices') ?: []
             article.category = category
