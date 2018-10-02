@@ -123,18 +123,6 @@ class BootStrap {
         }
 
         /**
-         * Spam Words
-         */
-
-        ["풀사", "풀살", "5738", "남풀", "진상무", "직미",
-        "ab88", "카지노", "qpr1000", "imc100", "dmlover", "모데", "오포", "r69o",
-        "first-shop", "first-dm", "rkdrkdskarn", "venezia", "baekhee",
-        ".lu.to", "jjr8858", "택알바", "승부존", "clippers", "부업", "hyejin000",
-        "caspinmsn", "바카라", "포카", "tt54" ].each {
-            SpamWord.findOrSaveByText(it)
-        }
-
-        /**
          * 기본 직종/직무 추가
          */
 
