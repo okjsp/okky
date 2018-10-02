@@ -12,7 +12,7 @@
         <h3 class="content-header">국내 최대 개발자 커뮤니티</h3>
         <div class="ad-body">
             <div class="ad-text">
-                <p>총 회원수 5만 5천명!</p>
+                <p>총 회원수 ${resultString}명!</p>
                 <p>개발자 대상 최대의 홍보 효과를 경험하세요.</p>
             </div>
         </div>
