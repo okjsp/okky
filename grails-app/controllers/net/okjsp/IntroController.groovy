@@ -18,9 +18,9 @@ class IntroController {
 
         int len = countString.length()
         for(int i=len-1; i>=0; i--) {
-            String s = countString.substring(len-i-1, len-i)
-            resultString += han1[Integer.parseInt(countString.substring(len-i-1, len-i))]
-            if (Integer.parseInt(countString.substring(len-i-1, len-i)) > 0)
+            int s = Integer.parseInt(countString.substring(len-i-1, len-i))
+            resultString += han1[s]
+            if (s > 0)
                 resultString += han2[i%4] + (han2[i%4] != "" ? " " : "")
             if (i%4 == 0)
                 resultString += han3[(i/4) as int] + (han3[(i/4) as int] != "" ? " " : "")
