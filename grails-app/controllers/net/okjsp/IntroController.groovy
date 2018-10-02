@@ -7,7 +7,7 @@ class IntroController {
 
     def ad() {
 
-        int count = 64323
+        int count = User.count()
 
         String countString = count > 1000 ? (Math.ceil(count / 1000) * 1000 as int) : count
         String resultString = ""
