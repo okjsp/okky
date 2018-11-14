@@ -253,12 +253,14 @@ class SpringSecurityOAuthController {
 
         def remoteAddress =  userService.getRealIp(WebUtils.retrieveGrailsWebRequest().request)
 
-        GrailsUser grailsUser = oAuthToken.principal
+        if (oAuthToken.principal instanceof GrailsUser) {
+            GrailsUser grailsUser = oAuthToken.principal
 
-        User user = User.findByUsername(grailsUser.getUsername())
+            User user = User.findByUsername(grailsUser.getUsername())
 
-        // Login Log 저장
-        new LoggedIn(user: user, remoteAddr: remoteAddress).save(flush: true)
+            // Login Log 저장
+            new LoggedIn(user: user, remoteAddr: remoteAddress).save(flush: true)
+        }
 
         redirect(redirectUrl instanceof Map ? redirectUrl : [uri: redirectUrl])
     }
