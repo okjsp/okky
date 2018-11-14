@@ -83,6 +83,8 @@ class UrlMappings {
 
         "/autoPassword/$action" (controller: "autoPassword")
 
+        "/grails-errorhandler" (redirect: "/")
+
 
         "500"(view:'/error')
 	}
