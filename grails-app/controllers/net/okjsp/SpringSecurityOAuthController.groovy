@@ -242,7 +242,7 @@ class SpringSecurityOAuthController {
         def savedRequest = SpringSecurityUtils.getSavedRequest(session)
         def defaultUrlOnNull = '/'
         if (savedRequest && !config.successHandler.alwaysUseDefault) {
-            return [url: (savedRequest.redirectUrl ?: defaultUrlOnNull)]
+            return [url: (savedRequest.redirectUrl && !savedRequest.redirectUrl.endsWith('.json') ? savedRequest.redirectUrl : defaultUrlOnNull)]
         }
         return [uri: (config.successHandler.defaultTargetUrl ?: defaultUrlOnNull)]
     }
