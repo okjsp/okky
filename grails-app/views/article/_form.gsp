@@ -56,7 +56,7 @@
             <div>
                 <select id="category" name="categoryCode" class="form-control">
                     <option value="">게시판을 선택해 주세요.</option>
-                    <g:each in="${categories}" var="category">
+                    <g:each in="${writableCategories}" var="category">
                         <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
                     </g:each>
                 </select>
@@ -65,12 +65,12 @@
     </sec:ifAllGranted>
 
     <sec:ifNotGranted roles="ROLE_ADMIN">
-        <g:if test="${categories.size() > 1}">
+        <g:if test="${writableCategories.size() > 1}">
         <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
             <div>
                 <select id="category" name="categoryCode" class="form-control">
                     <option value="">게시판을 선택해 주세요.</option>
-                    <g:each in="${categories}" var="category">
+                    <g:each in="${writableCategories}" var="category">
                         <option value="${category.code}"
                                 <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>
                                 data-external="${category.writeByExternalLink}"
@@ -83,7 +83,7 @@
         </div>
         </g:if>
         <g:else>
-            <g:hiddenField name="categoryCode" value="${categories?.getAt(0).code}" />
+            <g:hiddenField name="categoryCode" value="${writableCategories?.getAt(0).code}" />
         </g:else>
     </sec:ifNotGranted>
 </g:if>
