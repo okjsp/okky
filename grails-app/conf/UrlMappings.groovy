@@ -81,6 +81,8 @@ class UrlMappings {
         "/intro/about"(view: "/intro/about")
         "/intro/ad"(controller: "intro", action: "ad")
 
+        "/event"(controller: "event", action: "index")
+
         "/autoPassword/$action" (controller: "autoPassword")
 
         "/grails-errorhandler" (redirect: "/")
