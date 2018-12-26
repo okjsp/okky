@@ -10,6 +10,7 @@ import grails.transaction.Transactional
 class BannerController {
 
     UserService userService
+    BannerService bannerService
 
     static allowedMethods = [save: "POST", update: ["PUT","POST"], delete: "DELETE"]
 
@@ -70,7 +71,7 @@ class BannerController {
             banner.image = "${grailsApplication.config.grails.fileURL}/banner/${mil}${ext}"
         }
 
-        banner.save flush:true
+        bannerService.save(banner)
 
         request.withFormat {
             form multipartForm {
@@ -107,7 +108,7 @@ class BannerController {
             banner.image = "${grailsApplication.config.grails.fileURL}/banner/${mil}${ext}"
         }
 
-        banner.save flush:true
+        bannerService.save(banner)
 
         request.withFormat {
             form multipartForm {
@@ -126,7 +127,7 @@ class BannerController {
             return
         }
 
-        banner.delete flush:true
+        bannerService.delete(banner)
 
         request.withFormat {
             form multipartForm {

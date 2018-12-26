@@ -12,14 +12,14 @@ class MainArticlesJob {
     def grailsCacheAdminService
 
     static triggers = {
-        simple name: 'choiceArticleCacheTrigger', startDelay: 10000, repeatInterval: 70000
-        simple name: 'qnaArticlesCacheTrigger', startDelay: 20000, repeatInterval: 70000
-        simple name: 'communityArticlesCacheTrigger', startDelay: 30000, repeatInterval: 70000
-        simple name: 'columnsArticlesCacheTrigger', startDelay: 40000, repeatInterval: 70000
-        simple name: 'weeklyArticlesCacheTrigger', startDelay: 50000, repeatInterval: 70000
-        simple name: 'techArticlesCacheTrigger', startDelay: 60000, repeatInterval: 70000
+        simple name: 'choiceArticleCacheTrigger', startDelay: 10000, repeatInterval: 140000
+        simple name: 'qnaArticlesCacheTrigger', startDelay: 20000, repeatInterval: 140000
+        simple name: 'communityArticlesCacheTrigger', startDelay: 30000, repeatInterval: 140000
+        simple name: 'columnsArticlesCacheTrigger', startDelay: 40000, repeatInterval: 140000
+        simple name: 'weeklyArticlesCacheTrigger', startDelay: 50000, repeatInterval: 140000
+        simple name: 'techArticlesCacheTrigger', startDelay: 60000, repeatInterval: 140000
         
-        simple name: 'promoteArticlesCacheTrigger', startDelay: 70000, repeatInterval: 70000
+        simple name: 'promoteArticlesCacheTrigger', startDelay: 70000, repeatInterval: 140000
     }
 
     void execute(JobExecutionContext context){

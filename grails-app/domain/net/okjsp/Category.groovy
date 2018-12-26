@@ -52,8 +52,8 @@ class Category implements Serializable {
 
     static mapping = {
         id generator: "assigned", name: 'code', type: 'string'
-        parent lazy: false
-        children sort: 'sortOrder'
+        children sort: 'sortOrder', cache: true
+        parent cache: true
         sort 'sortOrder'
         cache true
     }

@@ -8,6 +8,7 @@ class BannerTagLib {
 
     def randomService
     def deviceResolver
+    def bannerService
 
     /**
      * @attr type REQUIRED
@@ -18,9 +19,8 @@ class BannerTagLib {
 
         if(!(bannerType instanceof BannerType)) bannerType = BannerType.valueOf(bannerType)
 
-        def banners = Banner.where {
-            type == bannerType && visible == true
-        }.list()
+
+        def banners = bannerService.get(bannerType)
 
         def banner = banners ? randomService.draw(banners) : null
         def bannerHTML = ""

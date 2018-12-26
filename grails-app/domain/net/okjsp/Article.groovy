@@ -66,7 +66,7 @@ class Article {
         scrapCount bindable: false
         tags maxSize: 10, nullable: true
         tagString nullable: true
-        notes bindable: false
+        notes bindable: false, lazy: false
         enabled bindable: false
         selectedNote nullable: true, bindable: false
         content nullable: true
