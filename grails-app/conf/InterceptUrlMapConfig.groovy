@@ -68,7 +68,7 @@ grails.plugin.springsecurity.interceptUrlMap = [
     "/company/updated":         ['ROLE_USER'],
     "/company/wait":            ['ROLE_USER'],
 
-    "/event":                   ['permitAll'],
+    "/event/**":                ['permitAll'],
 
     '/oauth/**':                ['permitAll'],
 

@@ -82,6 +82,8 @@ class UrlMappings {
         "/intro/ad"(controller: "intro", action: "ad")
 
         "/event"(controller: "event", action: "index")
+        "/event/$id(.$format)?"(controller: "event", action: "show")
+        "/event/$id/request"(controller: "event", action: "request")
 
         "/autoPassword/$action" (controller: "autoPassword")
 
