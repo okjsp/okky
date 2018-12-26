@@ -36,7 +36,7 @@
 				<li class="fieldcontain">
 					<span id="name-label" class="property-label"><g:message code="company.name.label" default="Name" /></span>
 					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${company}" field="name"/></span>
+					<span class="property-value" aria-labelledby="name-label"><g:link uri="/company/info/${company?.id}" target="_new"><g:fieldValue bean="${company}" field="name"/></g:link></span>
 					
 				</li>
 				</g:if>

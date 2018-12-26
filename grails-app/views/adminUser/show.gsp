@@ -51,7 +51,7 @@
 				<li class="fieldcontain">
 					<span id="avatar-label" class="property-label"><g:message code="avatar.nickname.label" default="Avatar" /></span>
 					
-						<span class="property-value" aria-labelledby="avatar-label">${user?.avatar?.nickname}</span>
+					<span class="property-value" aria-labelledby="avatar-label"><g:link uri="/user/info/${user?.avatar?.id}" target="_new">${user?.avatar?.nickname}</g:link></span>
 					
 				</li>
 				</g:if>

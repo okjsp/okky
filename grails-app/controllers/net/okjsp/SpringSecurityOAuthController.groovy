@@ -242,7 +242,7 @@ class SpringSecurityOAuthController {
         def savedRequest = SpringSecurityUtils.getSavedRequest(session)
         def defaultUrlOnNull = '/'
         if (savedRequest && !config.successHandler.alwaysUseDefault) {
-            return [url: (savedRequest.redirectUrl ?: defaultUrlOnNull)]
+            return [url: (savedRequest.redirectUrl && !savedRequest.redirectUrl.endsWith('.json') ? savedRequest.redirectUrl : defaultUrlOnNull)]
         }
         return [uri: (config.successHandler.defaultTargetUrl ?: defaultUrlOnNull)]
     }
@@ -253,12 +253,14 @@ class SpringSecurityOAuthController {
 
         def remoteAddress =  userService.getRealIp(WebUtils.retrieveGrailsWebRequest().request)
 
-        GrailsUser grailsUser = oAuthToken.principal
+        if (oAuthToken.principal instanceof GrailsUser) {
+            GrailsUser grailsUser = oAuthToken.principal
 
-        User user = User.findByUsername(grailsUser.getUsername())
+            User user = User.findByUsername(grailsUser.getUsername())
 
-        // Login Log 저장
-        new LoggedIn(user: user, remoteAddr: remoteAddress).save(flush: true)
+            // Login Log 저장
+            new LoggedIn(user: user, remoteAddr: remoteAddress).save(flush: true)
+        }
 
         redirect(redirectUrl instanceof Map ? redirectUrl : [uri: redirectUrl])
     }

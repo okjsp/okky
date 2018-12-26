@@ -238,14 +238,15 @@ class ArticleController {
 
         params.category = category
 
-        def categories
+        def writableCategories
+        def categories = Category.findAllByEnabled(true)
         def goExternalLink = false
         
         if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
-            categories = Category.findAllByWritableAndEnabled(true, true)
+            writableCategories = Category.findAllByWritableAndEnabled(true, true)
         } else {
             goExternalLink = category.writeByExternalLink
-            categories = Category.findAllByParentAndWritableAndEnabledAndAdminOnly(category?.parent ?: category, true, true, false) ?: [category]
+            writableCategories = Category.findAllByParentAndWritableAndEnabledAndAdminOnly(category?.parent ?: category, true, true, false) ?: [category]
             params.anonymity = category?.anonymity ?: false
         }
 
@@ -254,7 +255,7 @@ class ArticleController {
         if(goExternalLink) {
             redirect(url: category.externalLink)
         } else {
-            respond new Article(params), model: [categories: categories, category: category, notices: notices]
+            respond new Article(params), model: [writableCategories: writableCategories, category: category, categories: categories, notices: notices]
         }
 
         
@@ -348,12 +349,13 @@ class ArticleController {
             return
         }
 
-        def categories
+        def writableCategories
+        def categories = Category.findAllByEnabled(true)
 
         if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
-            categories = Category.findAllByWritableAndEnabled(true, true)
+            writableCategories = Category.findAllByWritableAndEnabled(true, true)
         } else {
-            categories = article.category.children ?: article.category.parent?.children ?: [article.category]
+            writableCategories = article.category.children ?: article.category.parent?.children ?: [article.category]
         }
 
         if(params.categoryCode) {
@@ -362,7 +364,7 @@ class ArticleController {
 
         def notices = ArticleNotice.findAllByArticle(article)
         
-        respond article, model: [categories: categories, notices: notices]
+        respond article, model: [writableCategories: writableCategories, categories: categories, notices: notices]
     }
 
     @Transactional

@@ -17,12 +17,12 @@ class AdminUserController {
 
         def userList, userCount
 
-        if(params.where) {
+        if(params.query) {
             def users = User.where {
-                username =~ "${params.where}" ||
-                        person.fullName =~ "${params.where}"  ||
-                        person.email =~ "${params.where}" ||
-                        avatar.nickname =~ "${params.where}"
+                username =~ "${params.query}" ||
+                        person.fullName =~ "${params.query}"  ||
+                        person.email =~ "${params.query}" ||
+                        avatar.nickname =~ "${params.query}"
             }
 
             userList = users.list(params)

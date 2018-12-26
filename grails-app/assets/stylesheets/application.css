@@ -252,18 +252,17 @@ blockquote {
 }
 
 .sub-banner-wrapper {
-    width: 728px;
+    width: 100%;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .sub-banner {
-    width:  473px;
     margin: auto;
 }
 
 .sub-banner  img {
-    width: 100%;
+    max-width: 100%;
 }
 
 

@@ -20,10 +20,10 @@
 			<div class="search-form">
 				<form name="searchForm">
 					<div class="input-group">
-						<input type="search" class="form-control" name="where" value="${params.where}" placeholder="검색어 (아이디, 닉네임, 이름, 이메일주소)" />
+						<input type="search" class="form-control" name="query" value="${params.query}" placeholder="검색어 (아이디, 닉네임, 이름, 이메일주소)" />
 						<span class="input-group-btn">
 							<button type="submit" class="btn btn-default">검색</button>
-							<g:if test="${params.where}">
+							<g:if test="${params.query}">
 								<g:link action="index" class="btn btn-warning">clear</g:link>
 							</g:if>
 						</span>
