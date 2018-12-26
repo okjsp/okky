@@ -50,9 +50,10 @@ class Article {
     static transients = ['disabled', 'recruit', 'ignore']
 
     static mapping = {
-        notes sort: 'id', order: 'asc'
+        notes sort: 'id', order: 'asc', lazy: true
         sort id: 'desc'
         best formula: "view_count + vote_count * 500 + note_count * 50"
+        articleNotices lazy: true
     }
 
     static constraints = {

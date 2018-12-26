@@ -21,4 +21,8 @@ class Company {
         logo nullable: true
         name blank: false, unique: true
     }
+    
+    static mapping = {
+        cache true
+    }
 }

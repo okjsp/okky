@@ -18,6 +18,7 @@ class Tag {
 
     static mapping = {
         version false
+        cache true
     }
 
     String toString() { name }

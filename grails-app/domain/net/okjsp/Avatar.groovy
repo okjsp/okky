@@ -19,6 +19,9 @@ class Avatar implements Comparable {
 
     static mapping = {
         pictureType enumType: 'ordinal'
+        activities lazy: true
+        tags lazy: true
+        cache true
     }
 
     static constraints = {

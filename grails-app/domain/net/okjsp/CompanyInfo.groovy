@@ -29,5 +29,6 @@ class CompanyInfo {
     static mapping = {
         description type: 'text'
         welfare type: 'text'
+        cache true
     }
 }
