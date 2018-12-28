@@ -120,7 +120,7 @@ class ArticleController {
             if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
                 enabled == true
             if (params.query && params.query != '')
-                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+                title =~ "%${params.query}%"
 
             if(recruitFilter) {
                 if(recruits)
@@ -158,7 +158,7 @@ class ArticleController {
         def articlesQuery = Article.where {
             tagString =~ "%${tag}%"
             if(params.query && params.query != '')
-                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+                title =~ "%${params.query}%"
 
         }
 

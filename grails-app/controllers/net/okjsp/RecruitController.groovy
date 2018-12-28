@@ -51,7 +51,7 @@ class RecruitController {
             category == category
             tagString =~ "%${tag}%"
             if(params.query && params.query != '')
-                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+                title =~ "%${params.query}%"
 
         }
 
