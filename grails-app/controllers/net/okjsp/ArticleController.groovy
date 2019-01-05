@@ -76,8 +76,9 @@ class ArticleController {
         if(category.code == 'community') 
             categories = categories.findAll { it.code != 'promote' }
 
-        def recruits
-        def recruitFilter = false
+
+        def articles = []
+        def count = 0
 
         if(category.code == 'recruit') {
 
@@ -87,59 +88,57 @@ class ArticleController {
             def minCareer = params['filter.minCareer']
             def maxCareer = params['filter.maxCareer']
 
-            def jobPositions = JobPosition.createCriteria().list {
-                if(jobDuties)
-                    'in'('duty', jobDuties)
-                if(minCareer)
-                    ge('minCareer', minCareer as Integer)
-                if(maxCareer)
-                    le('maxCareer', maxCareer as Integer)
-            }
-
             def jobPositionFilter = (jobDuties || minCareer || maxCareer)
 
-            recruitFilter = (jobTypes || cities || jobPositionFilter)
-
-            recruits = Recruit.createCriteria().list {
+            def recruitsQuery = Recruit.where {
                 if(jobTypes)
                     'in'('jobType' , jobTypes)
                 if(jobPositionFilter) {
-                    if(jobPositions) {
-                        'in'('id' , jobPositions*.recruitId)
-                    } else {
-                        'in'('id' , Long.MAX_VALUE)
+                    jobPositions {
+                        if(jobDuties)
+                            'in'('duty', jobDuties)
+                        if(minCareer)
+                            ge('minCareer', minCareer as Integer)
+                        if(maxCareer)
+                            le('maxCareer', maxCareer as Integer)
                     }
                 }
                 if(cities)
                     'in'('city', cities)
             }
-        }
 
-        def articlesQuery = Article.where {
-            category in categories
-            if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
-                enabled == true
-            if (params.query && params.query != '')
-                title =~ "%${params.query}%"
+            def recruits = recruitsQuery.list(params)
 
-            if(recruitFilter) {
-                if(recruits)
-                    id in recruits*.article*.id
-                else
-                    id in [Long.MAX_VALUE]
+            recruits.each {
+                it.article.recruit = it
+                articles << it.article
             }
-        }
 
-        def articles = articlesQuery.list(params)
+            count = recruitsQuery.count()
 
-        articles.each {
-            if(it.isRecruit) {
-                Recruit recruit = Recruit.findByArticle(it)
-                it.recruit = recruit
+        } else {
+
+            def articlesQuery = Article.where {
+                category in categories
+                if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
+                    enabled == true
+                if (params.query && params.query != '')
+                    title =~ "%${params.query}%"
             }
+
+            articles = articlesQuery.list(params)
+
+            articles.each {
+                if(it.isRecruit) {
+                    Recruit recruit = Recruit.findByArticle(it)
+                    it.recruit = recruit
+                }
+            }
+
+            count = articlesQuery.count()
         }
 
-        respond articles, model:[articlesCount: articlesQuery.count(), category: category, choiceJobs: choiceJobs, notices: notices]
+        respond articles, model:[articlesCount: count, category: category, choiceJobs: choiceJobs, notices: notices]
     }
 
 

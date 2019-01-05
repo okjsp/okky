@@ -23,6 +23,7 @@ class Recruit {
 
     static mapping = {
         jobPositions sort: 'id', order: 'asc', cascade: "all-delete-orphan"
+        article fetch: 'join'
     }
 
     static constraints = {

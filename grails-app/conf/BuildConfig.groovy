@@ -71,7 +71,6 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
         compile ":asset-pipeline:2.5.7"
-        compile ":mysql-connectorj:5.1.22.1"
         compile ":markdown:1.1.1"
         compile ":recaptcha:1.0.0"
         compile ":pretty-time:2.1.3.Final-1.0.1"

@@ -31,6 +31,7 @@
                                 </span>
                             </div>
                         </div>
+                        <g:if test="${category?.code != 'recruit'}">
                         <ul class="list-sort pull-left">
                             <li><g:link uri="/articles/${category.code}" params="[sort:'id', order:'desc']" data-sort="id" data-order="desc" class="category-sort-link ${params.sort == 'id' ? 'active':''}">최신순</g:link></li>
                             <li><g:link uri="/articles/${category.code}" params="[sort:'voteCount', order:'desc']" data-sort="voteCount" data-order="desc" class="category-sort-link ${params.sort == 'voteCount' ? 'active':''}">추천순</g:link></li>
@@ -38,6 +39,7 @@
                             <li><g:link uri="/articles/${category.code}" params="[sort:'scrapCount', order:'desc']" data-sort="scrapCount" data-order="desc" class="category-sort-link ${params.sort == 'scrapCount' ? 'active':''}">스크랩순</g:link></li>
                             <li><g:link uri="/articles/${category.code}" params="[sort:'viewCount', order:'desc']" data-sort="viewCount" data-order="desc" class="category-sort-link ${params.sort == 'viewCount' ? 'active':''}">조회순</g:link></li>
                         </ul>
+                        </g:if>
                         <input type="hidden" name="sort" id="category-sort-input" value="${params.sort}"/>
                         <input type="hidden" name="order" id="category-order-input" value="${params.order}"/>
                 </div>

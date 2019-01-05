@@ -34,7 +34,7 @@ environments {
         dataSource {
             dbCreate = "update"
             jndiName = "java:comp/env/jdbc/okjsp2014"
-            logSql = false
+            logSql = true
         }
     }
     production {
