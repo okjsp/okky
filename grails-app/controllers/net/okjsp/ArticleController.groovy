@@ -82,6 +82,8 @@ class ArticleController {
 
         if(category.code == 'recruit') {
 
+            params.sort = 'id'
+
             def jobTypes = params.list('filter.jobType').collect { JobType.valueOf(it as String) }
             def jobDuties = params.list('filter.jobDuty').collect { JobPositionDuty.get(it as Long) }
             def cities = params.list('filter.city').collect { it as String }
