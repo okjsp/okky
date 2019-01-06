@@ -114,7 +114,7 @@
                     <div class="nav" role="navigation">
                         <fieldset class="buttons">
                             <g:link uri="/event" class="btn btn-default btn-wide" onclick="return confirm('정말로 취소하시겠습니까?')">취소</g:link>
-                            <g:submitButton name="create" class="create btn btn-success btn-wide pull-right" value="결제하기" />
+                            <button type="button" name="create" class="create btn btn-success btn-wide pull-right" value="결제하기" onclick="window.open('${request.contextPath}/INIpayStdSample/popup');" />
                         </fieldset>
                     </div>
                 </div>

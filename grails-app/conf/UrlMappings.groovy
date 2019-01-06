@@ -89,6 +89,12 @@ class UrlMappings {
 
         "/grails-errorhandler" (redirect: "/")
 
+        "/INIpayStdSample/popup.jsp"(view: "/INIpayStdSample/popup")
+        "/INIpayStdSample/INIStdPayReturn.jsp"(view: "/INIpayStdSample/INIStdPayReturn")
+        "/INIpayStdSample/INIStdPayRequest.jsp"(view: "/INIpayStdSample/INIStdPayRequest")
+        "/INIpayStdSample/INIStdPayRelay.jsp"(view: "/INIpayStdSample/INIStdPayRelay")
+        "/INIpayStdSample/INIStdPayBill.jsp"(view: "/INIpayStdSample/INIStdPayBill")
+        "/INIpayStdSample/close.jsp"(view: "/INIpayStdSample/close")
 
         "500"(view:'/error')
 	}
