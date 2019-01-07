@@ -11,7 +11,7 @@
 <body>
     <g:sidebar category="${category}" />
     <div id="list-article" class="content scaffold-list" role="main">
-        <h4>OKKY 행사</h4>
+    <h4>OKKY 행사 <span style="font-size:12px;color:#999;margin-left:20px;">행사 결제의 경우 행사 일정 <strong>3개월</strong> 전부터 접수 및 등록 가능</span></h4>
 
         <div class="nav" role="navigation">
             <g:form name="category-filter-form" method="get" uri="/${category.code}">

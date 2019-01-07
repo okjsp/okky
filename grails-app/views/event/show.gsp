@@ -19,7 +19,7 @@
     <div class="nav" role="navigation">
         <a href="/articles/event/create" class="create btn btn-success btn-wide pull-right"><i class="fa fa-pencil"></i> 새 글 쓰기</a>
 
-        <h4>OKKY 행사</h4>
+        <h4>OKKY 행사 <span style="font-size:12px;color:#999;margin-left:20px;">행사 결제의 경우 행사 일정 <strong>3개월</strong> 전부터 접수 및 등록 가능</span></h4>
     </div>
 
     <div class="panel panel-default clearfix fa-">
