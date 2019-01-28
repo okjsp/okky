@@ -1474,7 +1474,7 @@ blockquote {
     border: 1px solid #ffffff;
     border-radius: 50%;
     text-align: center;
-    font-size: 11px;
+    font-size: 11px !important;
     padding-top: 4px;
     vertical-align: top;
     margin-right: 20px;
