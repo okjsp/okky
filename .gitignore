@@ -17,5 +17,6 @@ Config.groovy
 .settings
 target-eclipse
 .slcache
+.asscache
 
 DataSource.groovy
