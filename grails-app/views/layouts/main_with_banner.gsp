@@ -33,7 +33,7 @@
 
                     <g:banner type="${isIndex ? "MAIN_RIGHT_TOP" : "SUB_RIGHT_TOP"}" />
                     <g:banner type="${isIndex ? "MAIN_RIGHT_BOTTOM" : "SUB_RIGHT_BOTTOM"}" />
-                    <div class="google-ad"><g:link url="http://www.nagaja.net" target="_new"><asset:image src="nagaja_banner_160.png" alt="www.nagaja.net" title="www.nagaja.net" /></g:link></div>
+                    %{--<div class="google-ad"><g:link url="http://www.nagaja.net" target="_new"><asset:image src="nagaja_banner_160.png" alt="www.nagaja.net" title="www.nagaja.net" /></g:link></div>--}%
                 </div>
                 <div id="footer" class="footer" role="contentinfo">
                     <g:include view="/layouts/_footer.gsp" />

@@ -702,11 +702,11 @@ blockquote {
 }
 
 .right-banner-wrapper {
-    position: absolute;
+    position: fixed;
     top: 65px;
     width: 180px;
     height: 550px;
-    left: 855px;
+    left: 1070px;
 }
 
 .right-banner {
