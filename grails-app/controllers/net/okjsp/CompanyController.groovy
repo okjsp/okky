@@ -189,6 +189,11 @@ class CompanyController {
 
         companyInfo.save flush:true
 
+        if (company.hasErrors() || companyInfo.hasErrors()) {
+            respond company, model:[companyInfo: companyInfo], view:'create'
+            return
+        }
+
         if(prevEnabled) {
 
             mailService.sendMail {
@@ -198,12 +203,6 @@ class CompanyController {
                 body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
             }
 
-        }
-
-
-        if (company.hasErrors() || companyInfo.hasErrors()) {
-            respond company, model:[companyInfo: companyInfo], view:'create'
-            return
         }
 
         request.withFormat {
