@@ -50,7 +50,7 @@ class Avatar implements Comparable {
 
     static boolean disAllowNicknameFilter(nickname) {
         return ['OKJSP관리자','옥히','옥희','OKJSP','운영진','운영자'
-                ,'OKJSP운영진','OKJSP운영자','부운영자','옥히관리자','옥희관리자'].contains(nickname)
+                ,'OKJSP운영진','OKJSP운영자','부운영자','옥히관리자','옥희관리자', '관리자', 'OKKY 관리자', 'OKKY관리자', '오키관리자'].contains(nickname)
     }
 
     @Transactional
