@@ -131,7 +131,7 @@
             <div class="about-list-body">
                 <p>《제3회 JavaScript Conference》 개최</p>
                 <p>OKKY 세미나 총 5회 개최</p>
-                <p>O총 회원 수 4만 명 돌파</p>
+                <p>총 회원 수 4만 명 돌파</p>
             </div>
         </div>
         <div class="about-list clearfix">
