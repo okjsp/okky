@@ -9,7 +9,7 @@ var autoLinker = function(node) {
     $(node).contents().each(function() {
         var $this = $(this);
         if(this.nodeType == this.TEXT_NODE) {
-            $this.replaceWith(urlize(this.textContent, true, true));
+            $this.replaceWith(urlize(this.textContent, {target:'_blank'}));
         } else {
             if(!$this.is('a, pre, code')) {
                 autoLinker(this);
@@ -24,7 +24,7 @@ var autoLinker = function(node) {
 
                     var prevNode = $('<div/>').append($(this).clone()).html();
 
-                    $(this).replaceWith(prevNode + ' <a href="' + $this.attr('href') + '" target="_blank" title="새창으로 열기">' +
+                    $(this).replaceWith(prevNode + ' <a href="' + $this.attr('href') + '" title="페이지 이동">' +
                     '<i class="fa fa-external-link"></i></a>');
                 }
             }
