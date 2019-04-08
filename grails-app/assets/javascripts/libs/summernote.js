@@ -4141,11 +4141,7 @@
 
       $.each(anchors, function (idx, anchor) {
         $(anchor).attr('href', linkUrl);
-        if (isNewWindow) {
-          $(anchor).attr('target', '_blank');
-        } else {
-          $(anchor).removeAttr('target');
-        }
+        $(anchor).attr('target', '_blank');
       });
 
       var startRange = range.createFromNodeBefore(list.head(anchors));
