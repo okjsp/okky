@@ -2082,6 +2082,8 @@ blockquote {
 }
 /* //history */
 
+
+
 .ad-body {
     margin-bottom: 50px;
 }
@@ -2564,3 +2566,19 @@ blockquote {
     }
 
 }
+
+/* media query */
+@media (max-width: 360px) {
+    .about-title img, .about-record-list {
+        width: 100%;
+    }
+    .about-mission-list {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+    }
+    .record-bar, .about-mission-list::after, .about-mission-okky, .about-mission-okky::before  {
+        display: none;
+    }
+}
+/* //media query */
