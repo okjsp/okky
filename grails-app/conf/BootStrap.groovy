@@ -20,8 +20,8 @@ class BootStrap {
                     def adminUser = new User(
                         username: 'admin',
                         password: 'password11',
-                        person: new Person(fullName: '관리자', email: 'admin@okky.kr'),
-                        avatar: new Avatar(nickname: '관리자')
+                        person: new Person(fullName: '테스트관리자', email: 'testadmin@okky.kr'),
+                        avatar: new Avatar(nickname: '테스트관리자')
                     )
                     adminUser.enabled = true
                     adminUser.createIp = '0.0.0.0'
