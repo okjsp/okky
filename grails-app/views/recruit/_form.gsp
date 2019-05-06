@@ -180,7 +180,7 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <g:textArea name="recruit.jobPositions.description" value="${lineToBr([text: jobPosition?.description])}" rows="5" placeholder="업무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
+        <g:textArea name="recruit.jobPositions.description" value="${jobPosition?.description}" rows="5" placeholder="업무에 대한 상세 정보를 입력해 주세요." class="form-control input-block-level form-dynamic" />
     </div>
 
     <hr/>
