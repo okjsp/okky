@@ -2565,9 +2565,9 @@ blockquote {
 }
 
 /* media query */
-@media (max-width: 767px) {
-    .about-wrapper {
-    
+@media (max-width: 768px) {
+    .about-history {
+        overflow: hidden;
     }
     .about-mission-list {
         margin: 0 30px;
@@ -2591,7 +2591,8 @@ blockquote {
         width: 100%;
     }
 }
-@media (max-width: 359px) {
+
+@media (max-width: 420px) {
     .record-bar, .about-mission-list::after, .about-mission-okky, .about-mission-okky::before, .about-hlist-head::after  {
         display: none;
     }
