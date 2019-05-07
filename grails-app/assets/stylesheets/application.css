@@ -268,24 +268,8 @@ blockquote {
 
 .content-header {
     margin-top: 0;
-    margin-bottom: 80px;
-    color: #212121;
-    font-weight: bold;
-    text-align: center;
-    position: relative;
-    text-transform: uppercase;
-    letter-spacing: -2px;
-}
-.content-header:after {
-    content:"";
-    display: block;
-    width: 40px;
-    height:8px;
-    background: #212121;
-    position: absolute;
-    left: 50%;
-    bottom: -50%;
-    transform: translateX(-50%);
+    margin-bottom: 20px;
+    color: #6f7275;
 }
 
 .panel-header {
@@ -2080,6 +2064,27 @@ blockquote {
 /* //history */
 
 
+.about-wrapper .content-header {
+    margin-top: 0;
+    margin-bottom: 80px;
+    color: #212121;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+}
+.about-wrapper .content-header:after {
+    content:"";
+    display: block;
+    width: 40px;
+    height:8px;
+    background: #212121;
+    position: absolute;
+    left: 50%;
+    bottom: -50%;
+    transform: translateX(-50%);
+}
 
 .ad-body {
     margin-bottom: 50px;
@@ -2574,11 +2579,12 @@ blockquote {
         /* margin: 0; */
     }
     .about-mission-list::after {
-        display: none;
+        /* display: none; */
     }
     .about-mission-okky {
-        border: 0;
-        display: none;
+        /* border: 0;
+        display: none; */
+        margin: 40px 134px 0 134px;
     }
     .about-list {
         margin-right: 5px;
