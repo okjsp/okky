@@ -2605,7 +2605,7 @@ blockquote {
     .about-title img, .about-record-list {
         width: 100%;
     }
-    .content-header {
+    .about-wrapper .content-header {
         margin-bottom: 60px;
     }
     /* record */
