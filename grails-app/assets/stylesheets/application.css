@@ -1922,8 +1922,6 @@ blockquote {
 .about-member-wrapper {
     width: 100%;
     text-align: center;
-    /* display: table-row; */
-
 }
 .about-member-body{
     display: inline-block;
@@ -1948,7 +1946,6 @@ blockquote {
     height: 80px;
     line-height: 80px;
     letter-spacing: -2px;
-    margin: 0 auto;
 }
 .about-list-head.ceo {
     border-top: 8px solid #0059ab;
@@ -2571,3 +2568,104 @@ blockquote {
     }
 
 }
+
+/* media query */
+@media (max-width: 768px) {
+    .about-history {
+        overflow: hidden;
+    }
+    .about-mission-list {
+        margin: 0 30px;
+        /* margin: 0; */
+    }
+    .about-mission-list::after {
+        /* display: none; */
+    }
+    .about-mission-okky {
+        /* border: 0;
+        display: none; */
+        margin: 40px 134px 0 134px;
+    }
+    .about-list {
+        margin-right: 5px;
+    }
+
+    .about-history {
+        padding: 0;
+    }
+    .about-hlist-body {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .record-bar, .about-mission-list::after, .about-mission-okky, .about-mission-okky::before, .about-hlist-head::after  {
+        display: none;
+    }
+    .about-title img, .about-record-list {
+        width: 100%;
+    }
+    .about-wrapper .content-header {
+        margin-bottom: 60px;
+    }
+    /* record */
+    .about-record-list {
+        margin-bottom: 20px;
+    }
+    .about-record-list:last-child {
+        margin-bottom: 0;   
+    }
+    /* //record */
+    /* mission */
+    .about-mission {
+        background-color: #e8e8e8;
+    }
+    .about-mission-list {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        background-color: none;
+    }
+    /* //mission */
+    /* members */
+    .about-list {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+    .about-list-head {
+        text-align: left;
+        padding-left: 20px;
+    }
+    .about-list-body {
+        width: 100%;
+        height: 100%;
+    }
+    .about-member-list {
+        display: block;
+        padding: 20px 30px;
+    }
+    .about-member-name {
+        margin-right: 10px;
+        letter-spacing: 1px;
+    }
+    .about-member-ceo, .about-member-op, .about-member-opm, .about-member-hp {
+        width: 100%;
+        margin: 0;
+    }
+    /* //members */
+    /* history */
+    .about-hlist-head-y, .about-hlist-head {
+        position: static;
+        border: 0;
+    }
+    .about-hlist-body {
+        width: 100%;
+        margin: 0;
+    }
+    .about-history {
+        padding: 0;
+    }
+    /* //history */
+}
+/* //media query */
