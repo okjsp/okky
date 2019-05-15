@@ -2003,6 +2003,7 @@ blockquote {
 /* history */
 .about-history {
     padding: 0 50px;
+    overflow: hidden;
 }
 .about-hlist {
     position: relative;
@@ -2041,7 +2042,6 @@ blockquote {
 .about-hlist-body {
     margin-left: 100px;
     padding: 20px 0 10px 20px;
-    width: 600px;
     border-top: 1px solid #595959;
     font-size: 16px;
     font-weight: 400;
@@ -2570,35 +2570,25 @@ blockquote {
 }
 
 /* media query */
-@media (max-width: 768px) {
-    .about-history {
-        overflow: hidden;
-    }
+/* @media (max-width: 768px) {
     .about-mission-list {
         margin: 0 30px;
-        /* margin: 0; */
-    }
-    .about-mission-list::after {
-        /* display: none; */
     }
     .about-mission-okky {
-        /* border: 0;
-        display: none; */
         margin: 40px 134px 0 134px;
     }
     .about-list {
         margin-right: 5px;
     }
-
     .about-history {
         padding: 0;
     }
     .about-hlist-body {
         width: 100%;
     }
-}
+} */
 
-@media (max-width: 420px) {
+@media (max-width: 768px) {
     .record-bar, .about-mission-list::after, .about-mission-okky, .about-mission-okky::before, .about-hlist-head::after  {
         display: none;
     }
@@ -2635,7 +2625,7 @@ blockquote {
     }
     .about-list-head {
         text-align: left;
-        padding-left: 20px;
+        padding-left: 14%;
     }
     .about-list-body {
         width: 100%;
@@ -2643,7 +2633,7 @@ blockquote {
     }
     .about-member-list {
         display: block;
-        padding: 20px 30px;
+        padding: 20px 0 20px 18%;
     }
     .about-member-name {
         margin-right: 10px;

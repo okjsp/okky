@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="about-list clearfix">
-                    <div class="about-list-head opm">운영 회원</div>
+                    <div class="about-list-head opm">운영회원</div>
                     <div class="about-list-body">
                         <div class="about-member-list">
                             <div class="about-member-opm">
