@@ -2608,8 +2608,8 @@ blockquote {
 
     /* members */
     .about-mlist {
-        width: 44%;
-        margin: 3%;
+        width: 46%;
+        margin: 2%;
     }
     .about-list-head {
         text-align: left;
@@ -2671,6 +2671,9 @@ blockquote {
     }
     .about-list-body {
         height: inherit;
+    }
+    .about-mlist {
+        margin: 0 0 3%;
     }
 }
 /* //media query */
