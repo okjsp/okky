@@ -2650,13 +2650,17 @@ blockquote {
 @media (max-width: 560px) {
     .about-record-list {
         width: 100%;
-        margin-bottom: 2%;
+        margin-bottom: 4%;
     }
     .about-mission-list {
         width: 100%;
         margin: 0%;
-        padding: 4%;
+        padding: 6%;
         height: inherit;
+    }
+    .about-mission-list:nth-child(2n) {
+        padding-top: 0;
+        padding-bottom: 0;  
     }
 }
 @media (max-width: 480px) {
