@@ -9,7 +9,7 @@ var autoLinker = function(node) {
     $(node).contents().each(function() {
         var $this = $(this);
         if(this.nodeType == this.TEXT_NODE) {
-            $this.replaceWith(urlize(this.textContent, {target:'_blank'}));
+            $this.replaceWith(urlize(this.textContent, true, true));
         } else {
             if(!$this.is('a, pre, code')) {
                 autoLinker(this);
@@ -22,13 +22,9 @@ var autoLinker = function(node) {
                     && !/^[#@]+/.test(contents[0].textContent)
                     && $this.attr('href').indexOf('//'+location.hostname+'/') < 0) {
 
+                    var prevNode = $('<div/>').append($(this).clone()).html();
 
-                    var $a = $(this).clone();
-                    $a.attr('target', '_blank');
-
-                    var prevNode = $('<div/>').append($a).html();
-
-                    $(this).replaceWith(prevNode + ' <a href="' + $this.attr('href') + '" title="페이지 이동">' +
+                    $(this).replaceWith(prevNode + ' <a href="' + $this.attr('href') + '" target="_blank" title="새창으로 열기">' +
                     '<i class="fa fa-external-link"></i></a>');
                 }
             }
