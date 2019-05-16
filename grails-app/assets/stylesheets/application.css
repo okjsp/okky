@@ -1923,10 +1923,10 @@ blockquote {
     width: 100%;
     text-align: center;
 }
-.about-member-body{
+.about-member-container{
     display: inline-block;
 }
-.about-list {
+.about-mlist {
     float: left;
     width: 170px;
     font-weight: 100;
@@ -1936,7 +1936,7 @@ blockquote {
     margin-right: 13px;
     display: block;
 }
-.about-list:last-child {
+.about-mlist:last-child {
     margin-right: 0;
 }
 .about-list-head {
@@ -2569,59 +2569,47 @@ blockquote {
 
 }
 
-/* media query */
-/* @media (max-width: 768px) {
-    .about-mission-list {
-        margin: 0 30px;
-    }
-    .about-mission-okky {
-        margin: 40px 134px 0 134px;
-    }
-    .about-list {
-        margin-right: 5px;
-    }
-    .about-history {
-        padding: 0;
-    }
-    .about-hlist-body {
-        width: 100%;
-    }
-} */
 
 @media (max-width: 768px) {
     .record-bar, .about-mission-list::after, .about-mission-okky, .about-mission-okky::before, .about-hlist-head::after  {
         display: none;
     }
-    .about-title img, .about-record-list {
+    .about-title img {
         width: 100%;
     }
     .about-wrapper .content-header {
         margin-bottom: 60px;
     }
+
     /* record */
-    .about-record-list {
-        margin-bottom: 20px;
+    .about-record-body {
+        width: 100%;
     }
-    .about-record-list:last-child {
-        margin-bottom: 0;   
+    .about-record-list {
+        width: 29.33%;
+        margin: 2%;
     }
     /* //record */
+
     /* mission */
     .about-mission {
         background-color: #e8e8e8;
     }
-    .about-mission-list {
+    .about-mission-body {
         width: 100%;
-        margin: 0;
+    }
+    .about-mission-list {
+        width: 29.33%;
+        margin: 2%;
         border-radius: 0;
         background-color: none;
     }
     /* //mission */
+
     /* members */
-    .about-list {
-        width: 100%;
-        margin-bottom: 10px;
-        margin-right: 0;
+    .about-mlist {
+        width: 44%;
+        margin: 3%;
     }
     .about-list-head {
         text-align: left;
@@ -2629,11 +2617,11 @@ blockquote {
     }
     .about-list-body {
         width: 100%;
-        height: 100%;
+        height: 140px;
     }
     .about-member-list {
         display: block;
-        padding: 20px 0 20px 18%;
+        padding: 20px 0 0 18%;
     }
     .about-member-name {
         margin-right: 10px;
@@ -2644,6 +2632,7 @@ blockquote {
         margin: 0;
     }
     /* //members */
+
     /* history */
     .about-hlist-head-y, .about-hlist-head {
         position: static;
@@ -2657,5 +2646,27 @@ blockquote {
         padding: 0;
     }
     /* //history */
+}
+@media (max-width: 560px) {
+    .about-record-list {
+        width: 100%;
+        margin-bottom: 2%;
+    }
+    .about-mission-list {
+        width: 100%;
+        margin: 0%;
+        padding: 4%;
+        height: inherit;
+    }
+}
+@media (max-width: 480px) {
+    .about-mlist {
+        width: 100%;
+        padding-bottom: 20px;
+        margin-bottom: 2%;
+    }
+    .about-list-body {
+        height: inherit;
+    }
 }
 /* //media query */

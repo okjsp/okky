@@ -91,8 +91,8 @@
     <div class="about-wrapper clearfix">
         <h3 class="content-header">Members</h3>
         <div class="about-member-wrapper">
-            <div class="about-member-body">
-                <div class="about-list clearfix">
+            <div class="about-member-container">
+                <div class="about-mlist clearfix">
                     <div class="about-list-head ceo">공동대표</div>
                     <div class="about-list-body">
                         <div class="about-member-list">
@@ -107,7 +107,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="about-list clearfix">
+                <div class="about-mlist clearfix">
                     <div class="about-list-head op">운영진</div>
                     <div class="about-list-body">
                         <div class="about-member-list">
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="about-list clearfix">
+                <div class="about-mlist clearfix">
                     <div class="about-list-head opm">운영회원</div>
                     <div class="about-list-body">
                         <div class="about-member-list">
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="about-list clearfix">
+                <div class="about-mlist clearfix">
                     <div class="about-list-head hp">도움주신 분들</div>
                     <div class="about-list-body">
                         <div class="about-member-list">
