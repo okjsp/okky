@@ -20,6 +20,7 @@ class RecruitController {
     SpringSecurityService springSecurityService
     UserService userService
     RandomService randomService
+    RecruitService recruitService
 
     static responseFormats = ['html', 'json']
 
@@ -247,15 +248,9 @@ class RecruitController {
 
                 }
 
-                article.isRecruit = true
                 article.createIp = userService.getRealIp(request)
 
-                articleService.save(article, author, category)
-
-                recruit.article = article
-                recruit.company = person.company
-
-                recruit.save(flush: true, failOnError: true)
+                recruitService.create(article, recruit, category, person.company, author)
 
                 withFormat {
                     html {
