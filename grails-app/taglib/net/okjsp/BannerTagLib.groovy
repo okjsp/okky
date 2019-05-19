@@ -144,33 +144,46 @@ class BannerTagLib {
                           """
                     }
                     break
-                case BannerType.MAIN_RIGHT_BOTTOM:
-                    if(device.isMobile()) {
-                        bannerHTML = """
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <script>
-                              (adsbygoogle = window.adsbygoogle || []).push({
-                                google_ad_client: "ca-pub-8103607814406874",
-                                enable_page_level_ads: true
-                              });
-                            </script>
-                            """
-                    }
 
-                case BannerType.SUB_RIGHT_BOTTOM:
-
+                case BannerType.MAIN_RIGHT_TOP :
+                case BannerType.SUB_RIGHT_TOP :
                     if(!device.isMobile()) {
-                        bannerHTML = """<div class="google-ad">
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- okjspad_160x600 -->
-                            <ins class="adsbygoogle"
-                                 style="display:inline-block;width:160px;height:600px"
-                                 data-ad-client="ca-pub-8103607814406874"
-                                 data-ad-slot="6573675943"></ins>
+                        bannerHTML = """
+                            <!-- Dable 우_EMPTY_250x250 위젯 시작/ 문의 http://dable.io -->
+                            <div id="dablewidget_2XnEn2ld" data-widget_id="2XnEn2ld">
                             <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
+                            (function(d,a,b,l,e,_) {
+                            if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
+                            e.async=1;e.charset='utf-8';e.src='//static.dable.io/dist/plugin.min.js';
+                            _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
+                            })(window,document,'dable','script');
+                            dable('setService', 'okky.kr');
+                            dable('sendLogOnce');
+                            dable('renderWidget', 'dablewidget_2XnEn2ld', {ignore_items: true});
                             </script>
-                        </div>"""
+                            </div>
+                            <!-- Dable 우_EMPTY_250x250 위젯 종료/ 문의 http://dable.io -->
+                        """
+                    }
+                    break
+                case BannerType.MAIN_RIGHT_BOTTOM:
+                case BannerType.SUB_RIGHT_BOTTOM:
+                    if(!device.isMobile()) {
+                        bannerHTML = """
+                            <!-- Dable 우_EMPTY_250x600 위젯 시작/ 문의 http://dable.io -->
+                            <div id="dablewidget_ko8jw2lE" data-widget_id="ko8jw2lE">
+                            <script>
+                            (function(d,a,b,l,e,_) {
+                            if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
+                            e.async=1;e.charset='utf-8';e.src='//static.dable.io/dist/plugin.min.js';
+                            _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
+                            })(window,document,'dable','script');
+                            dable('setService', 'okky.kr');
+                            dable('sendLogOnce');
+                            dable('renderWidget', 'dablewidget_ko8jw2lE', {ignore_items: true});
+                            </script>
+                            </div>
+                            <!-- Dable 우_EMPTY_250x600 위젯 종료/ 문의 http://dable.io -->"""
                     }
                     break
             }

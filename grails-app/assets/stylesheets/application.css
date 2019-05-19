@@ -95,7 +95,7 @@ pre code {
 .layout-container {
     padding: 0;
     margin: 0;
-    max-width: 1280px;
+    max-width: 1320px;
 }
 
 .bootstrap-tagsinput {
@@ -702,11 +702,11 @@ blockquote {
 }
 
 .right-banner-wrapper {
-    position: fixed;
+    position: absolute;
     top: 65px;
-    width: 180px;
+    width: 250px;
     height: 550px;
-    left: 1070px;
+    left: 855px;
 }
 
 .right-banner {
