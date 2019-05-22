@@ -17,6 +17,10 @@
         %{--<meta property="og:image" content="${profileImage(size: 'fb', avatar: article.displayAuthor)}">--}%
         <meta property="og:description" content="${description(text:article.content?.text, length: 200)}">
         <meta property="og:title" content="OKKY | ${article.title}">
+        <meta property="dable:item_id" content="${article.id}">
+        <meta property="dable:author" content="${article.displayAuthor}">
+        <meta property="article:section" content="${article.category.code}">
+        <meta property="article:published_time" content="${article.dateCreated.format("yyyy-MM-dd'T'HH:mm:ss'Z'")}">
     </head>
 	<body>
 
