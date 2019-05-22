@@ -19,6 +19,7 @@
         <meta property="dable:item_id" content="${article.id}">
         <meta property="dable:author" content="${article.displayAuthor}">
         <meta property="article:section" content="${article.category.code}">
+        <meta property="article:published_time" content="${article.dateCreated.format("yyyy-MM-dd'T'HH:mm'Z'")}">
     </head>
 	<body>
 
