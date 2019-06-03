@@ -75,8 +75,8 @@ class Article {
         createIp bindable: false, nullable: true
         ignoreBest bindable: false, nullable: true
         title validator: { val ->
-            def spam = SpamWord.findAll().find { word ->
-                val.contains(word.text)
+            def spam = SpamWord.findAll().find { SpamWord word ->
+                val.contains(word.text.trim())
             }
 
             if(spam) return ["default.invalid.word.message"]
