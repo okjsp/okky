@@ -67,6 +67,7 @@ class BannerTagLib {
 
                         break
                     case BannerType.CONTENT :
+                    case BannerType.CONTENT_TOP :
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && banner.tagMobile) {
                                 bannerHTML = """<div class="sub-banner-wrapper"><div class="sub-banner">${banner.tagMobile}</div></div>"""
@@ -185,6 +186,26 @@ class BannerTagLib {
                             <!-- Dable 우_EMPTY_250x250 위젯 종료/ 문의 http://dable.io -->
                         """
                     }
+                    break
+                case BannerType.CONTENT_TOP:
+                    bannerHTML = """
+                    <div class="sub-dable-banner-wrapper">
+                        <!-- Dable 상_가로1_EMPTY_secret 위젯 시작/ 문의 http://dable.io -->
+                        <div id="dablewidget_klrEYJ7m" data-widget_id="klrEYJ7m">
+                        <script>
+                        (function(d,a,b,l,e,_) {
+                        if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
+                        e.async=1;e.charset='utf-8';e.src='//static.dable.io/dist/plugin.min.js';
+                        _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
+                        })(window,document,'dable','script');
+                        dable('setService', 'okky.kr');
+                        dable('sendLogOnce');
+                        dable('renderWidget', 'dablewidget_klrEYJ7m', {ignore_items: true});
+                        </script>
+                        </div>
+                        <!-- Dable 상_가로1_EMPTY_secret 위젯 종료/ 문의 http://dable.io -->
+                    </div>
+                    """
                     break
             }
         }

@@ -257,6 +257,15 @@ blockquote {
     text-align: center;
 }
 
+.sub-dable-banner-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.sub-dable-banner-wrapper iframe {
+    margin-bottom: 20px;
+}
+
 .sub-banner {
     margin: auto;
 }
