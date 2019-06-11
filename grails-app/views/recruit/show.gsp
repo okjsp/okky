@@ -28,6 +28,8 @@
 
         <div id="article" class="content" role="main">
 
+            <g:banner type="CONTENT_TOP" />
+
             <div class="nav" role="navigation">
                 <g:link class="create btn btn-success btn-wide pull-right" uri="/recruits/create"><i class="fa fa-pencil"></i> <g:message code="default.new.label" args="[entityName]" /></g:link>
 
