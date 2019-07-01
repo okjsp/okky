@@ -162,21 +162,22 @@ class BannerTagLib {
                         </script>
                         """
                     }
+                    break
                 case BannerType.SUB_RIGHT_TOP :
                     if(!device.isMobile()) {
                         bannerHTML = """
-                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Content_250_600 -->
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-8103607814406874"
-                                 data-ad-slot="5287913799"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                            <script>
-                                 (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-"""
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- Content_250_600 -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-8103607814406874"
+                             data-ad-slot="5287913799"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                        """
                     }
                     break
                 case BannerType.MAIN_RIGHT_BOTTOM:
