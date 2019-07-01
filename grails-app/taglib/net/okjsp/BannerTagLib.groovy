@@ -147,23 +147,37 @@ class BannerTagLib {
                     break
 
                 case BannerType.MAIN_RIGHT_TOP :
+                    if(!device.isMobile()) {
+                        bannerHTML = """
+                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- Main_250_600 -->
+                            <ins class="adsbygoogle"
+                                 style="display:block"
+                                 data-ad-client="ca-pub-8103607814406874"
+                                 data-ad-slot="8985230627"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                            <script>
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
+                            </script>
+                            """
+                    }
+                    break
                 case BannerType.SUB_RIGHT_TOP :
                     if(!device.isMobile()) {
                         bannerHTML = """
-                            <!-- Dable 우_EMPTY_250x600 위젯 시작/ 문의 http://dable.io -->
-                            <div id="dablewidget_ko8jw2lE" data-widget_id="ko8jw2lE">
+                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- Content_250_600 -->
+                            <ins class="adsbygoogle"
+                                 style="display:block"
+                                 data-ad-client="ca-pub-8103607814406874"
+                                 data-ad-slot="5287913799"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
                             <script>
-                            (function(d,a,b,l,e,_) {
-                            if(d[b]&&d[b].q)return;d[b]=function(){(d[b].q=d[b].q||[]).push(arguments)};e=a.createElement(l);
-                            e.async=1;e.charset='utf-8';e.src='//static.dable.io/dist/plugin.min.js';
-                            _=a.getElementsByTagName(l)[0];_.parentNode.insertBefore(e,_);
-                            })(window,document,'dable','script');
-                            dable('setService', 'okky.kr');
-                            dable('sendLogOnce');
-                            dable('renderWidget', 'dablewidget_ko8jw2lE', {ignore_items: true});
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
                             </script>
-                            </div>
-                            <!-- Dable 우_EMPTY_250x600 위젯 종료/ 문의 http://dable.io -->"""
+                            """
                     }
                     break
                 case BannerType.MAIN_RIGHT_BOTTOM:
