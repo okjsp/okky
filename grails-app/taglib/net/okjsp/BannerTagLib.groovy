@@ -95,18 +95,18 @@ class BannerTagLib {
                     case BannerType.SUB_RIGHT_BOTTOM :
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && device.isMobile() && banner.tagMobile) {
-                                bannerHTML = """<div class="google-ad">${banner.tagMobile}</div>"""
+                                bannerHTML = """<div class="sqare-ad">${banner.tagMobile}</div>"""
                             } else if(!device.isMobile() && banner.tagDesktop) {
-                                bannerHTML = """<div class="google-ad">${banner.tagDesktop}</div>"""
+                                bannerHTML = """<div class="sqare-ad">${banner.tagDesktop}</div>"""
                             }
                         } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
                             if(!device.isMobile()) {
-                                bannerHTML = """<div class="google-ad"><a href="${request.contextPath}/banner/stats/${
+                                bannerHTML = """<div class="sqare-ad"><a href="${request.contextPath}/banner/stats/${
                                     banner.id
                                 }" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>"""
                             }
                         }
-
+                        break
             }
         } else {
 
