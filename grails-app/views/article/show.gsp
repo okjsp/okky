@@ -35,6 +35,11 @@
                 <h4><g:message code="${article.category.labelCode}" default="${article.category.defaultLabel}" /></h4>
             </div>
 
+
+            <g:if test="${flash.error}">
+                <div class="message" role="status">${flash.error}</div>
+            </g:if>
+
             <div class="panel panel-default clearfix fa-">
                 <div class="panel-heading clearfix">
                     <g:avatar avatar="${article.displayAuthor}" size="medium" dateCreated="${article.dateCreated}" changeLog="${changeLogs?.find { it[2] == article.content.id}}" logType="article" class="pull-left" />
