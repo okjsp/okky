@@ -44,31 +44,7 @@ class ArticleController {
         }
 
         def choiceJobs
-
-        if(category.code == 'jobs' || category.parent?.code == 'jobs') {
-
-            def diff = new Date() - 30
-
-            choiceJobs = Article.withCriteria() {
-                eq('choice', true)
-                eq('enabled', true)
-                'in'('category', [Category.get('recruit'), Category.get('resumes'), Category.get('evalcom')])
-                gt('dateCreated', diff)
-                order('id', 'desc')
-
-                maxResults(5)
-            }.findAll()
-
-
-            choiceJobs.each {
-                if(it.isRecruit) {
-                    Recruit recruit = Recruit.findByArticle(it)
-                    it.recruit = recruit
-                }
-            }
-        }
-
-        def notices = articleService.getNotices(category)
+        def notices
 
 //        def managedAvatar = userService.getManaedAvatars(springSecurityService?.currentUser)
         def categories = category.children ?: [category]
@@ -78,7 +54,8 @@ class ArticleController {
 
 
         def articles = []
-        def count = 0
+        def count
+        def filtered
 
         if(category.code == 'recruit') {
 
@@ -107,6 +84,8 @@ class ArticleController {
                 }
                 if(cities)
                     'in'('city', cities)
+                if (params.query && params.query != '')
+                    article.title =~ "%${params.query}%" ||  article.content.text =~ "%${params.query}%"
             }
 
             def recruits = recruitsQuery.list(params)
@@ -118,6 +97,8 @@ class ArticleController {
 
             count = recruitsQuery.count()
 
+            filtered = (jobPositionFilter || jobTypes || cities || (params.query && params.query != ''))
+
         } else {
 
             def articlesQuery = Article.where {
@@ -125,7 +106,7 @@ class ArticleController {
                 if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
                     enabled == true
                 if (params.query && params.query != '')
-                    title =~ "%${params.query}%"
+                    title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
             }
 
             articles = articlesQuery.list(params)
@@ -138,6 +119,34 @@ class ArticleController {
             }
 
             count = articlesQuery.count()
+            filtered = (params.query && params.query != '')
+        }
+
+        if(!filtered) {
+            if (category.code == 'jobs' || category.parent?.code == 'jobs') {
+
+                def diff = new Date() - 30
+
+                choiceJobs = Article.withCriteria() {
+                    eq('choice', true)
+                    eq('enabled', true)
+                    'in'('category', [Category.get('recruit'), Category.get('resumes'), Category.get('evalcom')])
+                    gt('dateCreated', diff)
+                    order('id', 'desc')
+
+                    maxResults(5)
+                }.findAll()
+
+
+                choiceJobs.each {
+                    if (it.isRecruit) {
+                        Recruit recruit = Recruit.findByArticle(it)
+                        it.recruit = recruit
+                    }
+                }
+            }
+
+            notices = articleService.getNotices(category)
         }
 
         respond articles, model:[articlesCount: count, category: category, choiceJobs: choiceJobs, notices: notices]
@@ -159,7 +168,7 @@ class ArticleController {
         def articlesQuery = Article.where {
             tagString =~ "%${tag}%"
             if(params.query && params.query != '')
-                title =~ "%${params.query}%"
+                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
 
         }
 
