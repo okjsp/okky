@@ -53,6 +53,7 @@ class BannerTagLib {
                         break
                     case BannerType.MAIN :
                     case BannerType.JOBS_TOP :
+                    case BannerType.QNA_TOP :
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && banner.tagMobile) {
                                 bannerHTML = """<div class="main-banner-wrapper"><div class="main-banner">${banner.tagMobile}</div></div>"""
@@ -114,6 +115,7 @@ class BannerTagLib {
                 case BannerType.MAIN:
                 case BannerType.CONTENT:
                 case BannerType.JOBS_TOP :
+                case BannerType.QNA_TOP :
                     bannerHTML = """
                     <div class="main-banner-wrapper">
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>

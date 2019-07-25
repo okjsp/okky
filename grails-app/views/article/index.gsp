@@ -201,6 +201,10 @@
                 <g:banner type="JOBS_TOP" />
             </g:if>
 
+            <g:if test="${category?.code == 'questions' || category?.parent?.code == 'questions'}">
+                <g:banner type="QNA_TOP" />
+            </g:if>
+
             <div class="panel panel-default">
 
                 <!-- Table -->
