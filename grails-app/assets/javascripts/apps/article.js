@@ -31,9 +31,10 @@ $(function() {
 
     $window.scroll(function() {
         var contentHeight = $contentBody.outerHeight() - 200;
-        if($window.scrollTop() > 134 && $window.scrollTop() < contentHeight) {
+        var topHeight = 135 + $('.sub-dable-banner-wrapper').height();
+        if($window.scrollTop() >= topHeight && $window.scrollTop() < contentHeight) {
             $contentFunction.addClass('fixed').removeClass('over');
-        } else if($window.scrollTop() < 135) {
+        } else if($window.scrollTop() < topHeight) {
             $contentFunction.removeClass('fixed over');
         } else if($window.scrollTop() > contentHeight) {
             $contentFunction.addClass('over').removeClass('fixed');
