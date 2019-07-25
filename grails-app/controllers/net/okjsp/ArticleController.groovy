@@ -249,7 +249,6 @@ class ArticleController {
         params.category = category
 
         def writableCategories
-        def categories = Category.findAllByEnabled(true)
         def goExternalLink = false
         
         if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
@@ -265,7 +264,7 @@ class ArticleController {
         if(goExternalLink) {
             redirect(url: category.externalLink)
         } else {
-            respond new Article(params), model: [writableCategories: writableCategories, category: category, categories: categories, notices: notices]
+            respond new Article(params), model: [writableCategories: writableCategories, category: category, notices: notices]
         }
 
         
@@ -330,11 +329,19 @@ class ArticleController {
         } catch (Exception e) {
 
             category = Category.get(code)
-            def categories = category?.children ?: category?.parent?.children ?: [category]
             def notices = params.list('notices') ?: []
             article.category = category
 
-            respond article.errors, view: 'create', model: [categories: categories, category: category, notices: notices]
+            def writableCategories
+
+            if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN")) {
+                writableCategories = Category.findAllByWritableAndEnabled(true, true)
+            } else {
+                writableCategories = Category.findAllByParentAndWritableAndEnabledAndAdminOnly(category?.parent ?: category, true, true, false) ?: [category]
+                params.anonymity = category?.anonymity ?: false
+            }
+
+            respond article.errors, view: 'create', model: [writableCategories: writableCategories, category: category, notices: notices]
         }
     }
 

@@ -54,7 +54,7 @@
 
         <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
             <div>
-                <select id="category" name="categoryCode" class="form-control">
+                <select id="category" name="categoryCode" class="form-control" required="">
                     <option value="">게시판을 선택해 주세요.</option>
                     <g:each in="${writableCategories}" var="category">
                         <option value="${category.code}" <g:if test="${category.code == article?.category?.code}">selected="selected"</g:if>>${message(code: category.labelCode, default: category.defaultLabel)}</option>
@@ -68,7 +68,7 @@
         <g:if test="${writableCategories.size() > 1}">
         <div class="form-group ${hasErrors(bean: article, field: 'category', 'has-error')} has-feedback">
             <div>
-                <select id="category" name="categoryCode" class="form-control">
+                <select id="category" name="categoryCode" class="form-control" required="">
                     <option value="">게시판을 선택해 주세요.</option>
                     <g:each in="${writableCategories}" var="category">
                         <option value="${category.code}"

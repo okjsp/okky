@@ -81,12 +81,16 @@
 
         <asset:script type="text/javascript">
             $('#category').change(function() {
-                if(this.value && confirm('게시판 변경시 수정된 내용은 초기화 됩니다. 변경 하시겠습니까?')) {
-                  /*if(this.value == 'recruit') {
-                    location.href=contextPath+'/recruit/create';
-                  } else {*/
-                    location.href=contextPath+'/articles/'+this.value+'/create';
-                  // }
+                if(this.value == 'recruit') {
+                    if(this.value && confirm('게시판 변경시 수정된 내용은 초기화 됩니다. 변경 하시겠습니까?')) {
+                      /*if(this.value == 'recruit') {
+                        location.href=contextPath+'/recruit/create';
+                      } else {*/
+                        location.href=contextPath+'/articles/'+this.value+'/create';
+                      // }
+                    } else {
+
+                    }
                 }
             });
         </asset:script>
