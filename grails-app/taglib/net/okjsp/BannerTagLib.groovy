@@ -95,18 +95,18 @@ class BannerTagLib {
                     case BannerType.SUB_RIGHT_BOTTOM :
                         if(banner.contentType == BannerContentType.TAG) {
                             if(device.isMobile() && device.isMobile() && banner.tagMobile) {
-                                bannerHTML = """<div class="google-ad">${banner.tagMobile}</div>"""
+                                bannerHTML = """<div class="sqare-ad">${banner.tagMobile}</div>"""
                             } else if(!device.isMobile() && banner.tagDesktop) {
-                                bannerHTML = """<div class="google-ad">${banner.tagDesktop}</div>"""
+                                bannerHTML = """<div class="sqare-ad">${banner.tagDesktop}</div>"""
                             }
                         } else if(banner.contentType == BannerContentType.IMAGE_URL || banner.contentType == BannerContentType.IMAGE_FILE) {
                             if(!device.isMobile()) {
-                                bannerHTML = """<div class="google-ad"><a href="${request.contextPath}/banner/stats/${
+                                bannerHTML = """<div class="sqare-ad"><a href="${request.contextPath}/banner/stats/${
                                     banner.id
                                 }" ${banner.target ? target : ''}><img src="${banner.image}" /></a></div>"""
                             }
                         }
-
+                        break
             }
         } else {
 
@@ -149,35 +149,35 @@ class BannerTagLib {
                 case BannerType.MAIN_RIGHT_TOP :
                     if(!device.isMobile()) {
                         bannerHTML = """
-                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Main_250_600 -->
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-8103607814406874"
-                                 data-ad-slot="8985230627"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                            <script>
-                                 (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-                            """
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- Main_250_600 -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-8103607814406874"
+                             data-ad-slot="8985230627"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                        """
                     }
                     break
                 case BannerType.SUB_RIGHT_TOP :
                     if(!device.isMobile()) {
                         bannerHTML = """
-                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- Content_250_600 -->
-                            <ins class="adsbygoogle"
-                                 style="display:block"
-                                 data-ad-client="ca-pub-8103607814406874"
-                                 data-ad-slot="5287913799"
-                                 data-ad-format="auto"
-                                 data-full-width-responsive="true"></ins>
-                            <script>
-                                 (adsbygoogle = window.adsbygoogle || []).push({});
-                            </script>
-                            """
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- Content_250_600 -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-8103607814406874"
+                             data-ad-slot="5287913799"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                        """
                     }
                     break
                 case BannerType.MAIN_RIGHT_BOTTOM:
