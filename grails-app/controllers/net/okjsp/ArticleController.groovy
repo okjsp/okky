@@ -85,7 +85,7 @@ class ArticleController {
                 if(cities)
                     'in'('city', cities)
                 if (params.query && params.query != '')
-                    article.title =~ "%${params.query}%" ||  article.content.text =~ "%${params.query}%"
+                    article.title =~ "%${params.query}%"
             }
 
             def recruits = recruitsQuery.list(params)
@@ -168,7 +168,7 @@ class ArticleController {
         def articlesQuery = Article.where {
             tagString =~ "%${tag}%"
             if(params.query && params.query != '')
-                title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+                title =~ "%${params.query}%"
 
         }
 
