@@ -106,7 +106,7 @@ class ArticleController {
                 if (SpringSecurityUtils.ifNotGranted("ROLE_ADMIN"))
                     enabled == true
                 if (params.query && params.query != '')
-                    title =~ "%${params.query}%" || content.text =~ "%${params.query}%"
+                    title =~ "%${params.query}%"
             }
 
             articles = articlesQuery.list(params)
