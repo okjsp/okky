@@ -17,13 +17,13 @@ class BannerService {
         banners
     }
 
-    @CacheEvict(value='banners', key='#banner.type')
+    @CacheEvict(value='banners', allEntries = true)
     void save(Banner banner) {
         println "Saving message $banner"
         banner.save(flush:true)
     }
 
-    @CacheEvict(value='banners', key='#banner.type')
+    @CacheEvict(value='banners', allEntries = true)
     void delete(Banner banner) {
         println "Deleting message $banner"
         banner.delete(flush:true)
