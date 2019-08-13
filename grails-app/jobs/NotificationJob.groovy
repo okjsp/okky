@@ -21,31 +21,38 @@ class NotificationJob {
     void execute(){
 
         Date now = new Date()
+        println "NotificationJob excution date ${now} / lastsent ${lastSend}"
 
-        def notes = Content.findAll {
-            and {
-                eq('type', ContentType.NOTE)
-                gt('dateCreated', lastSend)
+        try {
+
+            def notes = Content.findAll {
+                and {
+                    eq('type', ContentType.NOTE)
+                    gt('dateCreated', lastSend)
+                }
             }
-        }
 
-        def votes = ContentVote.findAll {
-            and {
-                gt('point', 0)
-                gt('dateCreated', lastSend)
+            def votes = ContentVote.findAll {
+                and {
+                    gt('point', 0)
+                    gt('dateCreated', lastSend)
+                }
             }
-        }
 
-        notes.each { note ->
-            notificationService.createFromNote(note)
-        }
+            notes.each { note ->
+                notificationService.createFromNote(note)
+            }
 
-        votes.each { vote ->
-            notificationService.createFromAccent(vote)
-        }
+            votes.each { vote ->
+                notificationService.createFromAccent(vote)
+            }
+        } catch(Exception e) {
 
-//        println "NotificationJob excution time ${new Date().time-now.time}ms"
+        }
 
         lastSend = now
+
+
+//        println "NotificationJob excution time ${new Date().time-now.time}ms"
     }
 }
