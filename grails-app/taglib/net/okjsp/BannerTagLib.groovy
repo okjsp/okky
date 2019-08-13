@@ -158,7 +158,6 @@ class BannerTagLib {
                             </script>
                             """
                     }
-                    break
 
                 case BannerType.SUB_RIGHT_BOTTOM:
 
