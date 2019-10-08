@@ -37,7 +37,13 @@ class BannerController {
         params.max = Math.min(max ?: 10, 100)
         params.order = params.order ?: 'desc'
         params.sort = params.sort ?: 'id'
-        respond Banner.list(params), model:[bannerCount: Banner.count()]
+
+        def bannerQuery = Banner.where {
+            if(params.visible != null && params.visible != '')
+                visible == (params.visible == "true")
+        }
+
+        respond bannerQuery.list(params), model:[bannerCount: bannerQuery.count()]
     }
 
     def show(Banner banner) {

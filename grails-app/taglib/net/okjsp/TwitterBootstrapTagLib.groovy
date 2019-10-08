@@ -60,6 +60,7 @@ class TwitterBootstrapTagLib {
         if (params.sort) linkParams.sort = params.sort
         if (params.order) linkParams.order = params.order
         if (params.query) linkParams.query = params.query
+        if (params.visible) linkParams.visible = params.visible
 
         //TODO 다중 선택 검색을 위한 조취 필요
         if (params['filter.act']) linkParams['filter.act'] = params['filter.act']

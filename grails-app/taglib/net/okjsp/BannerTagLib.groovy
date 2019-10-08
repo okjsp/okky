@@ -150,12 +150,14 @@ class BannerTagLib {
                 case BannerType.MAIN_RIGHT_BOTTOM:
                     if(device.isMobile()) {
                         bannerHTML = """
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- okjspad_160x500 -->
+                            <ins class="adsbygoogle"
+                                 style="display:inline-block;width:160px;height:500px"
+                                 data-ad-client="ca-pub-8103607814406874"
+                                 data-ad-slot="6573675943"></ins>
                             <script>
-                              (adsbygoogle = window.adsbygoogle || []).push({
-                                google_ad_client: "ca-pub-8103607814406874",
-                                enable_page_level_ads: true
-                              });
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
                             </script>
                             """
                     }
@@ -164,14 +166,14 @@ class BannerTagLib {
 
                     if(!device.isMobile()) {
                         bannerHTML = """<div class="google-ad">
-                            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                            <!-- okjspad_160x600 -->
+                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                            <!-- okjspad_160x500 -->
                             <ins class="adsbygoogle"
-                                 style="display:inline-block;width:160px;height:600px"
+                                 style="display:inline-block;width:160px;height:500px"
                                  data-ad-client="ca-pub-8103607814406874"
                                  data-ad-slot="6573675943"></ins>
                             <script>
-                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                 (adsbygoogle = window.adsbygoogle || []).push({});
                             </script>
                         </div>"""
                     }

@@ -17,6 +17,22 @@
 		</div>
 		<div id="list-banner" class="content scaffold-list" role="main">
 			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
+			<div class="search-form">
+				<form name="searchForm">
+					<div class="input-group">
+						<label><g:radio name="visible" value="" checked="${params.visible == null || params.visible == ''}" /> &nbsp;전체</label> &nbsp; &nbsp;
+						<label><g:radio name="visible" value="true" checked="${params.visible == 'true'}" />  &nbsp;노출</label> &nbsp; &nbsp;
+						<label><g:radio name="visible" value="false" checked="${params.visible == 'false'}" />  &nbsp;비노출</label>
+%{--						<input type="search" class="form-control" name="query" value="${params.query}" placeholder="검색어 (아이디, 닉네임, 이름, 이메일주소)" />--}%
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default">검색</button>
+							<g:if test="${params.query}">
+								<g:link action="index" class="btn btn-warning">clear</g:link>
+							</g:if>
+						</span>
+					</div>
+				</form>
+			</div>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
