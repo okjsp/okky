@@ -198,7 +198,7 @@ class CompanyController {
 
             mailService.sendMail {
                 async true
-                to "jwkim@ebrain.kr", "jwjung@ebrain.kr" , "btjung@ebrain.kr"
+                to "okky_jobs@ebrain.kr"
                 subject "["+message(code:'email.company.enable.subject')+"] ${company.name}"
                 body(view:'/email/company_request', model: [company: company, companyInfo: companyInfo, grailsApplication: grailsApplication] )
             }
