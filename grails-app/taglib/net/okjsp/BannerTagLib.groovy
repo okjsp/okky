@@ -120,13 +120,11 @@ class BannerTagLib {
                     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                     <!-- 728-90_Ressponsive -->
                     <ins class="adsbygoogle"
-                         style="display:block"
+                         style="display:inline-block;width:728px;height:90px"
                          data-ad-client="ca-pub-8103607814406874"
-                         data-ad-slot="8622179990"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
+                         data-ad-slot="8622179990"></ins>
                     <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                         (adsbygoogle = window.adsbygoogle || []).push({});
                     </script>
                     </div>"""
                     break
