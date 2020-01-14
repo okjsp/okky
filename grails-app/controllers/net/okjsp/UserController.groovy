@@ -220,6 +220,15 @@ class UserController {
         }
     }
 
+    def info(String token) {
+        String [] decoded = new String(token.decodeBase64()).split(":")
+
+        String username = decoded[0]
+        String hashed = decoded[1]
+
+
+    }
+
     def password(String key) {
 
         if(springSecurityService.isLoggedIn()) {
