@@ -29,14 +29,8 @@ class UserController {
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
-            if(request.getParameter("strategy") == 'token') {
-                User user = springSecurityService.currentUser
-                def conf = SpringSecurityUtils.securityConfig
-                redirect request.getParameter('redirectUrl') + "?token="+ TokenUtil.create(user.username, conf.rememberMe.key)
-            } else {
-                redirect uri: '/'
-                return false
-            }
+            redirect uri: '/'
+            return false
         }
     }
 
