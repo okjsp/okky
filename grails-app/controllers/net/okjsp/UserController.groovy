@@ -7,6 +7,8 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.Environment
 import grails.validation.ValidationException
+import net.okjsp.utils.TokenUtil
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -27,8 +29,14 @@ class UserController {
 
     private notLoggedIn() {
         if(springSecurityService.loggedIn) {
-            redirect uri: '/'
-            return false
+            if(request.getParameter("strategy") == 'token') {
+                User user = springSecurityService.currentUser
+                def conf = SpringSecurityUtils.securityConfig
+                redirect request.getParameter('redirectUrl') + "?token="+ TokenUtil.create(user.username, conf.rememberMe.key)
+            } else {
+                redirect uri: '/'
+                return false
+            }
         }
     }
 
@@ -226,7 +234,30 @@ class UserController {
         String username = decoded[0]
         String hashed = decoded[1]
 
+        def user
 
+        String dateStr = new Date().format("yyyy-MM-dd'T'HH:mm")
+
+        def conf = SpringSecurityUtils.securityConfig
+        def seed = conf.rememberMe.key
+
+        def checkHashed = TokenUtil.hash(username+seed+dateStr)
+
+        if(hashed == checkHashed) {
+            user = User.findByUsername(username)
+
+            def userInfo = [
+                    username: user.username,
+                    fullName: user.person.fullName,
+                    email: user.person.email
+            ]
+
+            render(contentType: 'application/json') {
+                userInfo
+            }
+        } else {
+            notFound()
+        }
     }
 
     def password(String key) {
@@ -367,6 +398,7 @@ class UserController {
 
         redirect controller: 'user', action: 'edit'
     }
+
 
     protected void notFound() {
         request.withFormat {

@@ -5,7 +5,17 @@ import java.security.MessageDigest
 class TokenUtil {
     static String create(String username, String seed) {
         String dateStr = new Date().format("yyyy-MM-dd'T'HH:mm")
-        (username + ":" + hash(username+seed+dateStr)).encodeAsBase64()
+        String original = username+seed+dateStr
+        String hashed = hash(username+seed+dateStr)
+        String merged = username + ":" + hashed
+        String encoded = (merged).encodeAsBase64()
+
+        println original
+        println hashed
+        println merged
+        println encoded
+
+        encoded
     }
 
     static String hash(String value) {
