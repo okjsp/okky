@@ -29,6 +29,9 @@
                 <g:if test="${params.redirectUrl}">
                     <input type="hidden" name="redirectUrl" value="${params.redirectUrl}" />
                 </g:if>
+                <g:if test="${params.strategy}">
+                    <input type="hidden" name="strategy" value="${params.strategy}" />
+                </g:if>
                 <input type="text" name="j_username" autocorrect="off" autocapitalize="off" id="username" class="username form-control input-sm" placeholder="${message(code: "springSecurity.login.username.label")}" required autofocus>
                 <input type="password" name='j_password' class="password form-control input-sm" placeholder="${message(code: "springSecurity.login.password.label")}" required>
                 <!-- AutoPassword 추가 -->

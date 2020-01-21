@@ -12,6 +12,7 @@ class UrlMappings {
         "/logout?/$action"(controller: "logout")
         "/user/$action"(controller: "user")
         "/user/info/$id"(controller: "user", action: "index")
+        "/user/info"(controller: "user", action: "info")
         "/user/info/$id/$category?"(controller: "user", action: "index")
         "/user/privacy"(view: '/user/privacy')
         "/user/agreement"(view: '/user/agreement')
