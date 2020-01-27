@@ -243,6 +243,7 @@ class UserController {
             def userInfo = [
                     username: user.username,
                     fullName: user.person.fullName,
+                    nickname: user.avatar.nickname,
                     email: user.person.email
             ]
 
