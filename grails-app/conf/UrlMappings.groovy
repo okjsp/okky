@@ -79,7 +79,7 @@ class UrlMappings {
         "/_admin/dm/updateReject"(controller: "dm", action: 'updateReject')
         "/_admin"(controller: "statistic")
 
-        "/intro/about"(view: "/intro/about")
+        "/intro/about"(controller: "intro", action: "about")
         "/intro/ad"(controller: "intro", action: "ad")
 
         "/event"(controller: "event", action: "index")

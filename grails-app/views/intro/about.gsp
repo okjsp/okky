@@ -20,7 +20,7 @@
                       <img src="${resource(dir: 'images', file: 'icon-white-comment.png')}" />
                     </div>
                     <div>
-                        <div class="about-record-text">136,000건</div>
+                        <div class="about-record-text">${qnaCount}건 이상</div>
                         <div class="about-text">기술 Q&A</div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                         <img src="${resource(dir: 'images', file: 'icon-white-group.png')}" />
                     </div>
                     <div>
-                        <div class="about-record-text">69,000명</div>
+                        <div class="about-record-text">${userCount}명 이상</div>
                         <div class="about-text">회원</div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="about-text-desc">
-                <div>OKKY는 2000년 12월에 시작하여 18년의 역사를 자랑하는 한국의 대표 개발자 커뮤니티입니다.</div>
+                <div>OKKY는 2000년 12월에 시작하여 ${ago}년 이상의 역사를 자랑하는 한국의 대표 개발자 커뮤니티입니다.</div>
                 <div>단순한 기술 커뮤니티를 넘어, S/W개발자의 기술과 삶을 나누는 공간으로서의 역할을 담당하고 있습니다.</div>
             </div>
         </div>
