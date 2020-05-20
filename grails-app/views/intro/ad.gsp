@@ -25,11 +25,11 @@
         <h3 class="content-header">광고문의</h3>
         <div class="ad-body">
             <div class="ad-text">
-                <p>전화번호 : 02.6933.5070 </p>
+                <p>전화번호 : 02.6925.5202 </p>
                 <p>이메일 : <a href="mailto:ad@okky.kr">ad@okky.kr</a></p>
             </div>
             <div class="ad-btn-wrapper">
-                <g:link uri="/images/OKKY_매체소개서_2019_v2.pdf" class="btn btn-lg btn-primary">매체소개서 다운로드</g:link>
+                <g:link uri="/images/OKKY_매체소개서_2020_v3.pdf" class="btn btn-lg btn-primary">매체소개서 다운로드</g:link>
             </div>
         </div>
     </div>

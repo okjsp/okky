@@ -164,7 +164,7 @@
 					<g:actionSubmit class="delete" controller="adminCompany" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 					|
 					<g:if test="${company.enabled}">
-						<g:link class="delete" uri="/_admin/company/disable/${company.id}" ><g:message code="company.button.disable.label" default="Disable" onClick="return confirm('해당 회사 인증을 취소 하시겠습니까?');"/></g:link>
+						<g:link class="delete" uri="/_admin/company/disable/${company.id}" ><g:message code="company.button.disable.label" default="Disable"/></g:link>
 					</g:if>
 					<g:else>
 						<g:link class="save" uri="/_admin/company/enable/${company.id}"  onClick="return confirm('해당 회사 인증을 하시겠습니까?');"><g:message code="company.button.enable.label" default="Enable"  /></g:link>
