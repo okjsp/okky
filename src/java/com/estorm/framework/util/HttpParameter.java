@@ -13,7 +13,7 @@ public class HttpParameter {
 
 	public HttpParameter(String name, String value) {
 		try {
-			sb.append(name + "=" + URLEncoder.encode(value, "UTF-8"));
+			sb.append(name).append("=").append(URLEncoder.encode(value, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -22,12 +22,14 @@ public class HttpParameter {
 	public HttpParameter add(String name, String value) {
 		if(sb.length() != 0) {
 			sb.append("&");
-		} 
+		}
+
 		try {
-			sb.append(name+ "=" + URLEncoder.encode(value, "UTF-8"));
+			sb.append(name).append("=").append(URLEncoder.encode(value, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+
 		return this;
 	}
 

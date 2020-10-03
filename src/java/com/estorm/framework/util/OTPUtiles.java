@@ -38,7 +38,7 @@ public class OTPUtiles {
             KeyPair keyPair = keyPairGenerator.genKeyPair();
             Key publicKey = keyPair.getPublic();
             Key privateKey = keyPair.getPrivate();
-            
+
             X509EncodedKeySpec keySpecX509 = new X509EncodedKeySpec(publicKey.getEncoded());
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PublicKey pubKey = keyFactory.generatePublic(keySpecX509);
