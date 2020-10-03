@@ -8,7 +8,7 @@ public class HttpConnection {
 
 	private final String USER_AGENT = "Mozilla/5.0";
 
-	public String response(InputStream inputStream, int responseCode) throws HttpResponseException {
+	private String response(InputStream inputStream, int responseCode) throws HttpResponseException {
 		if(responseCode >= 400 && responseCode <= 511) {
 			throw new HttpResponseException(responseCode);
 		}
@@ -21,7 +21,7 @@ public class HttpConnection {
 			while((line = reader.readLine()) != null) {
 				buffer.append(line);
 			}
-			
+
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
