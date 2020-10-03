@@ -1,18 +1,37 @@
 package com.estorm.framework.util;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpConnection {
 
 	private final String USER_AGENT = "Mozilla/5.0";
-	
+
+	public String response(InputStream inputStream, int responseCode) throws HttpResponseException {
+		if(responseCode >= 400 && responseCode <= 511) {
+			throw new HttpResponseException(responseCode);
+		}
+
+		StringBuffer buffer = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+		String line;
+
+		try {
+			while((line = reader.readLine()) != null) {
+				buffer.append(line);
+			}
+			
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return buffer.toString();
+	}
+
 	// HTTP GET request
 	public String sendGet(String url, HttpParameter params) throws Exception {
-		
 		URL obj = new URL(url + "?" + params.getParams());
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -22,24 +41,11 @@ public class HttpConnection {
 		//add request header
 		con.setRequestProperty("User-Agent", USER_AGENT);
 
-		int responseCode = con.getResponseCode();
-		
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		return response.toString();
-
+		return response(con.getInputStream(), con.getResponseCode());
 	}
 	
 	// HTTP POST request
 	public String sendPost(String url, HttpParameter params) throws Exception {
-		
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -57,20 +63,7 @@ public class HttpConnection {
 		wr.flush();
 		wr.close();
 
-		int responseCode = con.getResponseCode();
-		
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		return response.toString();
-
-		
+		return response(con.getInputStream(), con.getResponseCode());
 	}
 
 }

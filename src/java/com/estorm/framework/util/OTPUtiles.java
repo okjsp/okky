@@ -24,14 +24,13 @@ public class OTPUtiles {
 		long time = System.currentTimeMillis(); 
 		SimpleDateFormat dayTime = new SimpleDateFormat(format);
 		String currentTime = dayTime.format(new Date(time));
+
 		return currentTime;
 	}
 
-
-	
-	
 	public static String[] getCreateRSAKeyPair() {
         String[] rsaKeyPair = new String[2];
+
         try {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
@@ -55,11 +54,13 @@ public class OTPUtiles {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return rsaKeyPair;
     }
 
 	public static String getEncryptRSAFromPublicKey(String input, String strPublicKey) {
 		String strCipher = null;
+
 		try {
 			byte[] baPublicKey = Base64.getDecoder().decode(strPublicKey);//Base64Util.getDecData(strPublicKey);
 			PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(baPublicKey));
@@ -70,11 +71,13 @@ public class OTPUtiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return strCipher;
 	}
 	
 	public static String getDecryptRSAFromPrivateKey(String input, String strPrivateKey) {
 		String strResult = null;
+
 		try {
 			byte[] encrypted = Base64.getDecoder().decode(input);//Base64Util.getDecData(input.getBytes());
 			byte[] baPrivateKey = Base64.getDecoder().decode(strPrivateKey);//Base64Util.getDecData(strPrivateKey.getBytes());
@@ -86,11 +89,13 @@ public class OTPUtiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return strResult;
 	}
 	
 	public static String getEncryptRSAFromPrivateKey(String input, String strPrivateKey) {
 		String strCipher = null;
+
 		try {
 			byte[] baPrivateKey = Base64.getDecoder().decode(strPrivateKey);//Base64Util.getDecData(strPrivateKey);
 			PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(baPrivateKey));
@@ -101,11 +106,13 @@ public class OTPUtiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return strCipher;
 	}
 	
 	public static String getDecryptRSAFromPublicKey(String input, String strPublicKey) {
 		String strResult = null;
+
 		try {
 			byte[] encrypted = Base64.getDecoder().decode(input);//Base64Util.getDecData(input.getBytes());
 			byte[] baPublicKey = Base64.getDecoder().decode(strPublicKey);//Base64Util.getDecData(strPublicKey.getBytes());
@@ -117,6 +124,7 @@ public class OTPUtiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return strResult;
 	}
 	
@@ -124,7 +132,11 @@ public class OTPUtiles {
 		String strRet = null;
 		byte[] key = strKey.getBytes();
 		String strIV = strKey;
-		if ( key == null || strIV == null ) return null;
+
+		if ( key == null || strIV == null ) {
+			return null;
+		}
+
 		try {
 			SecretKey secureKey = new SecretKeySpec(key, "AES");
 			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -134,6 +146,7 @@ public class OTPUtiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return strRet;
 	}
 	
@@ -141,7 +154,11 @@ public class OTPUtiles {
 		String strRet = null;
 		byte[] key = strKey.getBytes();
 		String strIV = strKey;
-		if ( key == null || strIV == null ) return null;
+
+		if ( key == null || strIV == null ) {
+			return null;
+		}
+
 		try {
 			SecretKey secureKey = new SecretKeySpec(key, "AES");
 			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -151,6 +168,7 @@ public class OTPUtiles {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return strRet;
 	}
 		
